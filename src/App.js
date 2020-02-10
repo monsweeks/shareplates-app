@@ -16,12 +16,16 @@ import {
 } from './actions';
 import logo from './logo.svg';
 import './App.scss';
-import Button from "react-bootstrap/Button";
+
 import Join from "./pages/Join/Join";
 import Login from "./pages/Login/Login";
 import NoMatch from "./pages/NoMatch/NoMatch";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import {faCoffee} from '@fortawesome/free-solid-svg-icons'
+import {Button} from "reactstrap";
+import Card from "reactstrap/es/Card";
+import CardHeader from "reactstrap/es/CardHeader";
+import CardBody from "reactstrap/es/CardBody";
 
 function App(props) {
 
@@ -55,9 +59,13 @@ function App(props) {
                     rel="noopener noreferrer"
                 >
                     Learn React
-                    <FontAwesomeIcon icon={faCoffee} />
+                    <FontAwesomeIcon icon={faCoffee}/>
                     <Button>버튼33333><i className="fas fa-coffee"/></Button>
 
+                    <Card>
+                        <CardHeader>111</CardHeader>
+                        <CardBody>2222</CardBody>
+                    </Card>
                 </a>
             </header>
         </div>
