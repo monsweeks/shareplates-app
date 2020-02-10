@@ -20,6 +20,8 @@ import Button from "react-bootstrap/Button";
 import Join from "./pages/Join/Join";
 import Login from "./pages/Login/Login";
 import NoMatch from "./pages/NoMatch/NoMatch";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 function App(props) {
 
@@ -53,7 +55,8 @@ function App(props) {
                     rel="noopener noreferrer"
                 >
                     Learn React
-                    <Button>버튼33333><i className="fa fa-spinner fa-spin"/></Button>
+                    <FontAwesomeIcon icon={faCoffee} />
+                    <Button>버튼33333><i className="fas fa-coffee"/></Button>
 
                 </a>
             </header>
