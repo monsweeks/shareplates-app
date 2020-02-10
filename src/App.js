@@ -53,7 +53,8 @@ function App(props) {
                     rel="noopener noreferrer"
                 >
                     Learn React
-                    <Button>버튼33333</Button>
+                    <Button>버튼33333><i className="fa fa-spinner fa-spin"/></Button>
+
                 </a>
             </header>
         </div>

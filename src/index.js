@@ -7,6 +7,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import scouterApp from './reducers';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-pro/css/all.min.css';
 import {HashRouter} from 'react-router-dom'
 
 const store = createStore(scouterApp);
