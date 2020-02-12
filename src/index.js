@@ -6,7 +6,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import scouterApp from './reducers';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './scss/custom.scss';
 import './scss/fonts.scss';
 import './index.scss';
 
