@@ -20,7 +20,9 @@ class Join extends Component {
     render() {
         return (
             <div className="login-wrapper">
-                가
+                <h1>가</h1>
+                <span>가</span>
+                <span className="font-weight-bold">가</span>
             </div>
         );
     }
