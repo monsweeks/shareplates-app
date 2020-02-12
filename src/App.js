@@ -14,7 +14,7 @@ import {
     setUserData,
     setUserId
 } from './actions';
-import Join from "./pages/Join/Join";
+import Join from "pages/Join/Join";
 import Login from "./pages/Login/Login";
 import NoMatch from "./pages/NoMatch/NoMatch";
 import './App.scss';

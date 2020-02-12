@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Login.css';
 import {withRouter} from 'react-router-dom';
+import Join from "pages/Join/Join";
 
 class Login extends Component {
 
@@ -21,6 +22,7 @@ class Login extends Component {
         return (
             <div className="login-wrapper">
                 로그인
+                <Join />
             </div>
         );
     }

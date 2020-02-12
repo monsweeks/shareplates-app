@@ -1,4 +1,4 @@
-@import "../../scss/custom";
+@import "scss/custom";
 
 .join-wrapper {
   width: 100%;
@@ -6,6 +6,7 @@
   position: relative;
 
   box-sizing: border-box;
+  padding: $spacer * 10;
 
 
 }
