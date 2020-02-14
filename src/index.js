@@ -5,12 +5,13 @@ import {Provider} from 'react-redux';
 import {BrowserRouter as Router} from "react-router-dom";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import scouterApp from './reducers';
+// import scouterApp from './reducers';
 import './scss/custom.scss';
 import './scss/fonts.scss';
 import './index.scss';
+import store from "./store";
 
-const store = createStore(scouterApp);
+// const store = createStore(scouterApp);
 
 ReactDOM.render(
     <Router>
