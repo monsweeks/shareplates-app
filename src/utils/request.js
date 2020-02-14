@@ -2,6 +2,7 @@ import axios from 'axios';
 import store from "store";
 import {addMessage} from "actions";
 import {ERROR_CATEGORY} from "../constants/constants";
+import i18n from "i18next";
 
 const logging = true;
 
@@ -17,6 +18,7 @@ function processSuccess(response, successHandler) {
 }
 
 function processError(error, failHandler) {
+
     if (error.response) {
         logging && console.log(error.response);
     } else {
@@ -28,7 +30,7 @@ function processError(error, failHandler) {
     } else if (error && error.response) {
         switch (error.response.status) {
             case 404 : {
-                store.dispatch(addMessage(error.response.status, ERROR_CATEGORY.ERROR, '404 NOT FOUND', '요청하신 리소스를 찾을 수 없습니다.'));
+                store.dispatch(addMessage(error.response.status, ERROR_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('resourceNotFount')));
                 break;
             }
             default : {

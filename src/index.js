@@ -1,17 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router} from "react-router-dom";
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-// import scouterApp from './reducers';
-import './scss/custom.scss';
-import './scss/fonts.scss';
-import './index.scss';
+import App from 'App';
+import * as serviceWorker from 'serviceWorker';
 import store from "./store";
-
-// const store = createStore(scouterApp);
+import 'languages/i18n';
+import 'scss/custom.scss';
+import 'scss/fonts.scss';
+import 'index.scss';
 
 ReactDOM.render(
     <Router>

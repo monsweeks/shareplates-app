@@ -3,11 +3,9 @@ import {connect} from 'react-redux';
 import {addMessage, clearMessage,} from 'actions';
 
 function Common(props) {
-    console.log(props.messages);
     return (
         <div className="Common">
-            {props.messages.length}
-            {props.messages && props.messages.length > 0 && <span>{props.messages[0].category}</span>}
+            {props.messages && props.messages.length > 0 && <span>팝업으로 표여줄 에러 메세지 : {props.messages[0].content}</span>}
         </div>
     );
 }
