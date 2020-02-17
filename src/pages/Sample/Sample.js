@@ -30,7 +30,7 @@ class Sample extends Component {
                 <h2>서버 요청에 대한 샘플</h2>
                 <div>
                     <Button className='mr-4' onClick={() => {
-                        request.get('http://localhost:8080/api/organizations', null, (data) => {
+                        request.get('/api/organizations', null, (data) => {
                             console.log(data);
                         });
                     }}>GET ORG LIST</Button>

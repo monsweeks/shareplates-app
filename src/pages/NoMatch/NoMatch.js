@@ -20,7 +20,7 @@ class NoMatch extends Component {
     render() {
         return (
             <div className="login-wrapper">
-                가
+                404
             </div>
         );
     }

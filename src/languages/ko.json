@@ -1,4 +1,11 @@
 {
+  "label.email": "이메일",
+  "label.name": "이름",
+  "label.password": "비밀번호",
+  "label.passwordConfirm": "비밀번호 확인",
+  "label.phoneNumber": "전화번호",
+  "label.join": "가입",
+
   "message.hello": "안녕하세요",
   "n.selected": "{{n}} 개 선택됨.",
   "resourceNotFount": "요청하신 리소스를 찾을 수 없습니다."
