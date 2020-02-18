@@ -5,6 +5,7 @@ import {ERROR_CATEGORY} from "../constants/constants";
 import i18n from "i18next";
 
 const logging = true;
+const base = 'http://localhost:8080';
 
 function beforeRequest() {
 
@@ -49,7 +50,7 @@ function afterRequest(response) {
 
 function get(uri, params, successHandler, failHandler) {
     beforeRequest();
-    axios.get(uri, {
+    axios.get(`${base}${uri}`, {
         params,
     }).then(response => {
         processSuccess(response, successHandler);
@@ -60,8 +61,17 @@ function get(uri, params, successHandler, failHandler) {
     });
 }
 
-function post() {
-
+function post(uri, params, successHandler, failHandler) {
+    beforeRequest();
+    axios.post(`${base}${uri}`,
+        params,
+    ).then(response => {
+        processSuccess(response, successHandler);
+    }).catch(error => {
+        processError(error, failHandler);
+    }).finally((response) => {
+        afterRequest(response);
+    });
 }
 
 function put() {

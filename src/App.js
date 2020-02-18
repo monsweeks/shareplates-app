@@ -1,25 +1,23 @@
 import React from 'react';
 import {hot} from 'react-hot-loader'
-import {BrowserRouter as Router, Route, Switch, withRouter} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
 import {Common, Join, Login, NoMatch, Sample,} from "pages";
 import './App.scss';
+import {Header} from "./layouts";
 
 function App() {
     return (
-        <div className="App">
-            <div>
-                <Router>
-                    <div>
-                        <Switch>
-                            <Route exact path="/sample" component={Sample}/>
-                            <Route exact path="/join" component={Join}/>
-                            <Route exact path="/login" component={Login}/>
-                            <Route component={NoMatch}/>
-                        </Switch>
-                    </div>
-                </Router>
-            </div>
-            <Common/>
+        <div className="app-wrapper">
+            <Header/>
+            <article className='app-content'>
+                <Switch>
+                    <Route exact path="/sample" component={Sample}/>
+                    <Route exact path="/join" component={Join}/>
+                    <Route exact path="/login" component={Login}/>
+                    <Route component={NoMatch}/>
+                </Switch>
+                <Common/>
+            </article>
         </div>
     );
 }

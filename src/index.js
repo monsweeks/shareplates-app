@@ -6,6 +6,7 @@ import App from 'App';
 import * as serviceWorker from 'serviceWorker';
 import store from "./store";
 import 'languages/i18n';
+import '@fortawesome/fontawesome-pro/css/all.min.css';
 import 'scss/custom.scss';
 import 'scss/fonts.scss';
 import 'index.scss';
