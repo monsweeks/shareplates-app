@@ -1,4 +1,8 @@
 {
+  "label.topic": "TOPIC",
+  "label.chapter": "CHAPTER",
+  "label.page": "PAGE",
+
   "message.hello": "Hello",
   "n.selected": "{{n}} selected.",
   "resourceNotFount": "resource not found."

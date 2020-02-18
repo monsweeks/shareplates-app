@@ -1,4 +1,9 @@
 {
+  "label.topic": "토픽",
+  "label.chapter": "챕터",
+  "label.page": "페이지",
+
+
   "label.email": "이메일",
   "label.name": "이름",
   "label.password": "비밀번호",

@@ -9,19 +9,107 @@
   color: $white;
   align-items: center;
   justify-content: center;
-
-  > div {
-
-  }
+  overflow: hidden;
 
   div.logo-area {
     width: 200px;
-    background-color: red;
+    height: 100%;
   }
 
   div.shortcut-area,
   div.menu-area {
     flex: 1;
+  }
+
+  div.menu-area {
+    text-align: center;
+    height: 100%;
+
+    a {
+      min-width: 80px;
+      height: 100%;
+      margin: 0 5px 0 0;
+      position: relative;
+      padding: 0;
+
+      .icon {
+        text-align: center;
+        font-size: 14px;
+        position: absolute;
+        top: 9px;
+        left: 0;
+        width: 100%;
+
+        > span {
+          display: inline-block;
+        }
+      }
+
+      .text {
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-family: 'Righteous', 'LGSmHaR', cursive;
+        position: relative;
+        margin-top: 25px;
+
+        > span {
+          display: inline-block;
+          line-height: 100%;
+          padding: 2px 4px 1px;
+
+          border-radius: 4px;
+          min-width: 40px;
+          font-size: 16px;
+          _background-color: $secondary;
+        }
+
+      }
+
+      .screen {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.05);
+        _transition: all 1s;
+
+        &.screen-1 {
+          height: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        &.screen-2 {
+          height: 0;
+          left: 0;
+          right: 0;
+          top: 0;
+        }
+
+        &.screen-3 {
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 0;
+        }
+
+        &.screen-4 {
+          top: 0;
+          bottom: 0;
+          right: 0;
+          width: 0;
+        }
+      }
+
+
+      &:hover {
+        .screen {
+          height: 100%;
+          width: 100%;
+          transition: all 0.5s;
+        }
+      }
+
+    }
   }
 
   a {
