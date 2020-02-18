@@ -1,0 +1,32 @@
+@import "scss/custom";
+
+.top-header-wrapper {
+  height: 60px;
+  background-color: $secondary;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  color: $white;
+  align-items: center;
+  justify-content: center;
+
+  > div {
+
+  }
+
+  div.logo-area {
+    width: 200px;
+    background-color: red;
+  }
+
+  div.shortcut-area,
+  div.menu-area {
+    flex: 1;
+  }
+
+  a {
+    color: $white !important;
+    display: inline-block;
+  }
+
+}
