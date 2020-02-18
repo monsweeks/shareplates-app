@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Logo.scss';
 import logo from 'images/logo.svg';
+import {Link} from "react-router-dom";
 
 class Logo extends Component {
 
@@ -35,18 +36,23 @@ class Logo extends Component {
     render() {
         return (
             <div className="logo-wrapper">
-                {this.state.snows.map((snow, inx) => {
-                    return <span key={inx} style={
-                        {
-                            'animation-duration': snow.duration + 's',
-                            'animation-delay': snow.delay + 's',
-                            left: snow.left,
-                            fontSize: snow.size + 'px'
-                        }
-                    } className='snow'><i className="fal fa-snowflake"/></span>;
-                })}
-                <div className='logo-img'><img src={logo}/></div>
-                <div className='logo-text'><span>SHAREPLATES</span></div>
+                <div className='snows'>
+                    {this.state.snows.map((snow, inx) => {
+                        return <span key={inx} style={
+                            {
+                                'animationDuration': snow.duration + 's',
+                                'animationDelay': snow.delay + 's',
+                                left: snow.left,
+                                fontSize: snow.size + 'px'
+                            }
+                        } className='snow'><i className="fal fa-snowflake"/></span>;
+                    })}
+                </div>
+                <Link className='logo-link' to='/'>
+                    <div className='logo-img'><img src={logo}/></div>
+                    <div className='logo-text'><span>SHAREPLATES</span></div>
+                    <div className='logo-path'><span><i className="fal fa-home"/></span></div>
+                </Link>
             </div>
         );
     }

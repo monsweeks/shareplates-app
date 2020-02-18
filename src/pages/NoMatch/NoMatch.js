@@ -1,29 +1,20 @@
-import React, {Component} from 'react';
-import './NoMatch.css';
-import {withRouter} from 'react-router-dom';
+import React from 'react';
 
-class NoMatch extends Component {
+import './NoMatch.scss';
+import {withTranslation} from "react-i18next";
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            control: {
-                id: "",
-                password: "",
-                message: null
-            }
-        };
-    }
-
+class NoMatch extends React.PureComponent {
 
     render() {
+
+        const {t } = this.props;
+
         return (
-            <div className="login-wrapper">
-                404
+            <div className="no-match-wrapper">
+                <h2>{t('message.404')}</h2>
             </div>
         );
     }
 }
 
-export default withRouter(NoMatch);
+export default withTranslation()(NoMatch);

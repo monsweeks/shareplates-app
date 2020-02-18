@@ -1,21 +1,10 @@
 import i18n from "i18next";
 import {initReactI18next} from "react-i18next";
-
-import en from './en';
-import ko from './ko';
-
-const resources = {
-    en: {
-        translation: en
-    },
-    ko: {
-        translation: ko
-    }
-};
+import LANGUAGES from './languages';
 
 i18n.use(initReactI18next)
     .init({
-        resources,
+        resources : LANGUAGES,
         lng: "ko",
         fallbackLng: 'en',
         keySeparator: false,
@@ -23,5 +12,7 @@ i18n.use(initReactI18next)
             escapeValue: false
         }
     });
+
+console.log('init');
 
 export default i18n;

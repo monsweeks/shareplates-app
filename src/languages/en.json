@@ -1,7 +1,10 @@
 {
+  "en": "ENG",
+  "ko": "한글",
   "label.topic": "TOPIC",
   "label.chapter": "CHAPTER",
   "label.page": "PAGE",
+  "message.404": "NOW BUILDING",
 
   "message.hello": "Hello",
   "n.selected": "{{n}} selected.",
