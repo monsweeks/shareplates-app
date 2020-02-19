@@ -88,10 +88,14 @@ $delay1: random(3);
     }
 
     &:hover {
-      .logo-path {
-        opacity: 1;
-        transition: opacity 0.3s;
+
+      @include media-breakpoint-up(md) {
+        .logo-path {
+          opacity: 1;
+          transition: opacity 0.3s;
+        }
       }
+
     }
   }
 
