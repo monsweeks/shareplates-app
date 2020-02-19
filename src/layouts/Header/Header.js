@@ -53,7 +53,7 @@ class Header extends React.Component {
                         <i className="fas fa-bars"/>
                     </Button>
                     {menus.map((menu) => {
-                        return <Link className='d-none d-md-inline-block' to={menu.to}>
+                        return <Link key={menu.text} className='d-none d-md-inline-block' to={menu.to}>
                             <div className='screen screen-1'/>
                             <div className='screen screen-2'/>
                             <div className='screen screen-3'/>
@@ -64,7 +64,7 @@ class Header extends React.Component {
                     })}
                 </div>
                 <div className='logo-area'>
-                    <Logo/>
+                    <Logo weatherEffect/>
                 </div>
                 <div className='shortcut-area'>
                     <div className='override-radio-button language-button d-none d-md-inline-block'>
@@ -84,7 +84,7 @@ class Header extends React.Component {
                     className={`mobile-menu-area d-md-none ${open === null ? '' : (open ? 'menu-open' : 'menu-close')}`}>
                     <div>
                         <div className='top'>
-                            <Logo/>
+                            <Logo weatherEffect/>
                             <Button color='secondary' className='close-button shadow-none bg-transparent border-0' onClick={() => {
                                 this.setOpen(false);
                             }}>
@@ -94,7 +94,7 @@ class Header extends React.Component {
                         <div className='menu-list'>
                             <ul>
                                 {menus.map((menu) => {
-                                    return <li>
+                                    return <li key={menu.text}>
                                         <Link className='d-inline-block' onClick={() => {
                                             this.setOpen(false);
                                         }} to={menu.to}>

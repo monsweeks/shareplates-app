@@ -1,9 +1,8 @@
 import React from 'react';
-import './Logo.scss';
-import logo from 'images/logo.svg';
+import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
-
-const snowEffect = true;
+import logo from 'images/logo.svg';
+import './Logo.scss';
 
 class Logo extends React.Component {
 
@@ -15,7 +14,8 @@ class Logo extends React.Component {
     }
 
     componentDidMount() {
-        if (snowEffect) {
+        const {weatherEffect} = this.props;
+        if (weatherEffect) {
             const snows = new Array(this.getRandomNumber(10, 20));
 
             for (let i = 0; i < snows.length; i++) {
@@ -62,5 +62,13 @@ class Logo extends React.Component {
         );
     }
 }
+
+Logo.defaultProps = {
+    weatherEffect: false
+};
+
+Logo.propTypes = {
+    weatherEffect: PropTypes.bool
+};
 
 export default Logo;
