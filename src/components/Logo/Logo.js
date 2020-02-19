@@ -22,7 +22,7 @@ class Logo extends React.Component {
                 snows[i] = {
                     delay: this.getRandomNumber(i, i + 2),
                     duration: this.getRandomNumber(3, 8),
-                    left: this.getRandomNumber(0, 200),
+                    left: this.getRandomNumber(0, 100),
                     size: this.getRandomNumber(10, 14)
                 }
             }
@@ -47,7 +47,7 @@ class Logo extends React.Component {
                             {
                                 'animationDuration': snow.duration + 's',
                                 'animationDelay': snow.delay + 's',
-                                left: snow.left,
+                                left: snow.left + '%',
                                 fontSize: snow.size + 'px'
                             }
                         } className='snow'><i className="fal fa-snowflake"/></span>;

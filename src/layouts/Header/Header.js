@@ -85,7 +85,7 @@ class Header extends React.Component {
                     <div>
                         <div className='top'>
                             <Logo/>
-                            <Button color='secondary' className='close-button shadow-none' onClick={() => {
+                            <Button color='secondary' className='close-button shadow-none bg-transparent border-0' onClick={() => {
                                 this.setOpen(false);
                             }}>
                                 <i className="fal fa-times h5 font-weight-lighter m-0"></i>
