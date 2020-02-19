@@ -1,9 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './Logo.scss';
 import logo from 'images/logo.svg';
 import {Link} from "react-router-dom";
 
-class Logo extends Component {
+const snowEffect = true;
+
+class Logo extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,20 +15,23 @@ class Logo extends Component {
     }
 
     componentDidMount() {
-        const snows = new Array(this.getRandomNumber(10, 20));
+        if (snowEffect) {
+            const snows = new Array(this.getRandomNumber(10, 20));
 
-        for (let i = 0; i < snows.length; i++) {
-            snows[i] = {
-                delay: this.getRandomNumber(i, i + 2),
-                duration: this.getRandomNumber(3, 8),
-                left: this.getRandomNumber(0, 200),
-                size: this.getRandomNumber(10, 14)
+            for (let i = 0; i < snows.length; i++) {
+                snows[i] = {
+                    delay: this.getRandomNumber(i, i + 2),
+                    duration: this.getRandomNumber(3, 8),
+                    left: this.getRandomNumber(0, 200),
+                    size: this.getRandomNumber(10, 14)
+                }
             }
+
+            this.setState({
+                snows
+            });
         }
 
-        this.setState({
-            snows
-        });
     }
 
     getRandomNumber = (min, max) => {
