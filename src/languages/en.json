@@ -5,6 +5,7 @@
   "label.chapter": "CHAPTER",
   "label.page": "PAGE",
   "message.404": "NOW BUILDING",
+  "label.memberJoin": "JOIN",
 
   "message.hello": "Hello",
   "n.selected": "{{n}} selected.",

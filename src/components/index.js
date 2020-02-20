@@ -4,11 +4,13 @@ import CardBody from 'reactstrap/es/CardBody';
 import CardHeader from 'reactstrap/es/CardHeader';
 import CardFooter from 'reactstrap/es/CardFooter';
 import Logo from './Logo/Logo'
+import Link from './Link/Link'
 export {
     Button,
     Card,
     CardBody,
     CardHeader,
     CardFooter,
-    Logo
+    Logo,
+    Link,
 }

@@ -1,7 +1,9 @@
 import {CLEAR_MESSAGE, ADD_MESSAGE, SET_SUPPORTED, SET_USER_DATA, SET_USER_ID,} from '../actions';
 import {combineReducers} from 'redux';
 
-const userState = {};
+const userState = {
+    user : null,
+};
 
 const user = (state = userState, action) => {
     switch (action.type) {
