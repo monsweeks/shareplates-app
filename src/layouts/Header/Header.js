@@ -1,9 +1,10 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
-import {Button, Logo} from "components";
+import {withRouter} from 'react-router-dom';
+import {Button, Logo, Link} from "components";
 import {withTranslation} from "react-i18next";
 import './Header.scss';
 import LANGUAGES from "../../languages/languages";
+import {connect} from "react-redux";
 
 const menus = [
     {
@@ -41,8 +42,10 @@ class Header extends React.Component {
 
     render() {
 
-        const {t, i18n} = this.props;
+        const {t, i18n, user} = this.props;
         const {open} = this.state;
+
+        console.log(user);
 
         return (
             <header className='top-header-wrapper'>
@@ -53,7 +56,7 @@ class Header extends React.Component {
                         <i className="fas fa-bars"/>
                     </Button>
                     {menus.map((menu) => {
-                        return <Link className='d-none d-md-inline-block' to={menu.to}>
+                        return <Link underline={false} key={menu.text} className='d-none d-md-inline-block menu-item' to={menu.to}>
                             <div className='screen screen-1'/>
                             <div className='screen screen-2'/>
                             <div className='screen screen-3'/>
@@ -64,9 +67,13 @@ class Header extends React.Component {
                     })}
                 </div>
                 <div className='logo-area'>
-                    <Logo/>
+                    <Logo weatherEffect/>
                 </div>
                 <div className='shortcut-area'>
+                    {!user && <Link className='d-none d-md-inline-block' componentClassName='px-2' color='white' to='/join'>
+                        {t('label.memberJoin')}
+                    </Link>}
+                    <div className='separator d-none d-md-inline-block'/>
                     <div className='override-radio-button language-button d-none d-md-inline-block'>
                         {Object.keys(LANGUAGES).sort().reverse().map((language) => {
                             return <button key={language} type='button'
@@ -84,7 +91,7 @@ class Header extends React.Component {
                     className={`mobile-menu-area d-md-none ${open === null ? '' : (open ? 'menu-open' : 'menu-close')}`}>
                     <div>
                         <div className='top'>
-                            <Logo/>
+                            <Logo weatherEffect/>
                             <Button color='secondary' className='close-button shadow-none bg-transparent border-0' onClick={() => {
                                 this.setOpen(false);
                             }}>
@@ -94,8 +101,8 @@ class Header extends React.Component {
                         <div className='menu-list'>
                             <ul>
                                 {menus.map((menu) => {
-                                    return <li>
-                                        <Link className='d-inline-block' onClick={() => {
+                                    return <li key={menu.text}>
+                                        <Link underline={false} className='d-inline-block menu-item' onClick={() => {
                                             this.setOpen(false);
                                         }} to={menu.to}>
                                             <div className='icon'><span><i className={menu.icon}/></span></div>
@@ -105,6 +112,13 @@ class Header extends React.Component {
                                     </li>
                                 })}
                             </ul>
+                        </div>
+                        <div className='link-area'>
+                            {!user && <Link componentClassName='px-2' color='blue' to='/join' onClick={() => {
+                                this.setOpen(false);
+                            }}>
+                                {t('label.memberJoin')}
+                            </Link>}
                         </div>
                         <div className='shortcut-area'>
                             <div>
@@ -127,5 +141,14 @@ class Header extends React.Component {
         );
     }
 }
+
+
+let mapStateToProps = (state) => {
+    return {
+        user: state.user.user,
+    };
+};
+
+Header = connect(mapStateToProps, undefined)(Header);
 
 export default withRouter(withTranslation()(Header));
