@@ -4,6 +4,4 @@ const ERROR_CATEGORY = {
     INFO: 'INFO',
 };
 
-export {
-    ERROR_CATEGORY
-}
+export default ERROR_CATEGORY;

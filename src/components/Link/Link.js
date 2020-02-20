@@ -1,18 +1,16 @@
 import React from 'react';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import './Link.scss';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-class Link extends React.Component {
-
+class Link extends React.PureComponent {
     render() {
-
-        const {color, className, componentClassName, underline, ...last} = this.props;
+        const { color, className, componentClassName, underline, ...last } = this.props;
 
         return (
             <span className={`link-wrapper text-${color} ${className} ${underline ? 'underline' : ''}`}>
                 <RouterLink className={`text-${color} ${componentClassName}`} {...last} />
-                {underline && <div className='liner'/>}
+                {underline && <div className="liner" />}
             </span>
         );
     }
@@ -20,16 +18,16 @@ class Link extends React.Component {
 
 Link.defaultProps = {
     underline: true,
-    className : '',
-    color : 'white',
-    componentClassName : '',
+    className: '',
+    color: 'white',
+    componentClassName: '',
 };
 
 Link.propTypes = {
     underline: PropTypes.bool,
     className: PropTypes.string,
     color: PropTypes.string,
-    componentClassName : PropTypes.string,
+    componentClassName: PropTypes.string,
 };
 
 export default Link;
