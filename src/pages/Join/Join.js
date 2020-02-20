@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './Join.scss';
 import { withRouter } from 'react-router-dom';
-import { Button, Form, FormFeedback, FormGroup, FormText, Input, Label } from 'reactstrap';
-import { RegisterLayout } from 'layouts';
 import { withTranslation } from 'react-i18next';
 import { Map } from 'immutable';
 import PropTypes from 'prop-types';
+import { RegisterLayout } from '@/layouts';
+import { Form, Input, FormGroup, Button, Row, Col } from '@/components';
 import request from '../../utils/request';
 
 class Join extends Component {
@@ -22,14 +22,15 @@ class Join extends Component {
         };
     }
 
-    onChange(e) {
+    onChange = (field) => (value) => {
         const { user } = this.state;
+        console.log(field, value);
         this.setState({
-            user: user.set(e.target.id, e.target.value),
+            user: user.set(field, value),
         });
-    }
+    };
 
-    onSubmit(e) {
+    onSubmit = (e) => {
         e.preventDefault();
 
         const { user } = this.state;
@@ -37,7 +38,7 @@ class Join extends Component {
             // eslint-disable-next-line no-console
             console.log(data);
         });
-    }
+    };
 
     render() {
         const { t } = this.props;
@@ -46,74 +47,59 @@ class Join extends Component {
         return (
             <div className="join-wrapper">
                 <RegisterLayout>
-                    <h1>회원가입</h1>
-                    <Form onSubmit={this.onSubmit}>
-                        <FormGroup>
-                            <div>
-                                <Label for="email">{t('label.email')}</Label>
-                                <FormFeedback className="float-right ml-2 my-0 d-inline mt-2 w-auto">
-                                    필수 입력 값입니다
-                                </FormFeedback>
-                            </div>
-                            <Input
-                                id="email"
-                                value={user.get('email')}
-                                required
-                                minLength={2}
-                                maxLength={100}
-                                onChange={this.onChange}
-                            />
-                            <FormText>
-                                사용할 이메일을 입력해주세요. 입력된 이메일 주소를 이용하여 로그인할 수 있습니다.
-                            </FormText>
-                        </FormGroup>
-                        <FormGroup>
-                            <div>
-                                <Label for="name">{t('label.name')}</Label>
-                                <FormFeedback className="float-right ml-2 my-0 d-inline mt-2 w-auto">
-                                    필수 입력 값입니다
-                                </FormFeedback>
-                            </div>
-                            <Input
-                                id="name"
-                                value={user.get('name')}
-                                required
-                                minLength={2}
-                                maxLength={100}
-                                onChange={this.onChange}
-                            />
-                            <FormText>이름을 입력해주세요.</FormText>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="password">{t('label.password')}</Label>
-                            <Input
-                                id="password"
-                                value={user.get('password')}
-                                type="password"
-                                name="password"
-                                required
-                                minLength={2}
-                                maxLength={100}
-                                placeholder="Password"
-                                onChange={this.onChange}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="passwordConfirm">{t('label.passwordConfirm')}</Label>
-                            <Input
-                                id="passwordConfirm"
-                                value={user.get('passwordConfirm')}
-                                type="password"
-                                required
-                                minLength={2}
-                                maxLength={100}
-                                name="password"
-                                placeholder="Password"
-                                onChange={this.onChange}
-                            />
-                        </FormGroup>
-                        <Button>{t('label.join')}</Button>
-                    </Form>
+                    <h1 className='text-center my-4'>회원가입</h1>
+                    <Row>
+                        <Col>
+                            <Form onSubmit={this.onSubmit}>
+                                <FormGroup>
+                                    <Input
+                                        label={t('label.email')}
+                                        placeholderMessage={t('사용할 이메일 주소를 입력해주세요')}
+                                        value={user.get('email')}
+                                        required
+                                        minLength={2}
+                                        maxLength={100}
+                                        onChange={this.onChange('email')}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input
+                                        label={t('label.name')}
+                                        placeholderMessage={t('이름이나 별명을 알려주세요')}
+                                        value={user.get('name')}
+                                        required
+                                        minLength={2}
+                                        maxLength={100}
+                                        onChange={this.onChange('name')}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input
+                                        label={t('label.password')}
+                                        value={user.get('password')}
+                                        type='password'
+                                        required
+                                        minLength={2}
+                                        maxLength={100}
+                                        onChange={this.onChange('password')}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input
+                                        label={t('label.passwordConfirm')}
+                                        value={user.get('passwordConfirm')}
+                                        type='password'
+                                        required
+                                        minLength={2}
+                                        maxLength={100}
+                                        onChange={this.onChange('passwordConfirm')}
+                                    />
+                                </FormGroup>
+                                <Button>{t('label.join')}</Button>
+                            </Form>
+                        </Col>
+                        <Col/>
+                    </Row>
                 </RegisterLayout>
             </div>
         );
