@@ -3,12 +3,11 @@ import ko from './ko';
 
 const LANGUAGES = {
     en: {
-        translation: en
+        translation: en,
     },
     ko: {
-        translation: ko
-    }
+        translation: ko,
+    },
 };
-
 
 export default LANGUAGES;

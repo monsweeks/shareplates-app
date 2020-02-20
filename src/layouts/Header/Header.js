@@ -1,10 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Button, Logo, Link } from 'components';
 import { withTranslation } from 'react-i18next';
 import './Header.scss';
-import LANGUAGES from '../../languages/languages';
 import { connect } from 'react-redux';
+import LANGUAGES from '../../languages/languages';
 
 const menus = [
     {
@@ -38,11 +39,21 @@ class Header extends React.Component {
         });
     };
 
+    getMenuClass = (open) => {
+        if (open === null) {
+            return '';
+        }
+
+        if (open) {
+            return 'menu-open';
+        }
+
+        return 'menu-close';
+    };
+
     render() {
         const { t, i18n, user } = this.props;
         const { open } = this.state;
-
-        console.log(user);
 
         return (
             <header className="top-header-wrapper">
@@ -58,7 +69,12 @@ class Header extends React.Component {
                     </Button>
                     {menus.map((menu) => {
                         return (
-                            <Link underline={false} key={menu.text} className="d-none d-md-inline-block menu-item" to={menu.to}>
+                            <Link
+                                underline={false}
+                                key={menu.text}
+                                className="d-none d-md-inline-block menu-item"
+                                to={menu.to}
+                            >
                                 <div className="screen screen-1" />
                                 <div className="screen screen-2" />
                                 <div className="screen screen-3" />
@@ -94,7 +110,7 @@ class Header extends React.Component {
                                     <button
                                         key={language}
                                         type="button"
-                                        className={`${i18n['language'] === language ? 'selected' : ''}`}
+                                        className={`${i18n.language === language ? 'selected' : ''}`}
                                         onClick={() => {
                                             i18n.changeLanguage(language);
                                         }}
@@ -113,7 +129,7 @@ class Header extends React.Component {
                         }}
                     />
                 )}
-                <div className={`mobile-menu-area d-md-none ${open === null ? '' : open ? 'menu-open' : 'menu-close'}`}>
+                <div className={`mobile-menu-area d-md-none ${this.getMenuClass(open)}`}>
                     <div>
                         <div className="top">
                             <Logo weatherEffect />
@@ -124,7 +140,7 @@ class Header extends React.Component {
                                     this.setOpen(false);
                                 }}
                             >
-                                <i className="fal fa-times h5 font-weight-lighter m-0"></i>
+                                <i className="fal fa-times h5 font-weight-lighter m-0" />
                             </Button>
                         </div>
                         <div className="menu-list">
@@ -173,7 +189,7 @@ class Header extends React.Component {
                         </div>
                         <div className="shortcut-area">
                             <div>
-                                <label>언어 설정</label>
+                                <span className="desc">언어 설정</span>
                                 <div className="override-radio-button">
                                     {Object.keys(LANGUAGES)
                                         .sort()
@@ -183,7 +199,7 @@ class Header extends React.Component {
                                                 <button
                                                     key={language}
                                                     type="button"
-                                                    className={`${i18n['language'] === language ? 'selected' : ''}`}
+                                                    className={`${i18n.language === language ? 'selected' : ''}`}
                                                     onClick={() => {
                                                         i18n.changeLanguage(language);
                                                     }}
@@ -202,12 +218,18 @@ class Header extends React.Component {
     }
 }
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         user: state.user.user,
     };
 };
 
-Header = connect(mapStateToProps, undefined)(Header);
+Header.propTypes = {
+    i18n: PropTypes.objectOf({
+        changeLanguage: PropTypes.func,
+    }),
+    t: PropTypes.func,
+    user: PropTypes.objectOf(PropTypes.any),
+};
 
-export default withRouter(withTranslation()(Header));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Header)));

@@ -1,4 +1,4 @@
-@import "scss/custom";
+@import 'scss/custom';
 
 .link-wrapper {
     display: inline-block;
@@ -16,9 +16,9 @@
     .liner {
         position: absolute;
         width: 0;
-        left : 0;
+        left: 0;
         height: 2px;
-        bottom : -2px;
+        bottom: -2px;
         background-color: $blue;
         border-radius: 2px;
     }
@@ -37,6 +37,4 @@
             }
         }
     }
-
-
 }
