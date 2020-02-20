@@ -309,6 +309,7 @@ module.exports = function(webpackEnv) {
         ...(isEnvProductionProfile && {
           'react-dom$': 'react-dom/profiling',
           'scheduler/tracing': 'scheduler/tracing-profiling',
+          '@': path.resolve(__dirname, '../src/'),
         }),
         ...(modules.webpackAliases || {}),
       },
@@ -475,11 +476,20 @@ module.exports = function(webpackEnv) {
               exclude: sassModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 3,
+                  importLoaders: 2,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
                 'sass-loader'
-              ),
+              ).concat({
+                loader: require.resolve('sass-loader'),
+                options: {
+                  prependData:`@import "scss/custom";`,
+                  sassOptions: {
+                    includePaths: [paths.appSrc + '/styles'],
+                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                  }
+                }
+              }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
               // Remove this when webpack adds a warning or an error for this.
