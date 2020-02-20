@@ -1,333 +1,321 @@
-@import "scss/custom";
-
 @keyframes left-in {
-  0% {
-    opacity: 0;
-    display: none;
-    left: -100%;
-  }
-  1% {
-    display: block !important;
-  }
+    0% {
+        opacity: 0;
+        display: none;
+        left: -100%;
+    }
+    1% {
+        display: block !important;
+    }
 
-  10% {
-    opacity: 1;
-  }
-  100% {
-    left: 0;
-  }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        left: 0;
+    }
 }
 
 @keyframes left-out {
-  0% {
-    opacity: 1;
-    left: 0;
-    display: block;
-  }
+    0% {
+        opacity: 1;
+        left: 0;
+        display: block;
+    }
 
-  1% {
+    1% {
+    }
 
-  }
-
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    left: -100%;
-    display: none;
-  }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        left: -100%;
+        display: none;
+    }
 }
 
 .top-header-wrapper {
-  height: 60px;
-  background-color: $secondary;
-  min-height: 60px;
-  display: flex;
-  flex-direction: row;
-  color: $white;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    height: 60px;
+    background-color: $secondary;
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    color: $white;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 
-  > div.logo-area {
-    width: 200px;
-    height: 100%;
-  }
-
-  > div.shortcut-area,
-  > div.menu-area {
-    flex: 1;
-  }
-
-  > div.menu-area {
-    text-align: center;
-    height: 100%;
-
-    .menu-item {
-      color: $white !important;
-      min-width: 80px;
-      height: 100%;
-      margin: 0 5px 0 0;
-      position: relative;
-      padding: 0;
-
-      .icon {
-        text-align: center;
-        font-size: 14px;
-        position: absolute;
-        top: 9px;
-        left: 0;
-        width: 100%;
-        color: $white !important;
-
-        > span {
-          display: inline-block;
-        }
-      }
-
-      .text {
-        width: 100%;
-        text-align: center;
-        position: relative;
-        margin-top: 25px;
-        color: $white !important;
-
-        > span {
-          display: inline-block;
-          line-height: 100%;
-          padding: 2px 4px 1px;
-          border-radius: 4px;
-          min-width: 40px;
-          font-size: 14px;
-          font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
-        }
-
-      }
-
-      .screen {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.05);
-
-        &.screen-1 {
-          height: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
-
-        &.screen-2 {
-          height: 0;
-          left: 0;
-          right: 0;
-          top: 0;
-        }
-
-        &.screen-3 {
-          top: 0;
-          bottom: 0;
-          left: 0;
-          width: 0;
-        }
-
-        &.screen-4 {
-          top: 0;
-          bottom: 0;
-          right: 0;
-          width: 0;
-        }
-      }
-
-      @include media-breakpoint-up(md) {
-        &:hover {
-          .screen {
-            height: 100%;
-            width: 100%;
-            transition: all 0.5s;
-          }
-        }
-      }
-    }
-  }
-
-  > div.shortcut-area {
-    text-align: right;
-
-    .separator {
-      display: inline-block;
-      height: 10px;
-      width: 3px;
-      background-color: $white;
-      margin: 0 15px;
-      border-right: 1px solid rgba(0,0,0,0.7);
-      border-left: 1px solid rgba(0,0,0,0.7);
-      position: relative;
-      top : 1px;
+    > div.logo-area {
+        width: 200px;
+        height: 100%;
     }
 
-    .language-button {
-      margin-right: 16px;
-    }
-  }
-
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-  }
-
-  .mobile-menu-area {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 80%;
-    background-color: $white;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
-    display: block;
-    max-width: 500px;
-    display: none;
-
-    &.menu-open {
-      -webkit-animation: left-in 0.5s;
-      -moz-animation: left-in 0.5s;
-      -ms-animation: left-in 0.5s;
-      -o-animation: left-in 0.5s;
-      animation: left-in 0.5s;
-      animation-fill-mode: forwards;
-      animation-timing-function: ease;
-      display: block;
-
-    }
-
-    &.menu-close {
-      -webkit-animation: left-out 0.5s;
-      -moz-animation: left-out 0.5s;
-      -ms-animation: left-out 0.5s;
-      -o-animation: left-out 0.5s;
-      animation: left-out 0.5s;
-      animation-fill-mode: forwards;
-      animation-timing-function: ease;
-      display: block;
-    }
-
-    > div {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-
-      > .top {
-        height: 60px;
-        background-color: $secondary;
-        position: relative;
-        flex: 0;
-
-        .close-button {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-        }
-      }
-
-      > .menu-list {
+    > div.shortcut-area,
+    > div.menu-area {
         flex: 1;
+    }
 
-        ul {
-          margin: 0;
-          padding: 1px 15px 0;
+    > div.menu-area {
+        text-align: center;
+        height: 100%;
 
-          li {
-            height: 50px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        .menu-item {
+            color: $white !important;
+            min-width: 80px;
+            height: 100%;
+            margin: 0 5px 0 0;
+            position: relative;
+            padding: 0;
 
-            .menu-item {
-              position: relative;
-              width: 100%;
-              height: 100%;
-
-              a {
-                padding-top: 10px;
-                width: 100%;
-                height: 100%;
-              }
-
-              .icon {
+            .icon {
+                text-align: center;
                 font-size: 14px;
-                display: inline-block;
+                position: absolute;
+                top: 9px;
+                left: 0;
+                width: 100%;
+                color: $white !important;
 
                 > span {
-                  display: inline-block;
-                  width: 30px;
-                  height: 30px;
-                  border-radius: 50%;
-                  text-align: center;
-                  background-color: $primary;
-                  color: $white;
-                  padding-top: 4px;
-                  margin-right: 5px;
+                    display: inline-block;
                 }
-              }
-
-              .text {
-                font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
-                display: inline-block;
-                font-size: 14px;
-                color: $black;
-                position: relative;
-                top : 1px;
-              }
-
-              .arrow {
-                float: right;
-                color: $black;
-                margin-top: 5px;
-              }
             }
-          }
+
+            .text {
+                width: 100%;
+                text-align: center;
+                position: relative;
+                margin-top: 25px;
+                color: $white !important;
+
+                > span {
+                    display: inline-block;
+                    line-height: 100%;
+                    padding: 2px 4px 1px;
+                    border-radius: 4px;
+                    min-width: 40px;
+                    font-size: 14px;
+                    font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
+                }
+            }
+
+            .screen {
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.05);
+
+                &.screen-1 {
+                    height: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                }
+
+                &.screen-2 {
+                    height: 0;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                }
+
+                &.screen-3 {
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    width: 0;
+                }
+
+                &.screen-4 {
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    width: 0;
+                }
+            }
+
+            @include media-breakpoint-up(md) {
+                &:hover {
+                    .screen {
+                        height: 100%;
+                        width: 100%;
+                        transition: all 0.5s;
+                    }
+                }
+            }
         }
-
-      }
-
-      > .link-area {
-        min-height: 40px;
-        align-items: center;
-        display: flex;
-      }
-
-      > .shortcut-area {
-        min-height: 60px;
-        flex: 0;
-        display: flex;
-        width: 100%;
-        text-align: right;
-        background-color: $gray-300;
-        align-items: center;
-
-        > div {
-          display: block;
-          width: 100%;
-          text-align: right;
-          padding: 0 10px;
-
-          label {
-            color: $black;
-            margin: 0 5px;
-            font-size: 12px;
-          }
-        }
-
-      }
-
     }
 
+    > div.shortcut-area {
+        text-align: right;
 
-  }
+        .separator {
+            display: inline-block;
+            height: 10px;
+            width: 3px;
+            background-color: $white;
+            margin: 0 15px;
+            border-right: 1px solid rgba(0, 0, 0, 0.7);
+            border-left: 1px solid rgba(0, 0, 0, 0.7);
+            position: relative;
+            top: 1px;
+        }
 
+        .language-button {
+            margin-right: 16px;
+        }
+    }
 
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-menu-area {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 80%;
+        background-color: $white;
+        box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
+        display: block;
+        max-width: 500px;
+        display: none;
+
+        &.menu-open {
+            -webkit-animation: left-in 0.5s;
+            -moz-animation: left-in 0.5s;
+            -ms-animation: left-in 0.5s;
+            -o-animation: left-in 0.5s;
+            animation: left-in 0.5s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease;
+            display: block;
+        }
+
+        &.menu-close {
+            -webkit-animation: left-out 0.5s;
+            -moz-animation: left-out 0.5s;
+            -ms-animation: left-out 0.5s;
+            -o-animation: left-out 0.5s;
+            animation: left-out 0.5s;
+            animation-fill-mode: forwards;
+            animation-timing-function: ease;
+            display: block;
+        }
+
+        > div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            > .top {
+                height: 60px;
+                background-color: $secondary;
+                position: relative;
+                flex: 0;
+
+                .close-button {
+                    position: absolute;
+                    top: 12px;
+                    right: 12px;
+                }
+            }
+
+            > .menu-list {
+                flex: 1;
+
+                ul {
+                    margin: 0;
+                    padding: 1px 15px 0;
+
+                    li {
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+                        .menu-item {
+                            position: relative;
+                            width: 100%;
+                            height: 100%;
+
+                            a {
+                                padding-top: 10px;
+                                width: 100%;
+                                height: 100%;
+                            }
+
+                            .icon {
+                                font-size: 14px;
+                                display: inline-block;
+
+                                > span {
+                                    display: inline-block;
+                                    width: 30px;
+                                    height: 30px;
+                                    border-radius: 50%;
+                                    text-align: center;
+                                    background-color: $primary;
+                                    color: $white;
+                                    padding-top: 4px;
+                                    margin-right: 5px;
+                                }
+                            }
+
+                            .text {
+                                font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
+                                display: inline-block;
+                                font-size: 14px;
+                                color: $black;
+                                position: relative;
+                                top: 1px;
+                            }
+
+                            .arrow {
+                                float: right;
+                                color: $black;
+                                margin-top: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            > .link-area {
+                min-height: 40px;
+                align-items: center;
+                display: flex;
+            }
+
+            > .shortcut-area {
+                min-height: 60px;
+                flex: 0;
+                display: flex;
+                width: 100%;
+                text-align: right;
+                background-color: $gray-300;
+                align-items: center;
+
+                > div {
+                    display: block;
+                    width: 100%;
+                    text-align: right;
+                    padding: 0 10px;
+
+                    span.desc {
+                        color: $black;
+                        margin: 0 5px;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
 }

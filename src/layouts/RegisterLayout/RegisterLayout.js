@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './RegisterLayout.scss';
+import PropTypes from 'prop-types';
 
-class RegisterLayout extends Component {
-
+class RegisterLayout extends React.PureComponent {
     render() {
-        return (
-            <div className="register-layout-wrapper">
-                {this.props.children}
-            </div>
-        );
+        const { children } = this.props;
+        return <div className="register-layout-wrapper">{children}</div>;
     }
 }
 
 export default RegisterLayout;
+
+RegisterLayout.propTypes = {
+    children: PropTypes.node,
+};

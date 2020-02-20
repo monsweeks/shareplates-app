@@ -1,0 +1,8 @@
+/node_modules/**
+/src/serviceWorker.js
+webpack.config.js
+webpackDevServer.config.js
+/config/**
+/App.test.js
+/scripts/**
+/build/**
