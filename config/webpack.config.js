@@ -339,6 +339,8 @@ module.exports = function(webpackEnv) {
 
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
+        isEnvDevelopment
+        ?
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
           enforce: 'pre',
@@ -348,14 +350,15 @@ module.exports = function(webpackEnv) {
                 cache: true,
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
+                emitWarning : true,
                 resolvePluginsRelativeTo: __dirname,
-                
+
               },
               loader: require.resolve('eslint-loader'),
             },
           ],
           include: paths.appSrc,
-        },
+        } : {},
         {
           // "oneOf" will traverse all following loaders until one will
           // match the requirements. When no loader matches it will fall
