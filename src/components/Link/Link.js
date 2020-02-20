@@ -33,8 +33,6 @@ Link.propTypes = {
 export default Link;
 
 Link.propTypes = {
-    i18n: PropTypes.objectOf({
-        changeLanguage: PropTypes.func,
-    }),
+    i18n: PropTypes.objectOf(PropTypes.any),
     t: PropTypes.func,
 };

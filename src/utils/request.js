@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from 'store';
 import { addMessage } from 'actions';
 import i18n from 'i18next';
-import ERROR_CATEGORY from '../constants/constants';
+import ERROR_CATEGORY from '@/constants/constants';
 
 const logging = true;
 const base = 'http://localhost:8080';
