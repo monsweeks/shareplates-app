@@ -1,19 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input as StrapInput } from 'reactstrap';
 import './Input.scss';
 
+const VALIDATIONS = [
+    'valueMissing',
+    'typeMismatch',
+    'patternMismatch',
+    'tooLong',
+    'tooShort',
+    'rangeUnderflow',
+    'rangeOverflow',
+    'stepMismatch',
+    'badInput',
+    'customError',
+    'valid',
+];
 class Input extends React.Component {
+    control = null;
+
     constructor(props) {
         super(props);
         this.state = {
             focus: false,
+            valid: true,
         };
+        this.control = React.createRef();
     }
 
     setFocus = (focus) => {
         this.setState({
             focus,
+        });
+    };
+
+    setValid = (validity) => {
+        const invalids = VALIDATIONS.filter((key) => key !== 'valid' && validity[key]);
+        console.log(invalids);
+        this.setState({
+            valid: invalids.length < 1,
         });
     };
 
@@ -27,14 +51,15 @@ class Input extends React.Component {
             onChange,
             value,
             required,
+            type,
             ...last
         } = this.props;
-        const { focus } = this.state;
+        const { focus, valid } = this.state;
         return (
             <div
                 className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${
                     value ? 'has-value' : ''
-                }`}
+                } ${valid ? 'valid' : 'in-valid'}`}
             >
                 <div className="input-info">
                     {label && <div className="label">{label}</div>}
@@ -46,7 +71,9 @@ class Input extends React.Component {
                     </div>
                 )}
 
-                <StrapInput
+                <input
+                    ref={this.control}
+                    type={type}
                     className={componentClassName}
                     {...last}
                     onFocus={() => {
@@ -57,6 +84,7 @@ class Input extends React.Component {
                     }}
                     onChange={(e) => {
                         onChange(e.target.value);
+                        this.setValid(this.control.current.validity);
                     }}
                     value={value}
                     required={required}
@@ -76,6 +104,7 @@ Input.defaultProps = {
     onChange: null,
     value: '',
     required: false,
+    type: 'text',
 };
 
 Input.propTypes = {
@@ -87,6 +116,7 @@ Input.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.string,
     required: PropTypes.bool,
+    type: PropTypes.string,
 };
 
 export default Input;

@@ -47,13 +47,14 @@ class Join extends Component {
         return (
             <div className="join-wrapper">
                 <RegisterLayout>
-                    <h1 className='text-center my-4'>회원가입</h1>
+                    <h1 className="text-center my-4">회원가입</h1>
                     <Row>
                         <Col>
                             <Form onSubmit={this.onSubmit}>
                                 <FormGroup>
                                     <Input
                                         label={t('label.email')}
+                                        type="email"
                                         placeholderMessage={t('사용할 이메일 주소를 입력해주세요')}
                                         value={user.get('email')}
                                         required
@@ -77,7 +78,7 @@ class Join extends Component {
                                     <Input
                                         label={t('label.password')}
                                         value={user.get('password')}
-                                        type='password'
+                                        type="password"
                                         required
                                         minLength={2}
                                         maxLength={100}
@@ -88,17 +89,19 @@ class Join extends Component {
                                     <Input
                                         label={t('label.passwordConfirm')}
                                         value={user.get('passwordConfirm')}
-                                        type='password'
+                                        type="password"
                                         required
                                         minLength={2}
                                         maxLength={100}
                                         onChange={this.onChange('passwordConfirm')}
                                     />
                                 </FormGroup>
-                                <Button>{t('label.join')}</Button>
+                                <FormGroup className="text-center">
+                                    <Button>{t('label.join')}</Button>
+                                </FormGroup>
                             </Form>
                         </Col>
-                        <Col/>
+                        <Col />
                     </Row>
                 </RegisterLayout>
             </div>
