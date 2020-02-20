@@ -93,19 +93,7 @@
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "max-length": 0,
-      "import/no-unresolved": 0,
-      "import/extensions": 0,
-      "import/no-extraneous-dependencies": 0,
-      "react/no-array-index-key": 0,
-      "react/jsx-props-no-spreading": 0,
-      "jsx-a11y/label-has-for": "off",
-      "jsx-a11y/click-events-have-key-events": "off",
-      "jsx-a11y/no-static-element-interactions": "off",
-      "react/require-default-props": "off"
-    }
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
