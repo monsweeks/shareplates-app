@@ -1,0 +1,89 @@
+button.btn {
+    &:active {
+        outline: none;
+    }
+
+    &:focus {
+        outline: none;
+        _box-shadow: 0 0 2px 2px lighten($primary, 10%);
+    }
+
+    &.g-pure-button {
+        background-color: transparent;
+        border: none;
+
+        &:active {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    &.g-image-button {
+        padding: 0;
+        border-radius: 1px;
+        span:first-child {
+            width: 40px;
+            text-align: center;
+            display: inline-block;
+            padding: 5px;
+            img {
+                width: 29px;
+                height: 29px;
+                border-radius: 2px;
+            }
+        }
+
+        span:last-child {
+            padding: 5px 10px 5px 5px;
+            display: inline-block;
+            text-align: left;
+        }
+    }
+
+    &.btn-facebook {
+        background-color: #3b5998;
+        color: $white;
+        span:last-child {
+            min-width: 120px;
+        }
+    }
+
+    &.btn-kakao {
+        background-color: #f7e600;
+        span:last-child {
+            min-width: 120px;
+        }
+    }
+
+    &.btn-naver {
+        background-color: #1ec800;
+        color: $white;
+        span:last-child {
+            min-width: 120px;
+        }
+    }
+
+    &.btn-google {
+        background-color: #4285f4;
+        color: $white;
+        span:last-child {
+            min-width: 120px;
+        }
+    }
+
+    &.btn-facebook,
+    &.btn-kakao,
+    &.btn-naver,
+    &.btn-google {
+        span:last-child {
+            min-width: 120px;
+        }
+    }
+}
