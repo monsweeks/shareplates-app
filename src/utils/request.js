@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from 'store';
 import { addMessage, setLoading } from 'actions';
 import i18n from 'i18next';
-import ERROR_CATEGORY from '@/constants/constants';
+import MESSAGE_CATEGORY from '@/constants/constants';
 
 const logging = true;
 const base = 'http://localhost:8080';
@@ -32,26 +32,26 @@ function processError(error, failHandler) {
   }
 
   if (!error.status) {
-    store.dispatch(addMessage(900, ERROR_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
+    store.dispatch(addMessage(900, MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
   } else if (failHandler && typeof failHandler === 'function') {
     failHandler(error, error.response);
   } else if (error && error.response) {
     switch (error.response.status) {
       case 404: {
         store.dispatch(
-          addMessage(error.response.status, ERROR_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('resourceNotFount')),
+          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('resourceNotFount')),
         );
         break;
       }
       default: {
         store.dispatch(
-          addMessage(error.response.status, ERROR_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'),
+          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'),
         );
         break;
       }
     }
   } else {
-    store.dispatch(addMessage(500, ERROR_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'));
+    store.dispatch(addMessage(500, MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'));
   }
 }
 

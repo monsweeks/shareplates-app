@@ -28,7 +28,6 @@ class Join extends Component {
 
   onChange = (field) => (value) => {
     const { user } = this.state;
-    console.log(field, value);
     this.setState({
       user: user.set(field, value),
     });

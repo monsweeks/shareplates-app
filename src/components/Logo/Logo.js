@@ -76,6 +76,6 @@ Logo.propTypes = {
   className: PropTypes.string,
   overlapText: PropTypes.bool,
   hideText: PropTypes.bool,
-  text: PropTypes.oneOf(PropTypes.node, PropTypes.string),
+  text: PropTypes.objectOf(PropTypes.any),
   rotate: PropTypes.bool,
 };

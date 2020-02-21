@@ -46,7 +46,6 @@ export function setSupported(value) {
 }
 
 export function setLoading(loading) {
-    console.log('setLoading', loading);
     return {
         type: SET_LOADING,
         loading,

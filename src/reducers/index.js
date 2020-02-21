@@ -57,7 +57,6 @@ const loadingState = {
 const loading = (state = loadingState, action) => {
     switch (action.type) {
         case SET_LOADING:
-            console.log('SET_LOADING', action.loading);
             return { ...state, loading: action.loading };
         default:
             return state;
