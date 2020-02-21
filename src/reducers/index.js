@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { CLEAR_MESSAGE, ADD_MESSAGE, SET_SUPPORTED, SET_USER_DATA, SET_USER_ID } from '../actions';
+import { CLEAR_MESSAGE, ADD_MESSAGE, SET_SUPPORTED, SET_USER_DATA, SET_USER_ID, SET_LOADING } from '../actions';
 
 const userState = {
     user: null,
@@ -50,6 +50,19 @@ const message = (state = messageState, action) => {
     }
 };
 
+const loadingState = {
+    loading: false,
+};
+
+const loading = (state = loadingState, action) => {
+    switch (action.type) {
+        case SET_LOADING:
+            return { ...state, loading: action.loading };
+        default:
+            return state;
+    }
+};
+
 const supportedState = {
     supported: true,
 };
@@ -67,6 +80,7 @@ const reducers = combineReducers({
     supported,
     user,
     message,
+    loading,
 });
 
 export default reducers;

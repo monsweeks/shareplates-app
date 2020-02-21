@@ -197,6 +197,7 @@
         display: block;
         max-width: 500px;
         display: none;
+        z-index: 10;
 
         &.menu-open {
             -webkit-animation: left-in 0.5s;

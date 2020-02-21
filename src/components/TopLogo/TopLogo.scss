@@ -1,0 +1,105 @@
+$randomNumber1: random(10);
+$randomNumber2: random(10);
+$randomNumber3: random(10);
+$randomNumber4: random(10);
+$bandWidth1: random(4);
+$delay1: random(3);
+
+@keyframes falling-1 {
+    0% {
+        top: -20px;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    50% {
+    }
+
+    80% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+.top-logo-wrapper {
+    font-family: 'Righteous', cursive;
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+    height: 100%;
+    text-align: center;
+
+    .logo-link {
+        padding: 0;
+        height: 100%;
+        width: 120px;
+        position: relative;
+        margin: 0 auto;
+        display: inline-block;
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+
+            > img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .logo-text {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            bottom: 5px;
+
+            > span {
+                display: inline-block;
+                background-color: $primary;
+                line-height: 100%;
+                padding: 4px 8px 4px;
+                border-radius: 4px 0 4px 0;
+                color: $white;
+            }
+        }
+
+        .logo-path {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 100%;
+            text-align: right;
+            font-size: 16px;
+            padding: 0 17px;
+            opacity: 0;
+            color: $white;
+        }
+
+        &:hover {
+            @include media-breakpoint-up(md) {
+                .logo-path {
+                    opacity: 1;
+                    transition: opacity 0.3s;
+                }
+            }
+        }
+    }
+
+    .snow {
+        font-size: 10px;
+        position: absolute;
+        top: -20px;
+        left: 0;
+        animation: falling-1 infinite;
+        _animation-duration: $randomNumber1 + s;
+        _animation-delay: $delay1 + s;
+        _animation-timing-function: linear;
+    }
+}

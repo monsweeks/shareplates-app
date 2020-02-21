@@ -19,6 +19,7 @@
         bottom: -2px;
         background-color: $blue;
         border-radius: 2px;
+        display: inline-block;
     }
 
     @include media-breakpoint-up(md) {
