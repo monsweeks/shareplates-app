@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import './Link.scss';
 import PropTypes from 'prop-types';
+import './Link.scss';
 
 class Link extends React.PureComponent {
     render() {
@@ -10,7 +10,7 @@ class Link extends React.PureComponent {
         return (
             <span className={`link-wrapper text-${color} ${className} ${underline ? 'underline' : ''}`}>
                 <RouterLink className={`text-${color} ${componentClassName}`} {...last} />
-                {underline && <div className="liner" />}
+                {underline && <span className="liner" />}
             </span>
         );
     }

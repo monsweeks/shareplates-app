@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Logo, Link } from 'components';
+import { Button, TopLogo, Link } from 'components';
 import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
@@ -88,7 +88,7 @@ class Header extends React.Component {
             })}
           </div>
           <div className="logo-area">
-            <Logo weatherEffect />
+            <TopLogo weatherEffect />
           </div>
           <div className="shortcut-area">
             {!user && (
@@ -129,7 +129,7 @@ class Header extends React.Component {
         <div className={`mobile-menu-area d-md-none ${this.getMenuClass(open)}`}>
           <div>
             <div className="top">
-              <Logo weatherEffect />
+              <TopLogo weatherEffect />
               <Button
                 color="secondary"
                 className="close-button shadow-none bg-transparent border-0"
