@@ -1,4 +1,7 @@
 button.btn {
+
+    border-radius: 2px;
+
     &:active {
         outline: none;
     }
@@ -25,25 +28,44 @@ button.btn {
         }
     }
 
-    &.g-image-button {
+    &.g-image-text-button {
         padding: 0;
         border-radius: 1px;
-        span:first-child {
-            width: 40px;
-            text-align: center;
+
+        > div {
+            display: flex;
+            span:first-child {
+                width: 40px;
+                text-align: center;
+                display: inline-block;
+                padding: 5px;
+                img {
+                    width: 29px;
+                    height: 29px;
+                    border-radius: 2px;
+                }
+            }
+
+            span:last-child {
+                padding: 5px 10px 5px 5px;
+                display: inline-block;
+                text-align: left;
+                align-self: center;
+            }
+        }
+    }
+
+    &.g-image-button {
+        padding: 0;
+        border-radius: 50%;
+
+        > div {
             display: inline-block;
-            padding: 5px;
             img {
                 width: 29px;
                 height: 29px;
-                border-radius: 2px;
+                border-radius: 50%;
             }
-        }
-
-        span:last-child {
-            padding: 5px 10px 5px 5px;
-            display: inline-block;
-            text-align: left;
         }
     }
 

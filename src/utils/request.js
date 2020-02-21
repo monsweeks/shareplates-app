@@ -29,7 +29,17 @@ function processError(error, failHandler) {
         console.log(error);
     }
 
-    if (failHandler && typeof failHandler === 'function') {
+
+    if (!error.status) {
+        store.dispatch(
+          addMessage(
+            900,
+            ERROR_CATEGORY.ERROR,
+            'NETWORK ERROR',
+            i18n.t('message.networkError'),
+          ),
+        );
+    } else if (failHandler && typeof failHandler === 'function') {
         failHandler(error, error.response);
     } else if (error && error.response) {
         switch (error.response.status) {

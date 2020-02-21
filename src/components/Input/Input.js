@@ -65,12 +65,6 @@ class Input extends React.Component {
                     {label && <div className="label">{label}</div>}
                     {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
                 </div>
-                {required && (
-                    <div className="required-symbol">
-                        <i className="fal fa-asterisk" />
-                    </div>
-                )}
-
                 <input
                     ref={this.control}
                     type={type}
