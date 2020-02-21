@@ -1,105 +1,199 @@
-$randomNumber1: random(10);
-$randomNumber2: random(10);
-$randomNumber3: random(10);
-$randomNumber4: random(10);
-$bandWidth1: random(4);
-$delay1: random(3);
+$rotate-seconds: 3s;
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
 
-@keyframes falling-1 {
-    0% {
-        top: -20px;
-        opacity: 0;
-    }
+@-webkit-keyframes zooming {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
 
-    20% {
-        opacity: 1;
-    }
-
-    50% {
-    }
-
-    80% {
-        opacity: 1;
-    }
-    100% {
-        top: 100%;
-        opacity: 0;
-    }
+@keyframes zooming {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }
 
 .logo-wrapper {
-    font-family: 'Righteous', cursive;
-    text-align: center;
-    font-size: 12px;
-    position: relative;
-    height: 100%;
-    text-align: center;
+  font-family: 'Righteous', cursive;
+  text-align: center;
+  position: relative;
+  height: 100%;
 
-    .logo-link {
-        padding: 0;
-        height: 100%;
-        width: 120px;
-        position: relative;
-        margin: 0 auto;
-        display: inline-block;
+  .logo-text {
+    > span {
+      display: inline-block;
+      background-color: $primary;
+      line-height: 100%;
+      padding: 4px 8px 4px;
+      border-radius: 4px 0 4px 0;
+      color: $white;
+    }
+  }
 
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto;
-
-            > img {
-                width: 100%;
-                height: 100%;
-            }
-        }
-
-        .logo-text {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            bottom: 5px;
-
-            > span {
-                display: inline-block;
-                background-color: $primary;
-                line-height: 100%;
-                padding: 4px 8px 4px;
-                border-radius: 4px 0 4px 0;
-                color: $white;
-            }
-        }
-
-        .logo-path {
-            position: absolute;
-            left: 0;
-            top: 5px;
-            width: 100%;
-            text-align: right;
-            font-size: 16px;
-            padding: 0 17px;
-            opacity: 0;
-            color: $white;
-        }
-
-        &:hover {
-            @include media-breakpoint-up(md) {
-                .logo-path {
-                    opacity: 1;
-                    transition: opacity 0.3s;
-                }
-            }
-        }
+  &.sm {
+    .logo-img {
+      svg {
+        width: 50px;
+        height: 50px;
+      }
     }
 
-    .snow {
-        font-size: 10px;
+    .logo-text {
+      position: static;
+      font-size: 0.75rem;
+    }
+
+    &.overlap-text {
+      .logo-text {
         position: absolute;
-        top: -20px;
         left: 0;
-        animation: falling-1 infinite;
-        _animation-duration: $randomNumber1 + s;
-        _animation-delay: $delay1 + s;
-        _animation-timing-function: linear;
+        width: 100%;
+        bottom: 0;
+      }
     }
+
+    &.rotate {
+      .logo-text {
+        -webkit-animation: zooming $rotate-seconds linear infinite;
+        -moz-animation: zooming $rotate-seconds linear infinite;
+        -ms-animation: zooming $rotate-seconds linear infinite;
+        -o-animation: zooming $rotate-seconds linear infinite;
+        animation: zooming $rotate-seconds linear infinite;
+        animation-timing-function: ease-in-out;
+      }
+      .logo-hair {
+        -webkit-animation: rotating $rotate-seconds linear infinite;
+        -moz-animation: rotating $rotate-seconds linear infinite;
+        -ms-animation: rotating $rotate-seconds linear infinite;
+        -o-animation: rotating $rotate-seconds linear infinite;
+        animation: rotating $rotate-seconds linear infinite;
+        transform-origin: 47px 47px;
+      }
+    }
+  }
+
+  &.md {
+    .logo-img {
+      svg {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .logo-text {
+      position: static;
+      font-size: 1rem;
+    }
+
+    &.overlap-text {
+      .logo-text {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+      }
+    }
+
+    &.rotate {
+      .logo-text {
+        -webkit-animation: zooming $rotate-seconds linear infinite;
+        -moz-animation: zooming $rotate-seconds linear infinite;
+        -ms-animation: zooming $rotate-seconds linear infinite;
+        -o-animation: zooming $rotate-seconds linear infinite;
+        animation: zooming $rotate-seconds linear infinite;
+        animation-timing-function: ease-in-out;
+      }
+
+      .logo-hair {
+        -webkit-animation: rotating $rotate-seconds linear infinite;
+        -moz-animation: rotating $rotate-seconds linear infinite;
+        -ms-animation: rotating $rotate-seconds linear infinite;
+        -o-animation: rotating $rotate-seconds linear infinite;
+        animation: rotating $rotate-seconds linear infinite;
+        transform-origin: 47px 47px;
+      }
+    }
+  }
+
+  &.lg {
+    .logo-img {
+      svg {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    .logo-text {
+      position: static;
+      font-size: 1.3rem;
+    }
+
+    &.overlap-text {
+      .logo-text {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        bottom: 0;
+      }
+    }
+
+    &.rotate {
+      .logo-text {
+        -webkit-animation: zooming $rotate-seconds linear infinite;
+        -moz-animation: zooming $rotate-seconds linear infinite;
+        -ms-animation: zooming $rotate-seconds linear infinite;
+        -o-animation: zooming $rotate-seconds linear infinite;
+        animation: zooming $rotate-seconds linear infinite;
+        animation-timing-function: ease-in-out;
+      }
+
+      .logo-hair {
+        -webkit-animation: rotating $rotate-seconds linear infinite;
+        -moz-animation: rotating $rotate-seconds linear infinite;
+        -ms-animation: rotating $rotate-seconds linear infinite;
+        -o-animation: rotating $rotate-seconds linear infinite;
+        animation: rotating $rotate-seconds linear infinite;
+        transform-origin: 47px 47px;
+      }
+    }
+  }
 }

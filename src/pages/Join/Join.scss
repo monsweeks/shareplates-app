@@ -1,0 +1,21 @@
+.join-wrapper {
+  .mobile-social-buttons {
+    position: absolute;
+    display: inline-block;
+    right : 15px;
+
+    button {
+      margin-left: 0.25rem;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    .mobile-social-buttons {
+      position: static;
+      display: block;
+      right : auto;
+      padding: $spacer 0 0;
+    }
+
+  }
+}
