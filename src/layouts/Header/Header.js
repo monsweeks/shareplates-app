@@ -57,68 +57,75 @@ class Header extends React.Component {
 
         return (
             <header className="top-header-wrapper">
-                <div className="menu-area text-left text-md-center d-flex d-md-block pl-2 pl-md-0">
-                    <Button
-                        className="d-inline-block d-md-none align-self-center"
-                        color="primary"
-                        onClick={() => {
-                            this.setOpen(!open);
-                        }}
-                    >
-                        <i className="fas fa-bars" />
-                    </Button>
-                    {menus.map((menu) => {
-                        return (
+                <div className='top-header-menu'>
+                    <div className="menu-area text-left d-flex d-md-block pl-2 pl-md-0">
+                        <Button
+                            className="d-inline-block d-md-none align-self-center"
+                            color="primary"
+                            onClick={() => {
+                                this.setOpen(!open);
+                            }}
+                        >
+                            <i className="fas fa-bars" />
+                        </Button>
+                        {menus.map((menu) => {
+                            return (
+                                <Link
+                                    underline={false}
+                                    key={menu.text}
+                                    className="d-none d-md-inline-block menu-item"
+                                    to={menu.to}
+                                >
+                                    <div className="screen screen-1" />
+                                    <div className="screen screen-2" />
+                                    <div className="screen screen-3" />
+                                    <div className="screen screen-4" />
+                                    <div className="icon">
+                                        <span>
+                                            <i className={menu.icon} />
+                                        </span>
+                                    </div>
+                                    <div className="text">
+                                        <span>{t(menu.text)}</span>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                    <div className="logo-area">
+                        <Logo weatherEffect />
+                    </div>
+                    <div className="shortcut-area">
+                        {!user && (
                             <Link
-                                underline={false}
-                                key={menu.text}
-                                className="d-none d-md-inline-block menu-item"
-                                to={menu.to}
+                                className="d-none d-md-inline-block"
+                                componentClassName="px-2"
+                                color="white"
+                                to="/join"
                             >
-                                <div className="screen screen-1" />
-                                <div className="screen screen-2" />
-                                <div className="screen screen-3" />
-                                <div className="screen screen-4" />
-                                <div className="icon">
-                                    <span>
-                                        <i className={menu.icon} />
-                                    </span>
-                                </div>
-                                <div className="text">
-                                    <span>{t(menu.text)}</span>
-                                </div>
+                                {t('label.memberJoin')}
                             </Link>
-                        );
-                    })}
-                </div>
-                <div className="logo-area">
-                    <Logo weatherEffect />
-                </div>
-                <div className="shortcut-area">
-                    {!user && (
-                        <Link className="d-none d-md-inline-block" componentClassName="px-2" color="white" to="/join">
-                            {t('label.memberJoin')}
-                        </Link>
-                    )}
-                    <div className="separator d-none d-md-inline-block" />
-                    <div className="override-radio-button language-button d-none d-md-inline-block">
-                        {Object.keys(LANGUAGES)
-                            .sort()
-                            .reverse()
-                            .map((language) => {
-                                return (
-                                    <button
-                                        key={language}
-                                        type="button"
-                                        className={`${i18n.language === language ? 'selected' : ''}`}
-                                        onClick={() => {
-                                            i18n.changeLanguage(language);
-                                        }}
-                                    >
-                                        {t(language)}
-                                    </button>
-                                );
-                            })}
+                        )}
+                        <div className="separator d-none d-md-inline-block" />
+                        <div className="override-radio-button language-button d-none d-md-inline-block">
+                            {Object.keys(LANGUAGES)
+                                .sort()
+                                .reverse()
+                                .map((language) => {
+                                    return (
+                                        <button
+                                            key={language}
+                                            type="button"
+                                            className={`${i18n.language === language ? 'selected' : ''}`}
+                                            onClick={() => {
+                                                i18n.changeLanguage(language);
+                                            }}
+                                        >
+                                            {t(language)}
+                                        </button>
+                                    );
+                                })}
+                        </div>
                     </div>
                 </div>
                 {open && (

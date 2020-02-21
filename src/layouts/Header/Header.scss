@@ -40,129 +40,140 @@
     height: 60px;
     background-color: $secondary;
     min-height: 60px;
-    display: flex;
-    flex-direction: row;
     color: $white;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
 
-    > div.logo-area {
-        width: 200px;
-        height: 100%;
-    }
-
-    > div.shortcut-area,
-    > div.menu-area {
-        flex: 1;
-    }
-
-    > div.menu-area {
-        text-align: center;
+    .top-header-menu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        max-width: 2000px;
+        padding: 0 50px;
+        margin: 0 auto;
         height: 100%;
 
-        .menu-item {
-            color: $white !important;
-            min-width: 80px;
+        @include media-breakpoint-down(md) {
+            padding: 0 0px;
+        }
+
+        > div.logo-area {
+            width: 200px;
             height: 100%;
-            margin: 0 5px 0 0;
-            position: relative;
-            padding: 0;
+        }
 
-            .icon {
-                text-align: center;
-                font-size: 14px;
-                position: absolute;
-                top: 9px;
-                left: 0;
-                width: 100%;
+        > div.shortcut-area,
+        > div.menu-area {
+            flex: 1;
+        }
+
+        > div.menu-area {
+            height: 100%;
+
+            .menu-item {
                 color: $white !important;
-
-                > span {
-                    display: inline-block;
-                }
-            }
-
-            .text {
-                width: 100%;
-                text-align: center;
+                min-width: 80px;
+                height: 100%;
+                margin: 0 5px 0 0;
                 position: relative;
-                margin-top: 25px;
-                color: $white !important;
+                padding: 0;
+                text-align: center;
 
-                > span {
-                    display: inline-block;
-                    line-height: 100%;
-                    padding: 2px 4px 1px;
-                    border-radius: 4px;
-                    min-width: 40px;
+                .icon {
+                    text-align: center;
                     font-size: 14px;
-                    font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
-                }
-            }
-
-            .screen {
-                position: absolute;
-                background-color: rgba(0, 0, 0, 0.05);
-
-                &.screen-1 {
-                    height: 0;
+                    position: absolute;
+                    top: 9px;
                     left: 0;
-                    right: 0;
-                    bottom: 0;
+                    width: 100%;
+                    color: $white !important;
+
+                    > span {
+                        display: inline-block;
+                    }
                 }
 
-                &.screen-2 {
-                    height: 0;
-                    left: 0;
-                    right: 0;
-                    top: 0;
+                .text {
+                    width: 100%;
+                    text-align: center;
+                    position: relative;
+                    margin-top: 25px;
+                    color: $white !important;
+
+                    > span {
+                        display: inline-block;
+                        line-height: 100%;
+                        padding: 2px 4px 1px;
+                        border-radius: 4px;
+                        min-width: 40px;
+                        font-size: 14px;
+                        font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
+                    }
                 }
 
-                &.screen-3 {
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    width: 0;
+                .screen {
+                    position: absolute;
+                    background-color: rgba(0, 0, 0, 0.05);
+
+                    &.screen-1 {
+                        height: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                    }
+
+                    &.screen-2 {
+                        height: 0;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+
+                    &.screen-3 {
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        width: 0;
+                    }
+
+                    &.screen-4 {
+                        top: 0;
+                        bottom: 0;
+                        right: 0;
+                        width: 0;
+                    }
                 }
 
-                &.screen-4 {
-                    top: 0;
-                    bottom: 0;
-                    right: 0;
-                    width: 0;
-                }
-            }
-
-            @include media-breakpoint-up(md) {
-                &:hover {
-                    .screen {
-                        height: 100%;
-                        width: 100%;
-                        transition: all 0.5s;
+                @include media-breakpoint-up(md) {
+                    &:hover {
+                        .screen {
+                            height: 100%;
+                            width: 100%;
+                            transition: all 0.5s;
+                        }
                     }
                 }
             }
         }
-    }
 
-    > div.shortcut-area {
-        text-align: right;
+        > div.shortcut-area {
+            text-align: right;
 
-        .separator {
-            display: inline-block;
-            height: 10px;
-            width: 3px;
-            background-color: $white;
-            margin: 0 15px;
-            border-right: 1px solid rgba(0, 0, 0, 0.7);
-            border-left: 1px solid rgba(0, 0, 0, 0.7);
-            position: relative;
-            top: 1px;
-        }
+            .separator {
+                display: inline-block;
+                height: 10px;
+                width: 3px;
+                background-color: $white;
+                margin: 0 15px;
+                border-right: 1px solid rgba(0, 0, 0, 0.7);
+                border-left: 1px solid rgba(0, 0, 0, 0.7);
+                position: relative;
+                top: 1px;
+            }
 
-        .language-button {
-            margin-right: 16px;
+            .language-button {
+                margin-right: 16px;
+            }
         }
     }
 
