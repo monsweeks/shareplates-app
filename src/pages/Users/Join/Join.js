@@ -14,7 +14,7 @@ import kakao from '@/images/sites/kakao.png';
 import google from '@/images/sites/google.png';
 
 import './Join.scss';
-import MESSAGE_CATEGORY from '@/constants/constants';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class Join extends Component {
   constructor(props) {
@@ -49,8 +49,9 @@ class Join extends Component {
     });
   };
 
-  onSocialLogin = (social) => {
-    console.log(social);
+  onSocialLogin = () => {
+    const { t, addMessage: addMessageReducer } = this.props;
+    addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
   };
 
   render() {
@@ -79,6 +80,9 @@ class Join extends Component {
                   minLength={2}
                   maxLength={100}
                   onChange={this.onChange('email')}
+                  customInputValidationMessage={{
+                    typeMismatch : 'validation.invalidEmail'
+                  }}
                 />
               </FormGroup>
               <FormGroup>
@@ -262,9 +266,7 @@ Join.defaultProps = {
 
 Join.propTypes = {
   t: PropTypes.func,
-  history: PropTypes.objectOf({
-    push: PropTypes.func,
-  }),
+  history: PropTypes.objectOf(PropTypes.any),
   setJoinEmail: PropTypes.func,
   addMessage: PropTypes.func,
 };

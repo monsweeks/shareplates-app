@@ -11,7 +11,7 @@ import naver from '@/images/sites/naver.png';
 import google from '@/images/sites/google.png';
 import daum from '@/images/sites/daum.png';
 import './Success.scss';
-import MESSAGE_CATEGORY from '@/constants/constants';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 const mailServers = [
   {

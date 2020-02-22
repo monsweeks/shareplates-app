@@ -30,7 +30,18 @@
     "label.moveToEmailSite" : "메일 사이트로 이동",
 
 
-
+    "validation.valueMissing" : "필수 입력 값입니다",
+    "validation.typeMismatch" : "입력 형식이 올바르지 않습니다",
+    "validation.patternMismatch" : "입력 양식이 올바르지 않습니다",
+    "validation.tooLong" : "입력 값이 너무 깁니다.",
+    "validation.tooShort" : "입력 값이 너무 짧습니다.",
+    "validation.rangeUnderflow" : "입력 값이 너무 작습니다.",
+    "validation.rangeOverflow" : "입력 값이 너무 큽니다.",
+    "validation.stepMismatch" : "입력 할 수 없는 단위의 값입니다.",
+    "validation.badInput" : "입력 값이 올바르지 않습니다.",
+    "validation.customError" : "입력 값이 올바르지 않습니다.",
+    "validation.valid" : "올바른 입력 값입니다.",
+    "validation.invalidEmail" : "올바른 이메일 형식이 아닙니다.",
 
 
     "message.404": "아직 만들어지지 않은 페이지입니다",

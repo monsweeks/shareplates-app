@@ -1,119 +1,145 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTranslation } from 'react-i18next';
 import './Input.scss';
+import { DEFAULT_INPUT_VALIDATION_MESSAGE } from '@/constants/constants';
 
 const VALIDATIONS = [
-    'valueMissing',
-    'typeMismatch',
-    'patternMismatch',
-    'tooLong',
-    'tooShort',
-    'rangeUnderflow',
-    'rangeOverflow',
-    'stepMismatch',
-    'badInput',
-    'customError',
-    'valid',
+  'valueMissing',
+  'typeMismatch',
+  'patternMismatch',
+  'tooLong',
+  'tooShort',
+  'rangeUnderflow',
+  'rangeOverflow',
+  'stepMismatch',
+  'badInput',
+  'customError',
+  'valid',
 ];
 class Input extends React.Component {
-    control = null;
+  control = null;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            focus: false,
-            valid: true,
-        };
-        this.control = React.createRef();
+  static getDerivedStateFromProps(props, state) {
+    if (JSON.stringify(props.customInputValidationMessage) !== JSON.stringify(state.customInputValidationMessage)) {
+      return {
+        customInputValidationMessage: props.customInputValidationMessage,
+        inputValidationMessage: { ...DEFAULT_INPUT_VALIDATION_MESSAGE, ...props.customInputValidationMessage },
+      };
     }
 
-    setFocus = (focus) => {
-        this.setState({
-            focus,
-        });
-    };
+    return null;
+  }
 
-    setValid = (validity) => {
-        const invalids = VALIDATIONS.filter((key) => key !== 'valid' && validity[key]);
-        console.log(invalids);
-        this.setState({
-            valid: invalids.length < 1,
-        });
+  constructor(props) {
+    super(props);
+    this.state = {
+      focus: false,
+      valid: true,
+      message: null,
+      customInputValidationMessage: {},
+      inputValidationMessage: {},
     };
+    this.control = React.createRef();
+  }
 
-    render() {
-        const {
-            color,
-            className,
-            componentClassName,
-            label,
-            placeholderMessage,
-            onChange,
-            value,
-            required,
-            type,
-            ...last
-        } = this.props;
-        const { focus, valid } = this.state;
-        return (
-            <div
-                className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${
-                    value ? 'has-value' : ''
-                } ${valid ? 'valid' : 'in-valid'}`}
-                onClick={() => {
-                  this.control.current.focus();
-                }}
-            >
-                <div className="input-info">
-                    {label && <div className="label">{label}</div>}
-                    {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
-                </div>
-                <input
-                    ref={this.control}
-                    type={type}
-                    className={componentClassName}
-                    {...last}
-                    onFocus={() => {
-                        this.setFocus(true);
-                    }}
-                    onBlur={() => {
-                        this.setFocus(false);
-                    }}
-                    onChange={(e) => {
-                        onChange(e.target.value);
-                        this.setValid(this.control.current.validity);
-                    }}
-                    value={value}
-                    required={required}
-                />
-                <div className="liner" />
-            </div>
-        );
-    }
+  setFocus = (focus) => {
+    this.setState({
+      focus,
+    });
+  };
+
+  setValid = (validity) => {
+    const { t } = this.props;
+    const { inputValidationMessage } = this.state;
+
+    const invalids = VALIDATIONS.filter((key) => key !== 'valid' && validity[key]);
+    this.setState({
+      valid: invalids.length < 1,
+      message: invalids.length > 0 ? t(inputValidationMessage[invalids[0]]) : null,
+    });
+  };
+
+  render() {
+    const {
+      color,
+      className,
+      componentClassName,
+      label,
+      placeholderMessage,
+      onChange,
+      value,
+      required,
+      type,
+      t,
+      // eslint-disable-next-line react/prop-types
+      tReady,
+      ...last
+    } = this.props;
+    const { focus, valid, message } = this.state;
+
+    return (
+      <div
+        className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${value ? 'has-value' : ''} ${
+          valid ? 'valid' : 'in-valid'
+        }`}
+        onClick={() => {
+          this.control.current.focus();
+        }}
+      >
+        <div className="input-info">
+          {label && <div className="label">{label}</div>}
+          {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
+          {message && <div className="invalid-message">{message}</div>}
+        </div>
+        <input
+          ref={this.control}
+          type={type}
+          className={componentClassName}
+          {...last}
+          onFocus={() => {
+            this.setFocus(true);
+          }}
+          onBlur={() => {
+            this.setFocus(false);
+          }}
+          onChange={(e) => {
+            onChange(e.target.value);
+            this.setValid(this.control.current.validity);
+          }}
+          value={value}
+          required={required}
+        />
+        <div className="liner" />
+      </div>
+    );
+  }
 }
 
 Input.defaultProps = {
-    className: '',
-    color: 'black',
-    componentClassName: '',
-    label: '',
-    placeholderMessage: '',
-    onChange: null,
-    value: '',
-    required: false,
-    type: 'text',
+  className: '',
+  color: 'black',
+  componentClassName: '',
+  label: '',
+  placeholderMessage: '',
+  onChange: null,
+  value: '',
+  required: false,
+  type: 'text',
 };
 
 Input.propTypes = {
-    className: PropTypes.string,
-    color: PropTypes.string,
-    componentClassName: PropTypes.string,
-    label: PropTypes.string,
-    placeholderMessage: PropTypes.string,
-    onChange: PropTypes.func,
-    value: PropTypes.string,
-    required: PropTypes.bool,
-    type: PropTypes.string,
+  t: PropTypes.func,
+  className: PropTypes.string,
+  color: PropTypes.string,
+  componentClassName: PropTypes.string,
+  label: PropTypes.string,
+  placeholderMessage: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  required: PropTypes.bool,
+  type: PropTypes.string,
+  customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
 };
 
-export default Input;
+export default withTranslation()(Input);

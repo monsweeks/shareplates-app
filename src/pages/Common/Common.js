@@ -6,7 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
 import './Common.scss';
-import MESSAGE_CATEGORY from '@/constants/constants';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class Common extends React.PureComponent {
   getMessageCategoryIcon = (category) => {
