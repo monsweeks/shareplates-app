@@ -4,6 +4,20 @@ const MESSAGE_CATEGORY = {
   INFO: 'INFO',
 };
 
+const VALIDATIONS = [
+  'valueMissing',
+  'typeMismatch',
+  'patternMismatch',
+  'tooLong',
+  'tooShort',
+  'rangeUnderflow',
+  'rangeOverflow',
+  'stepMismatch',
+  'badInput',
+  'customError',
+  'valid',
+];
+
 const DEFAULT_INPUT_VALIDATION_MESSAGE = {
   valueMissing: 'validation.valueMissing',
   typeMismatch: 'validation.typeMismatch',
@@ -18,4 +32,4 @@ const DEFAULT_INPUT_VALIDATION_MESSAGE = {
   valid: 'validation.valid',
 };
 
-export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE };
+export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS };
