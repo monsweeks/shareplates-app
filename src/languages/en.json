@@ -1,13 +1,17 @@
 {
-    "en": "ENG",
-    "ko": "한글",
-    "label.topic": "TOPIC",
-    "label.chapter": "CHAPTER",
-    "label.page": "PAGE",
-    "message.404": "NOW BUILDING",
-    "label.memberJoin": "JOIN",
+  "en": "ENG",
+  "ko": "한글",
+  "label.topic": "TOPIC",
+  "label.chapter": "CHAPTER",
+  "label.page": "PAGE",
+  "message.404": "NOW BUILDING",
+  "label.memberJoin": "JOIN",
 
-    "message.hello": "Hello",
-    "n.selected": "{{n}} selected.",
-    "resourceNotFount": "resource not found."
+  "message.hello": "Hello",
+  "n.selected": "{{n}} selected.",
+  "resourceNotFount": "resource not found.",
+  "label.terms": "terms and conditions",
+  "label.privacyPolicy": "privacy policy",
+
+  "message.joinNoticeInfo": "I agree to the <1>{{terms}}</1> of use when I sign up and acknowledge that I am familiar with the <3>{{policy}}</3>."
 }

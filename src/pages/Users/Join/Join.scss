@@ -2,7 +2,7 @@
   .mobile-social-buttons {
     position: absolute;
     display: inline-block;
-    right : 15px;
+    right: 15px;
 
     button {
       margin-left: 0.25rem;
@@ -13,9 +13,8 @@
     .mobile-social-buttons {
       position: static;
       display: block;
-      right : auto;
+      right: auto;
       padding: $spacer 0 0;
     }
-
   }
 }
