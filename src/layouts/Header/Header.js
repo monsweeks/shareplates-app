@@ -92,7 +92,7 @@ class Header extends React.Component {
           </div>
           <div className="shortcut-area">
             {!user && (
-              <Link className="d-none d-md-inline-block" componentClassName="px-2" color="white" to="/join">
+              <Link className="d-none d-md-inline-block" componentClassName="px-2" color="white" to="/users/join">
                 {t('label.memberJoin')}
               </Link>
             )}
@@ -175,7 +175,7 @@ class Header extends React.Component {
                 <Link
                   componentClassName="px-2"
                   color="blue"
-                  to="/join"
+                  to="/users/join"
                   onClick={() => {
                     this.setOpen(false);
                   }}

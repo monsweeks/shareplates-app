@@ -5,7 +5,7 @@ import { Map } from 'immutable';
 import PropTypes from 'prop-types';
 import { RegisterLayout } from '@/layouts';
 import { Form, Input, FormGroup, Button, Row, Col, Link } from '@/components';
-import request from '../../utils/request';
+import request from '../../../utils/request';
 import facebook from '@/images/sites/facebook.png';
 import naver from '@/images/sites/naver.png';
 import kakao from '@/images/sites/kakao.png';
@@ -55,7 +55,7 @@ class Join extends Component {
       <RegisterLayout className="join-wrapper align-self-center w-100">
         <h1 className="text-center">{t('label.memberJoin')}</h1>
         <p className="text-center d-md-block">
-          <Link color="blue" to="/login">
+          <Link color="blue" to="/users/login">
             {t('message.moveToLoginPage')}
           </Link>
         </p>
