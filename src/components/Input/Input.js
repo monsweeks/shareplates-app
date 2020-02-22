@@ -61,6 +61,7 @@ class Input extends React.Component {
       t,
       // eslint-disable-next-line react/prop-types
       tReady,
+      customInputValidationMessage,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
