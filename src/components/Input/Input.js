@@ -60,6 +60,9 @@ class Input extends React.Component {
                 className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${
                     value ? 'has-value' : ''
                 } ${valid ? 'valid' : 'in-valid'}`}
+                onClick={() => {
+                  this.control.current.focus();
+                }}
             >
                 <div className="input-info">
                     {label && <div className="label">{label}</div>}

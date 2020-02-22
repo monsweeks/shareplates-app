@@ -4,8 +4,9 @@ import { addMessage, setLoading } from 'actions';
 import i18n from 'i18next';
 import MESSAGE_CATEGORY from '@/constants/constants';
 
+const local = ['localhost', '127.0.0.1'].some((d) => d === window.location.hostname);
 const logging = true;
-const base = 'http://localhost:8080';
+const base = local ? 'http://localhost:8080' : '';
 
 function beforeRequest() {
   store.dispatch(setLoading(true));
@@ -39,7 +40,7 @@ function processError(error, failHandler) {
     switch (error.response.status) {
       case 404: {
         store.dispatch(
-          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('resourceNotFount')),
+          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('message.resourceNotFount')),
         );
         break;
       }

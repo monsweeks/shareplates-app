@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import './Join.scss';
 import { withRouter } from 'react-router-dom';
-import { withTranslation } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import { Map } from 'immutable';
 import PropTypes from 'prop-types';
 import { RegisterLayout } from '@/layouts';
@@ -11,6 +10,7 @@ import facebook from '@/images/sites/facebook.png';
 import naver from '@/images/sites/naver.png';
 import kakao from '@/images/sites/kakao.png';
 import google from '@/images/sites/google.png';
+import './Join.scss';
 
 class Join extends Component {
   constructor(props) {
@@ -53,17 +53,10 @@ class Join extends Component {
 
     return (
       <RegisterLayout className="join-wrapper align-self-center w-100">
-        <h1 className="text-center">회원가입</h1>
-        <p className="text-center d-none d-md-block">
-          이미 가입하셨다면,{' '}
-          <Link color="blue" to="/login">
-            {t('여기')}
-          </Link>
-          를 눌러 로그인 페이지로 이동 할 수 있습니다
-        </p>
+        <h1 className="text-center">{t('label.memberJoin')}</h1>
         <p className="text-center d-md-block">
           <Link color="blue" to="/login">
-            {t('로그인 페이지로 이동')}
+            {t('message.moveToLoginPage')}
           </Link>
         </p>
         <Row>
@@ -71,8 +64,9 @@ class Join extends Component {
             <Form onSubmit={this.onSubmit} className="px-2 px-sm-0">
               <FormGroup>
                 <Input
+                  type="email"
                   label={t('label.email')}
-                  placeholderMessage={t('사용할 이메일 주소를 입력해주세요')}
+                  placeholderMessage={t('message.pleaseTypeEmailAddress')}
                   value={user.get('email')}
                   required
                   minLength={2}
@@ -83,7 +77,7 @@ class Join extends Component {
               <FormGroup>
                 <Input
                   label={t('label.name')}
-                  placeholderMessage={t('이름이나 별명을 알려주세요')}
+                  placeholderMessage={t('message.pleaseTypeNameOrAlias')}
                   value={user.get('name')}
                   required
                   minLength={2}
@@ -173,7 +167,7 @@ class Join extends Component {
                   <span>
                     <img src={facebook} alt="FACEBOOK" />
                   </span>
-                  <span>페이스북 로그인</span>
+                  <span>{t('label.facebookLogin')}</span>
                 </div>
               </Button>
               <Button color="google" className="g-image-text-button ml-3">
@@ -181,7 +175,7 @@ class Join extends Component {
                   <span>
                     <img src={google} alt="GOOGLE" />
                   </span>
-                  <span>구글 로그인</span>
+                  <span>{t('label.googleLogin')}</span>
                 </div>
               </Button>
             </FormGroup>
@@ -191,7 +185,7 @@ class Join extends Component {
                   <span>
                     <img src={naver} alt="NAVER" />
                   </span>
-                  <span>네이버 로그인</span>
+                  <span>{t('label.naverLogin')}</span>
                 </div>
               </Button>
               <Button color="kakao" className="g-image-text-button ml-3">
@@ -199,22 +193,16 @@ class Join extends Component {
                   <span>
                     <img src={kakao} alt="KAKAO" />
                   </span>
-                  <span>카카오 로그인</span>
+                  <span>{t('label.kakaoLogin')}</span>
                 </div>
               </Button>
             </FormGroup>
           </Col>
         </Row>
         <p className="text-center px-2 px-sm-0">
-          가입 시{' '}
-          <Link color="blue" to="/login">
-            {t('이용약관')}
-          </Link>
-          에 동의하고,{' '}
-          <Link color="blue" to="/login">
-            {t('개인정보 취급정책')}
-          </Link>
-          에 숙지하였음을 인정합니다.
+          <Trans i18nKey="message.joinNoticeInfo">
+            가입 시 <Link color="blue" to="/login">{{terms : t('label.terms')}}</Link>에 동의하고, <Link color="blue" to="/login">{{policy : t('label.privacyPolicy')}}</Link>을 숙지하였음을 인정합니다.
+          </Trans>
         </p>
       </RegisterLayout>
     );

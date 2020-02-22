@@ -61,8 +61,8 @@ class Sample extends React.PureComponent {
                 </div>
                 <h2>다국어 테스트</h2>
                 <div>
-                    <div>{t('message.hello')}</div>
-                    <div>{t('n.selected', { n: 5 })}</div>
+                    <div>{t('sample.hello')}</div>
+                    <div>{t('sample.selected', { n: 5 })}</div>
                     <Button
                         onClick={() => {
                             i18n.changeLanguage('en-US');
