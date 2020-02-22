@@ -28,6 +28,28 @@ button.btn {
         }
     }
 
+    &.g-icon-text-button {
+        padding: 0;
+        border-radius: 1px;
+
+        > div {
+            display: flex;
+            span:first-child {
+                width: 30px;
+                text-align: center;
+                display: inline-block;
+                padding: 5px;
+            }
+
+            span:last-child {
+                padding: 5px 12px 5px 5px;
+                display: inline-block;
+                text-align: left;
+                align-self: center;
+            }
+        }
+    }
+
     &.g-image-text-button {
         padding: 0;
         border-radius: 1px;

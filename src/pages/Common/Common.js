@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { addMessage, clearMessage } from 'actions';
+import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
 import './Common.scss';
@@ -31,6 +32,7 @@ class Common extends React.PureComponent {
   render() {
     const { messages, loading, t } = this.props;
 
+    console.log(messages);
     return (
       <div className="common-wrapper">
         {messages && messages.length > 0 && (
@@ -67,6 +69,7 @@ class Common extends React.PureComponent {
             </div>
           </div>
         )}
+        <ReactTooltip effect="solid" />
       </div>
     );
   }
@@ -93,7 +96,7 @@ Common.defaultProps = {
 };
 
 Common.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.string),
+  messages: PropTypes.arrayOf(PropTypes.any),
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,

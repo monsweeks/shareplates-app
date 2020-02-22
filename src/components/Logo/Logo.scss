@@ -69,6 +69,12 @@ $rotate-seconds: 3s;
     }
   }
 
+  &.hide-text {
+    .logo-text {
+      display: none;
+    }
+  }
+
   &.sm {
     .logo-img {
       svg {

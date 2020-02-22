@@ -4,6 +4,14 @@ export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
+export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
+
+export function setJoinEmail(email) {
+    return {
+        type: SET_JOIN_EMAIL,
+        email
+    };
+}
 
 export function setUserId(origin, id, token, time) {
     return {
