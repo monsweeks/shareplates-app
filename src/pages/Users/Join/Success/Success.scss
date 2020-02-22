@@ -1,0 +1,64 @@
+.join-success-wrapper {
+  .summary {
+    background-color: $primary;
+    flex: 0;
+    min-height: 340px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail {
+    flex: 1;
+
+    p {
+      min-height: 42px;
+    }
+  }
+
+  .link-button {
+    min-width: 130px;
+  }
+
+  .success-logo {
+    position: absolute;
+    left: -30px;
+    top: calc(50% - 36px);
+    transform: rotate(-90deg);
+
+    @include media-breakpoint-down(sm) {
+      left: auto;
+      right: 30px;
+      top: -45px;
+      transform: none;
+    }
+  }
+
+  .separator {
+    width: 1px;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+  }
+
+  .mail-link-button {
+    position: relative;
+
+    .mail-icon {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 11px;
+      width: 18px;
+      height: 18px;
+      background-color: $primary;
+      background-color: $pink;
+      border-radius: 50%;
+      text-align: center;
+      padding-top: 2px;
+    }
+  }
+}
