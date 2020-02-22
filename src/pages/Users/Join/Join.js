@@ -201,7 +201,7 @@ class Join extends Component {
         </Row>
         <p className="text-center px-2 px-sm-0">
           <Trans i18nKey="message.joinNoticeInfo">
-            가입 시 <Link target='_blank' color="blue" to="/info/terms-and-conditions">{{terms : t('label.terms')}}</Link>에 동의하고, <Link  target='_blank' color="blue" to="/info/privacy-policy">{{policy : t('label.privacyPolicy')}}</Link>을 숙지하였음을 인정합니다.
+            가입 시 <Link target='_blank' color="blue" to="/about/terms-and-conditions">{{terms : t('label.terms')}}</Link>에 동의하고, <Link  target='_blank' color="blue" to="/about/privacy-policy">{{policy : t('label.privacyPolicy')}}</Link>을 숙지하였음을 인정합니다.
           </Trans>
         </p>
       </RegisterLayout>

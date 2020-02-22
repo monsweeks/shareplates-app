@@ -4,7 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { Common, NoMatch, Sample } from 'pages';
 import { Header } from '@/layouts';
 import '@/App.scss';
-import Info from '@/pages/Info';
+import About from '@/pages/About';
 import Users from '@/pages/Users';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       <article className="app-content">
         <Switch>
           <Route path="/users" component={Users} />
-          <Route path="/info" component={Info} />
+          <Route path="/about" component={About} />
           <Route exact path="/sample" component={Sample} />
           <Route component={NoMatch} />
         </Switch>
