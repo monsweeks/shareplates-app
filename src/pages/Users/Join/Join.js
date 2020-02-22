@@ -81,7 +81,7 @@ class Join extends Component {
                   maxLength={100}
                   onChange={this.onChange('email')}
                   customInputValidationMessage={{
-                    typeMismatch : 'validation.invalidEmail'
+                    typeMismatch: 'validation.invalidEmail',
                   }}
                 />
               </FormGroup>

@@ -1,38 +1,38 @@
 html {
-    _font-size: 14px;
-    width: 100%;
-    height: 100%;
+  _font-size: 14px;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: LGSmHaL, NanumGothic, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    width: 100%;
-    height: 100%;
+  margin: 0;
+  font-family: LGSmHaL, NanumGothic, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
 }
 
 #root {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 code {
-    font-family: NanumGothicCoding, source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: NanumGothicCoding, source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .scrollbar::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-    background-color: rgba(0, 0, 0, 0.2);
-    background-color: #333;
+  width: 7px;
+  height: 7px;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #333;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-    background-color: #1d88ea;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-color: #fcdc3b;
+  background-color: #1d88ea;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #fcdc3b;
 }
 
 @media (max-width: 576px) {

@@ -71,9 +71,8 @@ class Success extends React.PureComponent {
 
   render() {
     const { t, join } = this.props;
-    const { addMessage : addMessageReducer } = this.props;
+    const { addMessage: addMessageReducer } = this.props;
     const mailLinkButton = this.getMailServerInfo(join.email);
-
 
     return (
       <FullLayout className="join-success-wrapper">
@@ -92,9 +91,19 @@ class Success extends React.PureComponent {
                     <div className="mb-4 text-justify">{t('message.confirmEmail')}</div>
                     <Row className="mb-4">
                       <Col lg={mailLinkButton ? 9 : 12}>
-                        <Button color="primary" onClick={() => {
-                          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-                        }}>{t('button.resendEmail')}</Button>
+                        <Button
+                          color="primary"
+                          onClick={() => {
+                            addMessageReducer(
+                              0,
+                              MESSAGE_CATEGORY.INFO,
+                              t('message.waitPlease'),
+                              t('message.notImplement'),
+                            );
+                          }}
+                        >
+                          {t('button.resendEmail')}
+                        </Button>
                       </Col>
                       {mailLinkButton && (
                         <Col className="position-relative mt-4 mt-lg-0" lg={3}>
@@ -104,10 +113,19 @@ class Success extends React.PureComponent {
                       )}
                     </Row>
                     <div className="text-right small">
-                      <Link color="blue" to="/users/login" onClick={(e) => {
-                        e.preventDefault();
-                        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-                      }}>
+                      <Link
+                        color="blue"
+                        to="/users/login"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addMessageReducer(
+                            0,
+                            MESSAGE_CATEGORY.INFO,
+                            t('message.waitPlease'),
+                            t('message.notImplement'),
+                          );
+                        }}
+                      >
                         {t('message.cannotEmailReceived')}
                       </Link>
                     </div>
@@ -130,9 +148,18 @@ class Success extends React.PureComponent {
                   <CardBody className="bg-gray-300 py-4">
                     <p className="text-center">{t('message.letsMakeTopic')}</p>
                     <div className="text-center">
-                      <Button color="primary" className="link-button g-icon-text-button" onClick={() => {
-                        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-                      }}>
+                      <Button
+                        color="primary"
+                        className="link-button g-icon-text-button"
+                        onClick={() => {
+                          addMessageReducer(
+                            0,
+                            MESSAGE_CATEGORY.INFO,
+                            t('message.waitPlease'),
+                            t('message.notImplement'),
+                          );
+                        }}
+                      >
                         <div>
                           <span>
                             <i className="fal fa-plus" />
@@ -160,9 +187,18 @@ class Success extends React.PureComponent {
                       </Trans>
                     </p>
                     <div className="text-center">
-                      <Button color="primary" className="link-button g-icon-text-button" onClick={() => {
-                        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-                      }}>
+                      <Button
+                        color="primary"
+                        className="link-button g-icon-text-button"
+                        onClick={() => {
+                          addMessageReducer(
+                            0,
+                            MESSAGE_CATEGORY.INFO,
+                            t('message.waitPlease'),
+                            t('message.notImplement'),
+                          );
+                        }}
+                      >
                         <div>
                           <span>
                             <i className="fal fa-tv-retro" />
@@ -184,9 +220,18 @@ class Success extends React.PureComponent {
                   <CardBody className="bg-gray-300 py-4">
                     <p className="text-center">{t('message.letsConfirmYourInfo')}</p>
                     <div className="text-center">
-                      <Button color="primary" className="link-button g-icon-text-button" onClick={() => {
-                        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-                      }}>
+                      <Button
+                        color="primary"
+                        className="link-button g-icon-text-button"
+                        onClick={() => {
+                          addMessageReducer(
+                            0,
+                            MESSAGE_CATEGORY.INFO,
+                            t('message.waitPlease'),
+                            t('message.notImplement'),
+                          );
+                        }}
+                      >
                         <div>
                           <span>
                             <i className="fal fa-robot" />
@@ -229,5 +274,5 @@ Success.propTypes = {
   join: PropTypes.objectOf({
     email: PropTypes.string,
   }),
-  addMessage : PropTypes.func,
+  addMessage: PropTypes.func,
 };

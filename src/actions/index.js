@@ -7,55 +7,55 @@ export const SET_LOADING = 'SET_LOADING';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
 
 export function setJoinEmail(email) {
-    return {
-        type: SET_JOIN_EMAIL,
-        email
-    };
+  return {
+    type: SET_JOIN_EMAIL,
+    email,
+  };
 }
 
 export function setUserId(origin, id, token, time) {
-    return {
-        type: SET_USER_ID,
-        origin,
-        id,
-        token,
-        time,
-    };
+  return {
+    type: SET_USER_ID,
+    origin,
+    id,
+    token,
+    time,
+  };
 }
 
 export function setUserData(userData) {
-    return {
-        type: SET_USER_DATA,
-        userData,
-    };
+  return {
+    type: SET_USER_DATA,
+    userData,
+  };
 }
 
 export function addMessage(code, category, title, content) {
-    return {
-        type: ADD_MESSAGE,
-        code,
-        category,
-        title,
-        content,
-    };
+  return {
+    type: ADD_MESSAGE,
+    code,
+    category,
+    title,
+    content,
+  };
 }
 
 export function clearMessage() {
-    return {
-        type: CLEAR_MESSAGE,
-    };
+  return {
+    type: CLEAR_MESSAGE,
+  };
 }
 
 export function setSupported(value) {
-    return {
-        type: SET_SUPPORTED,
-        supported: value,
-    };
+  return {
+    type: SET_SUPPORTED,
+    supported: value,
+  };
 }
 
 export function setLoading(loading) {
-    return {
-        type: SET_LOADING,
-        loading,
-    };
+  return {
+    type: SET_LOADING,
+    loading,
+  };
 }

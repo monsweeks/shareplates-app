@@ -40,7 +40,12 @@ function processError(error, failHandler) {
     switch (error.response.status) {
       case 404: {
         store.dispatch(
-          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('message.resourceNotFount')),
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '404 NOT FOUND',
+            i18n.t('message.resourceNotFount'),
+          ),
         );
         break;
       }

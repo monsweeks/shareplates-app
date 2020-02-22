@@ -7,7 +7,7 @@ function TermsAndConditions() {
     <DetailLayout>
       <h1 className="text-center">이용 약관</h1>
       <p className="text-right">최근 수정일: 2020년 2월 22일</p>
-      <article className='text-center'>TBD</article>
+      <article className="text-center">TBD</article>
     </DetailLayout>
   );
 }
