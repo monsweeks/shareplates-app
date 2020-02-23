@@ -6,6 +6,11 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
+
+    @include media-breakpoint-down(md) {
+      min-height: auto;
+      padding-bottom: 1rem;
+    }
   }
 
   .detail {

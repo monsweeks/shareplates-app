@@ -32,12 +32,24 @@ function processError(error, failHandler) {
     console.log(error);
   }
 
-  if (!error.status) {
+  if (!error.response || !error.response.status) {
     store.dispatch(addMessage(900, MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
   } else if (failHandler && typeof failHandler === 'function') {
     failHandler(error, error.response);
   } else if (error && error.response) {
     switch (error.response.status) {
+      case 400: {
+        store.dispatch(
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '요청이 올바르지 않습니다.',
+            i18n.t(error.response.data.message),
+          ),
+        );
+        break;
+      }
+
       case 404: {
         store.dispatch(
           addMessage(

@@ -29,8 +29,8 @@ const mailServers = [
   {
     postfix: '@gmail.com',
     url: 'https://mail.google.com',
-    name: 'naver',
-    imag: google,
+    name: 'google',
+    img: google,
   },
 ];
 
@@ -57,7 +57,7 @@ class Success extends React.PureComponent {
           data-tip={t('label.moveToEmailSite')}
         >
           <div>
-            <img src={mailServer.img} alt="NAVER" />
+            <img src={mailServer.img} alt={mailServer.name} />
           </div>
           <div className="mail-icon">
             <i className="fal fa-envelope" />
@@ -79,7 +79,7 @@ class Success extends React.PureComponent {
         <div className="summary">
           <Container>
             <Row>
-              <Col lg={4} className="align-self-center mb-4 mb-lg-0">
+              <Col lg={4} className="align-self-center mt-4 mb-4 mb-lg-0 mt-lg-0">
                 <h1 className="text-white text-center m-0">{t('환영합니다')}</h1>
               </Col>
               <Col lg={8} className="text-center">
