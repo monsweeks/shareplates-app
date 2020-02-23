@@ -1,13 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button } from 'components';
-import request from 'utils/request';
-import { addMessage } from 'actions';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Button } from '@/components';
+import request from '@/utils/request';
+import { addMessage } from '@/actions';
 
-class Sample extends React.PureComponent {
+class StatusSample extends React.PureComponent {
   render() {
     const { t, i18n } = this.props;
 
@@ -89,9 +89,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(Sample)));
+export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(StatusSample)));
 
-Sample.propTypes = {
+StatusSample.propTypes = {
   i18n: PropTypes.objectOf(PropTypes.any),
   t: PropTypes.func,
 };

@@ -32,7 +32,6 @@ class Common extends React.PureComponent {
   render() {
     const { messages, loading, t } = this.props;
 
-    console.log(messages);
     return (
       <div className="common-wrapper">
         {messages && messages.length > 0 && (
