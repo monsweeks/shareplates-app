@@ -1,5 +1,13 @@
 h1 {
   font-size: 2rem;
+
+  @include media-breakpoint-down(sm) {
+    font-size: 1.8rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    font-size: 1.5rem;
+  }
 }
 
 div.g-category-label {
