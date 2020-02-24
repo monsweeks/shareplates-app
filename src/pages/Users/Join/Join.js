@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { withTranslation, Trans } from 'react-i18next';
+import { Trans, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { addMessage, setJoinEmail } from 'actions';
 import { RegisterLayout } from '@/layouts';
-import { Form, Input, FormGroup, Button, Row, Col, Link } from '@/components';
+import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import request from '../../../utils/request';
 import facebook from '@/images/sites/facebook.png';
 import naver from '@/images/sites/naver.png';
@@ -27,11 +28,36 @@ class Join extends Component {
         password: '',
         passwordConfirm: '',
       }),
+      existEmail: false,
     };
+
+    this.checkEmailExistDebounced = debounce(this.checkEmailExist, 400);
   }
+
+  componentWillUnmount() {
+    this.checkEmailExistDebounced.cancel();
+  }
+
+  checkEmailExist = (email) => {
+    request.get(
+      '/api/users/exists',
+      { email },
+      (data) => {
+        this.setState({
+          existEmail: data,
+        });
+      },
+      null,
+      true,
+    );
+  };
 
   onChange = (field) => (value) => {
     const { user } = this.state;
+
+    if (field === 'email') {
+      this.checkEmailExistDebounced(value);
+    }
     this.setState({
       user: user.set(field, value),
     });
@@ -41,7 +67,13 @@ class Join extends Component {
     e.preventDefault();
 
     const { user } = this.state;
-    const { history } = this.props;
+    const { t, history, addMessage: addMessageReducer } = this.props;
+
+    if (user.get('passwordConfirm') !== user.get('password')) {
+      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
+      return;
+    }
+
     request.post('/api/users', user.toJS(), (data) => {
       // eslint-disable-next-line react/destructuring-assignment
       this.props.setJoinEmail(data.email);
@@ -57,7 +89,7 @@ class Join extends Component {
   render() {
     const { t } = this.props;
     const { addMessage: addMessageReducer } = this.props;
-    const { user } = this.state;
+    const { user, existEmail } = this.state;
 
     return (
       <RegisterLayout className="join-wrapper align-self-center">
@@ -83,6 +115,7 @@ class Join extends Component {
                   customInputValidationMessage={{
                     typeMismatch: 'validation.invalidEmail',
                   }}
+                  externalValidationMessage={existEmail ? t('validation.alreadyJoinedEmail') : undefined}
                 />
               </FormGroup>
               <FormGroup>

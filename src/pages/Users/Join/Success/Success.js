@@ -271,8 +271,6 @@ Success.defaultProps = {
 
 Success.propTypes = {
   t: PropTypes.func,
-  join: PropTypes.objectOf({
-    email: PropTypes.string,
-  }),
+  join: PropTypes.objectOf(PropTypes.any),
   addMessage: PropTypes.func,
 };

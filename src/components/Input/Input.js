@@ -62,6 +62,7 @@ class Input extends React.Component {
       // eslint-disable-next-line react/prop-types
       tReady,
       customInputValidationMessage,
+      externalValidationMessage,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
@@ -78,7 +79,7 @@ class Input extends React.Component {
         <div className="input-info">
           {label && <div className="label">{label}</div>}
           {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
-          {message && <div className="invalid-message">{message}</div>}
+          {(externalValidationMessage || message) && <div className="invalid-message">{externalValidationMessage || message}</div>}
         </div>
         <input
           ref={this.control}
@@ -128,6 +129,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.string,
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
+  externalValidationMessage : PropTypes.string,
 };
 
 export default withTranslation()(Input);

@@ -41,6 +41,8 @@
   "validation.customError": "입력 값이 올바르지 않습니다.",
   "validation.valid": "올바른 입력 값입니다.",
   "validation.invalidEmail": "올바른 이메일 형식이 아닙니다.",
+  "validation.notEqualPassword": "입력하신 패스워드가 일치하지 않습니다.",
+  "validation.alreadyJoinedEmail": "이미 가입된 이메일입니다",
 
   "message.404": "아직 만들어지지 않은 페이지입니다",
   "message.networkError": "서버에 접속할 수 없습니다. 네트워크에 연결되어 있는지 확인하시거나, 잠시 후 다시 시도해주세요.",

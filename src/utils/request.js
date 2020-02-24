@@ -8,8 +8,10 @@ const local = ['localhost', '127.0.0.1'].some((d) => d === window.location.hostn
 const logging = true;
 const base = local ? 'http://localhost:8080' : '';
 
-function beforeRequest() {
-  store.dispatch(setLoading(true));
+function beforeRequest(quiet) {
+  if (!quiet) {
+    store.dispatch(setLoading(true));
+  }
 }
 
 function processSuccess(response, successHandler) {
@@ -92,13 +94,14 @@ function processError(error, failHandler) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-function afterRequest(response) {
-  store.dispatch(setLoading(false));
+function afterRequest(response, quiet) {
+  if (!quiet) {
+    store.dispatch(setLoading(false));
+  }
 }
 
-function get(uri, params, successHandler, failHandler) {
-  beforeRequest();
+function get(uri, params, successHandler, failHandler, quiet) {
+  beforeRequest(quiet);
   axios
     .get(`${base}${uri}`, {
       params,
@@ -110,12 +113,12 @@ function get(uri, params, successHandler, failHandler) {
       processError(error, failHandler);
     })
     .finally((response) => {
-      afterRequest(response);
+      afterRequest(response, quiet);
     });
 }
 
-function post(uri, params, successHandler, failHandler) {
-  beforeRequest();
+function post(uri, params, successHandler, failHandler, quiet) {
+  beforeRequest(quiet);
   axios
     .post(`${base}${uri}`, params)
     .then((response) => {
@@ -125,7 +128,7 @@ function post(uri, params, successHandler, failHandler) {
       processError(error, failHandler);
     })
     .finally((response) => {
-      afterRequest(response);
+      afterRequest(response, quiet);
     });
 }
 
