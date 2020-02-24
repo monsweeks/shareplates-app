@@ -39,14 +39,33 @@ function processError(error, failHandler) {
   } else if (error && error.response) {
     switch (error.response.status) {
       case 400: {
-        store.dispatch(
-          addMessage(
-            error.response.status,
-            MESSAGE_CATEGORY.ERROR,
-            '요청이 올바르지 않습니다.',
-            i18n.t(error.response.data.message),
-          ),
-        );
+        if (
+          error.response.data &&
+          error.response.data &&
+          error.response.data.errors &&
+          error.response.data.errors.length > 0
+        ) {
+
+          store.dispatch(
+            addMessage(
+              error.response.status,
+              MESSAGE_CATEGORY.ERROR,
+              '요청이 올바르지 않습니다.',
+              `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
+            ),
+          );
+
+        } else {
+          store.dispatch(
+            addMessage(
+              error.response.status,
+              MESSAGE_CATEGORY.ERROR,
+              '요청이 올바르지 않습니다.',
+              error.response.data.message,
+            ),
+          );
+        }
+
         break;
       }
 
