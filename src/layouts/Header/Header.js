@@ -91,13 +91,24 @@ class Header extends React.Component {
             <TopLogo weatherEffect />
           </div>
           <div className="shortcut-area">
+            {user && (
+              <span className='h4'>
+                <i className="fal fa-robot" />
+              </span>
+            )}
             {!user && (
-              <Link className="d-none d-md-inline-block" componentClassName="px-2" color="white" to="/users/join">
-                {t('label.memberJoin')}
+              <Link
+                className="d-none d-md-inline-block"
+                underline={false}
+                componentClassName="px-2"
+                color="white"
+                to="/users/login"
+              >
+                {t('label.login')}
               </Link>
             )}
-            <div className="separator d-none d-md-inline-block" />
-            <div className="override-radio-button language-button d-none d-md-inline-block">
+            {!user && (<div className="separator d-none d-md-inline-block" />)}
+            {!user && (<div className="override-radio-button language-button d-none d-md-inline-block">
               {Object.keys(LANGUAGES)
                 .sort()
                 .reverse()
@@ -115,7 +126,7 @@ class Header extends React.Component {
                     </button>
                   );
                 })}
-            </div>
+            </div>)}
           </div>
         </div>
         {open && (
@@ -175,12 +186,12 @@ class Header extends React.Component {
                 <Link
                   componentClassName="px-2"
                   color="blue"
-                  to="/users/join"
+                  to="/users/login"
                   onClick={() => {
                     this.setOpen(false);
                   }}
                 >
-                  {t('label.memberJoin')}
+                  {t('label.login')}
                 </Link>
               )}
             </div>

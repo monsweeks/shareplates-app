@@ -47,7 +47,6 @@ function processError(error, failHandler) {
           error.response.data.errors &&
           error.response.data.errors.length > 0
         ) {
-
           store.dispatch(
             addMessage(
               error.response.status,
@@ -56,7 +55,6 @@ function processError(error, failHandler) {
               `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
             ),
           );
-
         } else {
           store.dispatch(
             addMessage(
@@ -101,9 +99,10 @@ function afterRequest(response, quiet) {
 }
 
 const axiosConfig = {
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 };
 
 function get(uri, params, successHandler, failHandler, quiet) {
@@ -111,6 +110,7 @@ function get(uri, params, successHandler, failHandler, quiet) {
   axios
     .get(`${base}${uri}`, {
       params,
+      withCredentials: true,
     })
     .then((response) => {
       processSuccess(response, successHandler);
