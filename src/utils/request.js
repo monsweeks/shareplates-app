@@ -100,6 +100,12 @@ function afterRequest(response, quiet) {
   }
 }
 
+const axiosConfig = {
+  headers: {
+    'Content-Type': 'application/json',
+  }
+};
+
 function get(uri, params, successHandler, failHandler, quiet) {
   beforeRequest(quiet);
   axios
@@ -120,7 +126,7 @@ function get(uri, params, successHandler, failHandler, quiet) {
 function post(uri, params, successHandler, failHandler, quiet) {
   beforeRequest(quiet);
   axios
-    .post(`${base}${uri}`, params)
+    .post(`${base}${uri}`, params, axiosConfig)
     .then((response) => {
       processSuccess(response, successHandler);
     })
