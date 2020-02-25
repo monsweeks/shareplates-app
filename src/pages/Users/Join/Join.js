@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { addMessage, setJoinEmail } from 'actions';
 import { RegisterLayout } from '@/layouts';
 import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
-import request from '../../../utils/request';
+import request from '@/utils/request';
 import facebook from '@/images/sites/facebook.png';
 import naver from '@/images/sites/naver.png';
 import kakao from '@/images/sites/kakao.png';
@@ -87,8 +87,7 @@ class Join extends Component {
   };
 
   render() {
-    const { t } = this.props;
-    const { addMessage: addMessageReducer } = this.props;
+    const { t, addMessage: addMessageReducer } = this.props;
     const { user, existEmail } = this.state;
 
     return (
@@ -106,7 +105,6 @@ class Join extends Component {
                 <Input
                   type="email"
                   label={t('label.email')}
-                  placeholderMessage={t('message.pleaseTypeEmailAddress')}
                   value={user.get('email')}
                   required
                   minLength={2}
@@ -121,7 +119,6 @@ class Join extends Component {
               <FormGroup>
                 <Input
                   label={t('label.name')}
-                  placeholderMessage={t('message.pleaseTypeNameOrAlias')}
                   value={user.get('name')}
                   required
                   minLength={2}

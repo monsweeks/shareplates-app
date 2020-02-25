@@ -4,7 +4,7 @@ import {
   ADD_MESSAGE,
   SET_SUPPORTED,
   SET_USER_DATA,
-  SET_USER_ID,
+  SET_USER,
   SET_LOADING,
   SET_JOIN_EMAIL,
 } from '../actions';
@@ -20,14 +20,8 @@ const user = (state = userState, action) => {
   const currentState = { ...state };
 
   switch (action.type) {
-    case SET_USER_ID:
-      currentState[action.origin] = {
-        id: action.id,
-        token: action.token,
-        time: action.time,
-      };
-
-      return currentState;
+    case SET_USER:
+      return { ...state, user : action.user };
 
     case SET_USER_DATA:
       return { ...state, ...action.userData };
