@@ -26,7 +26,7 @@ class Login extends React.PureComponent {
     this.state = {
       email: email || '',
       password: '',
-      saveEmail: false,
+      saveEmail: !!email,
       loginResult: null,
     };
   }
@@ -51,6 +51,8 @@ class Login extends React.PureComponent {
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
+    } else {
+      storage.setItem('login', 'email', null);
     }
 
     request.post(
@@ -260,7 +262,7 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (id) => dispatch(setUser(id)),
+    setUser: (user) => dispatch(setUser(user))
   };
 };
 

@@ -100,7 +100,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (id) => dispatch(setUser(id)),
+    setUser: (user) => dispatch(setUser(user))
   };
 };
 

@@ -27,6 +27,11 @@ button.btn {
     }
   }
 
+  &.g-compact-button {
+    padding: 3px 4px 1px;
+    line-height: 100%;
+  }
+
   &.g-icon-text-button {
     padding: 0;
     border-radius: 1px;
@@ -87,6 +92,18 @@ button.btn {
         height: 29px;
         border-radius: 50%;
       }
+    }
+  }
+
+  &.g-icon-button {
+    padding: 0;
+    border-radius: 50%;
+
+    > div {
+      display: inline-block;
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
     }
   }
 

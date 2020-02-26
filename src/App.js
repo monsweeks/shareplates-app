@@ -14,7 +14,7 @@ function App() {
       <Header />
       <article className="app-content">
         <Switch>
-          <Route path="/" component={Topics} />
+          <Route exact path="/" component={Topics} />
           <Route path="/users" component={Users} />
           <Route path="/about" component={About} />
           <Route path="/samples" component={Sample} />
