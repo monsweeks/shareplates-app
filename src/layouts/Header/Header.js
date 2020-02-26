@@ -45,7 +45,7 @@ class Header extends React.Component {
 
   setOpenQuickMenu = (openQuickMenu) => {
     this.setState({
-      openQuickMenu
+      openQuickMenu,
     });
   };
 
@@ -150,7 +150,7 @@ class Header extends React.Component {
                 <Link
                   className="d-inline-block"
                   underline={false}
-                  componentClassName="px-4 px-md-2"
+                  componentClassName="mr-4 p-0 px-md-2"
                   color="white"
                   to="/users/login"
                   effect={false}
@@ -247,29 +247,32 @@ class Header extends React.Component {
                 </Link>
               )}
             </div>
+
             <div className="shortcut-area">
-              <div>
-                <span className="desc">언어 설정</span>
-                <div className="g-radio-button">
-                  {Object.keys(LANGUAGES)
-                    .sort()
-                    .reverse()
-                    .map((language) => {
-                      return (
-                        <button
-                          key={language}
-                          type="button"
-                          className={`${i18n.language === language ? 'selected' : ''}`}
-                          onClick={() => {
-                            i18n.changeLanguage(language);
-                          }}
-                        >
-                          {t(language)}
-                        </button>
-                      );
-                    })}
+              {ready && !loggedIn && (
+                <div>
+                  <span className="text-black small mr-2">언어 설정</span>
+                  <div className="g-radio-button">
+                    {Object.keys(LANGUAGES)
+                      .sort()
+                      .reverse()
+                      .map((language) => {
+                        return (
+                          <button
+                            key={language}
+                            type="button"
+                            className={`${i18n.language === language ? 'selected' : ''}`}
+                            onClick={() => {
+                              i18n.changeLanguage(language);
+                            }}
+                          >
+                            {t(language)}
+                          </button>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -389,10 +392,10 @@ class Header extends React.Component {
                   <FormGroup className="mb-0">
                     <Row>
                       <Col>
-                        <span className="desc small px-2">언어 설정</span>
+                        <span className="small px-2">언어 설정</span>
                       </Col>
                       <Col className="text-right">
-                        <div className="g-radio-button language-button d-none d-md-inline-block">
+                        <div className="g-radio-button language-button d-inline-block">
                           {Object.keys(LANGUAGES)
                             .sort()
                             .reverse()

@@ -381,6 +381,11 @@
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     color: $black;
 
+    @include media-breakpoint-down(xs) {
+      width: calc(100% - 20px);
+      margin: 0 auto;
+    }
+
     .g-category-label {
       color: $gray-700;
     }
@@ -411,6 +416,10 @@
       z-index: 2;
       text-align: center;
       padding-left: 250px;
+
+      @include media-breakpoint-down(lg) {
+        padding-left: calc(100% - 50px);
+      }
 
       > span.arrow-marker,
       > span.arrow-hider {
