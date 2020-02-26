@@ -61,11 +61,23 @@ function processError(error, failHandler) {
               error.response.status,
               MESSAGE_CATEGORY.ERROR,
               '요청이 올바르지 않습니다.',
-              error.response.data.message,
+              error.response && error.response.data && error.response.data.message,
             ),
           );
         }
 
+        break;
+      }
+
+      case 401: {
+        store.dispatch(
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '인증 실패',
+            error.response && error.response.data && error.response.data.message,
+          ),
+        );
         break;
       }
 

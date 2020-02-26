@@ -1,30 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage } from 'actions';
+import { addMessage, clearMessage, setUser } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
-import './Common.scss';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import request from '@/utils/request';
+import './Common.scss';
 
 class Common extends React.PureComponent {
+
+  componentDidMount() {
+    this.getMyInfo();
+  }
+
+  getMyInfo = () => {
+    const { setUser: setUserReducer } = this.props;
+    request.get('/api/users/my', null, (user) => {
+      setUserReducer(user);
+    }, () => {
+      setUserReducer({});
+    });
+  };
+
   getMessageCategoryIcon = (category) => {
     switch (category) {
       case MESSAGE_CATEGORY.ERROR: {
-        return <i className="fas fa-exclamation-circle" />;
+        return <i className="fas fa-exclamation-circle"/>;
       }
 
       case MESSAGE_CATEGORY.WARNING: {
-        return <i className="fal fa-exclamation-circle" />;
+        return <i className="fal fa-exclamation-circle"/>;
       }
 
       case MESSAGE_CATEGORY.INFO: {
-        return <i className="fal fa-info-circle" />;
+        return <i className="fal fa-info-circle"/>;
       }
 
       default: {
-        return <i className="fal fa-info-circle" />;
+        return <i className="fal fa-info-circle"/>;
       }
     }
   };
@@ -63,12 +78,12 @@ class Common extends React.PureComponent {
           <div className="g-overlay">
             <div>
               <div>
-                <Logo size="md" rotate text={<span>LOADING</span>} />
+                <Logo size="md" rotate text={<span>LOADING</span>}/>
               </div>
             </div>
           </div>
         )}
-        <ReactTooltip effect="solid" />
+        <ReactTooltip effect="solid"/>
       </div>
     );
   }
@@ -85,6 +100,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
+    setUser: (id) => dispatch(setUser(id)),
   };
 };
 
@@ -99,4 +115,5 @@ Common.propTypes = {
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,
+  setUser: PropTypes.func,
 };
