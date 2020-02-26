@@ -1,0 +1,121 @@
+.menu-wrapper {
+  height: 100%;
+  display: inline-block;
+
+  .menu-open-button {
+    margin-top: 13px;
+  }
+  .menu-item {
+    color: $white !important;
+    min-width: 80px;
+    height: 100%;
+    margin: 0 5px 0 0;
+    position: relative;
+    padding: 0;
+    text-align: center;
+
+    .icon {
+      text-align: center;
+      font-size: 14px;
+      position: absolute;
+      top: 9px;
+      left: 0;
+      width: 100%;
+      color: $white !important;
+
+      > span {
+        display: inline-block;
+      }
+    }
+
+    .text {
+      width: 100%;
+      text-align: center;
+      position: relative;
+      margin-top: 25px;
+      color: $white !important;
+
+      > span {
+        display: inline-block;
+        line-height: 100%;
+        padding: 2px 4px 1px;
+        border-radius: 4px;
+        min-width: 40px;
+        font-size: 14px;
+        font-family: 'Comfortaa', 'Righteous', 'LGSmHaR', cursive;
+      }
+    }
+
+    .current-arrow {
+      opacity: 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      text-align: center;
+      transition: all 0.3s;
+
+      > span {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background-color: $white;
+        transform: rotate(45deg);
+        position: absolute;
+        bottom: -5px;
+        left: calc(50% - 5px);
+      }
+    }
+
+    &.selected {
+      .current-arrow {
+        opacity: 1;
+        transition: all 0.3s;
+      }
+    }
+
+    .screen {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.05);
+
+      &.screen-1 {
+        height: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      &.screen-2 {
+        height: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+      }
+
+      &.screen-3 {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0;
+      }
+
+      &.screen-4 {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 0;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      &:hover {
+        .screen {
+          height: 100%;
+          width: 100%;
+          transition: all 0.5s;
+        }
+      }
+    }
+  }
+}
