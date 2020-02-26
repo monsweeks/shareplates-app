@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, TopLogo, Link } from 'components';
+import { Button, Link, TopLogo } from 'components';
 import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
@@ -11,17 +11,17 @@ const menus = [
   {
     icon: 'fal fa-books',
     text: 'label.topic',
-    to: '/topic',
+    to: '/topics',
   },
   {
     icon: 'fal fa-book',
     text: 'label.chapter',
-    to: '/chapter',
+    to: '/chapters',
   },
   {
     icon: 'fal fa-clipboard',
     text: 'label.page',
-    to: '/page',
+    to: '/pages',
   },
 ];
 
@@ -52,8 +52,11 @@ class Header extends React.Component {
   };
 
   render() {
-    const { t, i18n, user } = this.props;
+    const { t, i18n, user, location } = this.props;
     const { open } = this.state;
+
+    const ready = user !== null;
+    const loggedIn = user && user.id;
 
     return (
       <header className="top-header-wrapper">
@@ -69,12 +72,33 @@ class Header extends React.Component {
               <i className="fas fa-bars" />
             </Button>
             {menus.map((menu) => {
+              let alias = '';
+              if (location.pathname.indexOf('/pages') > -1) {
+                alias = '/pages';
+              } else if (location.pathname.indexOf('/chapters') > -1) {
+                alias = '/chapters';
+              } else if (location.pathname.indexOf('/topics') > -1) {
+                alias = '/topics';
+              } else if (location.pathname === '/') {
+                alias = '/topics';
+              }
+
               return (
-                <Link underline={false} key={menu.text} className="d-none d-md-inline-block menu-item" to={menu.to}>
+                <Link
+                  underline={false}
+                  key={menu.text}
+                  className={`${
+                    alias === menu.to || location.pathname === menu.to ? 'selected' : ''
+                  } d-none d-md-inline-block menu-item`}
+                  to={menu.to}
+                >
                   <div className="screen screen-1" />
                   <div className="screen screen-2" />
                   <div className="screen screen-3" />
                   <div className="screen screen-4" />
+                  <div className="current-arrow">
+                    <span />
+                  </div>
                   <div className="icon">
                     <span>
                       <i className={menu.icon} />
@@ -91,42 +115,44 @@ class Header extends React.Component {
             <TopLogo weatherEffect />
           </div>
           <div className="shortcut-area">
-            {user && (
-              <span className='h4'>
+            {ready && loggedIn && (
+              <div className="user-icon">
                 <i className="fal fa-robot" />
-              </span>
+              </div>
             )}
-            {!user && (
-              <Link
-                className="d-none d-md-inline-block"
-                underline={false}
-                componentClassName="px-2"
-                color="white"
-                to="/users/login"
-              >
-                {t('label.login')}
-              </Link>
+            {ready && !loggedIn && (
+              <>
+                <Link
+                  className="d-none d-md-inline-block"
+                  underline={false}
+                  componentClassName="px-2"
+                  color="white"
+                  to="/users/login"
+                >
+                  {t('label.login')}
+                </Link>
+                <div className="separator d-none d-md-inline-block" />
+                <div className="override-radio-button language-button d-none d-md-inline-block">
+                  {Object.keys(LANGUAGES)
+                    .sort()
+                    .reverse()
+                    .map((language) => {
+                      return (
+                        <button
+                          key={language}
+                          type="button"
+                          className={`${i18n.language === language ? 'selected' : ''}`}
+                          onClick={() => {
+                            i18n.changeLanguage(language);
+                          }}
+                        >
+                          {t(language)}
+                        </button>
+                      );
+                    })}
+                </div>
+              </>
             )}
-            {!user && (<div className="separator d-none d-md-inline-block" />)}
-            {!user && (<div className="override-radio-button language-button d-none d-md-inline-block">
-              {Object.keys(LANGUAGES)
-                .sort()
-                .reverse()
-                .map((language) => {
-                  return (
-                    <button
-                      key={language}
-                      type="button"
-                      className={`${i18n.language === language ? 'selected' : ''}`}
-                      onClick={() => {
-                        i18n.changeLanguage(language);
-                      }}
-                    >
-                      {t(language)}
-                    </button>
-                  );
-                })}
-            </div>)}
           </div>
         </div>
         {open && (
@@ -236,6 +262,9 @@ Header.propTypes = {
   i18n: PropTypes.objectOf(PropTypes.any),
   t: PropTypes.func,
   user: PropTypes.objectOf(PropTypes.any),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Header)));
