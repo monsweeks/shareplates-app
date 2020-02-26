@@ -152,7 +152,20 @@ function post(uri, params, successHandler, failHandler, quiet) {
 
 function put() {}
 
-function del() {}
+function del(uri, params, successHandler, failHandler, quiet) {
+  beforeRequest(quiet);
+  axios
+    .delete(`${base}${uri}`, { ...axiosConfig, ...params})
+    .then((response) => {
+      processSuccess(response, successHandler);
+    })
+    .catch((error) => {
+      processError(error, failHandler);
+    })
+    .finally((response) => {
+      afterRequest(response, quiet);
+    });
+}
 
 const request = {
   get,

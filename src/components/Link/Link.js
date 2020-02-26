@@ -20,7 +20,7 @@ class Link extends React.PureComponent {
 Link.defaultProps = {
   underline: false,
   className: '',
-  color: 'white',
+  color: 'blue',
   componentClassName: '',
   effect : true,
 };

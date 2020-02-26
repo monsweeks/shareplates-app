@@ -41,7 +41,7 @@
   background-color: $secondary;
   min-height: 60px;
   color: $white;
-  overflow: hidden;
+  _overflow: hidden;
 
   .top-header-menu {
     display: flex;
@@ -114,8 +114,8 @@
         .current-arrow {
           opacity: 0;
           position: absolute;
-          bottom : 0;
-          left : 0;
+          bottom: 0;
+          left: 0;
           width: 100%;
           height: 8px;
           text-align: center;
@@ -129,13 +129,12 @@
             transform: rotate(45deg);
             position: absolute;
             bottom: -5px;
-            left : calc(50% - 5px);
+            left: calc(50% - 5px);
           }
         }
 
         &.selected {
           .current-arrow {
-
             opacity: 1;
             transition: all 0.3s;
           }
@@ -368,13 +367,111 @@
           text-align: right;
           padding: 0 10px;
 
-          span.desc {
-            color: $black;
-            margin: 0 5px;
-            font-size: 12px;
-          }
+
         }
       }
     }
+  }
+
+  .quick-menu {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 400px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+    color: $black;
+
+    @include media-breakpoint-down(xs) {
+      width: calc(100% - 20px);
+      margin: 0 auto;
+    }
+
+    .g-category-label {
+      color: $gray-700;
+    }
+
+    .user-icon {
+      display: inline-block;
+      font-size: 20px;
+      width: 30px;
+      height: 30px;
+      background-color: $gray-300;
+      text-align: center;
+      border-radius: 50%;
+      padding-top: 0px;
+      cursor: pointer;
+      margin-right: 2px;
+
+      &:hover {
+        background-color: darken($primary, 5%);
+      }
+    }
+
+    .arrow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      z-index: 2;
+      text-align: center;
+      padding-left: 250px;
+
+      @include media-breakpoint-down(lg) {
+        padding-left: calc(100% - 50px);
+      }
+
+      > span.arrow-marker,
+      > span.arrow-hider {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        transform: rotate(45deg);
+        background-color: $white;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        border: none;
+      }
+
+      > span.arrow-hider {
+        bottom: -2px;
+        border: none;
+        display: none;
+      }
+    }
+
+    .user-info {
+      font-size: 0.8rem;
+      font-family: LGSmHaR;
+      display: inline-block;
+
+      .name {
+        margin-right: 5px;
+        margin-bottom: 2px;
+        position: relative;
+        top: -2px;
+      }
+
+      .email {
+        position: relative;
+        top: -2px;
+
+        &:before {
+          content: '[';
+        }
+
+        &:after {
+          content: ']';
+        }
+
+      }
+    }
+
+    .logout-button {
+      margin-top: 7px;
+    }
+
+
   }
 }

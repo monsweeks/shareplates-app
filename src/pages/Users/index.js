@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { Join, JoinSuccess, Login, NoMatch } from 'pages';
 
 function Users() {
@@ -13,4 +13,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default withRouter(Users);
