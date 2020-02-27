@@ -68,53 +68,19 @@
       }
     }
 
+    @include media-breakpoint-up(md) {
+      &:hover {
+        .current-arrow {
+          opacity: 0.7;
+          transition: all 0.3s;
+        }
+      }
+    }
+
     &.selected {
       .current-arrow {
         opacity: 1;
         transition: all 0.3s;
-      }
-    }
-
-    .screen {
-      position: absolute;
-      background-color: rgba(0, 0, 0, 0.05);
-
-      &.screen-1 {
-        height: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-
-      &.screen-2 {
-        height: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-      }
-
-      &.screen-3 {
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 0;
-      }
-
-      &.screen-4 {
-        top: 0;
-        bottom: 0;
-        right: 0;
-        width: 0;
-      }
-    }
-
-    @include media-breakpoint-up(md) {
-      &:hover {
-        .screen {
-          height: 100%;
-          width: 100%;
-          transition: all 0.5s;
-        }
       }
     }
   }

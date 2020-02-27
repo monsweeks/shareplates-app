@@ -1,4 +1,4 @@
-.user-icon-wrapper {
+.circle-icon-wrapper {
   display: inline-block;
   font-size: 20px;
   width: 36px;
@@ -8,7 +8,6 @@
   border-radius: 50%;
   padding-top: 3px;
   cursor: pointer;
-  margin-right: 12px;
 
   &:hover {
     background-color: darken($primary, 5%);

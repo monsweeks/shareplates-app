@@ -10,36 +10,44 @@ import request from '@/utils/request';
 import './Common.scss';
 
 class Common extends React.PureComponent {
-
   componentDidMount() {
     this.getMyInfo();
   }
 
   getMyInfo = () => {
     const { setUser: setUserReducer } = this.props;
-    request.get('/api/users/my', null, (user) => {
-      setUserReducer(user);
-    }, () => {
-      setUserReducer({});
-    });
+    request.get(
+      '/api/users/my-info',
+      null,
+      (data) => {
+        if (data.user) {
+          setUserReducer(data.user, data.organizations);
+        } else {
+          setUserReducer({}, []);
+        }
+      },
+      () => {
+        setUserReducer({}, []);
+      },
+    );
   };
 
   getMessageCategoryIcon = (category) => {
     switch (category) {
       case MESSAGE_CATEGORY.ERROR: {
-        return <i className="fas fa-exclamation-circle"/>;
+        return <i className="fas fa-exclamation-circle" />;
       }
 
       case MESSAGE_CATEGORY.WARNING: {
-        return <i className="fal fa-exclamation-circle"/>;
+        return <i className="fal fa-exclamation-circle" />;
       }
 
       case MESSAGE_CATEGORY.INFO: {
-        return <i className="fal fa-info-circle"/>;
+        return <i className="fal fa-info-circle" />;
       }
 
       default: {
-        return <i className="fal fa-info-circle"/>;
+        return <i className="fal fa-info-circle" />;
       }
     }
   };
@@ -78,12 +86,12 @@ class Common extends React.PureComponent {
           <div className="g-overlay">
             <div>
               <div>
-                <Logo size="md" rotate text={<span>LOADING</span>}/>
+                <Logo size="md" rotate text={<span>LOADING</span>} />
               </div>
             </div>
           </div>
         )}
-        <ReactTooltip effect="solid"/>
+        <ReactTooltip effect="solid" />
       </div>
     );
   }
@@ -100,7 +108,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user) => dispatch(setUser(user))
+    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
   };
 };
 

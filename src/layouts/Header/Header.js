@@ -51,17 +51,21 @@ class Header extends React.Component {
     });
   };
 
+  onSearch = () => {
+    console.log('search');
+  };
+
   logout = () => {
     const { setUser: setUserReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
-      setUserReducer({});
+      setUserReducer({}, []);
       this.setOpenQuickMenu(false);
     });
   };
 
   render() {
-    const { i18n, user, location} = this.props;
+    const { i18n, user, location, organizations } = this.props;
     const { openMenu, openQuickMenu } = this.state;
 
     const ready = user !== null;
@@ -85,6 +89,7 @@ class Header extends React.Component {
               onChangeLanguage={(language) => {
                 i18n.changeLanguage(language);
               }}
+              onSearch={this.onSearch}
             />
           </div>
         </div>
@@ -107,16 +112,16 @@ class Header extends React.Component {
             }}
           />
         )}
-
-        <QuickMenu openQuickMenu={openQuickMenu} user={user} language={i18n.language} setOpenQuickMenu={this.setOpenQuickMenu}
-logout={this.logout}
-                   onChangeLanguage={(language) => {
-                     i18n.changeLanguage(language);
-                   }} />
-
-
-
-
+        <QuickMenu
+          openQuickMenu={openQuickMenu}
+          user={user}
+          language={i18n.language}
+          setOpenQuickMenu={this.setOpenQuickMenu}
+          logout={this.logout}
+          onChangeLanguage={(language) => {
+            i18n.changeLanguage(language);
+          }}
+        />
       </header>
     );
   }
@@ -125,12 +130,13 @@ logout={this.logout}
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
+    organizations: state.user.organizations,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (user) => dispatch(setUser(user)),
+    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
   };
 };
 
@@ -142,6 +148,13 @@ Header.propTypes = {
     name: PropTypes.string,
     picturePath: PropTypes.string,
   }),
+  organizations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      publicYn: PropTypes.bool,
+    }),
+  ),
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),

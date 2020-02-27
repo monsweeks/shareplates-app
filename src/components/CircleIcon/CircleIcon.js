@@ -6,7 +6,7 @@ class CircleIcon extends React.PureComponent {
   render() {
     const { onClick, className, icon } = this.props;
     return (
-      <span className={`${className} user-icon-wrapper`} onClick={onClick}>
+      <span className={`${className} circle-icon-wrapper`} onClick={onClick}>
         {icon}
       </span>
     );

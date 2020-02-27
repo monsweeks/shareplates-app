@@ -6,25 +6,43 @@ import { Link } from '@/components';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
-
+import SearchInput from '@/components/SearchInput/SearchInput';
 
 class ShortCutMenu extends React.PureComponent {
   render() {
-    const { className, setOpenQuickMenu, openQuickMenu, ready, loggedIn, t, language, onChangeLanguage } = this.props;
+    const {
+      className,
+      setOpenQuickMenu,
+      openQuickMenu,
+      ready,
+      loggedIn,
+      t,
+      language,
+      onChangeLanguage,
+      onSearch,
+    } = this.props;
     return (
       <div className={`short-cut-menu-wrapper ${className}`}>
-        <CircleIcon
-          className={ready && loggedIn ? 'd-inline-block' : 'd-none'}
-          icon={<i className="fal fa-bell" />}
-          onClick={() => {}}
-        />
-        <CircleIcon
-          className={ready && loggedIn ? 'd-inline-block' : 'd-none'}
-          icon={<i className="fal fa-robot" />}
-          onClick={() => {
-            setOpenQuickMenu(!openQuickMenu);
-          }}
-        />
+        <div className='mx-1 ml-5'>
+          <SearchInput className='d-none' onSearch={onSearch} />
+        </div>
+        <div>
+          <CircleIcon
+            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
+            icon={<i className="fal fa-bell" />}
+            onClick={() => {}}
+          />
+        </div>
+        <div>
+          <CircleIcon
+            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
+            icon={<i className="fal fa-robot" />}
+            onClick={() => {
+              setOpenQuickMenu(!openQuickMenu);
+            }}
+          />
+        </div>
+
         <div className={ready && !loggedIn ? 'd-inline-block' : 'd-none'}>
           <Link
             className="d-inline-block"
@@ -38,7 +56,7 @@ class ShortCutMenu extends React.PureComponent {
           </Link>
           <div className="separator d-none d-md-inline-block" />
           <RadioButton
-            className='d-none d-md-inline-block'
+            className="d-none d-md-inline-block"
             items={Object.keys(LANGUAGES)
               .sort()
               .reverse()
@@ -70,6 +88,7 @@ ShortCutMenu.propTypes = {
   className: PropTypes.string,
   ready: PropTypes.bool,
   loggedIn: PropTypes.bool,
-  language : PropTypes.string,
-  onChangeLanguage : PropTypes.func,
+  language: PropTypes.string,
+  onChangeLanguage: PropTypes.func,
+  onSearch : PropTypes.func,
 };

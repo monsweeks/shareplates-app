@@ -1,4 +1,16 @@
 .short-cut-menu-wrapper {
+  display: flex;
+
+  > div {
+    vertical-align: middle;
+    align-self: center;
+
+    &:first-child {
+      flex: 1;
+      text-align: right;
+    }
+  }
+
   .separator {
     display: inline-block;
     height: 10px;

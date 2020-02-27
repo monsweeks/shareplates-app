@@ -42,10 +42,6 @@ class Menu extends React.PureComponent {
               to={menu.to}
               effect={false}
             >
-              <div className="screen screen-1" />
-              <div className="screen screen-2" />
-              <div className="screen screen-3" />
-              <div className="screen screen-4" />
               <div className="current-arrow">
                 <span />
               </div>
