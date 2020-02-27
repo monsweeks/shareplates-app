@@ -90,6 +90,7 @@ class Header extends React.Component {
                 i18n.changeLanguage(language);
               }}
               onSearch={this.onSearch}
+              organizations={organizations}
             />
           </div>
         </div>
