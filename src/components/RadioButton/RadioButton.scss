@@ -1,16 +1,63 @@
-.user-icon-wrapper {
+.radio-button-wrapper {
   display: inline-block;
-  font-size: 20px;
-  width: 36px;
-  height: 36px;
-  background-color: $primary;
-  text-align: center;
-  border-radius: 50%;
-  padding-top: 3px;
-  cursor: pointer;
-  margin-right: 12px;
+  vertical-align: top;
+  height: 20px;
+  white-space: nowrap;
+  vertical-align: top;
 
-  &:hover {
-    background-color: darken($primary, 5%);
+  button {
+    font-size: 11px;
+    border: none;
+    outline: none;
+    min-width: 34px;
+    background-color: $light;
+    text-align: center;
+    height: 100%;
+    display: inline-block;
+    padding: 0 8px;
+    vertical-align: top;
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      @include media-breakpoint-up(md) {
+        background-color: darken($light, 4%);
+      }
+    }
+
+    &.selected {
+      background-color: $yellow;
+      color: $black;
+      &:hover {
+        @include media-breakpoint-up(md) {
+          background-color: darken($yellow, 4%);
+        }
+      }
+    }
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+    }
+
+    &.circle {
+      border-radius: 50%;
+      min-width: auto;
+      padding: 2px 0 0;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+    }
   }
 }

@@ -19,10 +19,11 @@ class SearchInput extends React.Component {
   };
 
   render() {
-    const { className, onSearch } = this.props;
+    const { className, onSearch, placeholder } = this.props;
     const { focus, searchWord } = this.state;
     return (
-      <div className={`${className} search-input-wrapper ${focus ? 'focused' : ''}`}>
+      <div className={`${className} search-input-wrapper ${focus ? 'focused' : ''} ${searchWord ? 'has-value' : ''}`}>
+        <div className='placeholder'>{placeholder}</div>
         <input
           type="text"
           value={searchWord}
@@ -68,9 +69,11 @@ export default withTranslation()(SearchInput);
 
 SearchInput.defaultProps = {
   className: '',
+  placeholder : '',
 };
 
 SearchInput.propTypes = {
   className: PropTypes.string,
   onSearch: PropTypes.func,
+  placeholder : PropTypes.string,
 };

@@ -1,0 +1,101 @@
+.selector-wrapper {
+  display: inline-block;
+  position: relative;
+
+  .selector-current {
+    background-color: $primary;
+    display: flex;
+    border-radius: 3px;
+    color: $white;
+    cursor: pointer;
+
+    &.open {
+      border-radius: 3px 3px 0 0;
+    }
+
+    &:hover {
+      background-color: darken($primary, 5%);
+    }
+
+    > span {
+      display: inline-block;
+      padding: 3px 10px 2px;
+      font-size: 0.8rem;
+
+      &.text {
+        text-transform: uppercase;
+        flex: 1;
+      }
+
+      &.liner {
+        padding: 5px 0 0;
+        width: 1px;
+        flex: 0;
+        height: 18px;
+        display: inline-block;
+
+        > span {
+          display: inline-block;
+          width: 1px;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      &.icon {
+        flex: 0;
+        padding-left: 6px;
+        padding-right: 8px;
+      }
+    }
+  }
+
+  .selector-list {
+    position: absolute;
+    background-color: $primary;
+    color: $white;
+    width: 100%;
+    font-size: 0.8rem;
+    margin-top: 1px;
+    max-height: calc(27px * 8);
+    overflow-y: auto;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+
+      li {
+        padding: 4px 10px 3px;
+        text-transform: uppercase;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+
+        .select-arrow {
+          width: 40px;
+          height: 60px;
+          background-color: rgba(0, 0, 0, 0.2);
+          display: inline-block;
+          position: absolute;
+          top: -10px;
+          right: -35px;
+          transform: rotate(45deg);
+          display: none;
+        }
+
+        &.selected {
+          font-family: LGSmHaB;
+          .select-arrow {
+            _display: inline-block;
+          }
+        }
+
+        &:hover {
+          background-color: darken($primary, 5%);
+        }
+      }
+    }
+  }
+}

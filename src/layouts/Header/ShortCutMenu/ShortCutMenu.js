@@ -42,12 +42,11 @@ class ShortCutMenu extends React.PureComponent {
             }}
           />
         </div>
-
         <div className={ready && !loggedIn ? 'd-inline-block' : 'd-none'}>
           <Link
             className="d-inline-block"
             underline={false}
-            componentClassName="mr-4 p-0 px-md-2"
+            componentClassName="mr-3 mr-md-0 p-0 px-md-2"
             color="white"
             to="/users/login"
             effect={false}
@@ -56,7 +55,7 @@ class ShortCutMenu extends React.PureComponent {
           </Link>
           <div className="separator d-none d-md-inline-block" />
           <RadioButton
-            className="d-none d-md-inline-block"
+            className="language-button d-none d-md-inline-block"
             items={Object.keys(LANGUAGES)
               .sort()
               .reverse()

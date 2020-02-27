@@ -64,11 +64,7 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            if (data.user) {
-              setUserReducer(data.user, data.organizations);
-            } else {
-              setUserReducer({}, []);
-            }
+            setUserReducer(data.user || {}, data.organizations);
             history.push('/');
           });
         } else {
