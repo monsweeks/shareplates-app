@@ -1,0 +1,29 @@
+.short-cut-menu-wrapper {
+  display: flex;
+
+  > div {
+    vertical-align: middle;
+    align-self: center;
+
+    &:first-child {
+      flex: 1;
+      text-align: right;
+    }
+  }
+
+  .separator {
+    display: inline-block;
+    height: 10px;
+    width: 3px;
+    background-color: $white;
+    margin: 0 15px;
+    border-right: 1px solid rgba(0, 0, 0, 0.7);
+    border-left: 1px solid rgba(0, 0, 0, 0.7);
+    position: relative;
+    top: 1px;
+  }
+
+  .language-button {
+    margin-right: 16px;
+  }
+}

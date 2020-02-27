@@ -1,0 +1,15 @@
+.circle-icon-wrapper {
+  display: inline-block;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  background-color: $primary;
+  text-align: center;
+  border-radius: 50%;
+  padding-top: 3px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary, 5%);
+  }
+}
