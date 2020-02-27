@@ -23,7 +23,7 @@ class ShortCutMenu extends React.PureComponent {
     } = this.props;
     return (
       <div className={`short-cut-menu-wrapper ${className}`}>
-        <div className='mx-1 ml-5'>
+        <div>
           <SearchInput className='d-none' onSearch={onSearch} />
         </div>
         <div>
