@@ -47,7 +47,6 @@ function processError(error, failHandler) {
           error.response.data.errors &&
           error.response.data.errors.length > 0
         ) {
-
           store.dispatch(
             addMessage(
               error.response.status,
@@ -56,18 +55,29 @@ function processError(error, failHandler) {
               `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
             ),
           );
-
         } else {
           store.dispatch(
             addMessage(
               error.response.status,
               MESSAGE_CATEGORY.ERROR,
               '요청이 올바르지 않습니다.',
-              error.response.data.message,
+              error.response && error.response.data && error.response.data.message,
             ),
           );
         }
 
+        break;
+      }
+
+      case 401: {
+        store.dispatch(
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '인증 실패',
+            error.response && error.response.data && error.response.data.message,
+          ),
+        );
         break;
       }
 
@@ -100,11 +110,19 @@ function afterRequest(response, quiet) {
   }
 }
 
+const axiosConfig = {
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
 function get(uri, params, successHandler, failHandler, quiet) {
   beforeRequest(quiet);
   axios
     .get(`${base}${uri}`, {
       params,
+      withCredentials: true,
     })
     .then((response) => {
       processSuccess(response, successHandler);
@@ -120,7 +138,7 @@ function get(uri, params, successHandler, failHandler, quiet) {
 function post(uri, params, successHandler, failHandler, quiet) {
   beforeRequest(quiet);
   axios
-    .post(`${base}${uri}`, params)
+    .post(`${base}${uri}`, params, axiosConfig)
     .then((response) => {
       processSuccess(response, successHandler);
     })
@@ -134,7 +152,20 @@ function post(uri, params, successHandler, failHandler, quiet) {
 
 function put() {}
 
-function del() {}
+function del(uri, params, successHandler, failHandler, quiet) {
+  beforeRequest(quiet);
+  axios
+    .delete(`${base}${uri}`, { ...axiosConfig, ...params})
+    .then((response) => {
+      processSuccess(response, successHandler);
+    })
+    .catch((error) => {
+      processError(error, failHandler);
+    })
+    .finally((response) => {
+      afterRequest(response, quiet);
+    });
+}
 
 const request = {
   get,

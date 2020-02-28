@@ -1,3 +1,5 @@
+@import "styles/override";
+
 .link-wrapper {
   display: inline-block;
   position: relative;
@@ -6,9 +8,20 @@
     color: inherit;
     height: 100%;
     display: inline-block;
+    white-space: nowrap;
     &:hover {
       text-decoration: none;
     }
+  }
+
+  .underline {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 1px;
+    bottom: -2px;
+    background-color: $blue;
+    display: inline-block;
   }
 
   .liner {
@@ -18,7 +31,6 @@
     height: 2px;
     bottom: -2px;
     background-color: $blue;
-    border-radius: 2px;
     display: inline-block;
   }
 
@@ -26,7 +38,7 @@
     &:hover {
       .liner {
         width: 100%;
-        transition: all 0.2s ease;
+        transition: all 0.1s ease;
       }
 
       a {

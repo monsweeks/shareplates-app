@@ -3,14 +3,14 @@ import {
   CLEAR_MESSAGE,
   ADD_MESSAGE,
   SET_SUPPORTED,
-  SET_USER_DATA,
-  SET_USER_ID,
+  SET_USER,
   SET_LOADING,
   SET_JOIN_EMAIL,
 } from '../actions';
 
 const userState = {
   user: null,
+  organizations : [],
   join: {
     email: null,
   },
@@ -20,17 +20,8 @@ const user = (state = userState, action) => {
   const currentState = { ...state };
 
   switch (action.type) {
-    case SET_USER_ID:
-      currentState[action.origin] = {
-        id: action.id,
-        token: action.token,
-        time: action.time,
-      };
-
-      return currentState;
-
-    case SET_USER_DATA:
-      return { ...state, ...action.userData };
+    case SET_USER:
+      return { ...state, user : action.user, organizations : action.organizations };
 
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });

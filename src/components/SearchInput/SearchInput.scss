@@ -1,0 +1,96 @@
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  transition: all 0.3s;
+  border-radius: 10px;
+  background-color: $gray-300;
+
+  .placeholder {
+    opacity: 0.6;
+    position: absolute;
+    top: 2px;
+    left: 30px;
+    white-space: nowrap;
+    color: $gray-700;
+  }
+
+  .clear-icon,
+  .search-icon {
+    position: absolute;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 2;
+    color: $gray-700;
+    transition: all 0.3s;
+  }
+
+  .search-icon {
+    left: 2px;
+    top: 2px;
+  }
+
+  .clear-icon {
+    right: 2px;
+    top: 1px;
+    display: none;
+  }
+
+  > input {
+    position: relative;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    border-radius: 10px;
+    outline: none;
+    padding: 4px 10px 2px 30px;
+    color: $black;
+    font-size: 0.75rem;
+    transition: all 0.3s;
+  }
+
+  &.focused {
+    width: 100%;
+    transition: all 0.3s;
+    background-color: $primary;
+
+    .placeholder {
+      color: $white;
+      transition: all 0.3s;
+    }
+
+    .search-icon,
+    .clear-icon {
+      display: inline-block;
+      opacity: 1;
+      color: $white;
+      transition: all 0.3s;
+
+      &:hover {
+        color: $yellow;
+        transition: all 0.3s;
+      }
+    }
+
+    > input {
+      color: $white;
+      border-color: transparent;
+      transition: all 0.3s;
+    }
+  }
+
+  &.has-value {
+    .placeholder {
+      opacity: 0;
+    }
+
+    .clear-icon {
+      display: inline-block;
+    }
+  }
+}

@@ -1,5 +1,4 @@
-export const SET_USER_ID = 'SET_USER_ID';
-export const SET_USER_DATA = 'SET_USER_DATA';
+export const SET_USER = 'SET_USER';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
@@ -13,20 +12,11 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUserId(origin, id, token, time) {
+export function setUser(user, organizations) {
   return {
-    type: SET_USER_ID,
-    origin,
-    id,
-    token,
-    time,
-  };
-}
-
-export function setUserData(userData) {
-  return {
-    type: SET_USER_DATA,
-    userData,
+    type: SET_USER,
+    user,
+    organizations,
   };
 }
 

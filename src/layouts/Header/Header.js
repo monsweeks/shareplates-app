@@ -1,27 +1,32 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, TopLogo, Link } from 'components';
+import { TopLogo } from 'components';
 import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
-import LANGUAGES from '../../languages/languages';
+import request from '@/utils/request';
+import { setUser } from '@/actions';
+import Menu from '@/layouts/Header/Menu/Menu';
+import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
+import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
+import QuickMenu from '@//layouts/Header/QuickMenu/QuickMenu';
 
 const menus = [
   {
     icon: 'fal fa-books',
     text: 'label.topic',
-    to: '/topic',
+    to: '/topics',
   },
   {
     icon: 'fal fa-book',
     text: 'label.chapter',
-    to: '/chapter',
+    to: '/chapters',
   },
   {
     icon: 'fal fa-clipboard',
     text: 'label.page',
-    to: '/page',
+    to: '/pages',
   },
 ];
 
@@ -29,96 +34,78 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: null,
+      openMenu: null,
+      openQuickMenu: false,
     };
   }
 
-  setOpen = (open) => {
+  setOpen = (openMenu) => {
     this.setState({
-      open,
+      openMenu,
     });
   };
 
-  getMenuClass = (open) => {
-    if (open === null) {
-      return '';
-    }
+  setOpenQuickMenu = (openQuickMenu) => {
+    this.setState({
+      openQuickMenu,
+    });
+  };
 
-    if (open) {
-      return 'menu-open';
-    }
+  onSearch = () => {
+    console.log('search');
+  };
 
-    return 'menu-close';
+  logout = () => {
+    const { setUser: setUserReducer } = this.props;
+
+    request.del('/api/users/logout', {}, () => {
+      setUserReducer({}, []);
+      this.setOpenQuickMenu(false);
+    });
   };
 
   render() {
-    const { t, i18n, user } = this.props;
-    const { open } = this.state;
+    const { i18n, user, location, organizations } = this.props;
+    const { openMenu, openQuickMenu } = this.state;
+
+    const ready = user !== null;
+    const loggedIn = !!(user && user.id);
 
     return (
-      <header className="top-header-wrapper">
+      <header className="top-header-wrapper g-no-select">
         <div className="top-header-menu">
-          <div className="menu-area text-left d-flex d-md-block pl-2 pl-md-0">
-            <Button
-              className="d-inline-block d-md-none align-self-center"
-              color="primary"
-              onClick={() => {
-                this.setOpen(!open);
-              }}
-            >
-              <i className="fas fa-bars" />
-            </Button>
-            {menus.map((menu) => {
-              return (
-                <Link underline={false} key={menu.text} className="d-none d-md-inline-block menu-item" to={menu.to}>
-                  <div className="screen screen-1" />
-                  <div className="screen screen-2" />
-                  <div className="screen screen-3" />
-                  <div className="screen screen-4" />
-                  <div className="icon">
-                    <span>
-                      <i className={menu.icon} />
-                    </span>
-                  </div>
-                  <div className="text">
-                    <span>{t(menu.text)}</span>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="menu-area text-left d-flex d-md-block pl-md-0">
+            <Menu menus={menus} pathname={location.pathname} openMenu={openMenu} setOpen={this.setOpen} />
           </div>
           <div className="logo-area">
             <TopLogo weatherEffect />
           </div>
           <div className="shortcut-area">
-            {!user && (
-              <Link className="d-none d-md-inline-block" componentClassName="px-2" color="white" to="/users/join">
-                {t('label.memberJoin')}
-              </Link>
-            )}
-            <div className="separator d-none d-md-inline-block" />
-            <div className="override-radio-button language-button d-none d-md-inline-block">
-              {Object.keys(LANGUAGES)
-                .sort()
-                .reverse()
-                .map((language) => {
-                  return (
-                    <button
-                      key={language}
-                      type="button"
-                      className={`${i18n.language === language ? 'selected' : ''}`}
-                      onClick={() => {
-                        i18n.changeLanguage(language);
-                      }}
-                    >
-                      {t(language)}
-                    </button>
-                  );
-                })}
-            </div>
+            <ShortCutMenu
+              ready={ready}
+              loggedIn={loggedIn}
+              setOpenQuickMenu={this.setOpenQuickMenu}
+              language={i18n.language}
+              onChangeLanguage={(language) => {
+                i18n.changeLanguage(language);
+              }}
+              onSearch={this.onSearch}
+              organizations={organizations}
+            />
           </div>
         </div>
-        {open && (
+        <MobileMenu
+          menus={menus}
+          openMenu={openMenu}
+          setOpen={this.setOpen}
+          ready={ready}
+          loggedIn={loggedIn}
+          onChangeLanguage={(language) => {
+            i18n.changeLanguage(language);
+          }}
+          language={i18n.language}
+        />
+        {openMenu && (
           <div
             className="overlay d-md-none"
             onClick={() => {
@@ -126,90 +113,16 @@ class Header extends React.Component {
             }}
           />
         )}
-        <div className={`mobile-menu-area d-md-none ${this.getMenuClass(open)}`}>
-          <div>
-            <div className="top">
-              <TopLogo weatherEffect />
-              <Button
-                color="secondary"
-                className="close-button shadow-none bg-transparent border-0"
-                onClick={() => {
-                  this.setOpen(false);
-                }}
-              >
-                <i className="fal fa-times h5 font-weight-lighter m-0" />
-              </Button>
-            </div>
-            <div className="menu-list">
-              <ul>
-                {menus.map((menu) => {
-                  return (
-                    <li key={menu.text}>
-                      <Link
-                        underline={false}
-                        className="d-inline-block menu-item"
-                        onClick={() => {
-                          this.setOpen(false);
-                        }}
-                        to={menu.to}
-                      >
-                        <div className="icon">
-                          <span>
-                            <i className={menu.icon} />
-                          </span>
-                        </div>
-                        <div className="text">
-                          <span>{t(menu.text)}</span>
-                        </div>
-                        <span className="arrow">
-                          <i className="fal fa-chevron-right" />
-                        </span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            <div className="link-area">
-              {!user && (
-                <Link
-                  componentClassName="px-2"
-                  color="blue"
-                  to="/users/join"
-                  onClick={() => {
-                    this.setOpen(false);
-                  }}
-                >
-                  {t('label.memberJoin')}
-                </Link>
-              )}
-            </div>
-            <div className="shortcut-area">
-              <div>
-                <span className="desc">언어 설정</span>
-                <div className="override-radio-button">
-                  {Object.keys(LANGUAGES)
-                    .sort()
-                    .reverse()
-                    .map((language) => {
-                      return (
-                        <button
-                          key={language}
-                          type="button"
-                          className={`${i18n.language === language ? 'selected' : ''}`}
-                          onClick={() => {
-                            i18n.changeLanguage(language);
-                          }}
-                        >
-                          {t(language)}
-                        </button>
-                      );
-                    })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <QuickMenu
+          openQuickMenu={openQuickMenu}
+          user={user}
+          language={i18n.language}
+          setOpenQuickMenu={this.setOpenQuickMenu}
+          logout={this.logout}
+          onChangeLanguage={(language) => {
+            i18n.changeLanguage(language);
+          }}
+        />
       </header>
     );
   }
@@ -218,13 +131,35 @@ class Header extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
+    organizations: state.user.organizations,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
   };
 };
 
 Header.propTypes = {
   i18n: PropTypes.objectOf(PropTypes.any),
-  t: PropTypes.func,
-  user: PropTypes.objectOf(PropTypes.any),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    picturePath: PropTypes.string,
+  }),
+  organizations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      publicYn: PropTypes.bool,
+    }),
+  ),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
+  setUser: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Header)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));

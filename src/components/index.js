@@ -12,6 +12,8 @@ import TopLogo from '@/components/TopLogo/TopLogo';
 import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
 import Input from '@/components/Input/Input';
+import ChecBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
+import Selector from '@/components/Selector/Selector';
 
 export {
   Button,
@@ -28,4 +30,6 @@ export {
   FormGroup,
   Row,
   Col,
+  ChecBoxInput,
+  Selector,
 };

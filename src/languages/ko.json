@@ -28,6 +28,7 @@
   "label.userConfig": "사용자 설정",
   "label.confirmMyInfo": "내 정보 확인",
   "label.moveToEmailSite": "메일 사이트로 이동",
+  "label.login": "로그인",
 
   "validation.valueMissing": "필수 입력 값입니다",
   "validation.typeMismatch": "입력 형식이 올바르지 않습니다",
@@ -58,6 +59,7 @@
   "message.letsShowVideoTutorial": "영상을 통해 <1>{{text}}</1>의 소개와 사용법 그리고 다양한 활용 방법을 확인해보세요",
   "message.waitPlease": "잠시만 기다려주세요",
   "message.notImplement": "아직 준비되지 않은 기능입니다.",
+  "message.moveToJoinPage": "회원 가입 페이지로 이동",
 
   "sample.hello": "안녕하세요",
   "sample.selected": "{{n}} 개 선택됨."
