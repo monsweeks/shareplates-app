@@ -19,7 +19,7 @@
       min-height: 40px;
       display: flex;
       width: 100%;
-      max-width: 1140px;
+      max-width: 1380px;
       margin: 0 auto;
 
       @include media-breakpoint-down(lg) {
@@ -151,13 +151,93 @@
         }
       }
 
-      .config-col{
+      .config-col {
         z-index: 12;
       }
     }
   }
 
   .topic-list-content {
-    flex: 1;
+    padding-top: 0px;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    margin: 0;
+
+    .row {
+      margin: 0;
+
+      .topic-col {
+        padding-left: 7.5px;
+        padding-right: 7.5px;
+        margin-bottom: 15px;
+
+        .card {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          height: 180px;
+          border-radius: 3px;
+          box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+          cursor: pointer;
+
+          .card-body {
+            display: flex;
+            text-align: center;
+
+            > div {
+              align-self: center;
+              vertical-align: middle;
+              width: 100%;
+            }
+
+            .new-topic-text {
+              .text {
+                font-size: 16px;
+                transition: all 0.3s;
+              }
+
+              .icon {
+                background-color: $primary;
+                color: white;
+                display: inline-block;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                padding-top: 7px;
+                text-align: center;
+                margin-bottom: 10px;
+              }
+            }
+
+            .new-topic-icon {
+              font-size: 40px;
+              line-height: 100%;
+              transition: all 0.3s;
+            }
+
+
+          }
+
+          &:hover {
+
+            .new-topic-text {
+              .text {
+                color: $primary;
+                transition: all 0.3s;
+              }
+            }
+
+            .new-topic-icon {
+              color: $primary;
+              transition: all 0.3s;
+            }
+
+          }
+        }
+      }
+
+
+    }
+
+
   }
 }

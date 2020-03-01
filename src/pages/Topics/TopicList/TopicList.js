@@ -4,23 +4,23 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { DetailLayout } from '@/layouts';
+import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import { setUser } from '@/actions';
-import { Selector } from '@/components';
+import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 const orders = [
   {
     key: 'name',
-    value: <i className="fal fa-sort-alpha-up"/>,
+    value: <i className="fal fa-sort-alpha-up" />,
     tooltip: '이름으로 정렬',
   },
   {
     key: 'creationTime',
-    value: <i className="fal fa-sort-numeric-up"/>,
+    value: <i className="fal fa-sort-numeric-up" />,
     tooltip: '생성일시로 정렬',
   },
 ];
@@ -28,12 +28,12 @@ const orders = [
 const directions = [
   {
     key: 'asc',
-    value: <i className="fal fa-sort-amount-down"/>,
+    value: <i className="fal fa-sort-amount-down" />,
     tooltip: '오름차순으로 정렬',
   },
   {
     key: 'desc',
-    value: <i className="fal fa-sort-amount-up"/>,
+    value: <i className="fal fa-sort-amount-up" />,
     tooltip: '내림차순으로 정렬',
   },
 ];
@@ -62,23 +62,28 @@ class TopicList extends React.Component {
   render() {
     const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
-    const { organizations, setUser: setUserReducer } = this.props;
+    const { organizations, setUser: setUserReducer, history } = this.props;
 
     return (
-      <div className="topic-list-wrapper">
+      <div className="bg-light topic-list-wrapper">
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput placeholder="토픽명으로 검색"/>
+              <SearchInput placeholder="토픽명으로 검색" />
             </div>
-            {openOptions && <div className="g-overlay" onClick={() => {
-              this.setState({
-                openOptions: false,
-              });
-            }}/>}
+            {openOptions && (
+              <div
+                className="g-overlay"
+                onClick={() => {
+                  this.setState({
+                    openOptions: false,
+                  });
+                }}
+              />
+            )}
             <div className={`options ${openOptions ? 'open' : ''}`}>
-              <div className='arrow'>
-                <div/>
+              <div className="arrow">
+                <div />
               </div>
               <div className="organization-col">
                 <span className="label small">ORG</span>
@@ -110,7 +115,7 @@ class TopicList extends React.Component {
                     });
                   }}
                 />
-                <div className="separator"/>
+                <div className="separator" />
                 <RadioButton
                   circle
                   items={directions}
@@ -127,7 +132,7 @@ class TopicList extends React.Component {
               <CircleIcon
                 size="sm"
                 className="d-block d-md-none"
-                icon={<i className="fal fa-ellipsis-h"/>}
+                icon={<i className="fal fa-ellipsis-h" />}
                 onClick={() => {
                   this.setState({
                     openOptions: !openOptions,
@@ -137,9 +142,34 @@ class TopicList extends React.Component {
             </div>
           </div>
         </div>
-        <DetailLayout className="topic-list-content text-center align-self-center">
-          <div className="topic-list">&nbsp;</div>
-        </DetailLayout>
+        <FullLayout className="topic-list-content text-center align-self-center">
+          <div className="topic-list">
+            <Row>
+              <Col className="topic-col" xl={3} lg={4} md={6} sm={6}>
+                <Card
+                  className="g-no-select"
+                  onClick={() => {
+                    history.push('/topics/new');
+                  }}
+                >
+                  <CardBody>
+                    <div>
+                      <div className="new-topic-text">
+                        <div className="icon">
+                          <i className="fal fa-books" />
+                        </div>
+                        <div className="text">새로운 토픽</div>
+                      </div>
+                      <div className="new-topic-icon">
+                        <i className="fal fa-plus" />
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        </FullLayout>
       </div>
     );
   }
@@ -173,6 +203,7 @@ TopicList.propTypes = {
     }),
   ),
   setUser: PropTypes.func,
+  history: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));
