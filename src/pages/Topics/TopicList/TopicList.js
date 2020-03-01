@@ -10,16 +10,17 @@ import RadioButton from '@/components/RadioButton/RadioButton';
 import { setUser } from '@/actions';
 import { Selector } from '@/components';
 import './TopicList.scss';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 const orders = [
   {
     key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
+    value: <i className="fal fa-sort-alpha-up"/>,
     tooltip: '이름으로 정렬',
   },
   {
     key: 'creationTime',
-    value: <i className="fal fa-sort-numeric-up" />,
+    value: <i className="fal fa-sort-numeric-up"/>,
     tooltip: '생성일시로 정렬',
   },
 ];
@@ -27,12 +28,12 @@ const orders = [
 const directions = [
   {
     key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
+    value: <i className="fal fa-sort-amount-down"/>,
     tooltip: '오름차순으로 정렬',
   },
   {
     key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
+    value: <i className="fal fa-sort-amount-up"/>,
     tooltip: '내림차순으로 정렬',
   },
 ];
@@ -44,6 +45,7 @@ class TopicList extends React.Component {
       order: orders[0].key,
       direction: directions[0].key,
       organizationId: null,
+      openOptions: false,
     };
   }
 
@@ -58,7 +60,7 @@ class TopicList extends React.Component {
   }
 
   render() {
-    const { order, direction, organizationId } = this.state;
+    const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
     const { organizations, setUser: setUserReducer } = this.props;
 
@@ -67,46 +69,68 @@ class TopicList extends React.Component {
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput placeholder='토픽명으로 검색' />
+              <SearchInput placeholder="토픽명으로 검색"/>
             </div>
-            <div className="organization-col">
-              <span className="label small">ORG</span>
-              <Selector
-                className='organization-selector'
-                items={organizations.map((org) => {
-                  return {
-                    key: org.id,
-                    value: org.name,
-                  };
-                })}
-                value={organizationId}
-                onChange={(id) => {
-                  this.setState({
-                    organizationId : id
-                  });
-                }}
-              />
+            {openOptions && <div className="g-overlay" onClick={() => {
+              this.setState({
+                openOptions: false,
+              });
+            }}/>}
+            <div className={`options ${openOptions ? 'open' : ''}`}>
+              <div className='arrow'>
+                <div/>
+              </div>
+              <div className="organization-col">
+                <span className="label small">ORG</span>
+                <Selector
+                  className="organization-selector"
+                  items={organizations.map((org) => {
+                    return {
+                      key: org.id,
+                      value: org.name,
+                    };
+                  })}
+                  value={organizationId}
+                  onChange={(id) => {
+                    this.setState({
+                      organizationId: id,
+                    });
+                  }}
+                />
+              </div>
+              <div className="order-col">
+                <span className="label small">정렬</span>
+                <RadioButton
+                  circle
+                  items={orders}
+                  value={order}
+                  onClick={(value) => {
+                    this.setState({
+                      order: value,
+                    });
+                  }}
+                />
+                <div className="separator"/>
+                <RadioButton
+                  circle
+                  items={directions}
+                  value={direction}
+                  onClick={(value) => {
+                    this.setState({
+                      direction: value,
+                    });
+                  }}
+                />
+              </div>
             </div>
-            <div className="order-col">
-              <span className="label small">정렬</span>
-              <RadioButton
-                circle
-                items={orders}
-                value={order}
-                onClick={(value) => {
+            <div className="config-col">
+              <CircleIcon
+                size="sm"
+                className="d-block d-md-none"
+                icon={<i className="fal fa-ellipsis-h"/>}
+                onClick={() => {
                   this.setState({
-                    order: value,
-                  });
-                }}
-              />
-              <div className="separator" />
-              <RadioButton
-                circle
-                items={directions}
-                value={direction}
-                onClick={(value) => {
-                  this.setState({
-                    direction: value,
+                    openOptions: !openOptions,
                   });
                 }}
               />

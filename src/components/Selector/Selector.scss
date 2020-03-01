@@ -3,11 +3,12 @@
   position: relative;
 
   .selector-current {
-    background-color: $primary;
+    background-color: $white;
     display: flex;
-    border-radius: 3px;
-    color: $white;
     cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 2px;
+
 
     &.open {
       border-radius: 3px 3px 0 0;
@@ -15,12 +16,15 @@
 
     &:hover {
       background-color: darken($primary, 5%);
+      background-color: $primary;
+      color: $white;
+      border-color: transparent;
     }
 
     > span {
       display: inline-block;
-      padding: 3px 10px 2px;
-      font-size: 0.8rem;
+      padding: 4px 6px 2px;
+      font-size: 0.70rem;
 
       &.text {
         text-transform: uppercase;
@@ -38,14 +42,14 @@
           display: inline-block;
           width: 1px;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.2);
+          background-color: rgba(0, 0, 0, 0.3);
         }
       }
 
       &.icon {
         flex: 0;
         padding-left: 6px;
-        padding-right: 8px;
+        padding-right: 6px;
       }
     }
   }
@@ -55,7 +59,7 @@
     background-color: $primary;
     color: $white;
     width: 100%;
-    font-size: 0.8rem;
+    font-size: 0.75em;
     margin-top: 1px;
     max-height: calc(27px * 8);
     overflow-y: auto;
@@ -67,7 +71,7 @@
       cursor: pointer;
 
       li {
-        padding: 4px 10px 3px;
+        padding: 4px 7px 2px;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         position: relative;
