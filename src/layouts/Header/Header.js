@@ -78,7 +78,7 @@ class Header extends React.Component {
             <Menu menus={menus} pathname={location.pathname} openMenu={openMenu} setOpen={this.setOpen} />
           </div>
           <div className="logo-area">
-            <TopLogo weatherEffect />
+            <TopLogo weatherEffect={false} />
           </div>
           <div className="shortcut-area">
             <ShortCutMenu

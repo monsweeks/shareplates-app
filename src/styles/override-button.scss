@@ -1,5 +1,12 @@
 button.btn {
   border-radius: 2px;
+  white-space: nowrap;
+
+  &.btn-xs {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 0.8rem;
+  }
 
   &:active {
     outline: none;
@@ -7,7 +14,6 @@ button.btn {
 
   &:focus {
     outline: none;
-    _box-shadow: 0 0 2px 2px lighten($primary, 10%);
   }
 
   &.g-pure-button {

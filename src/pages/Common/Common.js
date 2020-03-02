@@ -20,11 +20,7 @@ class Common extends React.PureComponent {
       '/api/users/my-info',
       null,
       (data) => {
-        if (data.user) {
-          setUserReducer(data.user, data.organizations);
-        } else {
-          setUserReducer({}, []);
-        }
+        setUserReducer(data.user || {}, data.organizations);
       },
       () => {
         setUserReducer({}, []);

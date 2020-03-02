@@ -1,28 +1,243 @@
-.login-wrapper {
-  @include media-breakpoint-up(lg) {
-    max-width: 800px !important;
+.topic-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .label {
+    position: relative;
+    margin-right: 0.5rem;
   }
 
-  .find-user-account {
-    font-size: 0.75rem;
-  }
+  .search-bar {
+    flex: 0;
+    _border-bottom: 1px solid $gray-400;
+    background-color: $light;
+    position: relative;
 
-  .mobile-social-buttons {
-    position: absolute;
-    display: inline-block;
-    right: 15px;
+    > div {
+      min-height: 40px;
+      display: flex;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
 
-    button {
-      margin-left: 0.25rem;
+      @include media-breakpoint-down(lg) {
+        padding: 0 1rem;
+      }
+
+      @include media-breakpoint-down(md) {
+        padding: 0 0.25rem;
+      }
+
+
+      > div {
+        padding: 0 4px;
+        vertical-align: middle;
+        align-self: center;
+      }
+
+      .search-col {
+        flex: 1;
+        text-align: left;
+        margin-right: 1rem;
+
+        @include media-breakpoint-down(md) {
+          margin-right: 0;
+        }
+
+
+      }
+
+      .options {
+        flex: 0;
+        white-space: nowrap;
+        display: block;
+        border-radius: 3px;
+
+        .arrow {
+          position: absolute;
+          top: -4px;
+          left: 0;
+          width: 100%;
+          text-align: right;
+          height: 8px;
+          margin: 0 !important;
+          display: none;
+
+          > div {
+            width: 8px;
+            height: 8px;
+            _border: 1px solid rgba(0, 0, 0, 0.4);
+            transform: rotate(45deg);
+            background-color: $white;
+            display: inline-block;
+            position: absolute;
+            top: 1px;
+            right: 8px;
+            border-right: none;
+            border-bottom: none;
+          }
+        }
+
+        @include media-breakpoint-down(sm) {
+          display: none;
+        }
+
+        > div {
+          display: inline-block;
+        }
+
+        &.open {
+          @include media-breakpoint-down(sm) {
+            _border: 1px solid rgba(0, 0, 0, 0.3);
+            display: inline-block;
+            position: absolute;
+            right: 5px;
+            top: 35px;
+            background-color: $white;
+            padding: 1rem;
+            z-index: 12;
+
+            .arrow {
+              display: block;
+            }
+
+            > div {
+              display: block;
+              margin-bottom: 1rem;
+
+              .label {
+                width: 25px;
+                display: inline-block;
+              }
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+
+      .organization-col {
+        flex: 0;
+        white-space: nowrap;
+        margin-right: 1rem;
+
+        @include media-breakpoint-down(sm) {
+          margin-right: 0;
+        }
+
+        .organization-selector {
+          min-width: 120px;
+        }
+      }
+
+      .order-col {
+        flex: 0;
+        white-space: nowrap;
+
+        .label {
+          top: -1px;
+        }
+
+        .separator {
+          display: inline-block;
+          height: 10px;
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 1px;
+          margin: 0 0.5rem;
+        }
+      }
+
+      .config-col {
+        z-index: 12;
+      }
     }
   }
 
-  @include media-breakpoint-down(xs) {
-    .mobile-social-buttons {
-      position: static;
-      display: block;
-      right: auto;
-      padding: $spacer 0 0;
+  .topic-list-content {
+    padding-top: 0px;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    margin: 0;
+
+    .row {
+      margin: 0;
+
+      .topic-col {
+        padding-left: 7.5px;
+        padding-right: 7.5px;
+        margin-bottom: 15px;
+
+        .card {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          height: 180px;
+          border-radius: 3px;
+          box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+          cursor: pointer;
+
+          .card-body {
+            display: flex;
+            text-align: center;
+
+            > div {
+              align-self: center;
+              vertical-align: middle;
+              width: 100%;
+            }
+
+            .new-topic-text {
+              .text {
+                font-size: 16px;
+                transition: all 0.3s;
+              }
+
+              .icon {
+                background-color: $primary;
+                color: white;
+                display: inline-block;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                padding-top: 7px;
+                text-align: center;
+                margin-bottom: 10px;
+              }
+            }
+
+            .new-topic-icon {
+              font-size: 40px;
+              line-height: 100%;
+              transition: all 0.3s;
+            }
+
+
+          }
+
+          &:hover {
+
+            .new-topic-text {
+              .text {
+                color: $primary;
+                transition: all 0.3s;
+              }
+            }
+
+            .new-topic-icon {
+              color: $primary;
+              transition: all 0.3s;
+            }
+
+          }
+        }
+      }
+
+
     }
+
+
   }
 }

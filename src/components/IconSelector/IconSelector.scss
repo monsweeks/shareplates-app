@@ -1,0 +1,74 @@
+.icon-selector-wrapper {
+  > div {
+    display: flex;
+
+    .image-item {
+      border-radius: 50%;
+      display: inline-block;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .current-images {
+      flex: 0;
+      align-self: center;
+      padding: 0 20px;
+
+      .image-item {
+        background-color: $primary;
+        width: 100px;
+        height: 100px;
+        padding: 10px;
+
+        &.no-image {
+          background-color: $gray-400;
+        }
+      }
+    }
+
+    .paging {
+      flex: 0;
+      min-width: 50px;
+      text-align: center;
+      align-self: center;
+      font-size: 30px;
+      height: 100%;
+      cursor: pointer;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    .image-list {
+      flex: 1;
+      line-height: 0;
+      align-self: center;
+
+      .image-item {
+        background-color: $gray-400;
+        width: 50px;
+        height: 50px;
+        padding: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          background-color: $primary;
+          transition: all 0.3s;
+        }
+
+        &.selected {
+          background-color: $primary;
+          transition: all 0.3s;
+        }
+      }
+    }
+  }
+}

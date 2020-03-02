@@ -5,7 +5,7 @@ import './FullLayout.scss';
 class FullLayout extends React.PureComponent {
   render() {
     const { children, className } = this.props;
-    return <div className={`full-layout-wrapper ${className}`}>{children}</div>;
+    return <div className={`full-layout-wrapper container ${className}`}>{children}</div>;
   }
 }
 

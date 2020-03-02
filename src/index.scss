@@ -35,6 +35,19 @@ code {
   background-color: #fcdc3b;
 }
 
+.scrollbar-sm::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #333;
+}
+
+.scrollbar-sm::-webkit-scrollbar-thumb {
+  background-color: #1d88ea;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #fcdc3b;
+}
+
 @media (max-width: 576px) {
 }
 

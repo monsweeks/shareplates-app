@@ -1,0 +1,21 @@
+.footer-header-wrapper {
+  min-height: 60px;
+  background-color: $gray-200;
+
+  text-align: center;
+  width: 100%;
+  display: flex;
+  border-top: 1px solid rgba(0,0,0,0.1);
+
+
+  > div {
+    flex: 1;
+    justify-content: center;
+    vertical-align: middle;
+    align-self: center;
+
+    .copyright {
+      font-size: 0.8rem;
+    }
+  }
+}

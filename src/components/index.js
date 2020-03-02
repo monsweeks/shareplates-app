@@ -13,6 +13,13 @@ import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
 import Input from '@/components/Input/Input';
 import ChecBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
+import Selector from '@/components/Selector/Selector';
+import TextArea from '@/components/TextArea/TextArea';
+import IconSelector from '@/components/IconSelector/IconSelector';
+import UserManager from '@/components/UserManager/UserManager';
+import UserCard from '@/components/UserCard/UserCard';
+import UserSearchPopup from '@/components/UserSearchPopup/UserSearchPopup';
+import Popup from '@/components/Popup/Popup';
 
 export {
   Button,
@@ -30,4 +37,11 @@ export {
   Row,
   Col,
   ChecBoxInput,
+  Selector,
+  TextArea,
+  IconSelector,
+  UserManager,
+  UserCard,
+  UserSearchPopup,
+  Popup,
 };
