@@ -298,7 +298,7 @@ class IconSelector extends React.Component {
             <i className="fal fa-chevron-right" />
           </div>
         </div>
-        <div className="small text-uppercase text-right w-100 d-block">
+        <div className="small text-uppercase text-right w-100 d-none">
           ICON FROM
           <a href="https://www.flaticon.com/kr/authors/wissawa-khamsriwath" title="Wissawa Khamsriwath">
             Wissawa Khamsriwath

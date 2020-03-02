@@ -8,7 +8,7 @@ class SearchInput extends React.Component {
     super(props);
     this.state = {
       focus: false,
-      searchWord : '',
+      searchWord: '',
     };
   }
 
@@ -19,16 +19,19 @@ class SearchInput extends React.Component {
   };
 
   render() {
-    const { className, onSearch, placeholder } = this.props;
+    const { className, onSearch, placeholder, onChange } = this.props;
     const { focus, searchWord } = this.state;
     return (
       <div className={`${className} search-input-wrapper ${focus ? 'focused' : ''} ${searchWord ? 'has-value' : ''}`}>
-        <div className='placeholder'>{placeholder}</div>
+        <div className="placeholder">{placeholder}</div>
         <input
           type="text"
           value={searchWord}
           onChange={(e) => {
             this.setSearchWord(e.target.value);
+            if (onChange) {
+              onChange(e.target.value);
+            }
           }}
           onBlur={() => {
             setTimeout(() => {
@@ -42,11 +45,15 @@ class SearchInput extends React.Component {
               focus: true,
             });
           }}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              onSearch(searchWord);
+            }
+          }}
         />
         <div
           className="clear-icon"
           onClick={() => {
-            console.log(1);
             this.setSearchWord('');
           }}
         >
@@ -55,7 +62,9 @@ class SearchInput extends React.Component {
         <div
           className="search-icon"
           onClick={() => {
-            onSearch(searchWord);
+            if (onSearch) {
+              onSearch(searchWord);
+            }
           }}
         >
           <i className="fal fa-search" />
@@ -69,11 +78,12 @@ export default withTranslation()(SearchInput);
 
 SearchInput.defaultProps = {
   className: '',
-  placeholder : '',
+  placeholder: '',
 };
 
 SearchInput.propTypes = {
   className: PropTypes.string,
   onSearch: PropTypes.func,
-  placeholder : PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
 };

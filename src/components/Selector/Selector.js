@@ -13,8 +13,14 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value } = this.props;
-    const selcetedItem = items.find((item) => item.key === value);
+    const { className, onChange, items, value, addAll } = this.props;
+    let selcetedItem = items.find((item) => item.key === value);
+    if (addAll && value === '') {
+      selcetedItem = {
+        key: '',
+        value: 'ALL',
+      };
+    }
 
     return (
       <div className={`selector-wrapper ${className}`}>
@@ -36,6 +42,20 @@ class Selector extends React.Component {
         </div>
         <div className={`${open ? 'd-block' : 'd-none'} selector-list scrollbar-sm`}>
           <ul>
+            {addAll && (
+              <li
+                className={value === '' ? 'selected' : ''}
+                onClick={() => {
+                  onChange('');
+                  this.setState({
+                    open: false,
+                  });
+                }}
+              >
+                <span className="select-arrow" />
+                ALL
+              </li>
+            )}
             {items.map((item) => {
               return (
                 <li
@@ -48,7 +68,7 @@ class Selector extends React.Component {
                     });
                   }}
                 >
-                  <span className='select-arrow' />
+                  <span className="select-arrow" />
                   {item.value}
                 </li>
               );
@@ -64,6 +84,7 @@ export default withTranslation()(Selector);
 
 Selector.defaultProps = {
   className: '',
+  addAll: false,
 };
 
 Selector.propTypes = {
@@ -76,4 +97,5 @@ Selector.propTypes = {
     }),
   ),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  addAll: PropTypes.bool,
 };

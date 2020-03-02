@@ -4,6 +4,7 @@ export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
+export const SET_ORGANIZATION_ID = 'SET_ORGANIZATION_ID';
 
 export function setJoinEmail(email) {
   return {
@@ -17,6 +18,13 @@ export function setUser(user, organizations) {
     type: SET_USER,
     user,
     organizations,
+  };
+}
+
+export function setOrganization(user, organizationId) {
+  return {
+    type: SET_ORGANIZATION_ID,
+    organizationId,
   };
 }
 

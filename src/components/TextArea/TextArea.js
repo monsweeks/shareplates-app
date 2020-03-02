@@ -61,6 +61,7 @@ class TextArea extends React.Component {
       t,
       // eslint-disable-next-line react/prop-types
       tReady,
+      simple,
       customInputValidationMessage,
       externalValidationMessage,
       ...last
@@ -71,7 +72,7 @@ class TextArea extends React.Component {
       <div
         className={`text-area-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${value ? 'has-value' : ''} ${
           valid ? 'valid' : 'in-valid'
-        }`}
+        } ${simple ? 'simple' : ''}`}
         onClick={() => {
           this.control.current.focus();
         }}
@@ -115,6 +116,7 @@ TextArea.defaultProps = {
   value: '',
   required: false,
   type: 'text',
+  simple : false,
 };
 
 TextArea.propTypes = {
@@ -130,6 +132,7 @@ TextArea.propTypes = {
   type: PropTypes.string,
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
   externalValidationMessage : PropTypes.string,
+  simple : PropTypes.bool,
 };
 
 export default withTranslation()(TextArea);

@@ -9,10 +9,11 @@
   .placeholder {
     opacity: 0.6;
     position: absolute;
-    top: 2px;
+    top: 4px;
     left: 30px;
     white-space: nowrap;
     color: $gray-700;
+    font-size: 0.75rem;
   }
 
   .clear-icon,
@@ -37,7 +38,7 @@
 
   .clear-icon {
     right: 2px;
-    top: 1px;
+    top: 2px;
     display: none;
   }
 

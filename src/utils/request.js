@@ -92,6 +92,19 @@ function processError(error, failHandler) {
         );
         break;
       }
+
+      case 409: {
+        store.dispatch(
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '요청이 올바르지 않습니다.',
+            error.response && error.response.data && error.response.data.message,
+          ),
+        );
+        break;
+      }
+
       default: {
         store.dispatch(
           addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'),
