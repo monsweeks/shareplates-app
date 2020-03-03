@@ -2,7 +2,6 @@
   display: block;
   position: relative;
   padding-top: 20px;
-  _background-color: red;
 
   input {
     border: none;
@@ -23,6 +22,17 @@
 
     &:invalid {
       border-bottom: 1px solid $border-color;
+    }
+  }
+
+  &.has-border {
+    input {
+      border : 1px solid $border-color;
+      border-radius: 3px;
+
+      &:focus {
+        border-color: $primary;
+      }
     }
   }
 
@@ -47,7 +57,7 @@
     z-index: 1;
     width: 100%;
 
-    @include media-breakpoint-down(xs) {
+    @media (max-width: 576px) {
       font-size: 0.9rem;
     }
 
@@ -62,7 +72,7 @@
         _color: $primary;
         font-size: 0.9rem;
         margin-left: 5px;
-        @include media-breakpoint-down(xs) {
+        @media (max-width: 576px) {
           font-size: 0.8rem;
         }
         &:before {
@@ -113,7 +123,7 @@
     }
   }
 
-  @include media-breakpoint-up(md) {
+  @media (min-width: 992px) {
     &:hover {
       .liner {
         width: 100%;

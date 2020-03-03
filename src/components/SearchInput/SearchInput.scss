@@ -5,11 +5,14 @@
   transition: all 0.3s;
   border-radius: 10px;
   background-color: $gray-300;
+  overflow-x: hidden;
+  vertical-align: middle;
+
 
   .placeholder {
     opacity: 0.6;
     position: absolute;
-    top: 4px;
+    top: 5px;
     left: 30px;
     white-space: nowrap;
     color: $gray-700;
@@ -33,12 +36,12 @@
 
   .search-icon {
     left: 2px;
-    top: 2px;
+    top: 4px;
   }
 
   .clear-icon {
     right: 2px;
-    top: 2px;
+    top: 4px;
     display: none;
   }
 
@@ -49,7 +52,7 @@
     background-color: transparent;
     border-radius: 10px;
     outline: none;
-    padding: 4px 10px 2px 30px;
+    padding: 5px 10px 5px 30px;
     color: $black;
     font-size: 0.75rem;
     transition: all 0.3s;

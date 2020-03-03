@@ -1,6 +1,6 @@
 .login-wrapper {
-  @include media-breakpoint-up(lg) {
-    max-width: 800px !important;
+  @media (min-width: 1200px) {
+    max-width: 900px !important;
   }
 
   .find-user-account {
@@ -17,12 +17,12 @@
     }
   }
 
-  @include media-breakpoint-down(xs) {
+  @media (max-width: 576px) {
     .mobile-social-buttons {
       position: static;
       display: block;
       right: auto;
-      padding: $spacer 0 0;
+      padding: 1rem 0 0;
     }
   }
 }

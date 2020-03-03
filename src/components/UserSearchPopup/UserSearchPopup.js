@@ -65,7 +65,7 @@ class UserSearchPopup extends React.Component {
             <div className="user-search-content first">
               <div className="search-bar">
                 <div className="organization-col">
-                  <span className="label small mr-2">ORG</span>
+                  <span className="label small mr-2 d-none d-sm-inline-block">ORG</span>
                   <Selector
                     className="organization-selector"
                     items={organizations.map((org) => {
@@ -83,7 +83,7 @@ class UserSearchPopup extends React.Component {
                     }}
                   />
                 </div>
-                <div className="search-col pr-3">
+                <div className="search-col">
                   <SearchInput
                     onChange={this.onChangeCondition}
                     onSearch={this.search}
@@ -132,7 +132,7 @@ class UserSearchPopup extends React.Component {
               </div>
             </div>
           </Col>
-          <Col className="user-search-col" lg={3}>
+          <Col className="user-search-col d-none d-lg-block" lg={3}>
             <div className="user-search-content">
               <div className="title-bar">
                 <div>

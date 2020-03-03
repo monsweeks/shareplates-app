@@ -23,7 +23,7 @@
     }
 
     &:hover {
-      @include media-breakpoint-up(md) {
+      @media (min-width: 992px) {
         background-color: darken($light, 4%);
       }
     }
@@ -32,7 +32,7 @@
       background-color: $yellow;
       color: $black;
       &:hover {
-        @include media-breakpoint-up(md) {
+        @media (min-width: 992px) {
           background-color: darken($yellow, 4%);
         }
       }

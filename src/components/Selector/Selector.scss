@@ -2,13 +2,20 @@
   display: inline-block;
   position: relative;
 
+  .selector-overlay{
+    z-index: 1;
+    background-color: transparent;
+  }
+
   .selector-current {
     background-color: $white;
     display: flex;
     cursor: pointer;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 2px;
-
+    text-align: left;
+    position: relative;
+    z-index: 1;
 
     &.open {
       border-radius: 3px 3px 0 0;
@@ -23,8 +30,8 @@
 
     > span {
       display: inline-block;
-      padding: 3px 6px 2px;
-      font-size: 0.70rem;
+      padding: 4px 6px;
+      font-size: 0.75rem;
 
       &.text {
         text-transform: uppercase;
@@ -32,10 +39,10 @@
       }
 
       &.liner {
-        padding: 5px 0 0;
+        padding: 6px 0 0;
         width: 1px;
         flex: 0;
-        height: 18px;
+        height: 20px;
         display: inline-block;
 
         > span {
@@ -56,26 +63,36 @@
 
   .selector-list {
     position: absolute;
-    background-color: $primary;
-    color: $white;
+    background-color: $white;
     width: 100%;
     font-size: 0.75em;
-    margin-top: 1px;
-    max-height: calc(27px * 8);
+    margin-top: 0px;
+    max-height: calc(28px * 8);
     overflow-y: auto;
+    z-index: 1;
 
     ul {
       list-style: none;
-      padding: 0;
+      padding: 1px;
       margin: 0;
       cursor: pointer;
+      border-left: 1px solid rgba(0, 0, 0, 0.3);
+      border-right: 1px solid rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 
       li {
-        padding: 4px 7px 2px;
+        padding: 6px 7px;
         text-transform: uppercase;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
         position: relative;
         overflow: hidden;
+        text-align: left;
+        margin-bottom: 1px;
+
+        &:last-child  {
+          border-bottom: none;
+          margin-bottom: 0;
+        }
 
         .select-arrow {
           width: 40px;
@@ -91,13 +108,13 @@
 
         &.selected {
           font-family: LGSmHaB;
-          .select-arrow {
-            _display: inline-block;
-          }
+          background-color: $primary;
+          color: $white;
         }
 
         &:hover {
           background-color: darken($primary, 5%);
+          color: $white;
         }
       }
     }

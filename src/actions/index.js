@@ -5,6 +5,7 @@ export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
 export const SET_ORGANIZATION_ID = 'SET_ORGANIZATION_ID';
+export const SET_PAGE_COLOR = 'SET_PAGE_COLOR';
 
 export function setJoinEmail(email) {
   return {
@@ -55,5 +56,12 @@ export function setLoading(loading) {
   return {
     type: SET_LOADING,
     loading,
+  };
+}
+
+export function setPageColor(pageColor) {
+  return {
+    type: SET_PAGE_COLOR,
+    pageColor,
   };
 }

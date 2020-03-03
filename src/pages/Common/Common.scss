@@ -1,6 +1,6 @@
 .common-wrapper {
   .common-message {
-    padding: $spacer 0;
+    padding: 1rem 0;
     background-color: $white;
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@
       line-height: 0;
       margin-bottom: 0.5rem;
 
-      @include media-breakpoint-down(md) {
+      @media (max-width: 992px) {
         font-size: 2.4rem;
       }
 
@@ -26,7 +26,7 @@
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
 
-      @include media-breakpoint-down(md) {
+      @media (max-width: 992px) {
         font-size: 1.1em;
       }
 

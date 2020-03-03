@@ -7,8 +7,8 @@ import * as serviceWorker from 'serviceWorker';
 import store from './store';
 import '@/languages/i18n';
 import '@fortawesome/fontawesome-pro/css/all.min.css';
-import '@/styles/override.scss';
-import '@/styles/fonts.scss';
+import '@/styles/override-variables.scss';
+import '@/styles/import-overrides.scss';
 import './index.scss';
 
 ReactDOM.render(

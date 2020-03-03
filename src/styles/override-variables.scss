@@ -52,25 +52,4 @@ $list-group-hover-bg: lighten($list-group-bg, 10%);
 $list-group-active-color: $white;
 $list-group-active-bg: $list-group-bg;
 $list-group-disabled-color: lighten($list-group-bg, 30%);
-
-.text-black {
-  color: $black !important;
-}
-
-.text-blue {
-  color: $blue !important;
-}
-
-.bg-gray-200 {
-  background-color: $gray-200;
-}
-
-.bg-gray-300 {
-  background-color: $gray-300;
-}
-
-.bg-gray-400 {
-  background-color: $gray-400;
-}
-
-$border-color : #C4C4C4;
+$border-color : #999;

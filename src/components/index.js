@@ -20,6 +20,8 @@ import UserManager from '@/components/UserManager/UserManager';
 import UserCard from '@/components/UserCard/UserCard';
 import UserSearchPopup from '@/components/UserSearchPopup/UserSearchPopup';
 import Popup from '@/components/Popup/Popup';
+import SubLabel from '@/components/SubLabel/SubLabel';
+import Description from '@/components/Description/Description';
 
 export {
   Button,
@@ -44,4 +46,6 @@ export {
   UserCard,
   UserSearchPopup,
   Popup,
+  SubLabel,
+  Description,
 };

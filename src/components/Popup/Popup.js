@@ -5,6 +5,18 @@ import './Popup.scss';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class Popup extends React.PureComponent {
+
+  overflow = null;
+
+  componentDidMount() {
+    this.overflow = document.querySelector('body').style.overflow;
+    document.querySelector('body').style.overflow = 'hidden';
+  }
+
+  componentWillUnmount() {
+    document.querySelector('body').style.overflow = this.overflow;
+  }
+
   render() {
     const { className, open, children, title, setOpen } = this.props;
 

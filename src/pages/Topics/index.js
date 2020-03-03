@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { NoMatch, TopicList, NewTopic } from 'pages';
+import { NewTopic, NoMatch, TopicList } from 'pages';
 import Chapters from '@/pages/Topics/Chapters';
 
 function Topics() {

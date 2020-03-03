@@ -27,7 +27,7 @@ CheckBoxInput.defaultProps = {
   label: '',
   onChange: null,
   value: false,
-  size : 'md',
+  size: 'md',
 };
 
 CheckBoxInput.propTypes = {
@@ -35,7 +35,7 @@ CheckBoxInput.propTypes = {
   label: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.bool,
-  size : PropTypes.string,
+  size: PropTypes.string,
 };
 
 export default CheckBoxInput;

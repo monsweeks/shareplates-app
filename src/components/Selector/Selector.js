@@ -23,7 +23,12 @@ class Selector extends React.Component {
     }
 
     return (
-      <div className={`selector-wrapper ${className}`}>
+      <div className={`selector-wrapper g-no-select ${className}`}>
+        {open && <div className='selector-overlay g-overlay' onClick={() => {
+          this.setState({
+            open: false,
+          });
+        }}/>}
         <div
           className={`${open ? 'open' : ''} selector-current`}
           onClick={() => {
