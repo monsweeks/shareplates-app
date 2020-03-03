@@ -68,7 +68,7 @@
       }
     }
 
-    @include media-breakpoint-up(md) {
+    @media (min-width: 992px) {
       &:hover {
         .current-arrow {
           opacity: 0.7;

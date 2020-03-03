@@ -1,13 +1,5 @@
 import { combineReducers } from 'redux';
-import {
-  CLEAR_MESSAGE,
-  ADD_MESSAGE,
-  SET_SUPPORTED,
-  SET_USER,
-  SET_ORGANIZATION_ID,
-  SET_LOADING,
-  SET_JOIN_EMAIL,
-} from '../actions';
+import { ADD_MESSAGE, CLEAR_MESSAGE, SET_JOIN_EMAIL, SET_LOADING, SET_ORGANIZATION_ID, SET_SUPPORTED, SET_USER } from '../actions';
 
 const userState = {
   user: null,

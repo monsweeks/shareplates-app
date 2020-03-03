@@ -7,12 +7,12 @@
     border-radius: 3px;
     position: relative;
 
-    @include media-breakpoint-down(lg) {
+    @media (max-width: 1200px) {
       max-width: none;
       margin: 0 40px;
     }
 
-    @include media-breakpoint-down(sm) {
+    @media (max-width: 768px) {
       max-width: none;
       margin: 0 20px;
     }

@@ -1,11 +1,11 @@
 h1 {
   font-size: 1.8rem;
 
-  @include media-breakpoint-down(sm) {
+  @media (max-width: 768px) {
     font-size: 1.8rem;
   }
 
-  @include media-breakpoint-down(xs) {
+  @media (max-width: 576px) {
     font-size: 1.5rem;
   }
 }

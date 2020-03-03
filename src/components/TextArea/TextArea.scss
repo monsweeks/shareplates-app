@@ -53,7 +53,7 @@
     z-index: 3;
     width: 100%;
 
-    @include media-breakpoint-down(xs) {
+    @media (max-width: 576px) {
       font-size: 0.9rem;
     }
 
@@ -64,7 +64,7 @@
         _color: $primary;
         font-size: 0.9rem;
         margin-left: 5px;
-        @include media-breakpoint-down(xs) {
+        @media (max-width: 576px) {
           font-size: 0.8rem;
         }
         &:before {
@@ -115,7 +115,7 @@
     }
   }
 
-  @include media-breakpoint-up(md) {
+  @media (min-width: 992px) {
     &:hover {
       .liner {
         width: 100%;

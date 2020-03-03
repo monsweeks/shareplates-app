@@ -4,9 +4,9 @@
 	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
 ]>
 <svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="100px" height="100px" viewBox="-3.925 -3.479 100 100" enable-background="new -3.925 -3.479 100 100"
-	 xml:space="preserve">
+     xmlns="http://www.w3.org/2000/svg"
+     x="0px" y="0px" width="100px" height="100px" viewBox="-3.925 -3.479 100 100" enable-background="new -3.925 -3.479 100 100"
+     xml:space="preserve">
 <defs>
 </defs>
 <path fill="#9F6C24" stroke="#2A2B2B" stroke-width="3" d="M64.971,2.2c-5.447,2.814-11.625,4.414-18.178,4.414

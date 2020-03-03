@@ -6,19 +6,7 @@ import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { setOrganization, setUser } from 'actions';
 import { RegisterLayout } from '@/layouts';
-import {
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  IconSelector,
-  Input,
-  Popup,
-  Row,
-  TextArea,
-  UserManager,
-  UserSearchPopup,
-} from '@/components';
+import { Button, Col, Form, FormGroup, IconSelector, Input, Popup, Row, TextArea, UserManager, UserSearchPopup } from '@/components';
 import request from '@/utils/request';
 
 import './NewTopic.scss';

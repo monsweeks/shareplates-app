@@ -16,7 +16,7 @@
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     color: $black;
 
-    @include media-breakpoint-down(xs) {
+    @media (max-width: 576px) {
       width: calc(100% - 20px);
       margin: 0 auto;
     }
@@ -52,7 +52,7 @@
       text-align: center;
       padding-left: 250px;
 
-      @include media-breakpoint-down(lg) {
+      @media (max-width: 1200px) {
         padding-left: calc(100% - 50px);
       }
 

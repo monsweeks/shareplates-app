@@ -471,7 +471,7 @@ module.exports = function(webpackEnv) {
               ).concat({
                 loader: require.resolve('sass-loader'),
                 options: {
-                  prependData:`@import "styles/override";`,
+                  prependData:`@import "styles/override-variables";`,
                   sassOptions: {
                     includePaths: [paths.appSrc + '/styles'],
                     sourceMap: isEnvProduction && shouldUseSourceMap,

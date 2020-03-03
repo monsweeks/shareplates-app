@@ -84,7 +84,7 @@ $delay1: random(3);
     }
 
     &:hover {
-      @include media-breakpoint-up(md) {
+      @media (min-width: 992px) {
         .logo-path {
           opacity: 1;
           transition: opacity 0.3s;

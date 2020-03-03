@@ -18,12 +18,12 @@ export default CircleIcon;
 CircleIcon.defaultProps = {
   className: '',
   icon: <i className="fal fa-info" />,
-  size : 'md',
+  size: 'md',
 };
 
 CircleIcon.propTypes = {
   onClick: PropTypes.func,
   className: PropTypes.string,
   icon: PropTypes.node,
-  size : PropTypes.string,
+  size: PropTypes.string,
 };
