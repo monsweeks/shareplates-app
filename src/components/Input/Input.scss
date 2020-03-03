@@ -2,7 +2,6 @@
   display: block;
   position: relative;
   padding-top: 20px;
-  _background-color: red;
 
   input {
     border: none;
@@ -23,6 +22,17 @@
 
     &:invalid {
       border-bottom: 1px solid $border-color;
+    }
+  }
+
+  &.has-border {
+    input {
+      border : 1px solid $border-color;
+      border-radius: 3px;
+
+      &:focus {
+        border-color: $primary;
+      }
     }
   }
 

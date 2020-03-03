@@ -6,6 +6,7 @@
     bottom: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.2);
+    z-index: 2;
   }
 
   .quick-menu {
@@ -15,6 +16,7 @@
     width: 400px;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     color: $black;
+    z-index: 2;
 
     @media (max-width: 576px) {
       width: calc(100% - 20px);

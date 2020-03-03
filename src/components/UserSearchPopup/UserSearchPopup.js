@@ -168,7 +168,6 @@ class UserSearchPopup extends React.Component {
         </Row>
         <div className="popup-buttons p-3">
           <Button
-            size='sm'
             className="px-4 mr-2"
             color="secondary"
             onClick={() => {
@@ -178,7 +177,6 @@ class UserSearchPopup extends React.Component {
             {t('취소')}
           </Button>
           <Button
-            size='sm'
             className="px-4"
             color="primary"
             onClick={() => {

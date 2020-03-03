@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Card, CardBody, CardHeader, Col, FormGroup, Link, Row } from 'components';
 import { withTranslation } from 'react-i18next';
-import './QuickMenu.scss';
 import { connect } from 'react-redux';
 import LANGUAGES from '@/languages/languages';
 import { addMessage } from '@/actions';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import RadioButton from '@/components/RadioButton/RadioButton';
+import './QuickMenu.scss';
 
 class QuickMenu extends React.Component {
 

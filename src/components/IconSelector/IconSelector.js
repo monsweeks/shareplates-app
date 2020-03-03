@@ -98,7 +98,7 @@ import icon89 from './images/stars.png';
 import icon90 from './images/ufo.png';
 import icon91 from './images/sun.png';
 import icon92 from './images/telescope.png';
-import { Button } from '@/components';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 const images = [
   icon1,
@@ -229,22 +229,21 @@ class IconSelector extends React.Component {
                 <img src={images[iconIndex]} alt="" />
               </div>
             )}
-            <div className="text-center">
-              <Button
-                color="primary"
-                size="sm"
+            <div className="clear-image">
+              <CircleIcon
+                color='danger'
+                className="close-popup-button"
+                icon={<i className="fal fa-times" />}
                 onClick={() => {
                   if (onChange) {
                     onChange(null);
                   }
                 }}
-              >
-                사용안함
-              </Button>
+              />
             </div>
           </div>
           <div
-            className="paging"
+            className="paging prev"
             onClick={() => {
               if (imagePagingCount >= 1) {
                 this.setState({
@@ -286,7 +285,7 @@ class IconSelector extends React.Component {
               })}
           </div>
           <div
-            className="paging"
+            className="paging next"
             onClick={() => {
               if (images.length > imageRowCount * rowCount * (imagePagingCount + 1)) {
                 this.setState({

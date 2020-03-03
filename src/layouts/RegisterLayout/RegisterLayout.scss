@@ -1,3 +1,20 @@
 .register-layout-wrapper {
-  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 30px !important;
+  box-shadow: 0 0 20px 1px rgba(0,0,0,0.2);
+
+  @media (max-width: 576px) {
+    border-radius: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 10px 15px !important;
+
+  }
+
 }

@@ -16,13 +16,17 @@ class UserManager extends React.PureComponent {
       lg,
       md,
       sm,
+      xs,
       onRemove,
+      emptyBackgroundColor,
     } = this.props;
 
     return (
       <div className={`user-manager-wrapper ${className}`}>
         {!(users && users.length > 0) && (
-          <div className="empty-content text-center">
+          <div className="empty-content text-center" style={{
+            backgroundColor : emptyBackgroundColor
+          }}>
             <div className="info-icon">
               <i className="fal fa-info-circle" />
             </div>
@@ -33,7 +37,7 @@ class UserManager extends React.PureComponent {
           <Row>
             {users.map((user) => {
               return (
-                <Col className="user-col" key={user.id} lg={lg} md={md} sm={sm}>
+                <Col className="user-col" key={user.id} lg={lg} md={md} sm={sm} xs={xs}>
                   <UserCard
                     onClick={onClick}
                     hover={hover}
@@ -63,6 +67,8 @@ UserManager.defaultProps = {
   lg: 4,
   md: 4,
   sm: 6,
+  xs : 12,
+  emptyBackgroundColor : 'transparent'
 };
 
 UserManager.propTypes = {
@@ -82,5 +88,7 @@ UserManager.propTypes = {
   lg: PropTypes.number,
   md: PropTypes.number,
   sm: PropTypes.number,
+  xs: PropTypes.number,
   onRemove: PropTypes.func,
+  emptyBackgroundColor : PropTypes.string,
 };

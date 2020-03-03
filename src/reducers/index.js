@@ -1,10 +1,19 @@
 import { combineReducers } from 'redux';
-import { ADD_MESSAGE, CLEAR_MESSAGE, SET_JOIN_EMAIL, SET_LOADING, SET_ORGANIZATION_ID, SET_SUPPORTED, SET_USER } from '../actions';
+import {
+  ADD_MESSAGE,
+  CLEAR_MESSAGE,
+  SET_JOIN_EMAIL,
+  SET_LOADING,
+  SET_ORGANIZATION_ID,
+  SET_SUPPORTED,
+  SET_USER,
+  SET_PAGE_COLOR,
+} from '../actions';
 
 const userState = {
   user: null,
-  organizationId : null,
-  organizations : [],
+  organizationId: null,
+  organizations: [],
   join: {
     email: null,
   },
@@ -15,13 +24,27 @@ const user = (state = userState, action) => {
 
   switch (action.type) {
     case SET_USER:
-      return { ...state, user : action.user, organizations : action.organizations };
+      return { ...state, user: action.user, organizations: action.organizations };
 
     case SET_ORGANIZATION_ID:
-      return { ...state, organizationId : action.organizationId };
+      return { ...state, organizationId: action.organizationId };
 
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });
+
+    default:
+      return state;
+  }
+};
+
+const controlState = {
+  pageColor: 'white',
+};
+
+const control = (state = controlState, action) => {
+  switch (action.type) {
+    case SET_PAGE_COLOR:
+      return { ...state, pageColor: action.pageColor };
 
     default:
       return state;
@@ -83,6 +106,7 @@ const reducers = combineReducers({
   user,
   message,
   loading,
+  control,
 });
 
 export default reducers;
