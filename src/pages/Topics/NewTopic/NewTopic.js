@@ -215,7 +215,7 @@ class NewTopic extends Component {
           </Row>
         </Form>
         {openUserPopup && (
-          <Popup title="사용자 검색" open>
+          <Popup title="사용자 검색" open setOpen={this.setOpenUserPopup}>
             <UserSearchPopup
               users={topic.users}
               setOpen={this.setOpenUserPopup}
