@@ -65,7 +65,7 @@ class TopicList extends React.Component {
     const { organizations, setUser: setUserReducer, history } = this.props;
 
     return (
-      <div className="bg-light topic-list-wrapper">
+      <div className="topic-list-wrapper">
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
@@ -86,7 +86,7 @@ class TopicList extends React.Component {
                 <div />
               </div>
               <div className="organization-col">
-                <span className="label small">ORG</span>
+                <span className="label small text-white text-white">ORG</span>
                 <Selector
                   className="organization-selector"
                   items={organizations.map((org) => {
@@ -104,7 +104,7 @@ class TopicList extends React.Component {
                 />
               </div>
               <div className="order-col">
-                <span className="label small">정렬</span>
+                <span className="label small text-white">정렬</span>
                 <RadioButton
                   circle
                   items={orders}
@@ -145,9 +145,9 @@ class TopicList extends React.Component {
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
-              <Col className="topic-col" xl={3} lg={4} md={6} sm={6}>
+              <Col className="topic-col" xl={4} lg={4} md={6} sm={6}>
                 <Card
-                  className="g-no-select"
+                  className="g-no-select border-0"
                   onClick={() => {
                     history.push('/topics/new');
                   }}

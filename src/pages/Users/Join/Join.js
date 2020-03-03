@@ -91,7 +91,7 @@ class Join extends Component {
     const { user, existEmail } = this.state;
 
     return (
-      <RegisterLayout className="join-wrapper align-self-center">
+      <RegisterLayout fill className="join-wrapper align-self-center">
         <h1 className="text-center">{t('label.memberJoin')}</h1>
         <p className="text-center d-md-block">
           <Link color="blue" to="/users/login">
