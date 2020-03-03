@@ -78,7 +78,7 @@ UserManager.propTypes = {
   blockStyle: PropTypes.bool,
   hover: PropTypes.bool,
   onClick: PropTypes.func,
-  selectedUsers: PropTypes.shape(PropTypes.any),
+  selectedUsers: PropTypes.objectOf(PropTypes.any),
   lg: PropTypes.number,
   md: PropTypes.number,
   sm: PropTypes.number,

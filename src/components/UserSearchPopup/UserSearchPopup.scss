@@ -18,10 +18,19 @@
     height: 400px;
 
     @media (max-width: 992px) {
-      height: 215px;
-      &.first {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-      }
+      height: 400px;
+    }
+
+    @media (max-height: 600px) {
+      height: 360px;
+    }
+
+    @media (max-height: 500px) {
+      height: 300px;
+    }
+
+    @media (max-height: 400px) {
+      height: 200px;
     }
 
     .title-bar,
@@ -39,19 +48,36 @@
         min-height: 50px;
       }
 
+      @media (max-width: 576px) {
+        padding: 0 0.5rem;
+      }
+
       > div {
         align-self: center;
 
         &.organization-col {
           padding-right: 1rem;
 
+          @media (max-width: 576px) {
+            padding-right: 0.5rem;
+          }
+
           .organization-selector {
             min-width: 100px;
+
+            @media (max-width: 576px) {
+              min-width: 80px;
+              max-width: 100px;
+            }
           }
         }
 
         &.search-col {
           flex: 1;
+          padding-right: 1rem;
+          @media (max-width: 576px) {
+            padding-right: 0.5rem;
+          }
         }
 
         &.button-col {

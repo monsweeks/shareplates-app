@@ -18,16 +18,22 @@
     }
 
     .popup-title {
-      font-size: 1.2rem;
-      padding: 0.75rem 0;
+      font-size: 1.1rem;
+      padding: 1rem;
       background-color: $secondary;
       color: $white;
       border-radius: 3px 3px 0 0;
+      text-align: left;
+
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
     }
+
 
     .close-popup-button {
       position: absolute;
-      top: 10px;
+      top: 13px;
       right: 10px;
     }
 
