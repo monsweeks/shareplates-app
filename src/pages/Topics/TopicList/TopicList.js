@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
-import { setUser } from '@/actions';
+import { setPageColor, setUser } from '@/actions';
 import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
@@ -59,6 +59,11 @@ class TopicList extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    const { setPageColor: setPageColorReducer } = this.props;
+    setPageColorReducer('#EEE');
+  }
+
   render() {
     const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
@@ -69,7 +74,7 @@ class TopicList extends React.Component {
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput placeholder="토픽명으로 검색" />
+              <SearchInput color='white' placeholder="토픽명으로 검색" />
             </div>
             {openOptions && (
               <div
@@ -86,7 +91,7 @@ class TopicList extends React.Component {
                 <div />
               </div>
               <div className="organization-col">
-                <span className="label small text-white text-white">ORG</span>
+                <span className="label small">ORG</span>
                 <Selector
                   className="organization-selector"
                   items={organizations.map((org) => {
@@ -104,7 +109,7 @@ class TopicList extends React.Component {
                 />
               </div>
               <div className="order-col">
-                <span className="label small text-white">정렬</span>
+                <span className="label small">정렬</span>
                 <RadioButton
                   circle
                   items={orders}
@@ -130,7 +135,7 @@ class TopicList extends React.Component {
             </div>
             <div className="config-col">
               <CircleIcon
-                size="sm"
+                size="md"
                 className="d-block d-md-none"
                 icon={<i className="fal fa-ellipsis-h" />}
                 onClick={() => {
@@ -185,6 +190,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setPageColor: (pageColor) => dispatch(setPageColor(pageColor)),
   };
 };
 
@@ -204,6 +210,7 @@ TopicList.propTypes = {
   ),
   setUser: PropTypes.func,
   history: PropTypes.objectOf(PropTypes.any),
+  setPageColor: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));
