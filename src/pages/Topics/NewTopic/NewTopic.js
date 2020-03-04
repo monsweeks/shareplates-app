@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { setOrganization, setPageColor, setUser } from 'actions';
+import { setOrganization, setUser } from 'actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import {
   Button,
@@ -77,11 +77,6 @@ class NewTopic extends Component {
     };
 
     this.checkNameExistDebounced = debounce(this.checkNameExist, 400);
-  }
-
-  componentDidMount() {
-    const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer('rgb(11, 154, 223)');
   }
 
   componentWillUnmount() {
@@ -278,7 +273,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user, organizations) => dispatch(setUser(user, organizations)),
     setOrganization: (organizationId) => dispatch(setOrganization(organizationId)),
-    setPageColor: (pageColor) => dispatch(setPageColor(pageColor)),
   };
 };
 
@@ -300,5 +294,4 @@ NewTopic.propTypes = {
     push: PropTypes.func,
   }),
   addMessage: PropTypes.func,
-  setPageColor: PropTypes.func,
 };

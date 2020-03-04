@@ -8,9 +8,9 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setPageColor, setUser } from '@/actions';
-import variables from '@/styles/override-variables.scss';
+import { addMessage, setUser } from '@/actions';
 import './Login.scss';
+import { CenterBoxLayout } from '@/layouts';
 
 class Login extends React.PureComponent {
   constructor(props) {
@@ -24,11 +24,6 @@ class Login extends React.PureComponent {
       saveEmail: !!email,
       loginResult: null,
     };
-  }
-
-  componentDidMount() {
-    const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer(variables.primaryColor);
   }
 
   onChange = (field) => (value) => {
@@ -85,7 +80,7 @@ class Login extends React.PureComponent {
     const { email, password, saveEmail, loginResult } = this.state;
 
     return (
-      <div className="login-wrapper container align-self-center">
+      <CenterBoxLayout className="login-wrapper">
         <div className="line" />
         <h1 className="text-center">LOGIN</h1>
         <p className="text-center d-md-block mb-0">
@@ -259,7 +254,7 @@ class Login extends React.PureComponent {
             </FormGroup>
           </Col>
         </Row>
-      </div>
+      </CenterBoxLayout>
     );
   }
 }
@@ -268,7 +263,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUser: (user, organizations) => dispatch(setUser(user, organizations)),
-    setPageColor: (pageColor) => dispatch(setPageColor(pageColor)),
   };
 };
 
@@ -281,5 +275,4 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  setPageColor: PropTypes.func,
 };

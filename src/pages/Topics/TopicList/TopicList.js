@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
@@ -8,10 +7,9 @@ import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
-import { setPageColor, setUser } from '@/actions';
+import { setUser } from '@/actions';
 import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
-import variables from '@/styles/override-variables.scss';
 
 const orders = [
   {
@@ -60,11 +58,6 @@ class TopicList extends React.Component {
     return null;
   }
 
-  componentDidMount() {
-    const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer(variables.seaBlueColor);
-  }
-
   render() {
     const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
@@ -75,7 +68,7 @@ class TopicList extends React.Component {
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput noBorder color='white' placeholder="토픽명으로 검색" />
+              <SearchInput noBorder color="white" placeholder="토픽명으로 검색" />
             </div>
             {openOptions && (
               <div
@@ -192,7 +185,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user, organizations) => dispatch(setUser(user, organizations)),
-    setPageColor: (pageColor) => dispatch(setPageColor(pageColor)),
   };
 };
 
@@ -214,7 +206,6 @@ TopicList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  setPageColor: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

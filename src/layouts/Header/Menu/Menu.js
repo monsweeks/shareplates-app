@@ -3,12 +3,29 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Link } from 'components';
 import { withTranslation } from 'react-i18next';
+import variables from '@/styles/override-variables.scss';
 import './Menu.scss';
-import { connect } from 'react-redux';
+
+const pageMainColors = {
+  default: variables.primaryColor,
+  '/users/join': variables.primaryColor,
+  '/': variables.seaBlueColor,
+  '/topics': variables.seaBlueColor,
+};
 
 class Menu extends React.PureComponent {
+  getPageMainColor = (path) => {
+    if (pageMainColors[path]) {
+      return pageMainColors[path];
+    }
+
+    return pageMainColors.default;
+  };
+
   render() {
-    const { t, pathname, menus, openMenu, setOpen, pageColor } = this.props;
+    const { t, pathname, menus, openMenu, setOpen } = this.props;
+
+    console.log('pathname', pathname);
 
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
@@ -43,12 +60,12 @@ class Menu extends React.PureComponent {
               to={menu.to}
               effect={false}
             >
-              <div
-                className="current-arrow"
-              >
-                <span style={{
-                  backgroundColor: pageColor,
-                }} />
+              <div className="current-arrow">
+                <span
+                  style={{
+                    backgroundColor: this.getPageMainColor(pathname),
+                  }}
+                />
               </div>
               <div className="icon">
                 <span>
@@ -66,12 +83,6 @@ class Menu extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    pageColor: state.control.pageColor,
-  };
-};
-
 Menu.propTypes = {
   t: PropTypes.func,
   pathname: PropTypes.string,
@@ -84,7 +95,6 @@ Menu.propTypes = {
   ),
   openMenu: PropTypes.bool,
   setOpen: PropTypes.func,
-  pageColor: PropTypes.string,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Menu)));
+export default withRouter(withTranslation()(Menu));
