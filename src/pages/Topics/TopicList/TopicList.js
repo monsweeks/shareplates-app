@@ -7,10 +7,11 @@ import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import { setPageColor, setUser } from '@/actions';
 import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
+import variables from '@/styles/override-variables.scss';
 
 const orders = [
   {
@@ -61,7 +62,7 @@ class TopicList extends React.Component {
 
   componentDidMount() {
     const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer('rgb(9, 120, 174)');
+    setPageColorReducer(variables.seaBlueColor);
   }
 
   render() {
@@ -210,7 +211,9 @@ TopicList.propTypes = {
     }),
   ),
   setUser: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   setPageColor: PropTypes.func,
 };
 

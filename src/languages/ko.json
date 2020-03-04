@@ -29,6 +29,8 @@
   "label.confirmMyInfo": "내 정보 확인",
   "label.moveToEmailSite": "메일 사이트로 이동",
   "label.login": "로그인",
+  "label.rememberEmail": "이메일 기억하기",
+  "label.findAccountInfo": "아이디/비밀번호 찾기",
 
   "validation.valueMissing": "필수 입력 값입니다",
   "validation.typeMismatch": "입력 형식이 올바르지 않습니다",
@@ -60,6 +62,7 @@
   "message.waitPlease": "잠시만 기다려주세요",
   "message.notImplement": "아직 준비되지 않은 기능입니다.",
   "message.moveToJoinPage": "회원 가입",
+  "message.invalidIdorPassword": "아이디 또는 비밀번호가 일치하지 않습니다.",
 
   "sample.hello": "안녕하세요",
   "sample.selected": "{{n}} 개 선택됨."

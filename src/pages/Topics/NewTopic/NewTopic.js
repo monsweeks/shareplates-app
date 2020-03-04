@@ -62,7 +62,6 @@ class NewTopic extends Component {
   constructor(props) {
     super(props);
 
-    console.log(111);
     this.state = {
       topic: {
         name: '',
@@ -297,7 +296,9 @@ NewTopic.propTypes = {
     picturePath: PropTypes.string,
   }),
   t: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   addMessage: PropTypes.func,
   setPageColor: PropTypes.func,
 };

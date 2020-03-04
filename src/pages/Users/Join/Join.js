@@ -296,7 +296,9 @@ Join.defaultProps = {
 
 Join.propTypes = {
   t: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   setJoinEmail: PropTypes.func,
   addMessage: PropTypes.func,
 };

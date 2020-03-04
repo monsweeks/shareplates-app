@@ -16,8 +16,13 @@
   }
 
   @media (max-width: 576px) {
-    margin: 30px 30px !important;
+    margin: 20px !important;
     width: calc(100% - 40px) !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   .find-user-account {
