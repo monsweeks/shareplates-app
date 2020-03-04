@@ -1,9 +1,7 @@
 .radio-button-wrapper {
   display: inline-block;
   vertical-align: top;
-  height: 20px;
   white-space: nowrap;
-  vertical-align: top;
 
   button {
     font-size: 11px;
@@ -53,11 +51,33 @@
       width: 20px;
       height: 20px;
       margin-right: 5px;
+      border: 1px solid $border-color;
 
       &:last-child {
         margin-right: 0;
       }
+    }
+  }
 
+  &.sm {
+    height: 20px;
+
+    button {
+      &.circle {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &.md {
+    height: 28px;
+
+    button {
+      &.circle {
+        width: 28px;
+        height: 28px;
+      }
     }
   }
 }
