@@ -19,10 +19,10 @@ class SearchInput extends React.Component {
   };
 
   render() {
-    const { className, onSearch, placeholder, onChange, componentClassName, color } = this.props;
+    const { className, onSearch, placeholder, onChange, componentClassName, color, noBorder } = this.props;
     const { focus, searchWord } = this.state;
     return (
-      <div className={`${className} search-input-wrapper ${focus ? 'focused' : ''} ${searchWord ? 'has-value' : ''} color-${color}`}>
+      <div className={`${className} search-input-wrapper ${focus ? 'focused' : ''} ${searchWord ? 'has-value' : ''} color-${color} ${noBorder ? 'no-border' : ''}`}>
         <div className="placeholder">{placeholder}</div>
         <input
           className={componentClassName}
@@ -81,7 +81,8 @@ SearchInput.defaultProps = {
   className: '',
   placeholder: '',
   componentClassName : '',
-  color : 'gray'
+  color : 'gray',
+  noBorder : false,
 };
 
 SearchInput.propTypes = {
@@ -91,4 +92,5 @@ SearchInput.propTypes = {
   onChange: PropTypes.func,
   componentClassName: PropTypes.string,
   color : PropTypes.string,
+  noBorder : PropTypes.bool,
 };

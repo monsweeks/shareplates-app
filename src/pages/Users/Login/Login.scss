@@ -1,8 +1,4 @@
 .login-wrapper {
-  @media (min-width: 1200px) {
-    max-width: 900px !important;
-  }
-
   .find-user-account {
     font-size: 0.75rem;
   }
@@ -23,6 +19,19 @@
       display: block;
       right: auto;
       padding: 1rem 0 0;
+    }
+  }
+
+  .line {
+    background-color: $primary;
+    width: 250px;
+    height: 30px;
+    position: absolute;
+    top: 30px;
+    right: -80px;
+    transform: rotate(45deg);
+    @media (max-width: 1200px) {
+      display: none;
     }
   }
 }

@@ -22,10 +22,15 @@
     }
 
     &:hover {
-      background-color: darken($primary, 5%);
       background-color: $primary;
       color: $white;
       border-color: transparent;
+
+      &.outline {
+        background-color: $white;
+        color: $black;
+        border-color: $primary;
+      }
     }
 
     > span {

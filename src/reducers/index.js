@@ -7,7 +7,6 @@ import {
   SET_ORGANIZATION_ID,
   SET_SUPPORTED,
   SET_USER,
-  SET_PAGE_COLOR,
 } from '../actions';
 
 const userState = {
@@ -31,20 +30,6 @@ const user = (state = userState, action) => {
 
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });
-
-    default:
-      return state;
-  }
-};
-
-const controlState = {
-  pageColor: 'white',
-};
-
-const control = (state = controlState, action) => {
-  switch (action.type) {
-    case SET_PAGE_COLOR:
-      return { ...state, pageColor: action.pageColor };
 
     default:
       return state;
@@ -106,7 +91,6 @@ const reducers = combineReducers({
   user,
   message,
   loading,
-  control,
 });
 
 export default reducers;

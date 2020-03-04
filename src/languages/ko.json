@@ -29,6 +29,8 @@
   "label.confirmMyInfo": "내 정보 확인",
   "label.moveToEmailSite": "메일 사이트로 이동",
   "label.login": "로그인",
+  "label.rememberEmail": "이메일 기억하기",
+  "label.findAccountInfo": "아이디/비밀번호 찾기",
 
   "validation.valueMissing": "필수 입력 값입니다",
   "validation.typeMismatch": "입력 형식이 올바르지 않습니다",
@@ -49,7 +51,7 @@
   "message.networkError": "서버에 접속할 수 없습니다. 네트워크에 연결되어 있는지 확인하시거나, 잠시 후 다시 시도해주세요.",
   "message.pleaseTypeEmailAddress": "이메일 주소를 입력해주세요",
   "message.pleaseTypeNameOrAlias": "이름이나 별명을 알려주세요",
-  "message.moveToLoginPage": "로그인 페이지로 이동",
+  "message.moveToLoginPage": "로그인",
   "message.resourceNotFount": "요청하신 리소스를 찾을 수 없습니다.",
   "message.joinNoticeInfo": "가입 시 <1>{{terms}}</1>에 동의하고, <3>{{policy}}</3>을 숙지하였음을 인정합니다.",
   "message.confirmEmail": "사용자 이메일로 발송된 메일을 클릭하여 계정을 활성화 할 수 있습니다. 이메일이 계속 발송되지 않는다면, 아래 링크를 클릭해서 문의해주세요.",
@@ -59,7 +61,8 @@
   "message.letsShowVideoTutorial": "영상을 통해 <1>{{text}}</1>의 소개와 사용법 그리고 다양한 활용 방법을 확인해보세요",
   "message.waitPlease": "잠시만 기다려주세요",
   "message.notImplement": "아직 준비되지 않은 기능입니다.",
-  "message.moveToJoinPage": "회원 가입 페이지로 이동",
+  "message.moveToJoinPage": "회원 가입",
+  "message.invalidIdorPassword": "아이디 또는 비밀번호가 일치하지 않습니다.",
 
   "sample.hello": "안녕하세요",
   "sample.selected": "{{n}} 개 선택됨."

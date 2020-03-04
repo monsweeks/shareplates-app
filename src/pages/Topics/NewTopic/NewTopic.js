@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { setOrganization, setPageColor, setUser } from 'actions';
+import { setOrganization, setUser } from 'actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import {
   Button,
@@ -62,7 +62,6 @@ class NewTopic extends Component {
   constructor(props) {
     super(props);
 
-    console.log(111);
     this.state = {
       topic: {
         name: '',
@@ -78,11 +77,6 @@ class NewTopic extends Component {
     };
 
     this.checkNameExistDebounced = debounce(this.checkNameExist, 400);
-  }
-
-  componentDidMount() {
-    const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer('rgb(11, 154, 223)');
   }
 
   componentWillUnmount() {
@@ -135,7 +129,9 @@ class NewTopic extends Component {
       return;
     }
 
-    request.post('/api/topics', topic.toJS(), (data) => {
+    console.log(topic);
+
+    request.post('/api/topics', topic, (data) => {
       // eslint-disable-next-line react/destructuring-assignment
 
       console.log(data);
@@ -146,14 +142,13 @@ class NewTopic extends Component {
   render() {
     // eslint-disable-next-line no-unused-vars
     const { t, addMessage: addMessageReducer } = this.props;
+    // eslint-disable-next-line no-unused-vars
     const { topic, existName, openUserPopup } = this.state;
-
-    console.log(existName);
 
     return (
       <RegisterLayout className="new-topic-wrapper">
         <PageTitle list={breadcrumbs}>{t('새로운 토픽 만들기')}</PageTitle>
-        <hr className='d-none d-sm-block' />
+        <hr className="d-none d-sm-block" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
           <SubLabel>{t('아이콘')}</SubLabel>
           <Description>
@@ -223,7 +218,7 @@ class NewTopic extends Component {
           </div>
           <FormGroup>
             <UserManager
-              emptyBackgroundColor='#F6F6F6'
+              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const users = topic.users.splice(0);
                 const index = users.findIndex((u) => u.id === id);
@@ -279,7 +274,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setUser: (user, organizations) => dispatch(setUser(user, organizations)),
     setOrganization: (organizationId) => dispatch(setOrganization(organizationId)),
-    setPageColor: (pageColor) => dispatch(setPageColor(pageColor)),
   };
 };
 
@@ -297,7 +291,8 @@ NewTopic.propTypes = {
     picturePath: PropTypes.string,
   }),
   t: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   addMessage: PropTypes.func,
-  setPageColor: PropTypes.func,
 };

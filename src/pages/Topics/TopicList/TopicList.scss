@@ -13,6 +13,7 @@
     flex: 0;
     position: relative;
     background-color: #eee;
+    background-color: $sea-blue;
     min-height: 50px;
 
     > div {
@@ -144,7 +145,7 @@
         .separator {
           display: inline-block;
           height: 10px;
-          background-color: rgba(0, 0, 0, 0.4);
+          background-color: white;
           width: 1px;
           margin: 0 0.5rem 0;
           position: relative;

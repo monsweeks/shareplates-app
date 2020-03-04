@@ -12,7 +12,7 @@ import TopLogo from '@/components/TopLogo/TopLogo';
 import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
 import Input from '@/components/Input/Input';
-import ChecBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
+import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
 import Selector from '@/components/Selector/Selector';
 import TextArea from '@/components/TextArea/TextArea';
 import IconSelector from '@/components/IconSelector/IconSelector';
@@ -38,7 +38,7 @@ export {
   FormGroup,
   Row,
   Col,
-  ChecBoxInput,
+  CheckBoxInput,
   Selector,
   TextArea,
   IconSelector,

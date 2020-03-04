@@ -3,12 +3,13 @@
   position: relative;
 
   a {
-    color: inherit;
+    color: $blue;
     height: 100%;
     display: inline-block;
     white-space: nowrap;
     &:hover {
       text-decoration: none;
+      color: darken($blue, 10%);
     }
   }
 
