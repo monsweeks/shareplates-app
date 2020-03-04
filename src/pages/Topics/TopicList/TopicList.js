@@ -61,7 +61,7 @@ class TopicList extends React.Component {
 
   componentDidMount() {
     const { setPageColor: setPageColorReducer } = this.props;
-    setPageColorReducer('#EEE');
+    setPageColorReducer('rgb(9, 120, 174)');
   }
 
   render() {
@@ -74,7 +74,7 @@ class TopicList extends React.Component {
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput color='white' placeholder="토픽명으로 검색" />
+              <SearchInput noBorder color='white' placeholder="토픽명으로 검색" />
             </div>
             {openOptions && (
               <div
@@ -91,8 +91,9 @@ class TopicList extends React.Component {
                 <div />
               </div>
               <div className="organization-col">
-                <span className="label small">ORG</span>
+                <span className="label small text-white">ORG</span>
                 <Selector
+                  outline
                   className="organization-selector"
                   items={organizations.map((org) => {
                     return {
@@ -109,7 +110,7 @@ class TopicList extends React.Component {
                 />
               </div>
               <div className="order-col">
-                <span className="label small">정렬</span>
+                <span className="label small text-white">정렬</span>
                 <RadioButton
                   circle
                   items={orders}

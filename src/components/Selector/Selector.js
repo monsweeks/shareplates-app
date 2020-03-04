@@ -13,7 +13,7 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value, addAll } = this.props;
+    const { className, onChange, items, value, addAll, outline } = this.props;
     let selcetedItem = items.find((item) => item.key === value);
     if (addAll && value === '') {
       selcetedItem = {
@@ -30,7 +30,7 @@ class Selector extends React.Component {
           });
         }}/>}
         <div
-          className={`${open ? 'open' : ''} selector-current`}
+          className={`${open ? 'open' : ''} selector-current ${outline ? 'outline' : ''}`}
           onClick={() => {
             this.setState({
               open: !open,
@@ -90,6 +90,7 @@ export default withTranslation()(Selector);
 Selector.defaultProps = {
   className: '',
   addAll: false,
+  outline : false
 };
 
 Selector.propTypes = {
@@ -103,4 +104,5 @@ Selector.propTypes = {
   ),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   addAll: PropTypes.bool,
+  outline: PropTypes.bool,
 };

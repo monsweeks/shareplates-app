@@ -27,7 +27,6 @@
 
   &.color-white {
     .placeholder {
-
     }
   }
 
@@ -68,12 +67,18 @@
     color: $black;
     font-size: 0.75rem;
     transition: all 0.3s;
-    border : 1px solid transparent;
+    border: 1px solid transparent;
   }
 
   &.color-white {
     > input {
-      border : 1px solid $border-color;
+      border: 1px solid $border-color;
+    }
+  }
+
+  &.no-border {
+    > input {
+      border: 1px solid transparent;
     }
   }
 
@@ -86,7 +91,13 @@
       background-color: $white;
 
       > input {
-        border : 1px solid $primary;
+        border: 1px solid $primary;
+      }
+    }
+
+    &.no-border {
+      > input {
+        border: 1px solid transparent;
       }
     }
 

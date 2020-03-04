@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { DetailLayout } from '@/layouts';
 import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import facebook from '@/images/sites/facebook.png';
@@ -81,19 +80,20 @@ class Login extends React.PureComponent {
     const { email, password, saveEmail, loginResult } = this.state;
 
     return (
-      <DetailLayout className="login-wrapper align-self-center">
-        <h1 className="text-center">{t('label.login')}</h1>
+      <div className="login-wrapper container align-self-center">
+        <div className='line'/>
+        <h1 className="text-center">LOGIN</h1>
         <p className="text-center d-md-block">
           <Link color="blue" to="/users/join">
             {t('message.moveToJoinPage')}
           </Link>
         </p>
-        <p className="text-danger text-center">
-          {loginResult !== null && loginResult === false && <span>아이디 또는 비밀번호가 일치하지 않습니다.</span>}
-          &nbsp;
-        </p>
-        <Row className="mb-4">
+        <Row>
           <Col>
+            <p className="text-danger text-center">
+              {loginResult !== null && loginResult === false && <span>아이디 또는 비밀번호가 일치하지 않습니다.</span>}
+              &nbsp;
+            </p>
             <Form onSubmit={this.onSubmit} className="px-2 px-sm-0">
               <FormGroup>
                 <Input
@@ -254,7 +254,7 @@ class Login extends React.PureComponent {
             </FormGroup>
           </Col>
         </Row>
-      </DetailLayout>
+      </div>
     );
   }
 }

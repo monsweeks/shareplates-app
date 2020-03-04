@@ -12,6 +12,8 @@
 
   &.fill{
     min-height: calc(100% - 60px);
+
+    flex-grow: 1;
   }
 
   @media (max-width: 576px) {

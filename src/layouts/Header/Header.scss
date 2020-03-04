@@ -3,7 +3,8 @@
   background-color: $secondary;
   min-height: 60px;
   color: $white;
-  _overflow: hidden;
+  flex: 0;
+
 
   .top-header-menu {
     display: flex;
