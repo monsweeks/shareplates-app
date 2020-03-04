@@ -129,7 +129,9 @@ class NewTopic extends Component {
       return;
     }
 
-    request.post('/api/topics', topic.toJS(), (data) => {
+    console.log(topic);
+
+    request.post('/api/topics', topic, (data) => {
       // eslint-disable-next-line react/destructuring-assignment
 
       console.log(data);
@@ -140,14 +142,13 @@ class NewTopic extends Component {
   render() {
     // eslint-disable-next-line no-unused-vars
     const { t, addMessage: addMessageReducer } = this.props;
+    // eslint-disable-next-line no-unused-vars
     const { topic, existName, openUserPopup } = this.state;
-
-    console.log(existName);
 
     return (
       <RegisterLayout className="new-topic-wrapper">
         <PageTitle list={breadcrumbs}>{t('새로운 토픽 만들기')}</PageTitle>
-        <hr className='d-none d-sm-block' />
+        <hr className="d-none d-sm-block" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
           <SubLabel>{t('아이콘')}</SubLabel>
           <Description>
@@ -217,7 +218,7 @@ class NewTopic extends Component {
           </div>
           <FormGroup>
             <UserManager
-              emptyBackgroundColor='#F6F6F6'
+              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const users = topic.users.splice(0);
                 const index = users.findIndex((u) => u.id === id);

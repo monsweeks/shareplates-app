@@ -9,7 +9,7 @@
     border-bottom: 1px solid $border-color;
     padding: 0 26px 5px 7px;
     height: auto;
-    font-size: 16px;
+
     position: relative;
     z-index: 2;
     background-color: transparent;
@@ -29,6 +29,7 @@
     input {
       border : 1px solid $border-color;
       border-radius: 3px;
+      padding: 5px 26px 5px 7px;
 
       &:focus {
         border-color: $primary;

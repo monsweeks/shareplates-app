@@ -15,6 +15,11 @@
         margin-right: 5px;
         margin-left: 5px;
 
+        &:hover {
+          background-color: darken($primary, 5%);
+          color: $white;
+        }
+
         @media (max-width: 576px) {
           background-color: transparent;
           color: $blue;
