@@ -74,6 +74,7 @@ class NewTopic extends Component {
           email: user.email,
           name: user.name,
           organizationId: props.organizations && props.organizations.length > 0 ? props.organizations[0].id : null,
+          info : user.info
         },
       ];
       changed = true;
@@ -306,7 +307,7 @@ NewTopic.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    picturePath: PropTypes.string,
+    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

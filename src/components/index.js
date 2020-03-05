@@ -26,6 +26,8 @@ import SubLabel from '@/components/SubLabel/SubLabel';
 import Description from '@/components/Description/Description';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import P from '@/components/P/P';
+import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
+import Avatar from '@/components/Avatar/Avatar';
 
 export {
   Button,
@@ -56,4 +58,6 @@ export {
   NavItem,
   CircleIcon,
   P,
+  Avatar,
+  AvatarBuilder,
 };
