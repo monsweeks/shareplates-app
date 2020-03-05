@@ -3,13 +3,20 @@
   display: flex;
   width: 100%;
 
-  > div {
+  @media (max-width: 576px) {
+    display: block;
+  }
 
+  > div {
     &.preview-box {
       padding: 10px 50px;
       text-align: center;
       flex: 0;
       align-self: center;
+
+      @media (max-width: 992px) {
+        padding: 10px 20px;
+      }
 
       .preview-image {
         display: inline-block;
@@ -34,6 +41,10 @@
       flex-direction: column;
       width: calc(100% - 200px);
 
+      @media (max-width: 576px) {
+        width: 100%;
+      }
+
       .tabs {
         padding: 0.5rem;
         flex: 0;
@@ -42,10 +53,16 @@
       .control-box {
         display: flex;
         flex: 1;
-        padding: 0.5rem;
+        flex-direction: column;
+        padding: 0;
+        height: 80px;
 
         > div {
           align-self: center;
+          flex: 1;
+          height: 100%;
+          width: 100%;
+          display: flex;
         }
 
         .arrow-btn {
@@ -65,30 +82,51 @@
           }
         }
 
-        .color-picker,
+        .color-picker {
+          text-align: left;
+          line-height: 0;
+          white-space: nowrap;
+          overflow-x: auto;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          display: flex;
+          max-height: 40px;
+          align-self: center;
+          border-radius: 3px;
+
+          .picker-item {
+            flex: 1;
+            line-height: 0;
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+          }
+        }
+
         .shape-picker {
           text-align: left;
           line-height: 0;
           white-space: nowrap;
           overflow-x: auto;
           width: 100%;
-          padding: 1rem;
+          padding-bottom: 5px;
+          margin-bottom: 5px;
+
+          @media (max-width: 576px) {
+            text-align: center;
+          }
 
           .picker-item {
             line-height: 0;
             display: inline-block;
             width: 50px;
             height: 50px;
-            border:1px solid rgba(0, 0, 0, 0.4);
+            background-color: $primary;
             margin-right: 10px;
             border-radius: 50%;
             cursor: pointer;
             position: relative;
-          }
-        }
-
-        .color-picker {
-          .picker-item {
           }
         }
 

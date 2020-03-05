@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const MESSAGE_CATEGORY = {
   ERROR: 'ERROR',
   WARNING: 'WARNING',
@@ -32,4 +34,47 @@ const DEFAULT_INPUT_VALIDATION_MESSAGE = {
   valid: 'validation.valid',
 };
 
-export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS };
+const DATETIME_FORMATS = [
+  {
+    key: 'YYYY-MM-DD HH:mm:ss',
+    value: `YYYY-MM-DD HH:mm:ss (${moment().format('YYYY-MM-DD HH:mm:ss')})`,
+    dateTimeFormat: {
+      F: 'YYYY-MM-DD HH:mm:ss',
+      DT: 'YYYY-MM-DD HH:mm',
+      D: 'YYYY-MM-DD',
+      HM: 'HH:mm',
+    },
+  },
+  {
+    key: 'YYYY/MM/DD HH:mm:ss',
+    value: `YYYY/MM/DD HH:mm:ss (${moment().format('YYYY/MM/DD HH:mm:ss')})`,
+    dateTimeFormat: {
+      F: 'YYYY/MM/DD HH:mm:ss',
+      DT: 'YYYY/MM/DD HH:mm',
+      D: 'YYYY/MM/DD',
+      HM: 'HH:mm',
+    },
+  },
+  {
+    key: 'MM/DD/YYYY HH:mm:ss',
+    value: `MM/DD/YYYY HH:mm:ss (${moment().format('MM/DD/YYYY HH:mm:ss')})`,
+    dateTimeFormat: {
+      F: 'MM/DD/YYYY HH:mm:ss',
+      DT: 'MM/DD/YYYY HH:mm',
+      D: 'MM/DD/YYYY',
+      HM: 'HH:mm',
+    },
+  },
+  {
+    key: 'MMM/DD,YYYY HH:mm:ss',
+    value: `MMM/DD,YYYY HH:mm:ss (${moment().format('MMM/DD,YYYY HH:mm:ss')})`,
+    dateTimeFormat: {
+      F: 'MMM/DD,YYYY HH:mm:ss',
+      DT: 'MMM/DD,YYYY HH:mm',
+      D: 'MMM/DD,YYYY',
+      HM: 'HH:mm',
+    },
+  },
+];
+
+export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS, DATETIME_FORMATS };

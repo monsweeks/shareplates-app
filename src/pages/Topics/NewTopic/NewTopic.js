@@ -178,12 +178,13 @@ class NewTopic extends Component {
               onChange={this.onChange('organizationId')}
             />
           </FormGroup>
+          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.icon')}</SubLabel>
           <Description>{t('message.topicIconDesc')}</Description>
           <FormGroup>
             <IconSelector className="icon-selector" iconIndex={topic.iconIndex} onChange={this.onChange('iconIndex')} />
           </FormGroup>
-          <hr className="g-dashed" />
+          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
           <Description>{t('message.topicNameDesc')}</Description>
           <FormGroup>
@@ -200,7 +201,7 @@ class NewTopic extends Component {
             />
             {existName && <div className="small text-danger mt-2">{t('validation.dupName')}</div>}
           </FormGroup>
-          <hr className="g-dashed" />
+          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.desc')}</SubLabel>
           <Description>{t('message.topicDescDesc')}</Description>
           <FormGroup>
@@ -213,7 +214,7 @@ class NewTopic extends Component {
               componentClassName="border-primary"
             />
           </FormGroup>
-          <hr className="g-dashed" />
+          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.privateTopic')}</SubLabel>
           <Description>{t('message.privateTopicDesc')}</Description>
           <FormGroup>
@@ -225,7 +226,7 @@ class NewTopic extends Component {
               label={t('message.privateTopic')}
             />
           </FormGroup>
-          <hr className="g-dashed" />
+          <hr className="g-dashed mb-3" />
           <div className="position-relative">
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>

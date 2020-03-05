@@ -34,7 +34,7 @@ const allColors = [
 
 console.log(allColors);
 
-const bgColors = ['#FFF', '#111', '#0b2c48', '#008162', '#51646f', '#e83837', '#553030', '#641b1b', '#eec84c'];
+const bgColors = ['#111', '#0b2c48', '#008162', '#51646f', '#DDD', '#e83837', '#553030', '#641b1b', '#eec84c'];
 const clothColors = [
   '#0b2c48',
   '#e36a41',
@@ -399,7 +399,6 @@ const forms = [
               d="M345.9,517.4c0-11.5-4.3-22.5-9.5-24.7l-16.7-6.8c0,0-3.2,11.6-15.1,11.6c-11.9,0-15-11.6-15-11.6l-16.8,6.7
 			c-5.2,2.1-9.5,13.2-9.5,24.6l0,0.2h82.5L345.9,517.4z"
             />
-
           </g>
         </>
       );
@@ -852,7 +851,7 @@ const hairs = [
   },
 
   {
-    cx: 552 - 67,
+    cx: 552 - 66,
     cy: 960 - 55,
 
     backTag: (hairColor = '#282828') => {
@@ -1800,59 +1799,6 @@ const faces = [
     ),
   },
   {
-    cx: 283 - 43, // -43
-    cy: 394 - 44, // -43
-    tag: (
-      <>
-        <g>
-          <ellipse className="st1" cx="283.8" cy="394.7" rx="2.2" ry="2.2" />
-          <ellipse className="st1" cx="298.4" cy="394.7" rx="2.2" ry="2.2" />
-        </g>
-        <g>
-          <g>
-            <path
-              className="st16"
-              d="M279.5,385.6c2.2-1.1,4.7-1.5,7.1-1.5c2.2,0.1,2.2-3.4,0-3.5c-3.1-0.1-6.1,0.5-8.9,1.9
-				C275.8,383.6,277.5,386.6,279.5,385.6L279.5,385.6z"
-            />
-          </g>
-          <g>
-            <path
-              className="st16"
-              d="M302.6,385.6c-2.2-1.1-4.7-1.5-7.1-1.5c-2.2,0.1-2.2-3.4,0-3.5c3.1-0.1,6.1,0.5,8.9,1.9
-				C306.4,383.6,304.6,386.6,302.6,385.6L302.6,385.6z"
-            />
-          </g>
-        </g>
-        <g>
-          <path
-            className="st3"
-            d="M301.6,383.8c-4.2,0-7.8,3.2-8.4,7.3h-4.3c-0.6-4.1-4.1-7.3-8.4-7.3c-4.7,0-8.5,3.8-8.5,8.5
-			c0,4.7,3.8,8.5,8.5,8.5c4.2,0,7.8-3.2,8.4-7.3h4.3c0.6,4.1,4.1,7.3,8.4,7.3c4.7,0,8.5-3.8,8.5-8.5
-			C310,387.6,306.2,383.8,301.6,383.8z M280.6,398.3c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C286.6,395.6,283.9,398.3,280.6,398.3z M301.6,398.3c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C307.6,395.6,304.9,398.3,301.6,398.3z"
-          />
-        </g>
-        <g>
-          <ellipse className="st2" cx="291.1" cy="408.6" rx="6.2" ry="5.4" />
-          <g>
-            <path
-              className="st1"
-              d="M283.5,402.9c0.1,4.8,3.5,8.6,7.6,8.6c4.1,0,7.5-3.8,7.6-8.6c-2.1,1.1-4.8,1.8-7.6,1.8
-				C288.2,404.7,285.6,404,283.5,402.9z"
-            />
-            <path
-              className="st17"
-              d="M286.8,407.4h8.5c0.7,0,1.3-0.6,1.3-1.3v-2.4c-1.7,0.6-3.6,0.9-5.6,0.9c-2,0-3.9-0.3-5.6-0.9v2.4
-				C285.5,406.9,286.1,407.4,286.8,407.4z"
-            />
-          </g>
-        </g>
-      </>
-    ),
-  },
-  {
     cx: 200 - 43, // -43
     cy: 392 - 44, // -43
     tag: (
@@ -1914,8 +1860,8 @@ const faces = [
 ];
 
 const faceColors = [
-  '#FFF',
   '#EEE',
+  '#DDD',
   '#AAA',
   '#f7a584',
   '#f7b1ad',
@@ -1927,9 +1873,9 @@ const faceColors = [
   '#666',
   '#333',
 ];
-const hairColors = ['#282828', '#f0ca4a', '#ffffff', '#b8bec2', '#0b2c48', '#ea8723', '#e83837', '#833b23', '#ba4a27'];
+const hairColors = ['#282828', '#f0ca4a', '#DDD', '#b8bec2', '#0b2c48', '#ea8723', '#e83837', '#833b23', '#ba4a27'];
 
-const facialHairs = [
+const accessories = [
   {
     cx: 0,
     cy: 0,
@@ -1941,12 +1887,12 @@ const facialHairs = [
     cx: 39.9,
     cy: 153,
 
-    tag: (facialHairColor = '#f7a584') => {
+    tag: (accessoryColor = '#f7a584') => {
       return (
         <>
           <ellipse
             style={{
-              fill: facialHairColor,
+              fill: accessoryColor,
             }}
             cx="89.8"
             cy="211.2"
@@ -1955,7 +1901,7 @@ const facialHairs = [
           />
           <path
             style={{
-              fill: facialHairColor,
+              fill: accessoryColor,
             }}
             d="M108.7,196.5c-3.4,7.3-10.6,12.3-18.9,12.3c-8.3,0-15.5-5-18.9-12.3h-2.1v2.5c0,12.1,9.4,21.8,21,21.8
 		c11.6,0,21-9.8,21-21.8v-2.5H108.7z"
@@ -1969,12 +1915,12 @@ const facialHairs = [
     cx: 95,
     cy: 158,
 
-    tag: (facialHairColor = '#f7a584') => {
+    tag: (accessoryColor = '#f7a584') => {
       return (
         <>
           <path
             style={{
-              fill: facialHairColor,
+              fill: accessoryColor,
             }}
             d="M166.8,200.6v-15.2h-3.4v21.3c-2.1,1.9-4.9,3.1-8,3.1h-19.2c-3.1,0-5.9-1.2-8-3.1v-22.2h-3.4v16.1c0,0,0,0,0,0
 	v14.5c0,6.1,5.1,11,11.4,11h19.2c6.3,0,11.4-4.9,11.4-11L166.8,200.6C166.8,200.6,166.8,200.6,166.8,200.6z"
@@ -1987,26 +1933,26 @@ const facialHairs = [
     cx: 153.2,
     cy: 148.5,
 
-    tag: (facialHairColor = '#f7a584') => {
+    tag: (accessoryColor = '#f7a584') => {
       return (
         <>
           <g>
             <polygon
               style={{
-                fill: facialHairColor,
+                fill: accessoryColor,
               }}
               points="203.3,202.8 193.5,202.8 203.3,199.3 	"
             />
             <polygon
               style={{
-                fill: facialHairColor,
+                fill: accessoryColor,
               }}
               points="204.1,202.8 213.9,202.8 204.1,199.3 	"
             />
           </g>
           <path
             style={{
-              fill: facialHairColor,
+              fill: accessoryColor,
             }}
             d="M203.7,212.1c-3.3,0-6.1-1.1-7.7-2.8c-0.8,0.9-1.3,1.9-1.3,3c0,3.2,4,5.8,9,5.8s9-2.6,9-5.8
 	c0-1.1-0.5-2.1-1.3-3C209.8,211,207,212.1,203.7,212.1z"
@@ -2020,56 +1966,12 @@ const facialHairs = [
     cx: 310 - 60,
     cy: 277 - 36,
 
-    tag: () => {
+    tag: (accessoryColor = '#f7a584') => {
       return (
         <>
           <path
             style={{
-              fill: 'black',
-            }}
-            d="M310.4,277.3c-4.2,0-7.8,3.2-8.4,7.3h-4.3c-0.6-4.1-4.1-7.3-8.4-7.3c-4.7,0-8.5,3.8-8.5,8.5
-			c0,4.7,3.8,8.5,8.5,8.5c4.2,0,7.8-3.2,8.4-7.3h4.3c0.6,4.1,4.1,7.3,8.4,7.3c4.7,0,8.5-3.8,8.5-8.5
-			C318.8,281.1,315,277.3,310.4,277.3z M289.4,291.8c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C295.4,289.1,292.7,291.8,289.4,291.8z M310.4,291.8c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C316.3,289.1,313.7,291.8,310.4,291.8z"
-          />
-        </>
-      );
-    },
-  },
-
-  {
-    cx: 310 - 60,
-    cy: 277 - 36,
-
-    tag: () => {
-      return (
-        <>
-          <path
-            style={{
-              fill: 'blue',
-            }}
-            d="M310.4,277.3c-4.2,0-7.8,3.2-8.4,7.3h-4.3c-0.6-4.1-4.1-7.3-8.4-7.3c-4.7,0-8.5,3.8-8.5,8.5
-			c0,4.7,3.8,8.5,8.5,8.5c4.2,0,7.8-3.2,8.4-7.3h4.3c0.6,4.1,4.1,7.3,8.4,7.3c4.7,0,8.5-3.8,8.5-8.5
-			C318.8,281.1,315,277.3,310.4,277.3z M289.4,291.8c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C295.4,289.1,292.7,291.8,289.4,291.8z M310.4,291.8c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6c3.3,0,6,2.7,6,6
-			C316.3,289.1,313.7,291.8,310.4,291.8z"
-          />
-        </>
-      );
-    },
-  },
-
-  {
-    cx: 310 - 60,
-    cy: 277 - 36,
-
-    tag: () => {
-      return (
-        <>
-          <path
-            style={{
-              fill: 'green',
+              fill: accessoryColor,
             }}
             d="M310.4,277.3c-4.2,0-7.8,3.2-8.4,7.3h-4.3c-0.6-4.1-4.1-7.3-8.4-7.3c-4.7,0-8.5,3.8-8.5,8.5
 			c0,4.7,3.8,8.5,8.5,8.5c4.2,0,7.8-3.2,8.4-7.3h4.3c0.6,4.1,4.1,7.3,8.4,7.3c4.7,0,8.5-3.8,8.5-8.5
@@ -2086,14 +1988,14 @@ const facialHairs = [
     cx: 217 - 64,
     cy: 340 - 50,
 
-    tag: () => {
+    tag: (accessoryColor = '#f7a584') => {
       return (
         <>
           <g>
             <g>
               <path
                 style={{
-                  fill: 'brown',
+                  fill: accessoryColor,
                 }}
                 d="M198.7,340.3h-9c-1.9,0-3.4-1.6-3.4-3.5v-3.9c0-1.9,1.5-3.5,3.4-3.5h9c1.9,0,3.4,1.6,3.4,3.5v3.9
 					C202.2,338.8,200.6,340.3,198.7,340.3z M189.8,331c-1,0-1.9,0.9-1.9,1.9v3.9c0,1.1,0.8,1.9,1.9,1.9h9c1,0,1.9-0.9,1.9-1.9v-3.9
@@ -2103,7 +2005,7 @@ const facialHairs = [
             <g>
               <path
                 style={{
-                  fill: 'brown',
+                  fill: accessoryColor,
                 }}
                 d="M217.9,340.3h-9c-1.9,0-3.4-1.6-3.4-3.5v-3.9c0-1.9,1.5-3.5,3.4-3.5h9c1.9,0,3.4,1.6,3.4,3.5v3.9
 					C221.3,338.8,219.8,340.3,217.9,340.3z M208.9,331c-1,0-1.9,0.9-1.9,1.9v3.9c0,1.1,0.8,1.9,1.9,1.9h9c1,0,1.9-0.9,1.9-1.9v-3.9
@@ -2115,50 +2017,7 @@ const facialHairs = [
             x="201.5"
             y="334.2"
             style={{
-              fill: 'brown',
-            }}
-            width="4.7"
-            height="1.8"
-          />
-        </>
-      );
-    },
-  },
-
-  {
-    cx: 217 - 64,
-    cy: 340 - 50,
-
-    tag: () => {
-      return (
-        <>
-          <g>
-            <g>
-              <path
-                style={{
-                  fill: 'black',
-                }}
-                d="M198.7,340.3h-9c-1.9,0-3.4-1.6-3.4-3.5v-3.9c0-1.9,1.5-3.5,3.4-3.5h9c1.9,0,3.4,1.6,3.4,3.5v3.9
-					C202.2,338.8,200.6,340.3,198.7,340.3z M189.8,331c-1,0-1.9,0.9-1.9,1.9v3.9c0,1.1,0.8,1.9,1.9,1.9h9c1,0,1.9-0.9,1.9-1.9v-3.9
-					c0-1.1-0.8-1.9-1.9-1.9H189.8z"
-              />
-            </g>
-            <g>
-              <path
-                style={{
-                  fill: 'black',
-                }}
-                d="M217.9,340.3h-9c-1.9,0-3.4-1.6-3.4-3.5v-3.9c0-1.9,1.5-3.5,3.4-3.5h9c1.9,0,3.4,1.6,3.4,3.5v3.9
-					C221.3,338.8,219.8,340.3,217.9,340.3z M208.9,331c-1,0-1.9,0.9-1.9,1.9v3.9c0,1.1,0.8,1.9,1.9,1.9h9c1,0,1.9-0.9,1.9-1.9v-3.9
-					c0-1.1-0.8-1.9-1.9-1.9H208.9z"
-              />
-            </g>
-          </g>
-          <rect
-            x="201.5"
-            y="334.2"
-            style={{
-              fill: 'black',
+              fill: accessoryColor,
             }}
             width="4.7"
             height="1.8"
@@ -2176,30 +2035,18 @@ const tabs = [
   },
   {
     key: 'FORM',
-    name: '얼굴',
-  },
-  {
-    key: 'SKIN',
-    name: '피부',
-  },
-  {
-    key: 'CLOTH',
-    name: '의상',
+    name: '외형',
   },
   {
     key: 'FACE',
-    name: '모양',
+    name: '얼굴',
   },
   {
     key: 'HAIR',
     name: '헤어스타일',
   },
   {
-    key: 'HAIR_COLOR',
-    name: '염색',
-  },
-  {
-    key: 'FACIAL_HAIR',
+    key: 'ACCESSORY',
     name: '액서사리',
   },
 ];
@@ -2252,9 +2099,10 @@ class AvatarBuilder extends React.Component {
       formNumber: 3,
       hairNumber: 1,
       faceNumber: 1,
-      facialHairNumber: 0,
+      accessoryNumber: 0,
       faceColorNumber: 3,
       hairColorNumber: 0,
+      accessoryColorNumber: 0,
       clothColorNumber: 1,
     };
   };
@@ -2265,16 +2113,17 @@ class AvatarBuilder extends React.Component {
       formNumber: this.getRandomIndex(forms),
       hairNumber: this.getRandomIndex(hairs),
       faceNumber: this.getRandomIndex(faces),
-      facialHairNumber: this.getRandomIndex(facialHairs),
+      accessoryNumber: this.getRandomIndex(accessories),
       faceColorNumber: this.getRandomIndex(faceColors),
       hairColorNumber: this.getRandomIndex(hairColors),
+      accessoryColorNumber: this.getRandomIndex(allColors),
       clothColorNumber: this.getRandomIndex(clothColors),
     };
   };
 
   getColorControl = (label, list, selectedIndex, fieldName) => {
     return (
-      <>
+      <div>
         <div className="arrow-btn">
           <span
             onClick={() => {
@@ -2319,7 +2168,7 @@ class AvatarBuilder extends React.Component {
             <i className="fal fa-chevron-right" />
           </span>
         </div>
-      </>
+      </div>
     );
   };
 
@@ -2356,9 +2205,9 @@ class AvatarBuilder extends React.Component {
     );
   };
 
-  getFacialHair = (shape, color) => {
+  getAccessory = (shape, color) => {
     return (
-      <g className="facial-hair" /* 수염  */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
+      <g className="accessory" /* 액세서리  */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
         {shape.tag(color)}
       </g>
     );
@@ -2391,13 +2240,9 @@ class AvatarBuilder extends React.Component {
     );
   };
 
-  getIndex = (i) => {
-    return i;
-  };
-
-  getShapeControl = (label, list, selectedIndex, fieldName, getShapeFunction, bgColor) => {
+  getShapeControl = (label, list, selectedIndex, fieldName, getShapeFunction) => {
     return (
-      <>
+      <div>
         <div className="arrow-btn">
           <span
             onClick={() => {
@@ -2412,7 +2257,7 @@ class AvatarBuilder extends React.Component {
             <i className="fal fa-chevron-left" />
           </span>
         </div>
-        <div className="picker-content shape-picker scrollbar">
+        <div className="picker-content shape-picker scrollbar-sm">
           {list.map((shape, i) => {
             return (
               <span
@@ -2421,11 +2266,8 @@ class AvatarBuilder extends React.Component {
                 onClick={() => {
                   this.onChange(fieldName, i);
                 }}
-                style={{
-                  backgroundColor: bgColor,
-                }}
               >
-                <svg viewBox="0 0 100 100">{getShapeFunction(shape, '#CCC', '#EEE', i)}</svg>
+                <svg viewBox="0 0 100 100">{getShapeFunction(shape, '#333', '#666', i)}</svg>
               </span>
             );
           })}
@@ -2443,7 +2285,7 @@ class AvatarBuilder extends React.Component {
             <i className="fal fa-chevron-right" />
           </span>
         </div>
-      </>
+      </div>
     );
   };
 
@@ -2460,9 +2302,10 @@ class AvatarBuilder extends React.Component {
       formNumber,
       hairNumber,
       faceNumber,
-      facialHairNumber,
+      accessoryNumber,
       faceColorNumber,
       hairColorNumber,
+      accessoryColorNumber,
       clothColorNumber,
     } = style;
 
@@ -2486,8 +2329,8 @@ class AvatarBuilder extends React.Component {
               </g>
               {this.getBackHair(hairs[hairNumber], hairColors[hairColorNumber])}
               {this.getForm(forms[formNumber], faceColors[faceColorNumber], clothColors[clothColorNumber], 'preview')}
-              {this.getFacialHair(facialHairs[facialHairNumber], hairColors[hairColorNumber])}
               {this.getFace(faces[faceNumber])}
+              {this.getAccessory(accessories[accessoryNumber], allColors[accessoryColorNumber])}
               {this.getFrontHair(hairs[hairNumber], hairColors[hairColorNumber])}
             </svg>
           </div>
@@ -2502,9 +2345,9 @@ class AvatarBuilder extends React.Component {
           </div>
         </div>
         <div className="controller">
-          <Card className="g-border-normal">
-            <CardHeader className="g-border-normal p-0">
-              <Nav className="tabs" tabs>
+          <Card className="g-border-normal border-0">
+            <CardHeader className="g-border-normal p-0 border-0 bg-white">
+              <Nav className="tabs px-0 text-center text-sm-left d-block d-sm-flex" tabs>
                 {tabs.map((t) => {
                   return (
                     <NavItem
@@ -2520,7 +2363,7 @@ class AvatarBuilder extends React.Component {
                 })}
               </Nav>
             </CardHeader>
-            <CardBody className="bg-gray p-0">
+            <CardBody className="p-0">
               {tab === 'BG' && (
                 <div className="control-box">
                   {this.getColorControl('배경 색상', bgColors, bgStyleNumber, 'bgStyleNumber')}
@@ -2528,44 +2371,33 @@ class AvatarBuilder extends React.Component {
               )}
               {tab === 'FORM' && (
                 <div className="control-box">
-                  {this.getShapeControl(
-                    '얼굴 형태',
-                    forms,
-                    formNumber,
-                    'formNumber',
-                    this.getForm,
-                    bgColors[bgStyleNumber],
-                  )}
-                </div>
-              )}
-              {tab === 'CLOTH' && (
-                <div className="control-box">
-                  {this.getColorControl('의상', clothColors, clothColorNumber, 'clothColorNumber')}
+                  {this.getShapeControl('얼굴 형태', forms, formNumber, 'formNumber', this.getForm)}
+                  {this.getColorControl('피부', faceColors, faceColorNumber, 'faceColorNumber')}
                 </div>
               )}
               {tab === 'FACE' && (
                 <div className="control-box">
                   {this.getShapeControl('눈코입', faces, faceNumber, 'faceNumber', this.getFace)}
+                  {this.getColorControl('의상', clothColors, clothColorNumber, 'clothColorNumber')}
                 </div>
               )}
-              {tab === 'SKIN' && (
-                <div className="control-box">
-                  {this.getColorControl('피부', faceColors, faceColorNumber, 'faceColorNumber')}
-                </div>
-              )}
+
               {tab === 'HAIR' && (
                 <div className="control-box">
                   {this.getShapeControl('헤어스타일', hairs, hairNumber, 'hairNumber', this.getHair)}
-                </div>
-              )}
-              {tab === 'HAIR_COLOR' && (
-                <div className="control-box">
                   {this.getColorControl('머리 색상', hairColors, hairColorNumber, 'hairColorNumber')}
                 </div>
               )}
-              {tab === 'FACIAL_HAIR' && (
+              {tab === 'ACCESSORY' && (
                 <div className="control-box">
-                  {this.getShapeControl('수염', facialHairs, facialHairNumber, 'facialHairNumber', this.getFacialHair)}
+                  {this.getShapeControl(
+                    '액서사리',
+                    accessories,
+                    accessoryNumber,
+                    'accessoryNumber',
+                    this.getAccessory,
+                  )}
+                  {this.getColorControl('액서사리 색상', allColors, accessoryColorNumber, 'accessoryColorNumber')}
                 </div>
               )}
             </CardBody>
@@ -2579,6 +2411,6 @@ export default AvatarBuilder;
 
 AvatarBuilder.propTypes = {
   onChange: PropTypes.func,
-  info: PropTypes.shape(PropTypes.any),
+  info: PropTypes.string,
   className: PropTypes.string,
 };
