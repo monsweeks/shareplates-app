@@ -8,6 +8,8 @@ import Container from 'reactstrap/es/Container';
 import Form from 'reactstrap/es/Form';
 import Row from 'reactstrap/es/Row';
 import Col from 'reactstrap/es/Col';
+import Nav from 'reactstrap/es/Nav';
+import NavItem from 'reactstrap/es/NavItem';
 import TopLogo from '@/components/TopLogo/TopLogo';
 import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
@@ -22,6 +24,7 @@ import UserSearchPopup from '@/components/UserSearchPopup/UserSearchPopup';
 import Popup from '@/components/Popup/Popup';
 import SubLabel from '@/components/SubLabel/SubLabel';
 import Description from '@/components/Description/Description';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 export {
   Button,
@@ -48,4 +51,7 @@ export {
   Popup,
   SubLabel,
   Description,
+  Nav,
+  NavItem,
+  CircleIcon,
 };

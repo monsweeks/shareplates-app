@@ -1,4 +1,6 @@
 @import '~bootstrap/scss/bootstrap';
+@import './styles/override-variables.scss';
+@import './styles/import-overrides.scss';
 
 @font-face {
   font-family: 'LGSmHaL';

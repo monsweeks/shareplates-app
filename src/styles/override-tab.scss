@@ -1,0 +1,15 @@
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 2px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  &.focus {
+    background-color: $primary;
+    color: $white;
+    border-radius: 3px;
+  }
+}

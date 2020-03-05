@@ -160,7 +160,7 @@ class NewTopic extends Component {
     return (
       <RegisterLayout className="new-topic-wrapper">
         <PageTitle list={breadcrumbs}>{t('message.makeNewTopic')}</PageTitle>
-        <hr className="d-none d-sm-block" />
+        <hr className="d-none d-sm-block mb-3" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
           <SubLabel>{t('ORGANIZATION')}</SubLabel>
           <Description>{t('message.selectOrgForTopic')}</Description>
