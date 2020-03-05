@@ -4,7 +4,8 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { setOrganization, setUser } from 'actions';
+import request from '@/utils/request';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import {
   Button,
@@ -14,16 +15,14 @@ import {
   IconSelector,
   Input,
   Popup,
+  Selector,
   SubLabel,
   TextArea,
   UserManager,
   UserSearchPopup,
+  CheckBoxInput,
 } from '@/components';
-import request from '@/utils/request';
-
 import './NewTopic.scss';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
-import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
 
 const breadcrumbs = [
   {
@@ -37,28 +36,6 @@ const breadcrumbs = [
 ];
 
 class NewTopic extends Component {
-  static getDerivedStateFromProps(props, state) {
-    const { user } = props;
-
-    if (!state.init && props.user && props.user.id) {
-      const { topic } = state;
-      topic.users = [
-        {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-        },
-      ];
-
-      return {
-        topic,
-        init: true,
-      };
-    }
-
-    return null;
-  }
-
   constructor(props) {
     super(props);
 
@@ -79,14 +56,50 @@ class NewTopic extends Component {
     this.checkNameExistDebounced = debounce(this.checkNameExist, 400);
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { user } = props;
+    const topic = { ...state.topic };
+    let changed = false;
+    let init = false;
+
+    if (!topic.organizationId && props.organizations && props.organizations.length > 0) {
+      topic.organizationId = props.organizations[0].id;
+      changed = true;
+    }
+
+    if (!state.init && props.user && props.user.id) {
+      topic.users = [
+        {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          organizationId: props.organizations && props.organizations.length > 0 ? props.organizations[0].id : null,
+        },
+      ];
+      changed = true;
+      init = true;
+    }
+
+    if (changed) {
+      return {
+        topic,
+        init,
+      };
+    }
+
+    return null;
+  }
+
   componentWillUnmount() {
     this.checkNameExistDebounced.cancel();
   }
 
-  checkNameExist = (email) => {
+  checkNameExist = (name) => {
+    const { topic } = this.state;
+
     request.get(
-      '/api/users/exists',
-      { email },
+      '/api/topics/name',
+      { organizationId: topic.organizationId, name },
       (data) => {
         this.setState({
           existName: data,
@@ -100,7 +113,7 @@ class NewTopic extends Component {
   onChange = (field) => (value) => {
     const { topic } = this.state;
 
-    if (field === 'email') {
+    if (field === 'name') {
       this.checkNameExistDebounced(value);
     }
 
@@ -133,34 +146,46 @@ class NewTopic extends Component {
 
     request.post('/api/topics', topic, (data) => {
       // eslint-disable-next-line react/destructuring-assignment
-
       console.log(data);
-      history.push('/topics/join/success');
+      history.push('/topics');
     });
   };
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const { t, addMessage: addMessageReducer } = this.props;
+    const { t, addMessage: addMessageReducer, organizations } = this.props;
     // eslint-disable-next-line no-unused-vars
     const { topic, existName, openUserPopup } = this.state;
 
     return (
       <RegisterLayout className="new-topic-wrapper">
-        <PageTitle list={breadcrumbs}>{t('새로운 토픽 만들기')}</PageTitle>
+        <PageTitle list={breadcrumbs}>{t('message.makeNewTopic')}</PageTitle>
         <hr className="d-none d-sm-block" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
-          <SubLabel>{t('아이콘')}</SubLabel>
-          <Description>
-            토픽을 나타내는 아이콘을 선택하거나, 직접 이미지를 업로드할 수 있습니다. 토픽이 카드 형태로 보여지거나,
-            토픽의 이름 생략하고, 아이콘으로 표현하는 등에 사용됩니다.
-          </Description>
+          <SubLabel>{t('ORGANIZATION')}</SubLabel>
+          <Description>{t('message.selectOrgForTopic')}</Description>
+          <FormGroup>
+            <Selector
+              outline
+              className="organization-selector"
+              items={organizations.map((org) => {
+                return {
+                  key: org.id,
+                  value: org.name,
+                };
+              })}
+              value={topic.organizationId}
+              onChange={this.onChange('organizationId')}
+            />
+          </FormGroup>
+          <SubLabel>{t('label.icon')}</SubLabel>
+          <Description>{t('message.topicIconDesc')}</Description>
           <FormGroup>
             <IconSelector className="icon-selector" iconIndex={topic.iconIndex} onChange={this.onChange('iconIndex')} />
           </FormGroup>
           <hr className="g-dashed" />
-          <SubLabel>{t('이름')}</SubLabel>
-          <Description>토픽 이름을 입력해주세요. 포함되는 ORGANIZAITON에서 유일해야 이름을 가져야 합니다.</Description>
+          <SubLabel>{t('label.name')}</SubLabel>
+          <Description>{t('message.topicNameDesc')}</Description>
           <FormGroup>
             <Input
               label={t('label.name')}
@@ -173,14 +198,15 @@ class NewTopic extends Component {
               border
               componentClassName="border-primary"
             />
+            {existName && <div className="small text-danger mt-2">{t('validation.dupName')}</div>}
           </FormGroup>
           <hr className="g-dashed" />
-          <SubLabel>{t('설명')}</SubLabel>
-          <Description>토픽에 대한 설명을 입력해주세요.</Description>
+          <SubLabel>{t('label.desc')}</SubLabel>
+          <Description>{t('message.topicDescDesc')}</Description>
           <FormGroup>
             <TextArea
-              label={t('설명')}
-              placeholderMessage="새로운 토픽에 대한 설명을 입력해주세요"
+              label={t('label.desc')}
+              placeholderMessage={t('message.topicDescDesc')}
               value={topic.summary}
               onChange={this.onChange('summary')}
               simple
@@ -188,23 +214,21 @@ class NewTopic extends Component {
             />
           </FormGroup>
           <hr className="g-dashed" />
-          <SubLabel>{t('비공개 토픽')}</SubLabel>
-          <Description>
-            비공개 토픽으로 만들면, 토픽이 검색 등에 노출되지 않으며, 지정한 사용자만 접근이 가능합니다.
-          </Description>
+          <SubLabel>{t('label.privateTopic')}</SubLabel>
+          <Description>{t('message.privateTopicDesc')}</Description>
           <FormGroup>
             <CheckBoxInput
               size="sm"
               type="checkbox"
               value={topic.privateYn}
               onChange={this.onChange('privateYn')}
-              label="비밀 토픽입니다"
+              label={t('message.privateTopic')}
             />
           </FormGroup>
           <hr className="g-dashed" />
           <div className="position-relative">
-            <SubLabel>{t('토픽 관리자')}</SubLabel>
-            <Description>토픽을 수정하고 삭제할 수 있는 관리자를 지정합니다.</Description>
+            <SubLabel>{t('label.topicAdmin')}</SubLabel>
+            <Description>{t('message.topicUserDesc')}</Description>
             <Button
               className="manager-button"
               color="primary"
@@ -213,7 +237,7 @@ class NewTopic extends Component {
                 this.setOpenUserPopup(true);
               }}
             >
-              사용자 관리
+              {t('label.userManagement')}
             </Button>
           </div>
           <FormGroup>
@@ -237,7 +261,7 @@ class NewTopic extends Component {
           </FormGroup>
           <FormGroup className="text-center mb-3 mb-sm-0">
             <Button className="px-4" color="primary">
-              {t('만들기')}
+              {t('label.makeTopic')}
             </Button>
           </FormGroup>
         </Form>
@@ -270,14 +294,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
-    setOrganization: (organizationId) => dispatch(setOrganization(organizationId)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(NewTopic)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(NewTopic)));
 
 NewTopic.defaultProps = {
   t: null,
@@ -295,4 +312,11 @@ NewTopic.propTypes = {
     push: PropTypes.func,
   }),
   addMessage: PropTypes.func,
+  organizations: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      publicYn: PropTypes.bool,
+    }),
+  ),
 };
