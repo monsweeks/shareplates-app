@@ -9,9 +9,9 @@ class RadioButton extends React.PureComponent {
   }
 
   render() {
-    const { onClick, className, items, value, circle } = this.props;
+    const { onClick, className, items, value, circle, size } = this.props;
     return (
-      <div className={`${className} radio-button-wrapper`}>
+      <div className={`radio-button-wrapper ${className} ${size}`}>
         {items.map((item) => {
           return (
             <button
@@ -38,6 +38,7 @@ RadioButton.defaultProps = {
   className: '',
   items: [],
   circle: false,
+  size : 'md'
 };
 
 RadioButton.propTypes = {
@@ -52,4 +53,5 @@ RadioButton.propTypes = {
   className: PropTypes.string,
   value: PropTypes.string,
   circle: PropTypes.bool,
+  size : PropTypes.string,
 };

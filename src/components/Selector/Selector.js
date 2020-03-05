@@ -13,13 +13,24 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value } = this.props;
-    const selcetedItem = items.find((item) => item.key === value);
+    const { className, onChange, items, value, addAll, outline } = this.props;
+    let selcetedItem = items.find((item) => item.key === value);
+    if (addAll && value === '') {
+      selcetedItem = {
+        key: '',
+        value: 'ALL',
+      };
+    }
 
     return (
-      <div className={`selector-wrapper ${className}`}>
+      <div className={`selector-wrapper g-no-select ${className}`}>
+        {open && <div className='selector-overlay g-overlay' onClick={() => {
+          this.setState({
+            open: false,
+          });
+        }}/>}
         <div
-          className={`${open ? 'open' : ''} selector-current`}
+          className={`${open ? 'open' : ''} selector-current ${outline ? 'outline' : ''}`}
           onClick={() => {
             this.setState({
               open: !open,
@@ -36,6 +47,20 @@ class Selector extends React.Component {
         </div>
         <div className={`${open ? 'd-block' : 'd-none'} selector-list scrollbar-sm`}>
           <ul>
+            {addAll && (
+              <li
+                className={value === '' ? 'selected' : ''}
+                onClick={() => {
+                  onChange('');
+                  this.setState({
+                    open: false,
+                  });
+                }}
+              >
+                <span className="select-arrow" />
+                ALL
+              </li>
+            )}
             {items.map((item) => {
               return (
                 <li
@@ -48,7 +73,7 @@ class Selector extends React.Component {
                     });
                   }}
                 >
-                  <span className='select-arrow' />
+                  <span className="select-arrow" />
                   {item.value}
                 </li>
               );
@@ -64,6 +89,8 @@ export default withTranslation()(Selector);
 
 Selector.defaultProps = {
   className: '',
+  addAll: false,
+  outline : false
 };
 
 Selector.propTypes = {
@@ -76,4 +103,6 @@ Selector.propTypes = {
     }),
   ),
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  addAll: PropTypes.bool,
+  outline: PropTypes.bool,
 };

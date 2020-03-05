@@ -1,15 +1,39 @@
 .circle-icon-wrapper {
   display: inline-block;
   font-size: 18px;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   background-color: $primary;
+  color: $white;
   text-align: center;
   border-radius: 50%;
   padding-top: 2px;
   cursor: pointer;
 
+  &.sm {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    padding-top: 0;
+  }
+
+  &.md {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    padding-top: 3px;
+  }
+
   &:hover {
     background-color: darken($primary, 5%);
+  }
+
+  &.danger {
+    background-color: $danger;
+
+    &:hover {
+      background-color: darken($danger, 10%);
+    }
+
   }
 }

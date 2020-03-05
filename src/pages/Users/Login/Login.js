@@ -3,19 +3,14 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { DetailLayout } from '@/layouts';
-import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
+import { Button, Col, Form, FormGroup, Input, Link, Row, CheckBoxInput } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
-import facebook from '@/images/sites/facebook.png';
-import google from '@/images/sites/google.png';
-import naver from '@/images/sites/naver.png';
-import kakao from '@/images/sites/kakao.png';
+import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import './Login.scss';
-
 import { addMessage, setUser } from '@/actions';
-import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
+import './Login.scss';
+import { CenterBoxLayout } from '@/layouts';
 
 class Login extends React.PureComponent {
   constructor(props) {
@@ -40,6 +35,10 @@ class Login extends React.PureComponent {
       obj.loginResult = null;
     }
 
+    if (field === 'saveEmail' && !value) {
+      storage.setItem('login', 'email', null);
+    }
+
     this.setState(obj);
   };
 
@@ -47,7 +46,7 @@ class Login extends React.PureComponent {
     e.preventDefault();
 
     const { email, password, saveEmail } = this.state;
-    const { history, setUser : setUserReducer } = this.props;
+    const { history, setUser: setUserReducer } = this.props;
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
@@ -81,19 +80,20 @@ class Login extends React.PureComponent {
     const { email, password, saveEmail, loginResult } = this.state;
 
     return (
-      <DetailLayout className="login-wrapper align-self-center">
-        <h1 className="text-center">{t('label.login')}</h1>
-        <p className="text-center d-md-block">
+      <CenterBoxLayout className="login-wrapper">
+        <div className="line" />
+        <h1 className="text-center">LOGIN</h1>
+        <p className="text-center d-md-block mb-0">
           <Link color="blue" to="/users/join">
             {t('message.moveToJoinPage')}
           </Link>
         </p>
-        <p className="text-danger text-center">
-          {loginResult !== null && loginResult === false && <span>아이디 또는 비밀번호가 일치하지 않습니다.</span>}
-          &nbsp;
-        </p>
-        <Row className="mb-4">
+        <Row>
           <Col>
+            <p className="text-danger text-center mb-1">
+              {loginResult !== null && loginResult === false && <span>{t('message.invalidIdorPassword')}</span>}
+              &nbsp;
+            </p>
             <Form onSubmit={this.onSubmit} className="px-2 px-sm-0">
               <FormGroup>
                 <Input
@@ -128,12 +128,12 @@ class Login extends React.PureComponent {
                       type="checkbox"
                       value={saveEmail}
                       onChange={this.onChange('saveEmail')}
-                      label="이메일 기억하기"
+                      label={t('label.rememberEmail')}
                     />
                   </Col>
                   <Col className="text-right">
                     <Link className="find-user-account" color="blue" to="/users/recovery">
-                      {t('아이디/비밀번호 찾기')}
+                      {t('label.findAccountInfo')}
                     </Link>
                   </Col>
                 </Row>
@@ -151,7 +151,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={kakao} alt="KAKAO" />
+                      <img src={siteImage.kakao} alt="KAKAO" />
                     </div>
                   </Button>
                   <Button
@@ -162,7 +162,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={naver} alt="NAVER" />
+                      <img src={siteImage.naver} alt="NAVER" />
                     </div>
                   </Button>
                   <Button
@@ -173,7 +173,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={google} alt="GOOGLE" />
+                      <img src={siteImage.google} alt="GOOGLE" />
                     </div>
                   </Button>
                   <Button
@@ -184,7 +184,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={facebook} alt="FACEBOOK" />
+                      <img src={siteImage.facebook} alt="FACEBOOK" />
                     </div>
                   </Button>
                 </div>
@@ -202,7 +202,7 @@ class Login extends React.PureComponent {
               >
                 <div>
                   <span>
-                    <img src={facebook} alt="FACEBOOK" />
+                    <img src={siteImage.facebook} alt="FACEBOOK" />
                   </span>
                   <span>{t('label.facebookLogin')}</span>
                 </div>
@@ -216,7 +216,7 @@ class Login extends React.PureComponent {
               >
                 <div>
                   <span>
-                    <img src={google} alt="GOOGLE" />
+                    <img src={siteImage.google} alt="GOOGLE" />
                   </span>
                   <span>{t('label.googleLogin')}</span>
                 </div>
@@ -232,7 +232,7 @@ class Login extends React.PureComponent {
               >
                 <div>
                   <span>
-                    <img src={naver} alt="NAVER" />
+                    <img src={siteImage.naver} alt="NAVER" />
                   </span>
                   <span>{t('label.naverLogin')}</span>
                 </div>
@@ -246,7 +246,7 @@ class Login extends React.PureComponent {
               >
                 <div>
                   <span>
-                    <img src={kakao} alt="KAKAO" />
+                    <img src={siteImage.kakao} alt="KAKAO" />
                   </span>
                   <span>{t('label.kakaoLogin')}</span>
                 </div>
@@ -254,7 +254,7 @@ class Login extends React.PureComponent {
             </FormGroup>
           </Col>
         </Row>
-      </DetailLayout>
+      </CenterBoxLayout>
     );
   }
 }
@@ -262,19 +262,17 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations))
+    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
   };
 };
 
 export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(Login)));
 
-Login.defaultProps = {
-  t: null,
-};
-
 Login.propTypes = {
-  t: PropTypes.func,
-  addMessage: PropTypes.func,
-  setUser: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  t: PropTypes.func.isRequired,
+  addMessage: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
 };

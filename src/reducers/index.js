@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux';
 import {
-  CLEAR_MESSAGE,
   ADD_MESSAGE,
+  CLEAR_MESSAGE,
+  SET_JOIN_EMAIL,
+  SET_LOADING,
+  SET_ORGANIZATION_ID,
   SET_SUPPORTED,
   SET_USER,
-  SET_LOADING,
-  SET_JOIN_EMAIL,
 } from '../actions';
 
 const userState = {
   user: null,
-  organizations : [],
+  organizationId: null,
+  organizations: [],
   join: {
     email: null,
   },
@@ -21,7 +23,10 @@ const user = (state = userState, action) => {
 
   switch (action.type) {
     case SET_USER:
-      return { ...state, user : action.user, organizations : action.organizations };
+      return { ...state, user: action.user, organizations: action.organizations };
+
+    case SET_ORGANIZATION_ID:
+      return { ...state, organizationId: action.organizationId };
 
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });

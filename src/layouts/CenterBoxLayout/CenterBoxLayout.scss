@@ -1,0 +1,39 @@
+.center-box-layout {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: $white;
+  border-radius: 5px;
+  padding: 30px !important;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
+
+  @media (min-width: 1200px) {
+    max-width: 900px !important;
+  }
+
+  @media (max-width: 576px) {
+    margin: 20px !important;
+    margin: 0px !important;
+    width: calc(100% - 40px) !important;
+    width: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+
+    @media (max-height: 600px) {
+      margin: 20px !important;
+      margin: 0px !important;
+      width: calc(100% - 40px) !important;
+      width: 100% !important;
+      position: static;
+    }
+  }
+}

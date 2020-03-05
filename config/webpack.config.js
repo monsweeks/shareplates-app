@@ -471,7 +471,7 @@ module.exports = function(webpackEnv) {
               ).concat({
                 loader: require.resolve('sass-loader'),
                 options: {
-                  prependData:`@import "styles/override";`,
+                  prependData:`@import "styles/override-variables";`,
                   sassOptions: {
                     includePaths: [paths.appSrc + '/styles'],
                     sourceMap: isEnvProduction && shouldUseSourceMap,
@@ -517,6 +517,17 @@ module.exports = function(webpackEnv) {
             },
             // ** STOP ** Are you adding a new loader?
             // Make sure to add the new loader(s) before the "file" loader.
+
+            {
+              test: /\.scss$/,
+              use: [{
+                loader: "style-loader" // creates style nodes from JS strings
+              }, {
+                loader: "css-loader" // translates CSS into CommonJS
+              }, {
+                loader: "sass-loader" // compiles Sass to CSS
+              }]
+            }
           ],
         },
       ],

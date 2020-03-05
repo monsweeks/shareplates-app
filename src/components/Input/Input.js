@@ -58,11 +58,13 @@ class Input extends React.Component {
       value,
       required,
       type,
+      border,
       t,
       // eslint-disable-next-line react/prop-types
       tReady,
       customInputValidationMessage,
       externalValidationMessage,
+      simple,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
@@ -71,7 +73,7 @@ class Input extends React.Component {
       <div
         className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${value ? 'has-value' : ''} ${
           valid ? 'valid' : 'in-valid'
-        }`}
+        } ${simple ? 'simple' : ''} ${border ? 'has-border' : ''}`}
         onClick={() => {
           this.control.current.focus();
         }}
@@ -115,6 +117,8 @@ Input.defaultProps = {
   value: '',
   required: false,
   type: 'text',
+  simple : false,
+  border : false,
 };
 
 Input.propTypes = {
@@ -130,6 +134,8 @@ Input.propTypes = {
   type: PropTypes.string,
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
   externalValidationMessage : PropTypes.string,
+  simple : PropTypes.bool,
+  border : PropTypes.bool,
 };
 
 export default withTranslation()(Input);

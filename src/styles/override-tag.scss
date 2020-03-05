@@ -1,11 +1,11 @@
 h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
 
-  @include media-breakpoint-down(sm) {
+  @media (max-width: 768px) {
     font-size: 1.8rem;
   }
 
-  @include media-breakpoint-down(xs) {
+  @media (max-width: 576px) {
     font-size: 1.5rem;
   }
 }
@@ -13,6 +13,19 @@ h1 {
 div.g-category-label {
   font-family: LGSmHaR;
   margin-bottom: 0.25rem;
+}
+
+hr {
+  margin: 0.5rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
+
+  &.g-bold {
+    border-top-width: 2px !important;
+  }
+
+  &.g-dashed {
+    border-style: dashed !important;;
+  }
 }
 
 span.g-shareplates {

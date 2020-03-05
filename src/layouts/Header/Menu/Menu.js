@@ -3,11 +3,29 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Button, Link } from 'components';
 import { withTranslation } from 'react-i18next';
+import variables from '@/styles/override-variables.scss';
 import './Menu.scss';
 
+const pageMainColors = {
+  default: variables.primaryColor,
+  '/users/join': variables.primaryColor,
+  '/': variables.seaBlueColor,
+  '/topics': variables.seaBlueColor,
+};
+
 class Menu extends React.PureComponent {
+  getPageMainColor = (path) => {
+    if (pageMainColors[path]) {
+      return pageMainColors[path];
+    }
+
+    return pageMainColors.default;
+  };
+
   render() {
     const { t, pathname, menus, openMenu, setOpen } = this.props;
+
+    console.log('pathname', pathname);
 
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
@@ -43,7 +61,11 @@ class Menu extends React.PureComponent {
               effect={false}
             >
               <div className="current-arrow">
-                <span />
+                <span
+                  style={{
+                    backgroundColor: this.getPageMainColor(pathname),
+                  }}
+                />
               </div>
               <div className="icon">
                 <span>

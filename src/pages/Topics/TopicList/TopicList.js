@@ -1,14 +1,14 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { DetailLayout } from '@/layouts';
+import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import { setUser } from '@/actions';
-import { Selector } from '@/components';
+import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
 
 const orders = [
@@ -44,6 +44,7 @@ class TopicList extends React.Component {
       order: orders[0].key,
       direction: directions[0].key,
       organizationId: null,
+      openOptions: false,
     };
   }
 
@@ -58,64 +59,117 @@ class TopicList extends React.Component {
   }
 
   render() {
-    const { order, direction, organizationId } = this.state;
+    const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
-    const { organizations, setUser: setUserReducer } = this.props;
+    const { organizations, setUser: setUserReducer, history } = this.props;
 
     return (
       <div className="topic-list-wrapper">
         <div className="g-no-select search-bar">
           <div>
             <div className="search-col">
-              <SearchInput placeholder='토픽명으로 검색' />
+              <SearchInput noBorder color="white" placeholder="토픽명으로 검색" />
             </div>
-            <div className="organization-col">
-              <span className="label small">ORG</span>
-              <Selector
-                className='organization-selector'
-                items={organizations.map((org) => {
-                  return {
-                    key: org.id,
-                    value: org.name,
-                  };
-                })}
-                value={organizationId}
-                onChange={(id) => {
+            {openOptions && (
+              <div
+                className="g-overlay"
+                onClick={() => {
                   this.setState({
-                    organizationId : id
+                    openOptions: false,
                   });
                 }}
               />
+            )}
+            <div className={`options ${openOptions ? 'open' : ''}`}>
+              <div className="arrow">
+                <div />
+              </div>
+              <div className="organization-col">
+                <span className="label small text-white">ORG</span>
+                <Selector
+                  outline
+                  className="organization-selector"
+                  items={organizations.map((org) => {
+                    return {
+                      key: org.id,
+                      value: org.name,
+                    };
+                  })}
+                  value={organizationId}
+                  onChange={(id) => {
+                    this.setState({
+                      organizationId: id,
+                    });
+                  }}
+                />
+              </div>
+              <div className="order-col">
+                <span className="label small text-white">정렬</span>
+                <RadioButton
+                  circle
+                  items={orders}
+                  value={order}
+                  onClick={(value) => {
+                    this.setState({
+                      order: value,
+                    });
+                  }}
+                />
+                <div className="separator" />
+                <RadioButton
+                  circle
+                  items={directions}
+                  value={direction}
+                  onClick={(value) => {
+                    this.setState({
+                      direction: value,
+                    });
+                  }}
+                />
+              </div>
             </div>
-            <div className="order-col">
-              <span className="label small">정렬</span>
-              <RadioButton
-                circle
-                items={orders}
-                value={order}
-                onClick={(value) => {
+            <div className="config-col">
+              <CircleIcon
+                size="md"
+                className="d-block d-md-none"
+                icon={<i className="fal fa-ellipsis-h" />}
+                onClick={() => {
                   this.setState({
-                    order: value,
-                  });
-                }}
-              />
-              <div className="separator" />
-              <RadioButton
-                circle
-                items={directions}
-                value={direction}
-                onClick={(value) => {
-                  this.setState({
-                    direction: value,
+                    openOptions: !openOptions,
                   });
                 }}
               />
             </div>
           </div>
         </div>
-        <DetailLayout className="topic-list-content text-center align-self-center">
-          <div className="topic-list">&nbsp;</div>
-        </DetailLayout>
+        <FullLayout className="topic-list-content text-center align-self-center">
+          <div className="topic-list">
+            <Row>
+              <Col className="topic-col" xl={4} lg={4} md={6} sm={6}>
+                <Card
+                  className="g-no-select border-0"
+                  onClick={() => {
+                    history.push('/topics/new');
+                  }}
+                >
+                  <CardBody>
+                    <div>
+                      <div className="new-topic-text">
+                        <div className="icon">
+                          <i className="fal fa-books" />
+                        </div>
+                        <div className="text">새로운 토픽</div>
+                      </div>
+                      <div className="new-topic-icon">
+                        <i className="fal fa-plus" />
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        </FullLayout>
       </div>
     );
   }
@@ -149,6 +203,9 @@ TopicList.propTypes = {
     }),
   ),
   setUser: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

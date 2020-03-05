@@ -44,7 +44,7 @@ class ShortCutMenu extends React.PureComponent {
         </div>
         <div className={ready && !loggedIn ? 'd-inline-block' : 'd-none'}>
           <Link
-            className="d-inline-block"
+            className="login-label d-inline-block"
             underline={false}
             componentClassName="mr-3 mr-md-0 p-0 px-md-2"
             color="white"

@@ -2,7 +2,7 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Common, NoMatch, Sample } from 'pages';
-import { Header } from '@/layouts';
+import { Footer, Header } from '@/layouts';
 import About from '@/pages/About';
 import Users from '@/pages/Users';
 import Topics from '@/pages/Topics';
@@ -23,6 +23,7 @@ function App() {
         </Switch>
         <Common />
       </article>
+      <Footer />
     </div>
   );
 }

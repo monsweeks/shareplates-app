@@ -1,0 +1,117 @@
+.user-search-popup-wrapper {
+  .user-search-row {
+    margin: 0;
+
+    .user-search-col {
+      padding: 0;
+
+      &:first-child {
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .user-search-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400px;
+
+    @media (max-width: 992px) {
+      height: 400px;
+    }
+
+    @media (max-height: 600px) {
+      height: 360px;
+    }
+
+    @media (max-height: 500px) {
+      height: 300px;
+    }
+
+    @media (max-height: 400px) {
+      height: 200px;
+    }
+
+    .title-bar,
+    .search-bar {
+      min-height: 60px;
+      display: flex;
+      align-self: center;
+      background-color: $light;
+      padding: 0 1.5rem;
+      flex: 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+      @media (max-width: 992px) {
+        min-height: 50px;
+      }
+
+      @media (max-width: 576px) {
+        padding: 0 0.5rem;
+      }
+
+      > div {
+        align-self: center;
+
+        &.organization-col {
+          padding-right: 1rem;
+
+          @media (max-width: 576px) {
+            padding-right: 0.5rem;
+          }
+
+          .organization-selector {
+            min-width: 100px;
+
+            @media (max-width: 576px) {
+              min-width: 80px;
+              max-width: 100px;
+            }
+          }
+        }
+
+        &.search-col {
+          flex: 1;
+          padding-right: 1rem;
+          @media (max-width: 576px) {
+            padding-right: 0.5rem;
+          }
+        }
+
+        &.button-col {
+          flex: 0;
+        }
+      }
+    }
+
+    .title-bar {
+      padding: 0;
+      text-align: center;
+      border-bottom: none;
+      background-color: $white;
+      display: none;
+
+      > div {
+        flex: 1;
+
+        > span {
+          display: inline-block;
+          background-color: $yellow;
+          padding: 4px 12px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .user-select-result,
+    .user-search-result {
+      flex: 1;
+      display: flex;
+      width: 100%;
+      overflow-y: auto;
+    }
+  }
+}

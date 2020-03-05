@@ -8,12 +8,23 @@ import Container from 'reactstrap/es/Container';
 import Form from 'reactstrap/es/Form';
 import Row from 'reactstrap/es/Row';
 import Col from 'reactstrap/es/Col';
+import Nav from 'reactstrap/es/Nav';
+import NavItem from 'reactstrap/es/NavItem';
 import TopLogo from '@/components/TopLogo/TopLogo';
 import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
 import Input from '@/components/Input/Input';
-import ChecBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
+import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
 import Selector from '@/components/Selector/Selector';
+import TextArea from '@/components/TextArea/TextArea';
+import IconSelector from '@/components/IconSelector/IconSelector';
+import UserManager from '@/components/UserManager/UserManager';
+import UserCard from '@/components/UserCard/UserCard';
+import UserSearchPopup from '@/components/UserSearchPopup/UserSearchPopup';
+import Popup from '@/components/Popup/Popup';
+import SubLabel from '@/components/SubLabel/SubLabel';
+import Description from '@/components/Description/Description';
+import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 export {
   Button,
@@ -30,6 +41,17 @@ export {
   FormGroup,
   Row,
   Col,
-  ChecBoxInput,
+  CheckBoxInput,
   Selector,
+  TextArea,
+  IconSelector,
+  UserManager,
+  UserCard,
+  UserSearchPopup,
+  Popup,
+  SubLabel,
+  Description,
+  Nav,
+  NavItem,
+  CircleIcon,
 };

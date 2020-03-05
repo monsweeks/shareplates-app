@@ -1,0 +1,66 @@
+.page-title-wrapper {
+  flex-grow: 0;
+  line-height: 0;
+  padding: 0.25rem;
+  position: relative;
+
+  &.has-border {
+    border-bottom: 1px double $gray-600;
+  }
+
+  > h1 {
+    display: flex;
+    align-self: center;
+    margin-bottom: 0;
+
+    @media (max-width: 576px) {
+      display: block;
+      text-align: center;
+    }
+
+    > span {
+      display: inline-block;
+      align-self: center;
+      vertical-align: middle;
+    }
+
+    .icon {
+      flex-grow: 0;
+      width: 30px;
+      height: 30px;
+      background-color: $gray-300;
+      border-radius: 50%;
+      overflow: hidden;
+      font-size: 18px;
+      text-align: center;
+      padding-top: 5px;
+      margin-right: 5px;
+
+      &.selected {
+        background-color: $yellow;
+      }
+    }
+
+    .text {
+      flex-grow: 1;
+      font-size: 1.6rem;
+      position: relative;
+      top: 1px;
+      white-space: nowrap;
+    }
+
+    .breadcrumbs {
+      flex-grow: 0;
+      font-size: 14px;
+      line-height: 160%;
+
+      @media (max-width: 576px) {
+        display: block;
+        text-align: right;
+        margin: 1rem -20px 0.75rem;
+        background-color: $light;
+        padding: 0.25rem;
+      }
+    }
+  }
+}

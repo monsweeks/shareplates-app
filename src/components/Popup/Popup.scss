@@ -1,0 +1,46 @@
+.popup-wrapper {
+  align-items: center;
+  > div {
+    max-width: 1160px;
+    background-color: $white;
+    margin: 0 auto;
+    border-radius: 3px;
+    position: relative;
+
+    @media (max-width: 1200px) {
+      max-width: none;
+      margin: 0 40px;
+    }
+
+    @media (max-width: 768px) {
+      max-width: none;
+      margin: 0 20px;
+    }
+
+    .popup-title {
+      font-size: 1.1rem;
+      padding: 1rem;
+      background-color: $secondary;
+      color: $white;
+      border-radius: 3px 3px 0 0;
+      text-align: left;
+
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
+    }
+
+
+    .close-popup-button {
+      position: absolute;
+      top: 13px;
+      right: 10px;
+    }
+
+    .popup-buttons {
+      background-color: $light;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      text-align: right;
+    }
+  }
+}

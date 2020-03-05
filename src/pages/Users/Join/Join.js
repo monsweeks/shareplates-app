@@ -6,16 +6,12 @@ import { Map } from 'immutable';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { addMessage, setJoinEmail } from 'actions';
-import { RegisterLayout } from '@/layouts';
 import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import request from '@/utils/request';
-import facebook from '@/images/sites/facebook.png';
-import naver from '@/images/sites/naver.png';
-import kakao from '@/images/sites/kakao.png';
-import google from '@/images/sites/google.png';
-
-import './Join.scss';
+import siteImage from '@/images/sites';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import { CenterBoxLayout } from '@/layouts';
+import './Join.scss';
 
 class Join extends Component {
   constructor(props) {
@@ -91,14 +87,14 @@ class Join extends Component {
     const { user, existEmail } = this.state;
 
     return (
-      <RegisterLayout className="join-wrapper align-self-center">
-        <h1 className="text-center">{t('label.memberJoin')}</h1>
-        <p className="text-center d-md-block">
+      <CenterBoxLayout className="join-wrapper">
+        <h1 className="text-center">JOIN</h1>
+        <p className="text-center d-md-block mb-0">
           <Link color="blue" to="/users/login">
             {t('message.moveToLoginPage')}
           </Link>
         </p>
-        <Row className="mb-4">
+        <Row className="mb-0 mb-sm-4">
           <Col>
             <Form onSubmit={this.onSubmit} className="px-2 px-sm-0">
               <FormGroup>
@@ -161,7 +157,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={kakao} alt="KAKAO" />
+                      <img src={siteImage.kakao} alt="KAKAO" />
                     </div>
                   </Button>
                   <Button
@@ -172,7 +168,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={naver} alt="NAVER" />
+                      <img src={siteImage.naver} alt="NAVER" />
                     </div>
                   </Button>
                   <Button
@@ -183,7 +179,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={google} alt="GOOGLE" />
+                      <img src={siteImage.google} alt="GOOGLE" />
                     </div>
                   </Button>
                   <Button
@@ -194,7 +190,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={facebook} alt="FACEBOOK" />
+                      <img src={siteImage.facebook} alt="FACEBOOK" />
                     </div>
                   </Button>
                 </div>
@@ -212,7 +208,7 @@ class Join extends Component {
               >
                 <div>
                   <span>
-                    <img src={facebook} alt="FACEBOOK" />
+                    <img src={siteImage.facebook} alt="FACEBOOK" />
                   </span>
                   <span>{t('label.facebookLogin')}</span>
                 </div>
@@ -226,7 +222,7 @@ class Join extends Component {
               >
                 <div>
                   <span>
-                    <img src={google} alt="GOOGLE" />
+                    <img src={siteImage.google} alt="GOOGLE" />
                   </span>
                   <span>{t('label.googleLogin')}</span>
                 </div>
@@ -242,7 +238,7 @@ class Join extends Component {
               >
                 <div>
                   <span>
-                    <img src={naver} alt="NAVER" />
+                    <img src={siteImage.naver} alt="NAVER" />
                   </span>
                   <span>{t('label.naverLogin')}</span>
                 </div>
@@ -256,7 +252,7 @@ class Join extends Component {
               >
                 <div>
                   <span>
-                    <img src={kakao} alt="KAKAO" />
+                    <img src={siteImage.kakao} alt="KAKAO" />
                   </span>
                   <span>{t('label.kakaoLogin')}</span>
                 </div>
@@ -264,7 +260,7 @@ class Join extends Component {
             </FormGroup>
           </Col>
         </Row>
-        <p className="text-center px-2 px-sm-0">
+        <p className="text-justify text-sm-center px-0 px-sm-0 mb-0">
           <Trans i18nKey="message.joinNoticeInfo">
             가입 시
             <Link target="_blank" color="blue" to="/about/terms-and-conditions">
@@ -277,7 +273,7 @@ class Join extends Component {
             을 숙지하였음을 인정합니다.
           </Trans>
         </p>
-      </RegisterLayout>
+      </CenterBoxLayout>
     );
   }
 }
@@ -296,7 +292,9 @@ Join.defaultProps = {
 
 Join.propTypes = {
   t: PropTypes.func,
-  history: PropTypes.objectOf(PropTypes.any),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
   setJoinEmail: PropTypes.func,
   addMessage: PropTypes.func,
 };
