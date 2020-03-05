@@ -17,6 +17,10 @@
     position: relative;
     z-index: 1;
 
+    &.color-primary {
+      border: 1px solid $primary;
+    }
+
     &.open {
       border-radius: 3px 3px 0 0;
     }

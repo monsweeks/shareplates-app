@@ -59,6 +59,17 @@
     }
   }
 
+  &.outline {
+    button {
+      border: 1px solid $border-color;
+      border-right: none;
+
+      &:last-child {
+        border-right: 1px solid $border-color;
+      }
+    }
+  }
+
   &.sm {
     height: 20px;
 

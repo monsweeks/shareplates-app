@@ -63,10 +63,9 @@ class QuickMenu extends React.Component {
                     underline={false}
                     effect={false}
                     componentClassName="px-2"
-                    to="/"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                    to="/users/my-info/edit"
+                    onClick={() => {
+                      setOpenQuickMenu(false);
                     }}
                   >
                     <i className="fal fa-sliders-v-square" /> {t('사용자 설정')}

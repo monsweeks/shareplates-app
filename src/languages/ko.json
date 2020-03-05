@@ -5,6 +5,8 @@
   "button.confirm": "확인",
   "button.close": "닫기",
   "button.resendEmail": "확인 메일 재발송",
+  "button.save": "저장",
+  "button.cancel": "취소",
 
   "label.topic": "토픽",
   "label.chapter": "챕터",

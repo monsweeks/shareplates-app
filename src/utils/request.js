@@ -21,7 +21,11 @@ function processSuccess(response, successHandler) {
   }
 
   if (successHandler && typeof successHandler === 'function') {
-    successHandler(response.data);
+    try {
+      successHandler(response.data);
+    } catch {
+      store.dispatch(addMessage(null, MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
+    }
   }
 }
 
@@ -163,12 +167,25 @@ function post(uri, params, successHandler, failHandler, quiet) {
     });
 }
 
-function put() {}
+function put(uri, params, successHandler, failHandler, quiet) {
+  beforeRequest(quiet);
+  axios
+    .put(`${base}${uri}`, params, axiosConfig)
+    .then((response) => {
+      processSuccess(response, successHandler);
+    })
+    .catch((error) => {
+      processError(error, failHandler);
+    })
+    .finally((response) => {
+      afterRequest(response, quiet);
+    });
+}
 
 function del(uri, params, successHandler, failHandler, quiet) {
   beforeRequest(quiet);
   axios
-    .delete(`${base}${uri}`, { ...axiosConfig, ...params})
+    .delete(`${base}${uri}`, { ...axiosConfig, ...params })
     .then((response) => {
       processSuccess(response, successHandler);
     })

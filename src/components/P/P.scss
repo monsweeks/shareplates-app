@@ -1,0 +1,10 @@
+.p-wrapper {
+
+  padding: 5px 7px 5px 7px;
+  background-color: #F8F8F8;
+  border-radius: 5px;
+
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+  }
+}
