@@ -6,7 +6,6 @@ import { withTranslation } from 'react-i18next';
 import { Button, Col, Row, Selector, UserManager } from '@/components';
 import './UserSearchPopup.scss';
 import SearchInput from '@/components/SearchInput/SearchInput';
-import { setUser } from '@/actions';
 import request from '@/utils/request';
 
 class UserSearchPopup extends React.Component {
@@ -202,12 +201,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
-  };
-};
-
 UserSearchPopup.defaultProps = {
   className: '',
 };
@@ -227,4 +220,4 @@ UserSearchPopup.propTypes = {
   onApply: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(UserSearchPopup)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(UserSearchPopup)));

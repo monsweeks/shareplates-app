@@ -27,6 +27,10 @@ class Avatar extends React.Component {
   };
 
   getBackHair = (shape, color) => {
+    if (!shape) {
+      return null;
+    }
+
     return (
       <g className="back-hair" /* 얼굴 뒤 머리 */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
         {shape.backTag(color)}
@@ -35,6 +39,10 @@ class Avatar extends React.Component {
   };
 
   getFrontHair = (shape, color) => {
+    if (!shape) {
+      return null;
+    }
+
     return (
       <g className="front-hair" /* 얼굴 앞 머리 */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
         {shape.foreTag(color)}
@@ -43,6 +51,10 @@ class Avatar extends React.Component {
   };
 
   getFace = (shape) => {
+    if (!shape) {
+      return null;
+    }
+
     return (
       <g className="face" /* 얼굴  */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
         {shape.tag}
@@ -51,6 +63,10 @@ class Avatar extends React.Component {
   };
 
   getAccessory = (shape, color) => {
+    if (!shape) {
+      return null;
+    }
+
     return (
       <g className="accessory" /* 액세서리  */ transform={`translate(-${shape.cx}, -${shape.cy})`}>
         {shape.tag(color)}
@@ -59,6 +75,10 @@ class Avatar extends React.Component {
   };
 
   getForm = (shape, color, clothColor, key) => {
+    if (!shape) {
+      return null;
+    }
+
     const { id } = this;
 
     const darkenColor = Color(color)
@@ -86,43 +106,36 @@ class Avatar extends React.Component {
   };
 
   render() {
-    const { info } = this.props;
-    const {
-      bgStyleNumber,
-      formNumber,
-      hairNumber,
-      faceNumber,
-      accessoryNumber,
-      faceColorNumber,
-      hairColorNumber,
-      accessoryColorNumber,
-      clothColorNumber,
-    } = info;
-
-    const { className } = this.props;
-
+    const { data, className } = this.props;
     return (
       <article className={`avatar-wrapper g-no-select ${className}`}>
-        <div className="image-box">
-          <svg viewBox="0 0 100 100">
-            <g /* 배경 원 */>
-              <ellipse
-                cx="50"
-                cy="50"
-                rx="50"
-                ry="50"
-                style={{
-                  fill: bgColors[bgStyleNumber],
-                }}
-              />
-            </g>
-            {this.getBackHair(hairs[hairNumber], hairColors[hairColorNumber])}
-            {this.getForm(forms[formNumber], faceColors[faceColorNumber], clothColors[clothColorNumber], 'preview')}
-            {this.getFace(faces[faceNumber])}
-            {this.getAccessory(accessories[accessoryNumber], allColors[accessoryColorNumber])}
-            {this.getFrontHair(hairs[hairNumber], hairColors[hairColorNumber])}
-          </svg>
-        </div>
+        {data && (
+          <div className="image-box">
+            <svg viewBox="0 0 100 100">
+              <g /* 배경 원 */>
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="50"
+                  ry="50"
+                  style={{
+                    fill: bgColors[data.bgStyleNumber],
+                  }}
+                />
+              </g>
+              {this.getBackHair(hairs[data.hairNumber], hairColors[data.hairColorNumber])}
+              {this.getForm(
+                forms[data.formNumber],
+                faceColors[data.faceColorNumber],
+                clothColors[data.clothColorNumber],
+                'preview',
+              )}
+              {this.getFace(faces[data.faceNumber])}
+              {this.getAccessory(accessories[data.accessoryNumber], allColors[data.accessoryColorNumber])}
+              {this.getFrontHair(hairs[data.hairNumber], hairColors[data.hairColorNumber])}
+            </svg>
+          </div>
+        )}
       </article>
     );
   }
@@ -130,11 +143,11 @@ class Avatar extends React.Component {
 export default Avatar;
 
 Avatar.defaultProps = {
-  info: null,
+  data: {},
   className: '',
 };
 
 Avatar.propTypes = {
-  info: PropTypes.oneOfType([PropTypes.shape(PropTypes.any), undefined]),
+  data: PropTypes.objectOf(PropTypes.any),
   className: PropTypes.string,
 };

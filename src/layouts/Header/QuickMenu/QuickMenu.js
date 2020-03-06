@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Card, CardBody, CardHeader, Col, FormGroup, Link, Row } from 'components';
+import { Avatar, Button, Card, CardBody, CardHeader, Col, FormGroup, Link, Row } from 'components';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import LANGUAGES from '@/languages/languages';
@@ -11,10 +11,17 @@ import RadioButton from '@/components/RadioButton/RadioButton';
 import './QuickMenu.scss';
 
 class QuickMenu extends React.Component {
-
-
   render() {
-    const { logout, t, user, addMessage: addMessageReducer, openQuickMenu, language, onChangeLanguage, setOpenQuickMenu } = this.props;
+    const {
+      logout,
+      t,
+      user,
+      addMessage: addMessageReducer,
+      openQuickMenu,
+      language,
+      onChangeLanguage,
+      setOpenQuickMenu,
+    } = this.props;
 
     return (
       <div className={`quick-menu-wrapper ${openQuickMenu ? 'd-block' : 'd-none'}`}>
@@ -31,26 +38,21 @@ class QuickMenu extends React.Component {
           </div>
           <Card className="g-border-normal border-0 rounded-sm">
             <CardHeader className="g-border-normal p-3 bg-white rounded-sm border-0">
-              <span className="user-info">
-                <span
-                  className="user-icon"
-                  onClick={() => {
-                    setOpenQuickMenu(!openQuickMenu);
-                  }}
-                >
-                  <i className="fal fa-robot" />
-                </span>
-                <span className="name">{user && user.name}</span>
-                <span className="email">{user && user.email}</span>
-              </span>
-              <Button
-                size="sm"
-                className="logout-button float-right g-compact-button"
-                color="primary"
-                onClick={logout}
-              >
-                {t('로그아웃')}
-              </Button>
+              <div className="user-info">
+                <div className="user-icon">
+                  {!(user && user.info) && <i className="fal fa-robot" />}
+                  {(user && user.info) && <Avatar data={JSON.parse(user.info)} />}
+                </div>
+                <div className="user-text">
+                  <div className="name">{user && user.name}</div>
+                  <div className="email">{user && user.email}</div>
+                </div>
+                <div className="logout-button">
+                  <Button size="sm" className=" g-compact-button" color="primary" onClick={logout}>
+                    {t('로그아웃')}
+                  </Button>
+                </div>
+              </div>
               <hr className="mb-0" />
             </CardHeader>
             <CardBody className="pt-0">
@@ -79,10 +81,9 @@ class QuickMenu extends React.Component {
                     underline={false}
                     effect={false}
                     componentClassName="px-2"
-                    to="/"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                    to="/topics/new"
+                    onClick={() => {
+                      setOpenQuickMenu(false);
                     }}
                   >
                     <i className="fal fa-plus" /> {t('토픽 만들기')}
@@ -118,6 +119,7 @@ class QuickMenu extends React.Component {
                   </Col>
                   <Col className="text-right">
                     <RadioButton
+                      outline
                       items={Object.keys(LANGUAGES)
                         .sort()
                         .reverse()
@@ -159,17 +161,17 @@ QuickMenu.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    picturePath: PropTypes.string,
+    info: PropTypes.string,
   }),
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
   addMessage: PropTypes.func,
-  openQuickMenu : PropTypes.bool,
-  setOpenQuickMenu : PropTypes.func,
-  language : PropTypes.string,
-  onChangeLanguage : PropTypes.func,
-  logout : PropTypes.func,
+  openQuickMenu: PropTypes.bool,
+  setOpenQuickMenu: PropTypes.func,
+  language: PropTypes.string,
+  onChangeLanguage: PropTypes.func,
+  logout: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(QuickMenu)));

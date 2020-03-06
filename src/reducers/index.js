@@ -6,7 +6,7 @@ import {
   SET_LOADING,
   SET_ORGANIZATION_ID,
   SET_SUPPORTED,
-  SET_USER,
+  SET_USER_AND_ORGANIZATION,
 } from '../actions';
 
 const userState = {
@@ -22,7 +22,7 @@ const user = (state = userState, action) => {
   const currentState = { ...state };
 
   switch (action.type) {
-    case SET_USER:
+    case SET_USER_AND_ORGANIZATION:
       return { ...state, user: action.user, organizations: action.organizations };
 
     case SET_ORGANIZATION_ID:

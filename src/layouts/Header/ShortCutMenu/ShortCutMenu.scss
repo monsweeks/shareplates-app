@@ -12,6 +12,32 @@
     }
   }
 
+  .user-icon {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    cursor: pointer;
+
+    .hover-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.05);
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.1s
+    }
+
+    &:hover {
+      .hover-item {
+        opacity: 1;
+        transition: all 0.1s;
+      }
+    }
+  }
+
   .separator {
     display: inline-block;
     height: 10px;
@@ -30,7 +56,6 @@
 
   .login-label {
     position: relative;
-    top : 3px;
-
+    top: 3px;
   }
 }

@@ -22,7 +22,7 @@ class UserCard extends React.PureComponent {
         <CardBody className="p-2">
           <div className="user-card-content">
             <div className="user-icon">
-              {user.info && <Avatar info={JSON.parse(user.info)} />}
+              {user.info && <Avatar data={JSON.parse(user.info)} />}
               {!user.info && (
                 <span>
                   <i className="fal fa-smile" />
