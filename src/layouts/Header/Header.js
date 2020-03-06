@@ -56,11 +56,12 @@ class Header extends React.Component {
   };
 
   logout = () => {
-    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+    const { history, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
       setUserAndOrganizationReducer({}, []);
       this.setOpenQuickMenu(false);
+      history.push('/');
     });
   };
 
@@ -159,6 +160,9 @@ Header.propTypes = {
   ),
   location: PropTypes.shape({
     pathname: PropTypes.string,
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }),
   setUserAndOrganization: PropTypes.func,
 };

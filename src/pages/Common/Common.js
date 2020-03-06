@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { addMessage, clearMessage, setUserAndOrganization } from 'actions';
@@ -9,21 +10,50 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import request from '@/utils/request';
 import './Common.scss';
 
+const UNAUTH_URLS = {
+  '/': true,
+  '/topics': true,
+  '/users/login': true,
+  '/users/join': true,
+  '/about/terms-and-conditions': true,
+  '/about/privacy-policy': true,
+};
+
 class Common extends React.PureComponent {
+  initialized = false;
+
   componentDidMount() {
     this.getMyInfo();
   }
 
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+    if (this.initialized && prevProps.location.pathname !== location.pathname) {
+      this.checkAuthentification(location.pathname);
+    }
+  }
+
+  checkAuthentification = (pathname) => {
+    const { user, history } = this.props;
+    if (!user.id && !UNAUTH_URLS[pathname]) {
+      history.push(`/users/login?url=${pathname}`);
+    }
+  };
+
   getMyInfo = () => {
-    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+    const { location, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
     request.get(
       '/api/users/my-info',
       null,
       (data) => {
         setUserAndOrganizationReducer(data.user || {}, data.organizations);
+        this.initialized = true;
+        this.checkAuthentification(location.pathname);
       },
       () => {
         setUserAndOrganizationReducer({}, []);
+        this.initialized = true;
+        this.checkAuthentification(location.pathname);
       },
     );
   };
@@ -97,6 +127,7 @@ const mapStateToProps = (state) => {
   return {
     messages: state.message.messages,
     loading: state.loading.loading,
+    user: state.user.user,
   };
 };
 
@@ -108,7 +139,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Common));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Common)));
 
 Common.defaultProps = {
   messages: [],
@@ -120,4 +151,13 @@ Common.propTypes = {
   t: PropTypes.func,
   clearMessage: PropTypes.func,
   setUserAndOrganization: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
 };

@@ -80,10 +80,6 @@
         border-radius: 50%;
         padding-top: 0;
         margin-right: 0.5rem;
-
-        &:hover {
-          background-color: darken($primary, 5%);
-        }
       }
 
       .user-text {
