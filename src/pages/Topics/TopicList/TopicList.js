@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import { setUserAndOrganization } from '@/actions';
 import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
+import request from '@/utils/request';
 
 const orders = [
   {
@@ -45,8 +47,31 @@ class TopicList extends React.Component {
       direction: directions[0].key,
       organizationId: null,
       openOptions: false,
+      topics: []
     };
+  }  
+
+  componentDidMount() {
+    this.getTopics();
   }
+  
+  getTopics = () => {
+	  request.get(
+		      '/api/topics',
+		      null,
+		      (data) => {
+
+		        this.setState({
+		        	topics: data.topics || []
+		        });
+		      },
+		      () => {
+		        this.setState({
+		        	topics: []
+		        });
+		      },
+		    );
+  };
 
   static getDerivedStateFromProps(props, state) {
     if (!state.organizationId && props.organizations && props.organizations.length > 0) {
@@ -59,7 +84,7 @@ class TopicList extends React.Component {
   }
 
   render() {
-    const { order, direction, organizationId, openOptions } = this.state;
+    const { order, direction, organizationId, openOptions, topics } = this.state;
     // eslint-disable-next-line no-unused-vars
     const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history } = this.props;
 
@@ -144,6 +169,34 @@ class TopicList extends React.Component {
         </div>
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
+
+          {
+          	topics.map( (topic, i) => {
+          		return (          				
+          				<Row>
+          				<Col className="topic-col" xl={4} lg={4} md={6} sm={6}>          	              
+          	                <Card
+          	                  className="g-no-select border-0"
+          	                  onClick={() => {
+          	                    history.push('');
+          	                  }}
+          	                >
+          				<CardBody>
+                              <div>
+                              <div className="new-topic-text">
+                                <div className="icon">
+                                  <i className="fal fa-books" />
+                                </div>
+                                <div className="text">{topic.name}</div>
+                              </div>
+                            </div>
+                        </CardBody>
+                        </Card>
+                        </Col>
+                        </Row>
+          		);
+          	})
+          }
             <Row>
               <Col className="topic-col" xl={4} lg={4} md={6} sm={6}>
                 <Card
