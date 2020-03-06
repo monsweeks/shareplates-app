@@ -17,6 +17,7 @@ const UNAUTH_URLS = {
   '/users/join': true,
   '/about/terms-and-conditions': true,
   '/about/privacy-policy': true,
+  '/users/join/success': true,
 };
 
 class Common extends React.PureComponent {
