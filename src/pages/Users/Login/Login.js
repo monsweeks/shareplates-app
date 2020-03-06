@@ -2,15 +2,16 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+import qs from 'qs';
 import { connect } from 'react-redux';
 import { Button, Col, Form, FormGroup, Input, Link, Row, CheckBoxInput } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setUser } from '@/actions';
-import './Login.scss';
+import { addMessage, setUserAndOrganization } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
+import './Login.scss';
 
 class Login extends React.PureComponent {
   constructor(props) {
@@ -23,7 +24,22 @@ class Login extends React.PureComponent {
       password: '',
       saveEmail: !!email,
       loginResult: null,
+      url: null,
     };
+  }
+
+  componentDidMount() {
+    const {
+      location: { search },
+    } = this.props;
+
+    const params = qs.parse(search, { ignoreQueryPrefix: true });
+
+    if (params.url) {
+      this.setState({
+        url: params.url,
+      });
+    }
   }
 
   onChange = (field) => (value) => {
@@ -45,8 +61,8 @@ class Login extends React.PureComponent {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { email, password, saveEmail } = this.state;
-    const { history, setUser: setUserReducer } = this.props;
+    const { email, password, saveEmail, url } = this.state;
+    const { history, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
@@ -63,8 +79,12 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            setUserReducer(data.user || {}, data.organizations);
-            history.push('/');
+            setUserAndOrganizationReducer(data.user || {}, data.organizations);
+            if (url) {
+              history.push(url);
+            } else {
+              history.push('/');
+            }
           });
         } else {
           this.setState({
@@ -77,7 +97,7 @@ class Login extends React.PureComponent {
 
   render() {
     const { t, addMessage: addMessageReducer } = this.props;
-    const { email, password, saveEmail, loginResult } = this.state;
+    const { email, password, saveEmail, loginResult, url } = this.state;
 
     return (
       <CenterBoxLayout className="login-wrapper">
@@ -88,6 +108,7 @@ class Login extends React.PureComponent {
             {t('message.moveToJoinPage')}
           </Link>
         </p>
+        {url && <p className='need-login-message'><span>{t('로그인이 필요한 URL입니다')}</span></p>}
         <Row>
           <Col>
             <p className="text-danger text-center mb-1">
@@ -262,7 +283,7 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -271,8 +292,11 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 Login.propTypes = {
   t: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setUserAndOrganization: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
+  }),
+  location: PropTypes.shape({
+    search: PropTypes.string,
   }),
 };

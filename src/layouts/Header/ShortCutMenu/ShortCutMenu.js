@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
-import { Link } from '@/components';
+import { Avatar, Link } from '@/components';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
@@ -20,11 +20,13 @@ class ShortCutMenu extends React.PureComponent {
       language,
       onChangeLanguage,
       onSearch,
+      user,
     } = this.props;
+
     return (
       <div className={`short-cut-menu-wrapper ${className}`}>
         <div>
-          <SearchInput className='d-none' onSearch={onSearch} />
+          <SearchInput className="d-none" onSearch={onSearch} />
         </div>
         <div>
           <CircleIcon
@@ -33,14 +35,27 @@ class ShortCutMenu extends React.PureComponent {
             onClick={() => {}}
           />
         </div>
-        <div>
-          <CircleIcon
-            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
-            icon={<i className="fal fa-robot" />}
-            onClick={() => {
-              setOpenQuickMenu(!openQuickMenu);
-            }}
-          />
+        <div className={ready && loggedIn ? 'd-block' : 'd-none'}>
+          {user && user.info && (
+            <div
+              className="user-icon"
+              onClick={() => {
+                setOpenQuickMenu(!openQuickMenu);
+              }}
+            >
+              <div className="hover-item" />
+              <Avatar data={JSON.parse(user.info)} />
+            </div>
+          )}
+          {!(user && user.info) && (
+            <CircleIcon
+              className="d-inline-block mx-1"
+              icon={<i className="fal fa-robot" />}
+              onClick={() => {
+                setOpenQuickMenu(!openQuickMenu);
+              }}
+            />
+          )}
         </div>
         <div className={ready && !loggedIn ? 'd-inline-block' : 'd-none'}>
           <Link
@@ -89,5 +104,11 @@ ShortCutMenu.propTypes = {
   loggedIn: PropTypes.bool,
   language: PropTypes.string,
   onChangeLanguage: PropTypes.func,
-  onSearch : PropTypes.func,
+  onSearch: PropTypes.func,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    info: PropTypes.string,
+  }),
 };

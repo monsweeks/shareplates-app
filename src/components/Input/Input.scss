@@ -27,7 +27,7 @@
 
   &.has-border {
     input {
-      border : 1px solid $border-color;
+      border: 1px solid $border-color;
       border-radius: 3px;
       padding: 5px 26px 5px 7px;
 
@@ -140,8 +140,8 @@
   }
 
   &.simple {
-
     padding-top: 5px;
+    padding-top: 0;
     .input-info {
       display: none;
     }

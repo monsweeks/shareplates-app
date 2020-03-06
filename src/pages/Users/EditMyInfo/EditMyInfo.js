@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import storage from '@/utils/storage';
-import { addMessage, setUser } from '@/actions';
-import './EditMyInfo.scss';
+import { addMessage, setUserAndOrganization } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
-import { Description, Form, SubLabel } from '@/components';
+import { Button, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
+import './EditMyInfo.scss';
+import { DATETIME_FORMATS } from '@/constants/constants';
+import LANGUAGES from '@/languages/languages';
+import RadioButton from '@/components/RadioButton/RadioButton';
 
 const breadcrumbs = [
   {
@@ -25,77 +27,131 @@ const breadcrumbs = [
 class EditMyInfo extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    const email = storage.getItem('login', 'email');
-
     this.state = {
-      email: email || '',
-      password: '',
-      saveEmail: !!email,
-      loginResult: null,
+      user: {},
     };
   }
 
-  onChange = (field) => (value) => {
-    const { loginResult } = this.state;
-    const obj = {};
-    obj[field] = value;
+  componentDidMount() {
+    this.getMyInfo();
+  }
 
-    if (loginResult !== null && loginResult === false) {
-      obj.loginResult = null;
-    }
+  getMyInfo = () => {
 
-    if (field === 'saveEmail' && !value) {
-      storage.setItem('login', 'email', null);
-    }
+    request.get(
+      '/api/users/my-info',
+      null,
+      (data) => {
+        const { user } = data;
+        if (user && !user.dateTimeFormat) user.dateTimeFormat = DATETIME_FORMATS[0].key;
+        if (user && !user.language) user.language = 'ko';
 
-    this.setState(obj);
-  };
-
-  onSubmit = (e) => {
-    e.preventDefault();
-
-    const { email, password, saveEmail } = this.state;
-    const { history, setUser: setUserReducer } = this.props;
-
-    if (saveEmail) {
-      storage.setItem('login', 'email', email);
-    } else {
-      storage.setItem('login', 'email', null);
-    }
-
-    request.post(
-      '/api/users/login',
-      {
-        email,
-        password,
+        this.setState({
+          user: data.user || {},
+        });
       },
-      (success) => {
-        if (success) {
-          request.get('/api/users/my-info', null, (data) => {
-            setUserReducer(data.user || {}, data.organizations);
-            history.push('/');
-          });
-        } else {
-          this.setState({
-            loginResult: false,
-          });
-        }
+      () => {
+        this.setState({
+          user: {},
+        });
       },
     );
   };
 
+  onChange = (field) => (value) => {
+    const { user } = this.state;
+    const obj = {};
+    obj[field] = value;
+
+    this.setState({
+      user: { ...user, ...obj },
+    });
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { user } = this.state;
+    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+
+    request.put('/api/users/my-info', user, (data) => {
+      setUserAndOrganizationReducer(data.user || {}, data.organizations);
+    });
+  };
+
   render() {
     const { t } = this.props;
+    const { user } = this.state;
 
     return (
       <RegisterLayout>
         <PageTitle list={breadcrumbs}>{t('내 정보 수정')}</PageTitle>
         <hr className="d-none d-sm-block mb-3" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
-          <SubLabel>{t('사용자 아이콘')}</SubLabel>
-          <Description className='mb-3'>{t('SHAREPLATES에서 사용되는 사용자의 아바타 아이콘을 만들 수 있습니다.')}</Description>
-          <AvatarBuilder />
+          <SubLabel>{t('아이콘')}</SubLabel>
+          <Description>{t('SHAREPLATES에서 사용되는 사용자의 아바타 아이콘을 만들 수 있습니다.')}</Description>
+          <FormGroup>
+            <AvatarBuilder data={user.info} onChange={this.onChange('info')} />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('label.email')}</SubLabel>
+          <FormGroup>
+            <P value={user.email} />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('label.name')}</SubLabel>
+          <FormGroup>
+            <Input
+              label={t('label.name')}
+              value={user.name}
+              required
+              minLength={2}
+              maxLength={100}
+              onChange={this.onChange('name')}
+              simple
+              border
+            />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('날짜 형식')}</SubLabel>
+          <FormGroup>
+            <Selector
+              outline
+              items={DATETIME_FORMATS}
+              value={user.dateTimeFormat}
+              onChange={this.onChange('dateTimeFormat')}
+            />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('언어')}</SubLabel>
+          <FormGroup>
+            <RadioButton
+              items={Object.keys(LANGUAGES)
+                .sort()
+                .reverse()
+                .map((d) => {
+                  return {
+                    key: d,
+                    value: t(d),
+                  };
+                })}
+              value={user.language}
+              outline
+              onClick={this.onChange('language')}
+            />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('가입일')}</SubLabel>
+          <FormGroup>
+            <P value={user.creationDate} />
+          </FormGroup>
+          <FormGroup className="text-center mt-4">
+            <Button className="px-4 mx-2" color="secondary">
+              {t('button.cancel')}
+            </Button>
+            <Button className="px-4 mx-2" color="primary">
+              {t('button.save')}
+            </Button>
+          </FormGroup>
         </Form>
       </RegisterLayout>
     );
@@ -105,7 +161,7 @@ class EditMyInfo extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -113,7 +169,7 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 
 EditMyInfo.propTypes = {
   t: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setUserAndOrganization: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

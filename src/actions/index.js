@@ -1,4 +1,4 @@
-export const SET_USER = 'SET_USER';
+export const SET_USER_AND_ORGANIZATION = 'SET_USER_AND_ORGANIZATION';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
@@ -13,9 +13,9 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUser(user, organizations) {
+export function setUserAndOrganization(user, organizations) {
   return {
-    type: SET_USER,
+    type: SET_USER_AND_ORGANIZATION,
     user,
     organizations,
   };

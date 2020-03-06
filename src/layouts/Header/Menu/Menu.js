@@ -25,8 +25,6 @@ class Menu extends React.PureComponent {
   render() {
     const { t, pathname, menus, openMenu, setOpen } = this.props;
 
-    console.log('pathname', pathname);
-
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
         <Button

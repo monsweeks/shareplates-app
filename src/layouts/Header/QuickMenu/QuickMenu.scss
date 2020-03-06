@@ -6,7 +6,7 @@
     bottom: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.2);
-    z-index: 2;
+    z-index: 13;
   }
 
   .quick-menu {
@@ -16,7 +16,7 @@
     width: 400px;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     color: $black;
-    z-index: 2;
+    z-index: 14;
 
     @media (max-width: 576px) {
       width: calc(100% - 20px);
@@ -26,24 +26,6 @@
     .g-category-label {
       color: $gray-700;
     }
-
-    .user-icon {
-      display: inline-block;
-      font-size: 20px;
-      width: 30px;
-      height: 30px;
-      background-color: $gray-300;
-      text-align: center;
-      border-radius: 50%;
-      padding-top: 0px;
-      cursor: pointer;
-      margin-right: 2px;
-
-      &:hover {
-        background-color: darken($primary, 5%);
-      }
-    }
-
     .arrow {
       position: absolute;
       top: 0;
@@ -52,10 +34,14 @@
       height: 5px;
       z-index: 2;
       text-align: center;
-      padding-left: 250px;
+      padding-left: 267px;
 
       @media (max-width: 1200px) {
-        padding-left: calc(100% - 50px);
+        padding-left: 267px;
+      }
+
+      @media (max-width: 992px) {
+        padding-left: calc(100% - 32px);
       }
 
       > span.arrow-marker,
@@ -81,31 +67,40 @@
     .user-info {
       font-size: 0.8rem;
       font-family: LGSmHaR;
-      display: inline-block;
+      display: flex;
+      position: relative;
 
-      .name {
-        margin-right: 5px;
-        margin-bottom: 2px;
-        position: relative;
-        top: -2px;
+      .user-icon {
+        display: inline-block;
+        font-size: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: $gray-300;
+        text-align: center;
+        border-radius: 50%;
+        padding-top: 0;
+        margin-right: 0.5rem;
       }
 
-      .email {
-        position: relative;
-        top: -2px;
+      .user-text {
+        flex: 1;
+        align-self: center;
 
-        &:before {
-          content: '[';
-        }
+        .email {
+          &:before {
+            content: '[';
+          }
 
-        &:after {
-          content: ']';
+          &:after {
+            content: ']';
+          }
         }
       }
-    }
 
-    .logout-button {
-      margin-top: 7px;
+      .logout-button {
+        text-align: right;
+        align-self: center;
+      }
     }
   }
 }
