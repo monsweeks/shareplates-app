@@ -148,7 +148,8 @@ class NewTopic extends Component {
     request.post('/api/topics', topic, (data) => {
       // eslint-disable-next-line react/destructuring-assignment
       console.log(data);
-      history.push('/topics');
+      /* eslint no-underscore-dangle: 0 */
+      history.push(data._links.topics.href);
     });
   };
 
