@@ -51,18 +51,18 @@ class AvatarBuilder extends React.Component {
 
   onChange = (field, val) => {
     const { onChange } = this.props;
-    const info = { ...this.state };
-    info.style[field] = val;
-    this.setState(info);
-    if (onChange) onChange(JSON.stringify(info.style));
+    const data = { ...this.state };
+    data.style[field] = val;
+    this.setState(data);
+    if (onChange) onChange(JSON.stringify(data.style));
   };
 
   static getDerivedStateFromProps(props) {
-    if (props.info) {
+    if (props.data) {
       try {
-        const info = JSON.parse(props.info);
+        const data = JSON.parse(props.data);
         return {
-          style: info,
+          style: data,
         };
       } catch {
         return null;
@@ -388,6 +388,6 @@ export default AvatarBuilder;
 
 AvatarBuilder.propTypes = {
   onChange: PropTypes.func,
-  info: PropTypes.string,
+  data: PropTypes.string,
   className: PropTypes.string,
 };
