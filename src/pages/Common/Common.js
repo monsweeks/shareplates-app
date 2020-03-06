@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setUser } from 'actions';
+import { addMessage, clearMessage, setUserAndOrganization } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
@@ -15,15 +15,15 @@ class Common extends React.PureComponent {
   }
 
   getMyInfo = () => {
-    const { setUser: setUserReducer } = this.props;
+    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
     request.get(
       '/api/users/my-info',
       null,
       (data) => {
-        setUserReducer(data.user || {}, data.organizations);
+        setUserAndOrganizationReducer(data.user || {}, data.organizations);
       },
       () => {
-        setUserReducer({}, []);
+        setUserAndOrganizationReducer({}, []);
       },
     );
   };
@@ -104,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -119,5 +119,5 @@ Common.propTypes = {
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,
-  setUser: PropTypes.func,
+  setUserAndOrganization: PropTypes.func,
 };

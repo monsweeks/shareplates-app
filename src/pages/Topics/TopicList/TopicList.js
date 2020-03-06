@@ -7,7 +7,7 @@ import { FullLayout } from '@/layouts';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
-import { setUser } from '@/actions';
+import { setUserAndOrganization } from '@/actions';
 import { Card, CardBody, Col, Row, Selector } from '@/components';
 import './TopicList.scss';
 
@@ -61,7 +61,7 @@ class TopicList extends React.Component {
   render() {
     const { order, direction, organizationId, openOptions } = this.state;
     // eslint-disable-next-line no-unused-vars
-    const { organizations, setUser: setUserReducer, history } = this.props;
+    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history } = this.props;
 
     return (
       <div className="topic-list-wrapper">
@@ -184,7 +184,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -193,7 +193,7 @@ TopicList.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    picturePath: PropTypes.string,
+    info: PropTypes.string,
   }),
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
@@ -202,7 +202,7 @@ TopicList.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
-  setUser: PropTypes.func,
+  setUserAndOrganization: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

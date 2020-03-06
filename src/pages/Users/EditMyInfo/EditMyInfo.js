@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { addMessage, setUser } from '@/actions';
+import { addMessage, setUserAndOrganization } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
 import { Button, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
@@ -37,7 +37,7 @@ class EditMyInfo extends React.PureComponent {
   }
 
   getMyInfo = () => {
-    const { setUser: setUserReducer } = this.props;
+
     request.get(
       '/api/users/my-info',
       null,
@@ -51,7 +51,9 @@ class EditMyInfo extends React.PureComponent {
         });
       },
       () => {
-        setUserReducer({}, []);
+        this.setState({
+          user: {},
+        });
       },
     );
   };
@@ -69,9 +71,10 @@ class EditMyInfo extends React.PureComponent {
   onSubmit = (e) => {
     e.preventDefault();
     const { user } = this.state;
+    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
 
     request.put('/api/users/my-info', user, (data) => {
-      console.log(data);
+      setUserAndOrganizationReducer(data.user || {}, data.organizations);
     });
   };
 
@@ -87,7 +90,7 @@ class EditMyInfo extends React.PureComponent {
           <SubLabel>{t('아이콘')}</SubLabel>
           <Description>{t('SHAREPLATES에서 사용되는 사용자의 아바타 아이콘을 만들 수 있습니다.')}</Description>
           <FormGroup>
-            <AvatarBuilder info={user.info} onChange={this.onChange('info')} />
+            <AvatarBuilder data={user.info} onChange={this.onChange('info')} />
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.email')}</SubLabel>
@@ -158,7 +161,7 @@ class EditMyInfo extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -166,7 +169,7 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 
 EditMyInfo.propTypes = {
   t: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setUserAndOrganization: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

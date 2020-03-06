@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { setUser } from '@/actions';
+import { setUserAndOrganization } from '@/actions';
 import Menu from '@/layouts/Header/Menu/Menu';
 import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
@@ -56,10 +56,10 @@ class Header extends React.Component {
   };
 
   logout = () => {
-    const { setUser: setUserReducer } = this.props;
+    const { setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
-      setUserReducer({}, []);
+      setUserAndOrganizationReducer({}, []);
       this.setOpenQuickMenu(false);
     });
   };
@@ -91,6 +91,7 @@ class Header extends React.Component {
               }}
               onSearch={this.onSearch}
               organizations={organizations}
+              user={user}
             />
           </div>
         </div>
@@ -137,7 +138,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -147,7 +148,7 @@ Header.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    picturePath: PropTypes.string,
+    info: PropTypes.string,
   }),
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
@@ -159,7 +160,7 @@ Header.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
-  setUser: PropTypes.func,
+  setUserAndOrganization: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));

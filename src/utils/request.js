@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from 'store';
-import { addMessage, setLoading } from 'actions';
+import { addMessage, setLoading, setUserAndOrganization } from 'actions';
 import i18n from 'i18next';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 
@@ -74,6 +74,12 @@ function processError(error, failHandler) {
       }
 
       case 401: {
+
+        // 로그인 정보 삭제 및 퍼블릭 ORG만 보이도록 변경
+        const { user } = store.getState('user');
+        const organizations = user.organizations ? user.organizations.filter((org) => org.publicYn) : [];
+        store.dispatch(setUserAndOrganization({}, organizations));
+
         store.dispatch(
           addMessage(
             error.response.status,

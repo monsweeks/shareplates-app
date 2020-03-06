@@ -8,7 +8,7 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setUser } from '@/actions';
+import { addMessage, setUserAndOrganization } from '@/actions';
 import './Login.scss';
 import { CenterBoxLayout } from '@/layouts';
 
@@ -46,7 +46,7 @@ class Login extends React.PureComponent {
     e.preventDefault();
 
     const { email, password, saveEmail } = this.state;
-    const { history, setUser: setUserReducer } = this.props;
+    const { history, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
@@ -63,7 +63,7 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            setUserReducer(data.user || {}, data.organizations);
+            setUserAndOrganizationReducer(data.user || {}, data.organizations);
             history.push('/');
           });
         } else {
@@ -262,7 +262,7 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUser: (user, organizations) => dispatch(setUser(user, organizations)),
+    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
   };
 };
 
@@ -271,7 +271,7 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 Login.propTypes = {
   t: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setUserAndOrganization: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
