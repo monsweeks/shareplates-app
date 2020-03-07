@@ -169,11 +169,11 @@ class TopicList extends React.Component {
         </div>
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
-
+			
+			<Row>
           {
           	topics.map( (topic, i) => {
-          		return (          				
-          				<Row>
+          		return (         
           				<Col className="topic-col" xl={4} lg={4} md={6} sm={6}>          	              
           	                <Card
           	                  className="g-no-select border-0"
@@ -193,10 +193,10 @@ class TopicList extends React.Component {
                         </CardBody>
                         </Card>
                         </Col>
-                        </Row>
           		);
           	})
           }
+          </Row>
             <Row>
               <Col className="topic-col" xl={4} lg={4} md={6} sm={6}>
                 <Card
