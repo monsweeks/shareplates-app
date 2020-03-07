@@ -143,12 +143,7 @@ class NewTopic extends Component {
       return;
     }
 
-    console.log(topic);
-
     request.post('/api/topics', topic, (data) => {
-      // eslint-disable-next-line react/destructuring-assignment
-      console.log(data);
-      /* eslint no-underscore-dangle: 0 */
       history.push(data._links.topics.href);
     });
   };
