@@ -7,6 +7,7 @@
   "button.resendEmail": "확인 메일 재발송",
   "button.save": "저장",
   "button.cancel": "취소",
+  "button.edit": "변경",
 
   "label.topic": "토픽",
   "label.chapter": "챕터",
@@ -35,7 +36,7 @@
   "label.findAccountInfo": "아이디/비밀번호 찾기",
   "label.icon": "아이콘",
   "label.desc": "설명",
-  "label.privateTopic": "설명",
+  "label.privateTopic": "비밀 토픽",
   "label.topicAdmin": "토픽 관리자",
   "label.userManagement": "사용자 관리",
 

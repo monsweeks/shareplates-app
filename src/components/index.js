@@ -18,6 +18,7 @@ import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
 import Selector from '@/components/Selector/Selector';
 import TextArea from '@/components/TextArea/TextArea';
 import IconSelector from '@/components/IconSelector/IconSelector';
+import IconViewer from '@/components/IconViewer/IconViewer';
 import UserManager from '@/components/UserManager/UserManager';
 import UserCard from '@/components/UserCard/UserCard';
 import UserSearchPopup from '@/components/UserSearchPopup/UserSearchPopup';
@@ -28,6 +29,8 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import P from '@/components/P/P';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
 import Avatar from '@/components/Avatar/Avatar';
+import SearchBar from '@/components/SearchBar/SearchBar';
+import TopicCard from '@/components/TopicCard/TopicCard';
 
 export {
   Button,
@@ -60,4 +63,7 @@ export {
   P,
   Avatar,
   AvatarBuilder,
+  SearchBar,
+  TopicCard,
+  IconViewer,
 };
