@@ -1,0 +1,43 @@
+.icon-viewer-wrapper {
+  width: 100%;
+  height: 100%;
+
+  .icon-image {
+    align-self: center;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .image-item {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      &.no-image {
+        background-color: $gray-400;
+      }
+    }
+  }
+
+  &.circle {
+    border-radius: 50%;
+
+    .icon-image {
+      border-radius: 50%;
+
+      .image-item {
+        border-radius: 50%;
+
+        img {
+
+        }
+      }
+    }
+  }
+}
