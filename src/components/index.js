@@ -32,6 +32,7 @@ import Avatar from '@/components/Avatar/Avatar';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import TopicCard from '@/components/TopicCard/TopicCard';
 import BottomButton from '@/components/BottomButton/BottomButton';
+import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 
 export {
   Button,
@@ -68,4 +69,5 @@ export {
   TopicCard,
   IconViewer,
   BottomButton,
+  EmptyMessage,
 };

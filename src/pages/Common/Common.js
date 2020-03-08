@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setUserAndOrganization } from 'actions';
+import { addMessage, clearMessage, setConfirm, setUserAndOrganization } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
@@ -80,7 +80,8 @@ class Common extends React.PureComponent {
   };
 
   render() {
-    const { messages, loading, t } = this.props;
+    const { messages, loading, t, confirm } = this.props;
+    const { setConfirm: setConfirmReducer } = this.props;
 
     return (
       <div className="common-wrapper">
@@ -109,6 +110,42 @@ class Common extends React.PureComponent {
             </div>
           </div>
         )}
+        {confirm && confirm.message && (
+          <div className="g-overlay">
+            <div>
+              <div className="common-message">
+                <div className="message-title">확인</div>
+                <div className="message-message">{confirm.message}</div>
+                <div className="message-buttons">
+                  <Button
+                    className="px-4 mx-1"
+                    color="primary"
+                    onClick={() => {
+                      if (confirm && confirm.okHandler) {
+                        confirm.okHandler();
+                      }
+                      setConfirmReducer(null, null, null);
+                    }}
+                  >
+                    {t('button.confirm')}
+                  </Button>
+                  <Button
+                    className="px-4 mx-1"
+                    color="primary"
+                    onClick={() => {
+                      if (confirm && confirm.noHandler) {
+                        confirm.noHandler();
+                      }
+                      setConfirmReducer(null, null, null);
+                    }}
+                  >
+                    {t('button.cancel')}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {loading && (
           <div className="g-overlay">
             <div>
@@ -129,6 +166,7 @@ const mapStateToProps = (state) => {
     messages: state.message.messages,
     loading: state.loading.loading,
     user: state.user.user,
+    confirm: state.confirm,
   };
 };
 
@@ -137,6 +175,7 @@ const mapDispatchToProps = (dispatch) => {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
+    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
   };
 };
 
@@ -148,6 +187,11 @@ Common.defaultProps = {
 
 Common.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.any),
+  confirm: PropTypes.shape({
+    message: PropTypes.string,
+    okHandler: PropTypes.func,
+    noHandler: PropTypes.func,
+  }),
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,
@@ -161,4 +205,5 @@ Common.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
   }),
+  setConfirm: PropTypes.func,
 };

@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, Col, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
+import { BottomButton, Col, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
 
 class Topic extends Component {
@@ -33,10 +34,29 @@ class Topic extends Component {
       `/api/topics/${topicId}`,
       null,
       (data) => {
-        this.setState({
-          topic: data.topic,
-          users: data.topicUsers,
-        });
+        if (data.topic) {
+          this.setState({
+            topic: data.topic,
+            users: data.topicUsers,
+          });
+        } else {
+          this.setState({
+            topic: false,
+          });
+        }
+      },
+      null,
+      true,
+    );
+  };
+
+  deleteTopic = (topicId) => {
+    const { history } = this.props;
+    request.del(
+      `/api/topics/${topicId}`,
+      null,
+      () => {
+        history.push('/topics');
       },
       null,
       true,
@@ -49,11 +69,24 @@ class Topic extends Component {
         params: { topicId },
       },
     } = this.props;
-    const { t, history } = this.props;
+    const { t, history, setConfirm: setConfirmReducer } = this.props;
     const { topic, users } = this.state;
 
     return (
       <DetailLayout className="topic-wrapper">
+        {topic === false && (
+          <EmptyMessage
+            className="h5"
+            message={
+              <div>
+                <div className="h1">
+                  <i className="fal fa-exclamation-circle" />
+                </div>
+                <div>{t('message.notFoundTopic')}</div>
+              </div>
+            }
+          />
+        )}
         {topic && (
           <>
             <PageTitle
@@ -112,7 +145,9 @@ class Topic extends Component {
             </div>
             <BottomButton
               onDelete={() => {
-                console.log(topic.id);
+                setConfirmReducer(`${topic.name} 토픽을 정말 삭제하시겠습니까?`, () => {
+                  this.deleteTopic(topic.id);
+                });
               }}
               onList={() => {
                 history.push('/topics');
@@ -134,7 +169,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Topic)));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
+  };
+};
+
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Topic)));
 
 Topic.defaultProps = {
   t: null,
@@ -156,4 +197,5 @@ Topic.propTypes = {
       topicId: PropTypes.string,
     }),
   }),
+  setConfirm: PropTypes.func,
 };

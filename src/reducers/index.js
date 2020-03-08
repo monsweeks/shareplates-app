@@ -7,6 +7,7 @@ import {
   SET_ORGANIZATION_ID,
   SET_SUPPORTED,
   SET_USER_AND_ORGANIZATION,
+  SET_CONFIRM,
 } from '../actions';
 
 const userState = {
@@ -73,6 +74,21 @@ const loading = (state = loadingState, action) => {
   }
 };
 
+const confirmState = {
+  message: null,
+  okHandler: null,
+  noHandler: null,
+};
+
+const confirm = (state = confirmState, action) => {
+  switch (action.type) {
+    case SET_CONFIRM:
+      return { ...state, message: action.message, okHandler: action.okHandler, noHandler: action.noHandler };
+    default:
+      return state;
+  }
+};
+
 const supportedState = {
   supported: true,
 };
@@ -91,6 +107,7 @@ const reducers = combineReducers({
   user,
   message,
   loading,
+  confirm,
 });
 
 export default reducers;

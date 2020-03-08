@@ -24,7 +24,8 @@ function processSuccess(response, successHandler) {
   if (successHandler && typeof successHandler === 'function') {
     try {
       successHandler(response.data);
-    } catch {
+    } catch (e) {
+      console.error(e);
       store.dispatch(addMessage(null, MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
     }
   }
