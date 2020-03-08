@@ -22,7 +22,7 @@ import {
   UserSearchPopup,
   CheckBoxInput,
 } from '@/components';
-import './NewTopic.scss';
+import './EditTopic.scss';
 
 const breadcrumbs = [
   {
@@ -35,7 +35,7 @@ const breadcrumbs = [
   },
 ];
 
-class NewTopic extends Component {
+class EditTopic extends Component {
   constructor(props) {
     super(props);
 
@@ -156,7 +156,7 @@ class NewTopic extends Component {
 
     return (
       <RegisterLayout className="new-topic-wrapper">
-        <PageTitle list={breadcrumbs}>{t('message.makeNewTopic')}</PageTitle>
+        <PageTitle list={breadcrumbs}>변경변경 {t('message.makeNewTopic')}</PageTitle>
         <hr className="d-none d-sm-block mb-3" />
         <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
           <SubLabel>{t('ORGANIZATION')}</SubLabel>
@@ -292,13 +292,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(NewTopic)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(EditTopic)));
 
-NewTopic.defaultProps = {
+EditTopic.defaultProps = {
   t: null,
 };
 
-NewTopic.propTypes = {
+EditTopic.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,

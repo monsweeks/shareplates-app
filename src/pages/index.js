@@ -4,9 +4,24 @@ import JoinSuccess from './Users/Join/Success/Success';
 import Login from './Users/Login/Login';
 import EditMyInfo from './Users/EditMyInfo/EditMyInfo';
 import TopicList from './Topics/TopicList/TopicList';
+import Topic from './Topics/Topic/Topic';
 import NewTopic from './Topics/NewTopic/NewTopic';
+import EditTopic from './Topics/EditTopic/EditTopic';
 import NoMatch from './NoMatch/NoMatch';
 import Sample from './Sample';
 import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
 
-export { Common, Join, JoinSuccess, Login, TopicList, NoMatch, Sample, ChapterList, NewTopic, EditMyInfo };
+export {
+  Common,
+  Join,
+  JoinSuccess,
+  Login,
+  TopicList,
+  NoMatch,
+  Sample,
+  ChapterList,
+  NewTopic,
+  EditMyInfo,
+  Topic,
+  EditTopic,
+};
