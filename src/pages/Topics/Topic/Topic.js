@@ -4,21 +4,9 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { Button, IconViewer, P, SubLabel, UserManager } from '@/components';
+import { BottomButton, Col, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
-
-const breadcrumbs = [
-  {
-    name: '토픽',
-    to: '/topics',
-  },
-  {
-    name: '새 토픽',
-    to: '/topics/new',
-  },
-];
 
 class Topic extends Component {
   constructor(props) {
@@ -36,6 +24,7 @@ class Topic extends Component {
         params: { topicId },
       },
     } = this.props;
+
     this.getTopic(topicId);
   }
 
@@ -44,7 +33,6 @@ class Topic extends Component {
       `/api/topics/${topicId}`,
       null,
       (data) => {
-        console.log(data);
         this.setState({
           topic: data.topic,
           users: data.topicUsers,
@@ -55,102 +43,84 @@ class Topic extends Component {
     );
   };
 
-  onChange = (field) => (value) => {
-    const { topic } = this.state;
-
-    const v = {};
-    v[field] = value;
-
-    this.setState({
-      topic: { ...topic, ...v },
-    });
-  };
-
-  setOpenUserPopup = (openUserPopup) => {
-    this.setState({
-      openUserPopup,
-    });
-  };
-
-  onSubmit = (e) => {
-    e.preventDefault();
-
-    const { topic } = this.state;
-    const { t, history, addMessage: addMessageReducer } = this.props;
-
-    if (topic.passwordConfirm !== topic.password) {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
-      return;
-    }
-
-    request.post('/api/topics', topic, (data) => {
-      history.push(data._links.topics.href);
-    });
-  };
-
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { t, addMessage: addMessageReducer, organizations, history } = this.props;
-    // eslint-disable-next-line no-unused-vars
-    const { topic, existName, openUserPopup, users } = this.state;
+    const {
+      match: {
+        params: { topicId },
+      },
+    } = this.props;
+    const { t, history } = this.props;
+    const { topic, users } = this.state;
 
     return (
       <DetailLayout className="topic-wrapper">
         {topic && (
           <>
-            <PageTitle list={breadcrumbs}>{topic.name}</PageTitle>
+            <PageTitle
+              list={[
+                {
+                  name: t('label.topicList'),
+                  to: '/topics',
+                },
+                {
+                  name: topic && topic.name,
+                  to: `/topics/${topicId}`,
+                },
+              ]}
+            >
+              {topic.name}
+            </PageTitle>
             <hr className="d-none d-sm-block mb-3" />
-
-            <SubLabel>{t('ORGANIZATION')}</SubLabel>
-            <P upppercase value={topic.organization.name} />
-            <hr className="g-dashed mb-3" />
-            <SubLabel>{t('label.icon')}</SubLabel>
-            <div>
-              <div className="topic-image">
-                <IconViewer iconIndex={topic.iconIndex} />
-              </div>
+            <div className="flex-grow-1">
+              <Row className="m-0">
+                <Col sm={12} lg={2} className="text-center p-0">
+                  <div className="topic-image m-2">
+                    <IconViewer iconIndex={topic.iconIndex} />
+                  </div>
+                </Col>
+                <Col sm={12} lg={10} className="p-0">
+                  <SubLabel>{t('label.name')}</SubLabel>
+                  <P className="bg-white" upppercase value={topic.name} />
+                  <hr className="g-dashed mb-3" />
+                  <SubLabel>{t('ORGANIZATION')}</SubLabel>
+                  <P className="bg-white" upppercase value={topic.organization.name} />
+                </Col>
+                <Col xs={12} className="p-0">
+                  <hr className="g-dashed mb-3" />
+                  <SubLabel>{t('label.desc')}</SubLabel>
+                  <P className="bg-white" upppercase pre value={topic.summary} />
+                  <hr className="g-dashed mb-3" />
+                  <SubLabel>{t('label.privateTopic')}</SubLabel>
+                  <P className="bg-white" upppercase value={topic.privateYn ? 'private' : 'public'} />
+                  <hr className="g-dashed mb-3" />
+                  <div className="position-relative">
+                    <SubLabel>{t('label.topicAdmin')}</SubLabel>
+                  </div>
+                  <div>
+                    <UserManager
+                      emptyBackgroundColor="#F6F6F6"
+                      className="selected-user mt-3 mt-sm-1"
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      xl={12}
+                      users={users}
+                    />
+                  </div>
+                </Col>
+              </Row>
             </div>
-            <hr className="g-dashed mb-3" />
-            <SubLabel>{t('label.name')}</SubLabel>
-            <P upppercase value={topic.name} />
-            <hr className="g-dashed mb-3" />
-            <SubLabel>{t('label.desc')}</SubLabel>
-            <P upppercase pre value={topic.summary} />
-            <hr className="g-dashed mb-3" />
-            <SubLabel>{t('label.privateTopic')}</SubLabel>
-            <P upppercase value={topic.privateYn ? 'private' : 'public'} />
-            <hr className="g-dashed mb-3" />
-            <div className="position-relative">
-              <SubLabel>{t('label.topicAdmin')}</SubLabel>
-            </div>
-
-            <UserManager
-              emptyBackgroundColor="#F6F6F6"
-              className="selected-user mt-3 mt-sm-0"
-              lg={3}
-              md={4}
-              sm={6}
-              xl={12}
-              users={users}
+            <BottomButton
+              onDelete={() => {
+                console.log(topic.id);
+              }}
+              onList={() => {
+                history.push('/topics');
+              }}
+              onEdit={() => {
+                history.push(`/topics/${topicId}/edit`);
+              }}
             />
-
-            <div>
-              <Button
-                className="px-4"
-                color="primary"
-                onClick={() => {
-                  const {
-                    match: {
-                      params: { topicId },
-                    },
-                  } = this.props;
-
-                  history.push(`/topics/${topicId}/edit`);
-                }}
-              >
-                {t('button.edit')}
-              </Button>
-            </div>
           </>
         )}
       </DetailLayout>
@@ -161,8 +131,6 @@ class Topic extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
-    organizationId: state.user.organizationId,
   };
 };
 
@@ -183,17 +151,9 @@ Topic.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  addMessage: PropTypes.func,
-  organizations: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      publicYn: PropTypes.bool,
-    }),
-  ),
   match: PropTypes.shape({
     params: PropTypes.shape({
-      topicId: PropTypes.number,
+      topicId: PropTypes.string,
     }),
   }),
 };

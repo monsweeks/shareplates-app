@@ -8,7 +8,10 @@
   "button.save": "저장",
   "button.cancel": "취소",
   "button.edit": "변경",
+  "button.list": "목록",
+  "button.delete": "삭제",
 
+  "label.topicList": "토픽 리스트",
   "label.topic": "토픽",
   "label.chapter": "챕터",
   "label.page": "페이지",
@@ -39,6 +42,8 @@
   "label.privateTopic": "비밀 토픽",
   "label.topicAdmin": "토픽 관리자",
   "label.userManagement": "사용자 관리",
+  "label.edit": "변경",
+  "label.newTopic": "새 토픽",
 
 
   "validation.valueMissing": "필수 입력 값입니다",
@@ -75,6 +80,7 @@
   "message.moveToJoinPage": "회원 가입",
   "message.invalidIdorPassword": "아이디 또는 비밀번호가 일치하지 않습니다.",
   "message.makeNewTopic": "새로운 토픽 만들기",
+  "message.editTopic": "토픽 정보 변경",
   "message.selectOrgForTopic": "토픽이 포함될 ORGANIZATION을 선택해주세요.",
   "message.topicIconDesc": "토픽을 나타내는 아이콘을 선택하거나, 직접 이미지를 업로드할 수 있습니다. 토픽이 카드 형태로 보여지거나, 토픽의 이름 생략하고, 아이콘으로 표현하는 등에 사용됩니다.",
   "message.topicNameDesc": "토픽 이름을 입력해주세요. 포함되는 ORGANIZAITON에서 유일해야 이름을 가져야 합니다.",

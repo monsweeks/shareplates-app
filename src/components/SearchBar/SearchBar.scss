@@ -77,6 +77,15 @@
         display: inline-block;
       }
 
+      .label {
+        color: $white;
+        @media (max-width: 768px) {
+          color: $black;
+        }
+      }
+
+
+
       &.open {
         @media (max-width: 768px) {
           display: inline-block;
