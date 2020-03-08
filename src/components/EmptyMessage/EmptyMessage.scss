@@ -1,0 +1,13 @@
+.empty-message-wrapper {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+
+  > div {
+    align-self: center;
+    justify-content: center;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+  }
+}

@@ -4,9 +4,10 @@ import { addMessage, setLoading, setUserAndOrganization } from 'actions';
 import i18n from 'i18next';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 
-const local = ['localhost', '127.0.0.1'].some((d) => d === window.location.hostname);
+const local = ['localhost', '127.0.0.1', '192.168.39.3'].some((d) => d === window.location.hostname);
 const logging = true;
-const base = local ? 'http://localhost:8080' : '';
+// eslint-disable-next-line no-nested-ternary
+const base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
 
 function beforeRequest(quiet) {
   if (!quiet) {
@@ -23,7 +24,8 @@ function processSuccess(response, successHandler) {
   if (successHandler && typeof successHandler === 'function') {
     try {
       successHandler(response.data);
-    } catch {
+    } catch (e) {
+      console.error(e);
       store.dispatch(addMessage(null, MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
     }
   }
