@@ -71,7 +71,7 @@ class SearchBar extends React.Component {
               <div />
             </div>
             <div className="organization-col">
-              <span className="label small text-white">ORG</span>
+              <span className="label small">ORG</span>
               <Selector
                 outline
                 className="organization-selector"
@@ -86,7 +86,7 @@ class SearchBar extends React.Component {
               />
             </div>
             <div className="order-col">
-              <span className="label small text-white">정렬</span>
+              <span className="label small">정렬</span>
               <RadioButton circle items={orders} value={order} onClick={onChangeOrder} />
               <div className="separator" />
               <RadioButton circle items={directions} value={direction} onClick={onChangeDirection} />
