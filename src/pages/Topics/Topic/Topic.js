@@ -107,25 +107,19 @@ class Topic extends Component {
             <div className="flex-grow-1">
               <Row className="m-0">
                 <Col sm={12} lg={2} className="text-center p-0">
-                  <div className="topic-image m-2">
+                  <div className="topic-image m-2 m-lg-0">
                     <IconViewer iconIndex={topic.iconIndex} />
                   </div>
                 </Col>
                 <Col sm={12} lg={10} className="p-0">
                   <SubLabel>{t('label.name')}</SubLabel>
                   <P className="bg-white" upppercase value={topic.name} />
-                  <hr className="g-dashed mb-3" />
                   <SubLabel>{t('ORGANIZATION')}</SubLabel>
                   <P className="bg-white" upppercase value={topic.organization.name} />
-                </Col>
-                <Col xs={12} className="p-0">
-                  <hr className="g-dashed mb-3" />
                   <SubLabel>{t('label.desc')}</SubLabel>
                   <P className="bg-white" upppercase pre value={topic.summary} />
-                  <hr className="g-dashed mb-3" />
                   <SubLabel>{t('label.privateTopic')}</SubLabel>
                   <P className="bg-white" upppercase value={topic.privateYn ? 'private' : 'public'} />
-                  <hr className="g-dashed mb-3" />
                   <div className="position-relative">
                     <SubLabel>{t('label.topicAdmin')}</SubLabel>
                   </div>

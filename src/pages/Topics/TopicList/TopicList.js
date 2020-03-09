@@ -43,18 +43,31 @@ class TopicList extends React.Component {
       order: orders[0].key,
       direction: directions[0].key,
       organizationId: null,
+      searchWord: '',
       topics: [],
     };
   }
 
   componentDidMount() {
-    this.getTopics();
+    const { organizationId, searchWord, order, direction } = this.state;
+    if (organizationId) {
+      this.getTopics(organizationId, searchWord, order, direction);
+    }
   }
 
-  getTopics = () => {
+  componentDidUpdate(prevProps, prevState) {
+    const { organizationId, searchWord, order, direction } = this.state;
+    const { organizationId: prevOrganizationId, order: prevOrder, direction: prevDirection } = prevState;
+
+    if (organizationId !== prevOrganizationId || order !== prevOrder || direction !== prevDirection) {
+      this.getTopics(organizationId, searchWord, order, direction);
+    }
+  }
+
+  getTopics = (organizationId, searchWord, order, direction) => {
     request.get(
       '/api/topics',
-      null,
+      { organizationId, searchWord, order, direction },
       (data) => {
         this.setState({
           topics: data.topics || [],
@@ -78,6 +91,11 @@ class TopicList extends React.Component {
     return null;
   }
 
+  onSearch = () => {
+    const { organizationId, searchWord, order, direction } = this.state;
+    this.getTopics(organizationId, searchWord, order, direction);
+  };
+
   render() {
     const { order, direction, organizationId, topics } = this.state;
     // eslint-disable-next-line no-unused-vars
@@ -94,15 +112,21 @@ class TopicList extends React.Component {
             });
           }}
           order={order}
-          onChangeOrder={(id) => {
+          onChangeOrder={(value) => {
             this.setState({
-              organizationId: id,
+              order: value,
             });
           }}
           direction={direction}
           onChangeDirection={(value) => {
             this.setState({
               direction: value,
+            });
+          }}
+          onSearch={this.onSearch}
+          onChangeSearchWord={(value) => {
+            this.setState({
+              searchWord: value,
             });
           }}
         />

@@ -23,6 +23,24 @@
       align-self: center;
     }
 
+    .organization-col {
+      flex: 0;
+      white-space: nowrap;
+      margin-right: 1rem;
+
+      @media (max-width: 768px) {
+        margin-right: 0.5rem;
+      }
+
+      .organization-selector {
+        min-width: 120px;
+
+        @media (max-width: 768px) {
+          min-width: 80px;
+        }
+      }
+    }
+
     .search-col {
       flex: 1;
       text-align: left;
@@ -34,7 +52,7 @@
       }
 
       @media (max-width: 768px) {
-        padding-right: 1rem;
+        padding-right: 0.5rem;
       }
     }
 
@@ -114,20 +132,6 @@
             }
           }
         }
-      }
-    }
-
-    .organization-col {
-      flex: 0;
-      white-space: nowrap;
-      margin-right: 1rem;
-
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
-
-      .organization-selector {
-        min-width: 120px;
       }
     }
 

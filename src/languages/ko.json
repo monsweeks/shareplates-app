@@ -44,6 +44,15 @@
   "label.userManagement": "사용자 관리",
   "label.edit": "변경",
   "label.newTopic": "새 토픽",
+  "label.searchByTopicName": "토픽명으로 검색",
+  "label.order": "정렬",
+  "label.org": "ORG",
+  "label.orderByName": "이름으로 정렬",
+  "label.orderByCreationTime": "생성일시로 정렬",
+  "label.orderByAsc": "오름차순으로 정렬",
+  "label.orderByDesc": "내림차순으로 정렬",
+
+
 
   "validation.valueMissing": "필수 입력 값입니다",
   "validation.typeMismatch": "입력 형식이 올바르지 않습니다",
