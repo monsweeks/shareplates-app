@@ -1,11 +1,11 @@
 .topic-wrapper {
-
   .topic-image {
     width: 100px;
     height: 100px;
+    background-color: $primary;
+    border-radius: 50%;
+    display: inline-block;
   }
-
-
 
   .selected-user {
     margin-left: -10px;

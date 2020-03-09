@@ -8,8 +8,6 @@ class TopicCard extends React.PureComponent {
   render() {
     const { className, topic, onCardClick, onConfigClick, newCard } = this.props;
 
-    console.log(topic);
-
     return (
       <Card
         className={`topic-card-wrapper g-no-select ${className}`}
@@ -21,7 +19,6 @@ class TopicCard extends React.PureComponent {
           {!newCard && (
             <span className="config-button">
               <CircleIcon
-                size='sm'
                 icon={<i className="fal fa-cog" />}
                 onClick={(e) => {
                   e.stopPropagation();

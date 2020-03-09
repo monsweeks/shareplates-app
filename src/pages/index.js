@@ -6,6 +6,7 @@ import EditMyInfo from './Users/EditMyInfo/EditMyInfo';
 import TopicList from './Topics/TopicList/TopicList';
 import Topic from './Topics/Topic/Topic';
 import NewTopic from './Topics/NewTopic/NewTopic';
+import TopicForm from './Topics/TopicForm/TopicForm';
 import EditTopic from './Topics/EditTopic/EditTopic';
 import NoMatch from './NoMatch/NoMatch';
 import Sample from './Sample';
@@ -24,4 +25,5 @@ export {
   EditMyInfo,
   Topic,
   EditTopic,
+  TopicForm,
 };
