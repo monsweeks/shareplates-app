@@ -11,6 +11,9 @@ import EditTopic from './Topics/EditTopic/EditTopic';
 import NoMatch from './NoMatch/NoMatch';
 import Sample from './Sample';
 import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
+import OrganizationList from './Organizations/OrganizationList/OrganizationList';
+import NewOrganization from './Organizations/NewOrganization/NewOrganization';
+import OrganizationForm from './Organizations/OrganizationForm/OrganizationForm';
 
 export {
   Common,
@@ -26,4 +29,7 @@ export {
   Topic,
   EditTopic,
   TopicForm,
+  OrganizationList,
+  OrganizationForm,
+  NewOrganization,
 };

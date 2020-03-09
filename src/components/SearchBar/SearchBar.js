@@ -23,35 +23,39 @@ class SearchBar extends React.Component {
     const { organizations, organizationId, onChangeOrganization } = this.props;
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
-    const { onSearch, onChangeSearchWord, t } = this.props;
+    const { onSearch, onChangeSearchWord, t, searchPlaceholder } = this.props;
 
     return (
       <div className="search-bar-wrapper g-no-select ">
         <div>
-          <div className="organization-col">
-            <span className="label small text-white d-none d-md-inline">{t('label.org')}</span>
-            <Selector
-              outline
-              className="organization-selector"
-              items={organizations.map((org) => {
-                return {
-                  key: org.id,
-                  value: org.name,
-                };
-              })}
-              value={organizationId}
-              onChange={onChangeOrganization}
-            />
-          </div>
-          <div className="search-col">
-            <SearchInput
-              noBorder
-              color="white"
-              placeholder={t('label.searchByTopicName')}
-              onSearch={onSearch}
-              onChange={onChangeSearchWord}
-            />
-          </div>
+          {onChangeOrganization && (
+            <div className="organization-col">
+              <span className="label small text-white d-none d-md-inline">{t('label.org')}</span>
+              <Selector
+                outline
+                className="organization-selector"
+                items={organizations.map((org) => {
+                  return {
+                    key: org.id,
+                    value: org.name,
+                  };
+                })}
+                value={organizationId}
+                onChange={onChangeOrganization}
+              />
+            </div>
+          )}
+          {onChangeSearchWord && (
+            <div className="search-col">
+              <SearchInput
+                noBorder
+                color="white"
+                placeholder={searchPlaceholder}
+                onSearch={onSearch}
+                onChange={onChangeSearchWord}
+              />
+            </div>
+          )}
           {openOptions && (
             <div
               className="g-overlay"
@@ -140,6 +144,7 @@ SearchBar.propTypes = {
   onSearch: PropTypes.func,
   onChangeSearchWord: PropTypes.func,
   t: PropTypes.func,
+  searchPlaceholder : PropTypes.string,
 };
 
 export default withRouter(withTranslation()(SearchBar));

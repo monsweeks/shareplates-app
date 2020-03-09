@@ -21,12 +21,17 @@ class UserManager extends React.PureComponent {
       emptyBackgroundColor,
     } = this.props;
 
+    const { markedUsers, markedTag } = this.props;
+
     return (
       <div className={`user-manager-wrapper ${className}`}>
         {!(users && users.length > 0) && (
-          <div className="empty-content text-center" style={{
-            backgroundColor : emptyBackgroundColor
-          }}>
+          <div
+            className="empty-content text-center"
+            style={{
+              backgroundColor: emptyBackgroundColor,
+            }}
+          >
             <div className="info-icon">
               <i className="fal fa-info-circle" />
             </div>
@@ -44,6 +49,8 @@ class UserManager extends React.PureComponent {
                     user={user}
                     blockStyle={blockStyle}
                     selected={selectedUsers[user.id]}
+                    marked={markedUsers.find((u) => u.id === user.id)}
+                    markedTag={markedTag}
                     onRemove={onRemove}
                   />
                 </Col>
@@ -67,8 +74,10 @@ UserManager.defaultProps = {
   lg: 4,
   md: 4,
   sm: 6,
-  xs : 12,
-  emptyBackgroundColor : 'transparent'
+  xs: 12,
+  emptyBackgroundColor: 'transparent',
+  markedUsers: [],
+  markedTag: null,
 };
 
 UserManager.propTypes = {
@@ -90,5 +99,7 @@ UserManager.propTypes = {
   sm: PropTypes.number,
   xs: PropTypes.number,
   onRemove: PropTypes.func,
-  emptyBackgroundColor : PropTypes.string,
+  emptyBackgroundColor: PropTypes.string,
+  markedUsers: PropTypes.arrayOf(PropTypes.any),
+  markedTag: PropTypes.string,
 };

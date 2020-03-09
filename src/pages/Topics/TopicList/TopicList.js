@@ -99,7 +99,7 @@ class TopicList extends React.Component {
   render() {
     const { order, direction, organizationId, topics } = this.state;
     // eslint-disable-next-line no-unused-vars
-    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history } = this.props;
+    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history, t } = this.props;
 
     return (
       <div className="topic-list-wrapper">
@@ -123,6 +123,7 @@ class TopicList extends React.Component {
               direction: value,
             });
           }}
+          searchPlaceholder={t('label.searchByTopicName')}
           onSearch={this.onSearch}
           onChangeSearchWord={(value) => {
             this.setState({
@@ -195,6 +196,7 @@ TopicList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  t: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

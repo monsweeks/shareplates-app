@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
@@ -27,6 +28,16 @@ class ShortCutMenu extends React.PureComponent {
       <div className={`short-cut-menu-wrapper ${className}`}>
         <div>
           <SearchInput className="d-none" onSearch={onSearch} />
+        </div>
+        <div>
+          <CircleIcon
+            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
+            icon={<i className="fas fa-ball-pile"/>}
+            onClick={() => {
+              const { history } = this.props;
+              history.push('/organizations');
+            }}
+          />
         </div>
         <div>
           <CircleIcon
@@ -89,7 +100,7 @@ class ShortCutMenu extends React.PureComponent {
   }
 }
 
-export default withTranslation()(ShortCutMenu);
+export default withRouter(withTranslation()(ShortCutMenu));
 
 ShortCutMenu.defaultProps = {
   className: '',
@@ -110,5 +121,8 @@ ShortCutMenu.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     info: PropTypes.string,
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }),
 };

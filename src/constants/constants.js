@@ -44,6 +44,7 @@ const DATETIME_FORMATS = [
       D: 'YYYY-MM-DD',
       HM: 'HH:mm',
     },
+    default: true,
   },
   {
     key: 'YYYY/MM/DD HH:mm:ss',
@@ -77,4 +78,9 @@ const DATETIME_FORMATS = [
   },
 ];
 
-export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS, DATETIME_FORMATS };
+const DATETIME_FORMATS_MAP = {};
+DATETIME_FORMATS.forEach((info) => {
+  DATETIME_FORMATS_MAP[info.key] = info.dateTimeFormat;
+});
+
+export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS, DATETIME_FORMATS, DATETIME_FORMATS_MAP };

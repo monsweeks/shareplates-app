@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, Col, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
+import { BottomButton, Col, DateTime, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
 
 class Topic extends Component {
@@ -120,7 +120,7 @@ class Topic extends Component {
                   <P className="bg-white" upppercase pre value={topic.summary} />
                   <SubLabel>{t('label.privateTopic')}</SubLabel>
                   <P className="bg-white" upppercase value={topic.privateYn ? 'private' : 'public'} />
-                  <div className="position-relative">
+                  <div className="position-relative mb-3">
                     <SubLabel>{t('label.topicAdmin')}</SubLabel>
                   </div>
                   <div>
@@ -134,6 +134,10 @@ class Topic extends Component {
                       users={users}
                     />
                   </div>
+                  <SubLabel>{t('label.creationDate')}</SubLabel>
+                  <P className="bg-white" value={<DateTime value={topic.creationDate} />} />
+                  <SubLabel>{t('label.updateDate')}</SubLabel>
+                  <P className="bg-white" value={<DateTime value={topic.lastUpdateDate} />} />
                 </Col>
               </Row>
             </div>
