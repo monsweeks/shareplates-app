@@ -33,7 +33,7 @@ import SearchBar from '@/components/SearchBar/SearchBar';
 import TopicCard from '@/components/TopicCard/TopicCard';
 import BottomButton from '@/components/BottomButton/BottomButton';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
-import SocketClient from '@/components/WebSocket/SocketClient';
+import SocketClient from '@/components/SocketClient/SocketClient';
 
 export {
   Button,
