@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { setUserAndOrganization } from '@/actions';
-import { Col, Row, SearchBar, TopicCard, WebSocket } from '@/components';
+import { Col, Row, SearchBar, TopicCard, SocketClient } from '@/components';
 import './TopicList.scss';
 import request from '@/utils/request';
 
@@ -137,7 +137,7 @@ class TopicList extends React.Component {
             });
           }}
         />
-	      <WebSocket topics={['/sub/topic']}
+	      <SocketClient topics={['/sub/topic']}
 	      successRecieveMessage={(msg) => this.createNewTopic(msg)} />
 
         <FullLayout className="topic-list-content text-center align-self-center">
