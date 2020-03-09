@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { setUserAndOrganization } from '@/actions';
-import { Col, Row, SearchBar, TopicCard } from '@/components';
+import { Col, Row, SearchBar, TopicCard, WebSocket } from '@/components';
 import './TopicList.scss';
 import request from '@/utils/request';
 
@@ -95,6 +95,13 @@ class TopicList extends React.Component {
     const { organizationId, searchWord, order, direction } = this.state;
     this.getTopics(organizationId, searchWord, order, direction);
   };
+  
+  createNewTopic = (topic) => {
+    console.log(topic);
+	    this.setState(prevState => ({
+	    	topics: [...prevState.topics, topic]
+	    }));
+  };
 
   render() {
     const { order, direction, organizationId, topics } = this.state;
@@ -130,6 +137,9 @@ class TopicList extends React.Component {
             });
           }}
         />
+	      <WebSocket topics={['/sub/topic']}
+	      successRecieveMessage={(msg) => this.createNewTopic(msg)} />
+
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>

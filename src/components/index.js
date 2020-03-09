@@ -33,6 +33,7 @@ import SearchBar from '@/components/SearchBar/SearchBar';
 import TopicCard from '@/components/TopicCard/TopicCard';
 import BottomButton from '@/components/BottomButton/BottomButton';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
+import WebSocket from '@/components/WebSocket/WebSocket';
 
 export {
   Button,
@@ -70,4 +71,5 @@ export {
   IconViewer,
   BottomButton,
   EmptyMessage,
+  WebSocket,
 };
