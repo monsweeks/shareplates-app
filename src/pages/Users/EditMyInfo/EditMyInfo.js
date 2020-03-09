@@ -7,7 +7,7 @@ import request from '@/utils/request';
 import { addMessage, setUserAndOrganization } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
-import { Button, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
+import { BottomButton, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
 import './EditMyInfo.scss';
 import { DATETIME_FORMATS } from '@/constants/constants';
 import LANGUAGES from '@/languages/languages';
@@ -37,7 +37,6 @@ class EditMyInfo extends React.PureComponent {
   }
 
   getMyInfo = () => {
-
     request.get(
       '/api/users/my-info',
       null,
@@ -86,7 +85,7 @@ class EditMyInfo extends React.PureComponent {
       <RegisterLayout>
         <PageTitle list={breadcrumbs}>{t('내 정보 수정')}</PageTitle>
         <hr className="d-none d-sm-block mb-3" />
-        <Form onSubmit={this.onSubmit} className="flex-grow-1 px-2">
+        <Form onSubmit={this.onSubmit} className="flex-grow-1">
           <SubLabel>{t('아이콘')}</SubLabel>
           <Description>{t('SHAREPLATES에서 사용되는 사용자의 아바타 아이콘을 만들 수 있습니다.')}</Description>
           <FormGroup>
@@ -99,7 +98,7 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
-          <FormGroup>
+
             <Input
               label={t('label.name')}
               value={user.name}
@@ -110,7 +109,7 @@ class EditMyInfo extends React.PureComponent {
               simple
               border
             />
-          </FormGroup>
+
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('날짜 형식')}</SubLabel>
           <FormGroup>
@@ -141,17 +140,8 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
-          <FormGroup>
-            <P value={user.creationDate} />
-          </FormGroup>
-          <FormGroup className="text-center mt-4">
-            <Button className="px-4 mx-2" color="secondary">
-              {t('button.cancel')}
-            </Button>
-            <Button className="px-4 mx-2" color="primary">
-              {t('button.save')}
-            </Button>
-          </FormGroup>
+          <P className="bg-white" value={user.creationDate} />
+          <BottomButton onList={() => {}} onEdit={() => {}} />
         </Form>
       </RegisterLayout>
     );

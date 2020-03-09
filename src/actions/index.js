@@ -3,6 +3,7 @@ export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
+export const SET_CONFIRM = 'SET_CONFIRM';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
 export const SET_ORGANIZATION_ID = 'SET_ORGANIZATION_ID';
 
@@ -55,5 +56,14 @@ export function setLoading(loading) {
   return {
     type: SET_LOADING,
     loading,
+  };
+}
+
+export function setConfirm(message, okHandler, noHandler) {
+  return {
+    type: SET_CONFIRM,
+    message,
+    okHandler,
+    noHandler,
   };
 }

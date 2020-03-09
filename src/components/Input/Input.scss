@@ -30,6 +30,7 @@
       border: 1px solid $border-color;
       border-radius: 3px;
       padding: 5px 26px 5px 7px;
+      -webkit-appearance: none;
 
       &:focus {
         border-color: $primary;
