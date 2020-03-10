@@ -13,7 +13,6 @@ class NewOrganization extends React.PureComponent {
     const { history } = this.props;
 
     request.post('/api/organizations', organization, (data) => {
-      console.log(data);
       history.push(data._links.organizations.href);
     });
   };

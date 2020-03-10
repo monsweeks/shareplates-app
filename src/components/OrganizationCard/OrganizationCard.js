@@ -41,26 +41,20 @@ class OrganizationCard extends React.PureComponent {
             {!newCard && (
               <>
                 <div className="organization-title">{organization.name}</div>
-                <div className="organization-summary">{organization.description}</div>
-                <div className="organization-description">
-                  <div className="counts">
-                    <div>
-                      <div>
-                        <div className="level-icon">
-                          <i className="fal fa-book" />
-                        </div>
-                        <div className="level-count">10</div>
-                        <div className="tag">CHAPTERS</div>
-                      </div>
-                      <div>
-                        <div className="level-icon">
-                          <i className="fal fa-clipboard" />
-                        </div>
-                        <div className="level-count">10</div>
-                        <div className="tag">PAGES</div>
-                      </div>
+                <div className="organization-description text-center">{organization.description}</div>
+                <div className="organization-stats">
+                  <div>
+                    <div className="user-count">
+                      <div className="number">{organization.userCount}</div>
+                      <div className="tag">USERS</div>
                     </div>
                   </div>
+                </div>
+                <div className="topic-count">
+                  <span className="number">{organization.topicCount}</span> <span className="tag">TOPICS</span>
+                </div>
+                <div className="org-role">
+                  <span>{organization.role}</span>
                 </div>
               </>
             )}
@@ -85,6 +79,9 @@ OrganizationCard.propTypes = {
     description: PropTypes.string,
     users: PropTypes.arrayOf(PropTypes.any),
     privateYn: PropTypes.bool,
+    userCount: PropTypes.number,
+    topicCount: PropTypes.number,
+    role: PropTypes.string,
   }),
   className: PropTypes.string,
   onCardClick: PropTypes.func,

@@ -13,21 +13,6 @@
     right: 0.5rem;
   }
 
-  .private {
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    background-color: $danger;
-    line-height: 100%;
-    padding: 3px 4px 2px;
-    color: $white;
-    border-radius: 3px;
-    font-family: 'Baloo Bhai', cursive;
-  }
-
   .card-body {
     display: flex;
     text-align: center;
@@ -64,7 +49,7 @@
         font-weight: bold;
       }
 
-      .organization-summary {
+      .organization-description {
         flex: 0;
         font-size: 0.8rem;
         margin-bottom: 0.5rem;
@@ -75,76 +60,68 @@
         text-overflow: ellipsis;
         padding: 0 0.5rem;
       }
+    }
 
-      .organization-description {
+    .org-role {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0.5rem;
+      font-size: 0.6rem;
+
+      > span {
+        padding: 2px 4px;
+        _background-color: $green;
+        _color: $white;
+        border-radius: 3px;
+        border: 1px solid $border-color;
+      }
+    }
+
+    .organization-stats {
+      position: relative;
+      .user-count {
+        display: inline-block;
+        background-color: $primary;
+        color: $white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         display: flex;
-        flex: 1;
-        _border: 1px solid $border-color;
-        border-radius: 5px;
-        background-color: $light;
+        flex-direction: column;
+        margin: 0 auto;
+        align-self: center;
+        justify-content: center;
+        z-index: 1;
+        position: relative;
 
-        .icon {
-          align-self: center;
-          flex: 0;
-          color: white;
-          display: inline-block;
-          min-width: 120px;
-          width: 120px;
-          height: 60px;
-          font-size: 24px;
-          text-align: center;
-          padding: 0 30px;
-
-          > div {
-            width: 60px;
-            height: 60px;
-            background-color: $gray-400;
-            background-color: $primary;
-            border-radius: 50%;
-          }
+        .number {
+          font-family: 'Baloo Bhai', cursive;
+          font-size: 1.5rem;
+          line-height: 1rem;
         }
 
-        .counts {
-          margin: 1rem 0 0.5rem;
-          flex: 1;
-          align-self: center;
-          > div {
-            display: flex;
-            align-self: center;
-            > div {
-              flex: 1;
-
-              .level-icon {
-                font-size: 1.2rem;
-                margin-bottom: 8px;
-
-                i {
-                  background-color: $yellow;
-                  display: inline-block;
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 50%;
-                  justify-content: center;
-                  padding-top: 6px;
-                }
-              }
-
-              .level-count {
-                font-family: 'Baloo Bhai', cursive;
-                font-size: 1.1rem;
-                line-height: 100%;
-              }
-
-              .tag {
-                display: inline-block;
-                font-size: 0.7rem;
-                line-height: 100%;
-                border-radius: 3px;
-                width: 100%;
-              }
-            }
-          }
+        .tag {
+          font-size: 0.7rem;
         }
+      }
+    }
+
+    .topic-count {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      text-align: right;
+      .number {
+        font-family: 'Baloo Bhai', cursive;
+        font-size: 1rem;
+        line-height: 1rem;
+      }
+
+      .tag {
+        font-size: 0.8rem;
       }
     }
   }
