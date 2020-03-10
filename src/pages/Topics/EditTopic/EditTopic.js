@@ -54,7 +54,7 @@ class EditTopic extends React.PureComponent {
   onSubmit = (topic) => {
     const { history } = this.props;
     console.log(topic);
-    request.put(`/api/topics/${topic.id}`, topic, (data) => {
+    request.put('/api/topics', topic, (data) => {
       history.push(data._links.topics.href);
     });
   };
