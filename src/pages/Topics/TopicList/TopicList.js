@@ -97,10 +97,32 @@ class TopicList extends React.Component {
   };
   
   createNewTopic = (topic) => {
-    console.log(topic);
-	    this.setState(prevState => ({
-	    	topics: [...prevState.topics, topic]
-	    }));
+    const {topics} = this.state;
+    switch(topic.statusCode){
+      case 'CREATE':
+        this.setState(prevState => ({
+          topics: [...prevState.topics, topic]
+        }));
+        break;
+        
+      case 'UPDATE':
+        topics.forEach((t, idx) => {
+          if(t.id === topic.id){
+            topics[idx] = topic;
+        }});
+        this.setState({
+          topics,
+        });
+        break;
+
+      case 'DELETE':
+        this.setState(prevState => ({
+          topics: [...prevState.topics, topic]
+        }));
+        break;
+      default:
+
+    }
   };
 
   render() {
