@@ -20,7 +20,7 @@ P.defaultProps = {
 
 P.propTypes = {
   className: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   upppercase : PropTypes.bool,
   pre : PropTypes.bool,
 };

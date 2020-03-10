@@ -14,6 +14,8 @@ import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
 import OrganizationList from './Organizations/OrganizationList/OrganizationList';
 import NewOrganization from './Organizations/NewOrganization/NewOrganization';
 import OrganizationForm from './Organizations/OrganizationForm/OrganizationForm';
+import EditOrganization from './Organizations/EditOrganization/EditOrganization';
+import Organization from './Organizations/Organization/Organization';
 
 export {
   Common,
@@ -32,4 +34,6 @@ export {
   OrganizationList,
   OrganizationForm,
   NewOrganization,
+  EditOrganization,
+  Organization,
 };

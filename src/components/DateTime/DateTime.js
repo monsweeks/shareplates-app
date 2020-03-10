@@ -40,7 +40,7 @@ DateTime.propTypes = {
   value: PropTypes.string,
   className: PropTypes.string,
   user: PropTypes.shape({
-    dateTimeFormat: PropTypes.number,
+    dateTimeFormat: PropTypes.string,
   }),
   formatType: PropTypes.string,
 };
