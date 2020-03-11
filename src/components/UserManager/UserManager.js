@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, UserCard } from '@/components';
+import { Col, EmptyMessage, Row, UserCard } from '@/components';
 import './UserManager.scss';
 
 class UserManager extends React.PureComponent {
@@ -18,7 +18,6 @@ class UserManager extends React.PureComponent {
       sm,
       xs,
       onRemove,
-      emptyBackgroundColor,
     } = this.props;
 
     const { markedUsers, markedTag } = this.props;
@@ -26,17 +25,19 @@ class UserManager extends React.PureComponent {
     return (
       <div className={`user-manager-wrapper ${className}`}>
         {!(users && users.length > 0) && (
-          <div
-            className="empty-content text-center"
-            style={{
-              backgroundColor: emptyBackgroundColor,
-            }}
-          >
-            <div className="info-icon">
-              <i className="fal fa-info-circle" />
-            </div>
-            {emptyContent}
-          </div>
+          <EmptyMessage
+            className="h6 mb-0"
+            message={
+              <div>
+                <div>
+                  <span className='mr-1'>
+                    <i className="fal fa-hashtag" />
+                  </span>
+                  <span>{emptyContent}</span>
+                </div>
+              </div>
+            }
+          />
         )}
         {users && users.length > 0 && (
           <Row>
@@ -67,7 +68,7 @@ export default UserManager;
 
 UserManager.defaultProps = {
   className: '',
-  emptyContent: <div>설정된 사용자가 없습니다.</div>,
+  emptyContent: '설정된 사용자가 없습니다.',
   blockStyle: false,
   hover: false,
   selectedUsers: {},
@@ -75,7 +76,6 @@ UserManager.defaultProps = {
   md: 4,
   sm: 6,
   xs: 12,
-  emptyBackgroundColor: 'transparent',
   markedUsers: [],
   markedTag: null,
 };
@@ -99,7 +99,6 @@ UserManager.propTypes = {
   sm: PropTypes.number,
   xs: PropTypes.number,
   onRemove: PropTypes.func,
-  emptyBackgroundColor: PropTypes.string,
   markedUsers: PropTypes.arrayOf(PropTypes.any),
   markedTag: PropTypes.string,
 };

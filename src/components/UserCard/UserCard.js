@@ -34,7 +34,7 @@ class UserCard extends React.PureComponent {
             </div>
             <div className="user-text">
               <div className="name">{user.name}</div>
-              <div className="email">{user.email}</div>
+              <div className="email" data-tip={user.email}>{user.email}</div>
             </div>
           </div>
           {onRemove && (

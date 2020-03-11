@@ -113,19 +113,27 @@ class Topic extends Component {
                 </Col>
                 <Col sm={12} lg={10} className="p-0">
                   <SubLabel>{t('label.name')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.name} />
-                  <SubLabel>{t('ORGANIZATION')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.organization.name} />
+                  <P className="bg-white" upppercase>
+                    {topic.name}
+                  </P>
+                  <SubLabel>{t('ORG')}</SubLabel>
+                  <P className="bg-white" upppercase>
+                    {topic.organization.name}
+                  </P>
                   <SubLabel>{t('label.desc')}</SubLabel>
-                  <P className="bg-white" upppercase pre value={topic.summary} />
+                  <P className="bg-white" upppercase pre>
+                    {topic.summary}
+                  </P>
                   <SubLabel>{t('label.privateTopic')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.privateYn ? 'private' : 'public'} />
+                  <P className="bg-white" upppercase>
+                    {topic.privateYn ? 'private' : 'public'}
+                  </P>
+                  <hr className="g-dashed mb-3" />
                   <div className="position-relative mb-3">
                     <SubLabel>{t('label.topicAdmin')}</SubLabel>
                   </div>
                   <div>
                     <UserManager
-                      emptyBackgroundColor="#F6F6F6"
                       className="selected-user mt-3 mt-sm-1"
                       lg={3}
                       md={4}
@@ -134,12 +142,11 @@ class Topic extends Component {
                       users={users}
                     />
                   </div>
-                  <SubLabel>{t('label.creationDate')}</SubLabel>
-                  <P className="bg-white" value={<DateTime value={topic.creationDate} />} />
-                  <SubLabel>{t('label.updateDate')}</SubLabel>
-                  <P className="bg-white" value={<DateTime value={topic.lastUpdateDate} />} />
                 </Col>
               </Row>
+            </div>
+            <div className="flex-grow-0 text-right small">
+              <DateTime value={topic.creationDate} /> 생성
             </div>
             <BottomButton
               onDelete={() => {

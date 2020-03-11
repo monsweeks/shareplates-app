@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
   BottomButton,
   Button,
@@ -12,6 +11,7 @@ import {
   Input,
   Popup,
   SubLabel,
+  SubTitle,
   TextArea,
   UserManager,
   UserSearchPopup,
@@ -97,12 +97,7 @@ class OrganizationForm extends Component {
     e.preventDefault();
 
     const { organization } = this.state;
-    const { t, addMessage: addMessageReducer, onSave } = this.props;
-
-    if (organization.passwordConfirm !== organization.password) {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
-      return;
-    }
+    const { onSave } = this.props;
 
     onSave(organization);
   };
@@ -141,6 +136,7 @@ class OrganizationForm extends Component {
     return (
       <>
         <Form onSubmit={this.onSubmit} className="organization-form-wrapper flex-grow-1 px-2">
+          <SubTitle>{t('GENERAL INFO')}</SubTitle>
           <SubLabel>{t('label.name')}</SubLabel>
           <Description>{t('message.organizationNameDesc')}</Description>
           <FormGroup>
@@ -157,7 +153,6 @@ class OrganizationForm extends Component {
             />
             {existName && <div className="small text-danger mt-2">{t('validation.dupName')}</div>}
           </FormGroup>
-          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.desc')}</SubLabel>
           <Description>{t('message.organizationDescDesc')}</Description>
           <FormGroup>
@@ -171,13 +166,14 @@ class OrganizationForm extends Component {
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
+          <SubTitle>{t('USERS')}</SubTitle>
           <div className="position-relative">
             <SubLabel>{t('label.organizationAdmin')}</SubLabel>
             <Description>{t('message.organizationAdminDesc')}</Description>
             <Button
               className="manager-button"
               color="primary"
-              size="sm"
+              size="xs"
               onClick={() => {
                 this.setOpenPopup('openAdminPopup', true);
               }}
@@ -187,7 +183,6 @@ class OrganizationForm extends Component {
           </div>
           <FormGroup>
             <UserManager
-              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const admins = organization.admins.splice(0);
                 const index = admins.findIndex((u) => u.id === id);
@@ -204,15 +199,13 @@ class OrganizationForm extends Component {
               users={organization.admins}
             />
           </FormGroup>
-
-          <hr className="g-dashed mb-3" />
           <div className="position-relative">
             <SubLabel>{t('label.organizationMember')}</SubLabel>
             <Description>{t('message.organizationUserDesc')}</Description>
             <Button
               className="manager-button"
               color="primary"
-              size="sm"
+              size="xs"
               onClick={() => {
                 this.setOpenPopup('openMemberPopup', true);
               }}
@@ -222,7 +215,6 @@ class OrganizationForm extends Component {
           </div>
           <FormGroup>
             <UserManager
-              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const members = organization.members.splice(0);
                 const index = members.findIndex((u) => u.id === id);
@@ -280,7 +272,7 @@ OrganizationForm.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  addMessage: PropTypes.func,
+
   onSave: PropTypes.func,
   saveText: PropTypes.string,
   onCancel: PropTypes.func,

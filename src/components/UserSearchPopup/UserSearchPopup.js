@@ -129,7 +129,7 @@ class UserSearchPopup extends React.Component {
                   selectedUsers={tempSelectedUsers}
                   markedUsers={markedUsers}
                   markedTag={markedTag}
-                  emptyContent={<div>검색된 사용자가 없습니다</div>}
+                  emptyContent='검색된 사용자가 없습니다'
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@ class UserSearchPopup extends React.Component {
                   md={12}
                   sm={12}
                   users={selectedUsers}
-                  emptyContent={<div>검색된 사용자가 없습니다</div>}
+                  emptyContent='검색된 사용자가 없습니다'
                 />
               </div>
             </div>

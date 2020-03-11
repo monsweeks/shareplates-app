@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, DateTime, EmptyMessage, P, SubLabel, UserManager } from '@/components';
+import { BottomButton, DateTime, EmptyMessage, P, SubLabel, UserManager, SubTitle } from '@/components';
 import './Organization.scss';
 
 class Organization extends Component {
@@ -98,42 +98,32 @@ class Organization extends Component {
             </PageTitle>
             <hr className="d-none d-sm-block mb-3" />
             <div className="flex-grow-1">
+              <SubTitle>{t('GENERAL INFO')}</SubTitle>
               <SubLabel>{t('label.name')}</SubLabel>
-              <P className="bg-white" upppercase value={organization.name} />
+              <P className="bg-white" upppercase>
+                {organization.name}
+              </P>
               <SubLabel>{t('label.desc')}</SubLabel>
-              <P className="bg-white" upppercase pre value={organization.description} />
+              <P className="bg-white" upppercase pre>
+                {organization.description}
+              </P>
+              <hr className="g-dashed mb-3" />
+              <SubTitle>{t('USERS')}</SubTitle>
               <div className="position-relative mb-3">
                 <SubLabel>{t('label.organizationAdmin')}</SubLabel>
               </div>
               <div>
-                <UserManager
-                  emptyBackgroundColor="#F6F6F6"
-                  className="selected-user mt-3 mt-sm-1"
-                  lg={3}
-                  md={4}
-                  sm={6}
-                  xl={12}
-                  users={organization.admins}
-                />
+                <UserManager className="selected-user" lg={3} md={4} sm={6} xl={12} users={organization.admins} />
               </div>
               <div className="position-relative mb-3">
-                <SubLabel>{t('label.organizationAdmin')}</SubLabel>
+                <SubLabel>{t('label.organizationMember')}</SubLabel>
               </div>
               <div>
-                <UserManager
-                  emptyBackgroundColor="#F6F6F6"
-                  className="selected-user mt-3 mt-sm-1"
-                  lg={3}
-                  md={4}
-                  sm={6}
-                  xl={12}
-                  users={organization.members}
-                />
+                <UserManager className="selected-user" lg={3} md={4} sm={6} xl={12} users={organization.members} />
               </div>
-              <SubLabel>{t('label.creationDate')}</SubLabel>
-              <P className="bg-white" value={<DateTime value={organization.creationDate} />} />
-              <SubLabel>{t('label.updateDate')}</SubLabel>
-              <P className="bg-white" value={<DateTime value={organization.lastUpdateDate} />} />
+            </div>
+            <div className="flex-grow-0 text-right small">
+              <DateTime value={organization.creationDate} /> 생성
             </div>
             <BottomButton
               onDelete={() => {

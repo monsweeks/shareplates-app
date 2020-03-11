@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { OrganizationForm } from '@/pages';
-import { Description } from '@/components';
 
 class EditOrganization extends React.PureComponent {
   constructor(props) {
@@ -44,7 +43,10 @@ class EditOrganization extends React.PureComponent {
   onSubmit = (organization) => {
     const { history } = this.props;
 
-    request.post('/api/organizations', organization, (data) => {
+    console.log(organization);
+
+    request.put(`/api/organizations/${organization.organizationId}`, organization, (data) => {
+      console.log(data);
       history.push(data._links.organizations.href);
     });
   };
@@ -70,12 +72,7 @@ class EditOrganization extends React.PureComponent {
           {t('ORG 편집')}
         </PageTitle>
         <hr className="d-none d-sm-block mb-3" />
-        <Description>
-          {t(
-            'SHAREPLATES에서 사용자들의 모임을 ORG라고 표현합니다. 동일한 관심사를 가진 사용자들이 모인 ORG를 만들어서, ORG에 포함된 토픽 컨텐츠를 공유할 수 있습니다.',
-          )}
-        </Description>
-        <OrganizationForm edit saveText="label.makeTopic" onSave={this.onSubmit} organization={organization} />
+        <OrganizationForm edit saveText="label.saveOrg" onSave={this.onSubmit} organization={organization} />
       </RegisterLayout>
     );
   }

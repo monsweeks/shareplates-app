@@ -35,6 +35,7 @@ import BottomButton from '@/components/BottomButton/BottomButton';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 import DateTime from '@/components/DateTime/DateTime';
 import OrganizationCard from '@/components/OrganizationCard/OrganizationCard';
+import SubTitle from '@/components/SubTitle/SubTitle';
 import SocketClient from '@/components/SocketClient/SocketClient';
 
 export {
@@ -76,4 +77,5 @@ export {
   DateTime,
   OrganizationCard,
   SocketClient,
+  SubTitle,
 };
