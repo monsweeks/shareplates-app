@@ -239,7 +239,7 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
-              className="selected-user mt-3 mt-sm-0"
+              className="mt-3 mt-sm-0"
               lg={3}
               md={4}
               sm={6}

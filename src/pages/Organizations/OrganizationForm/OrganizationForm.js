@@ -191,7 +191,7 @@ class OrganizationForm extends Component {
                   organization: { ...organization, admins },
                 });
               }}
-              className="selected-user mt-3 mt-sm-0"
+              className="mt-3 mt-sm-0"
               lg={3}
               md={4}
               sm={6}
@@ -223,7 +223,7 @@ class OrganizationForm extends Component {
                   organization: { ...organization, members },
                 });
               }}
-              className="selected-user mt-3 mt-sm-0"
+              className="mt-3 mt-sm-0"
               lg={3}
               md={4}
               sm={6}

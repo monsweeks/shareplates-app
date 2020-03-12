@@ -4,16 +4,4 @@
     top: -1px;
     right: 0;
   }
-
-  .selected-user {
-    margin-left: -10px;
-    margin-right: -10px;
-    padding-top: 0;
-    width: auto;
-
-    @media (max-width: 576px) {
-      margin-left: 0;
-      margin-right: 0;
-    }
-  }
 }

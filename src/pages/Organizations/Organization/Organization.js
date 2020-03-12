@@ -7,7 +7,6 @@ import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { BottomButton, DateTime, EmptyMessage, P, SubLabel, UserManager, SubTitle } from '@/components';
-import './Organization.scss';
 
 class Organization extends Component {
   constructor(props) {
@@ -123,13 +122,13 @@ class Organization extends Component {
                 <SubLabel>{t('label.organizationAdmin')}</SubLabel>
               </div>
               <div>
-                <UserManager className="selected-user" lg={3} md={4} sm={6} xl={12} users={organization.admins} />
+                <UserManager lg={3} md={4} sm={6} xl={12} users={organization.admins} />
               </div>
               <div className="position-relative mb-3">
                 <SubLabel>{t('label.organizationMember')}</SubLabel>
               </div>
               <div>
-                <UserManager className="selected-user" lg={3} md={4} sm={6} xl={12} users={organization.members} />
+                <UserManager lg={3} md={4} sm={6} xl={12} users={organization.members} />
               </div>
             </div>
             <div className="flex-grow-0 text-right small">

@@ -134,7 +134,7 @@ class Topic extends Component {
                   </div>
                   <div>
                     <UserManager
-                      className="selected-user mt-3 mt-sm-1"
+                      className="mt-3 mt-sm-1"
                       lg={3}
                       md={4}
                       sm={6}
