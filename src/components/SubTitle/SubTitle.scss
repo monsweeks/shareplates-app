@@ -1,0 +1,17 @@
+.sub-title-wrapper {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: $secondary;
+  > span.icon {
+    margin-right: 2px;
+    position: relative;
+    top : -1px;
+  }
+  > span.text {
+    font-family: Comfortaa;
+    display: inline-block;
+    padding: 0;
+    border-radius: 3px;
+    line-height: 100%;
+  }
+}

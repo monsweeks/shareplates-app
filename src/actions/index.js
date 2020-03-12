@@ -15,6 +15,8 @@ export function setJoinEmail(email) {
 }
 
 export function setUserAndOrganization(user, organizations) {
+
+  console.log('action', user);
   return {
     type: SET_USER_AND_ORGANIZATION,
     user,

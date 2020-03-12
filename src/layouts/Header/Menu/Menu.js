@@ -11,6 +11,7 @@ const pageMainColors = {
   '/users/join': variables.primaryColor,
   '/': variables.seaBlueColor,
   '/topics': variables.seaBlueColor,
+  '/organizations': variables.seaBlueColor,
 };
 
 class Menu extends React.PureComponent {
@@ -27,15 +28,17 @@ class Menu extends React.PureComponent {
 
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
-        <Button
-          className="d-inline-block d-md-none menu-open-button"
-          color="primary"
-          onClick={() => {
-            setOpen(!openMenu);
-          }}
-        >
-          <i className="fas fa-bars" />
-        </Button>
+        {setOpen && (
+          <Button
+            className="d-inline-block d-md-none menu-open-button"
+            color="primary"
+            onClick={() => {
+              setOpen(!openMenu);
+            }}
+          >
+            <i className="fas fa-bars" />
+          </Button>
+        )}
         {menus.map((menu) => {
           let alias = '';
           if (pathname.indexOf('/pages') > -1) {
@@ -44,6 +47,8 @@ class Menu extends React.PureComponent {
             alias = '/chapters';
           } else if (pathname.indexOf('/topics') > -1) {
             alias = '/topics';
+          } else if (pathname.indexOf('/organizations') > -1) {
+            alias = '/organizations';
           } else if (pathname === '/') {
             alias = '/topics';
           }

@@ -5,7 +5,6 @@
   color: $white;
   flex: 0;
 
-
   .top-header-menu {
     display: flex;
     flex-direction: row;
@@ -25,24 +24,43 @@
       height: 100%;
       flex: 0;
 
-
       @media (max-width: 576px) {
         width: 140px;
       }
     }
 
-    > div.shortcut-area,
-    > div.menu-area {
+    > div.left-menu-area,
+    > div.right-menu-area {
       flex: 1;
     }
 
-    > div.menu-area {
+    > div.shortcut-area {
+      flex: 0;
+    }
+
+    > div.right-menu-area,
+    > div.left-menu-area {
       height: 100%;
       margin-left: 13px;
     }
 
     > div.shortcut-area {
       text-align: right;
+    }
+
+    > div.right-menu-area {
+      display: flex;
+      > div {
+        height: 100%;
+        &.right-menu {
+          flex: 1;
+        }
+
+        &.shortcut-menu {
+          flex: 0;
+          display: flex;
+        }
+      }
     }
   }
 }

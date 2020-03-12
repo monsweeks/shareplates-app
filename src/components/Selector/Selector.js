@@ -37,7 +37,7 @@ class Selector extends React.Component {
             });
           }}
         >
-          <span className="text">{selcetedItem ? selcetedItem.value : ''}</span>
+          <span className="text">{selcetedItem ? selcetedItem.value : ' '}</span>
           <span className="liner">
             <span />
           </span>

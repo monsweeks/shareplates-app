@@ -6,7 +6,7 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class UserCard extends React.PureComponent {
   render() {
-    const { className, user, blockStyle, hover, onClick, selected, onRemove } = this.props;
+    const { className, user, blockStyle, hover, onClick, selected, onRemove, marked, markedTag } = this.props;
 
     return (
       <Card
@@ -34,7 +34,7 @@ class UserCard extends React.PureComponent {
             </div>
             <div className="user-text">
               <div className="name">{user.name}</div>
-              <div className="email">{user.email}</div>
+              <div className="email" data-tip={user.email}>{user.email}</div>
             </div>
           </div>
           {onRemove && (
@@ -46,6 +46,7 @@ class UserCard extends React.PureComponent {
               }}
             />
           )}
+          {marked && <div className='marked-tag'>{markedTag}</div>}
         </CardBody>
       </Card>
     );
@@ -58,6 +59,8 @@ UserCard.defaultProps = {
   className: '',
   hover: false,
   selected: false,
+  marked : false,
+  markedTag : '',
 };
 
 UserCard.propTypes = {
@@ -73,4 +76,6 @@ UserCard.propTypes = {
   onClick: PropTypes.func,
   selected: PropTypes.bool,
   onRemove: PropTypes.func,
+  marked : PropTypes.bool,
+  markedTag : PropTypes.string,
 };

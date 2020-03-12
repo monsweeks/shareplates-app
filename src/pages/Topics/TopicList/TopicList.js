@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { setUserAndOrganization } from '@/actions';
-import { Col, Row, SearchBar, TopicCard } from '@/components';
+import { Col, Row, SearchBar, TopicCard, SocketClient } from '@/components';
 import './TopicList.scss';
 import request from '@/utils/request';
 
@@ -17,7 +17,7 @@ const orders = [
     tooltip: '이름으로 정렬',
   },
   {
-    key: 'creationTime',
+    key: 'creationDate',
     value: <i className="fal fa-sort-numeric-up" />,
     tooltip: '생성일시로 정렬',
   },
@@ -43,18 +43,31 @@ class TopicList extends React.Component {
       order: orders[0].key,
       direction: directions[0].key,
       organizationId: null,
+      searchWord: '',
       topics: [],
     };
   }
 
   componentDidMount() {
-    this.getTopics();
+    const { organizationId, searchWord, order, direction } = this.state;
+    if (organizationId) {
+      this.getTopics(organizationId, searchWord, order, direction);
+    }
   }
 
-  getTopics = () => {
+  componentDidUpdate(prevProps, prevState) {
+    const { organizationId, searchWord, order, direction } = this.state;
+    const { organizationId: prevOrganizationId, order: prevOrder, direction: prevDirection } = prevState;
+
+    if (organizationId !== prevOrganizationId || order !== prevOrder || direction !== prevDirection) {
+      this.getTopics(organizationId, searchWord, order, direction);
+    }
+  }
+
+  getTopics = (organizationId, searchWord, order, direction) => {
     request.get(
       '/api/topics',
-      null,
+      { organizationId, searchWord, order, direction },
       (data) => {
         this.setState({
           topics: data.topics || [],
@@ -78,10 +91,44 @@ class TopicList extends React.Component {
     return null;
   }
 
+  onSearch = () => {
+    const { organizationId, searchWord, order, direction } = this.state;
+    this.getTopics(organizationId, searchWord, order, direction);
+  };
+  
+  createNewTopic = (topic) => {
+    const {topics} = this.state;
+    switch(topic.statusCode){
+      case 'CREATE':
+        this.setState(prevState => ({
+          topics: [...prevState.topics, topic]
+        }));
+        break;
+        
+      case 'UPDATE':
+        topics.forEach((t, idx) => {
+          if(t.id === topic.id){
+            topics[idx] = topic;
+        }});
+        this.setState({
+          topics,
+        });
+        break;
+
+      case 'DELETE':
+        this.setState(prevState => ({
+          topics: [...prevState.topics, topic]
+        }));
+        break;
+      default:
+
+    }
+  };
+
   render() {
     const { order, direction, organizationId, topics } = this.state;
     // eslint-disable-next-line no-unused-vars
-    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history } = this.props;
+    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history, t } = this.props;
 
     return (
       <div className="topic-list-wrapper">
@@ -94,9 +141,9 @@ class TopicList extends React.Component {
             });
           }}
           order={order}
-          onChangeOrder={(id) => {
+          onChangeOrder={(value) => {
             this.setState({
-              organizationId: id,
+              order: value,
             });
           }}
           direction={direction}
@@ -105,7 +152,17 @@ class TopicList extends React.Component {
               direction: value,
             });
           }}
+          searchPlaceholder={t('label.searchByTopicName')}
+          onSearch={this.onSearch}
+          onChangeSearchWord={(value) => {
+            this.setState({
+              searchWord: value,
+            });
+          }}
         />
+	      <SocketClient topics={['/sub/topic']}
+	      successRecieveMessage={(msg) => this.createNewTopic(msg)} />
+
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
@@ -171,6 +228,7 @@ TopicList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
+  t: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

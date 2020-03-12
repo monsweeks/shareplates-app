@@ -56,6 +56,12 @@ class SearchInput extends React.Component {
           className="clear-icon"
           onClick={() => {
             this.setSearchWord('');
+            if (onChange) {
+              onChange('');
+            }
+            if (onSearch) {
+              onSearch('');
+            }
           }}
         >
           <i className="fal fa-times" />

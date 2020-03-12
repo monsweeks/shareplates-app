@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, Col, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
+import { BottomButton, Col, DateTime, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
 
 class Topic extends Component {
@@ -107,32 +107,34 @@ class Topic extends Component {
             <div className="flex-grow-1">
               <Row className="m-0">
                 <Col sm={12} lg={2} className="text-center p-0">
-                  <div className="topic-image m-2">
+                  <div className="topic-image m-2 m-lg-0">
                     <IconViewer iconIndex={topic.iconIndex} />
                   </div>
                 </Col>
                 <Col sm={12} lg={10} className="p-0">
                   <SubLabel>{t('label.name')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.name} />
-                  <hr className="g-dashed mb-3" />
-                  <SubLabel>{t('ORGANIZATION')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.organization.name} />
-                </Col>
-                <Col xs={12} className="p-0">
-                  <hr className="g-dashed mb-3" />
+                  <P className="bg-white" upppercase>
+                    {topic.name}
+                  </P>
+                  <SubLabel>{t('ORG')}</SubLabel>
+                  <P className="bg-white" upppercase>
+                    {topic.organization.name}
+                  </P>
                   <SubLabel>{t('label.desc')}</SubLabel>
-                  <P className="bg-white" upppercase pre value={topic.summary} />
-                  <hr className="g-dashed mb-3" />
+                  <P className="bg-white" upppercase pre>
+                    {topic.summary}
+                  </P>
                   <SubLabel>{t('label.privateTopic')}</SubLabel>
-                  <P className="bg-white" upppercase value={topic.privateYn ? 'private' : 'public'} />
+                  <P className="bg-white" upppercase>
+                    {topic.privateYn ? 'private' : 'public'}
+                  </P>
                   <hr className="g-dashed mb-3" />
-                  <div className="position-relative">
+                  <div className="position-relative mb-3">
                     <SubLabel>{t('label.topicAdmin')}</SubLabel>
                   </div>
                   <div>
                     <UserManager
-                      emptyBackgroundColor="#F6F6F6"
-                      className="selected-user mt-3 mt-sm-1"
+                      className="mt-3 mt-sm-1"
                       lg={3}
                       md={4}
                       sm={6}
@@ -142,6 +144,9 @@ class Topic extends Component {
                   </div>
                 </Col>
               </Row>
+            </div>
+            <div className="flex-grow-0 text-right small">
+              <DateTime value={topic.creationDate} /> 생성
             </div>
             <BottomButton
               onDelete={() => {

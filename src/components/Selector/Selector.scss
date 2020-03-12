@@ -45,6 +45,9 @@
       &.text {
         text-transform: uppercase;
         flex: 1;
+        line-height: 100%;
+        align-self: center;
+        margin-top: 2px;
       }
 
       &.liner {

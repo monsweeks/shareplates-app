@@ -9,32 +9,6 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import { Selector } from '@/components';
 import './SearchBar.scss';
 
-const orders = [
-  {
-    key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
-    tooltip: '이름으로 정렬',
-  },
-  {
-    key: 'creationTime',
-    value: <i className="fal fa-sort-numeric-up" />,
-    tooltip: '생성일시로 정렬',
-  },
-];
-
-const directions = [
-  {
-    key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
-    tooltip: '오름차순으로 정렬',
-  },
-  {
-    key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
-    tooltip: '내림차순으로 정렬',
-  },
-];
-
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -49,13 +23,39 @@ class SearchBar extends React.Component {
     const { organizations, organizationId, onChangeOrganization } = this.props;
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
+    const { onSearch, onChangeSearchWord, t, searchPlaceholder } = this.props;
 
     return (
       <div className="search-bar-wrapper g-no-select ">
         <div>
-          <div className="search-col">
-            <SearchInput noBorder color="white" placeholder="토픽명으로 검색" />
-          </div>
+          {onChangeOrganization && (
+            <div className="organization-col">
+              <span className="label small text-white d-none d-md-inline">{t('label.org')}</span>
+              <Selector
+                outline
+                className="organization-selector"
+                items={organizations.map((org) => {
+                  return {
+                    key: org.id,
+                    value: org.name,
+                  };
+                })}
+                value={organizationId}
+                onChange={onChangeOrganization}
+              />
+            </div>
+          )}
+          {onChangeSearchWord && (
+            <div className="search-col">
+              <SearchInput
+                noBorder
+                color="white"
+                placeholder={searchPlaceholder}
+                onSearch={onSearch}
+                onChange={onChangeSearchWord}
+              />
+            </div>
+          )}
           {openOptions && (
             <div
               className="g-overlay"
@@ -70,26 +70,43 @@ class SearchBar extends React.Component {
             <div className="arrow">
               <div />
             </div>
-            <div className="organization-col">
-              <span className="label small">ORG</span>
-              <Selector
-                outline
-                className="organization-selector"
-                items={organizations.map((org) => {
-                  return {
-                    key: org.id,
-                    value: org.name,
-                  };
-                })}
-                value={organizationId}
-                onChange={onChangeOrganization}
-              />
-            </div>
             <div className="order-col">
-              <span className="label small">정렬</span>
-              <RadioButton circle items={orders} value={order} onClick={onChangeOrder} />
+              <span className="label small">{t('label.order')}</span>
+              <RadioButton
+                circle
+                items={[
+                  {
+                    key: 'name',
+                    value: <i className="fal fa-sort-alpha-up" />,
+                    tooltip: t('label.orderByName'),
+                  },
+                  {
+                    key: 'creationDate',
+                    value: <i className="fal fa-sort-numeric-up" />,
+                    tooltip: t('label.orderByCreationTime'),
+                  },
+                ]}
+                value={order}
+                onClick={onChangeOrder}
+              />
               <div className="separator" />
-              <RadioButton circle items={directions} value={direction} onClick={onChangeDirection} />
+              <RadioButton
+                circle
+                items={[
+                  {
+                    key: 'asc',
+                    value: <i className="fal fa-sort-amount-down" />,
+                    tooltip: t('label.orderByAsc'),
+                  },
+                  {
+                    key: 'desc',
+                    value: <i className="fal fa-sort-amount-up" />,
+                    tooltip: t('label.orderByDesc'),
+                  },
+                ]}
+                value={direction}
+                onClick={onChangeDirection}
+              />
             </div>
           </div>
           <div className="config-col">
@@ -124,6 +141,10 @@ SearchBar.propTypes = {
   direction: PropTypes.string,
   onChangeOrder: PropTypes.func,
   onChangeDirection: PropTypes.func,
+  onSearch: PropTypes.func,
+  onChangeSearchWord: PropTypes.func,
+  t: PropTypes.func,
+  searchPlaceholder : PropTypes.string,
 };
 
 export default withRouter(withTranslation()(SearchBar));

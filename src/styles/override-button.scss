@@ -3,9 +3,8 @@ button.btn {
   white-space: nowrap;
 
   &.btn-xs {
-    padding-top: 1px;
-    padding-bottom: 1px;
-    font-size: 0.8rem;
+    padding: 2px 6px;
+    font-size: 0.7rem;
   }
 
   &:active {

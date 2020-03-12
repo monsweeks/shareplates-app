@@ -6,6 +6,7 @@ import { Footer, Header } from '@/layouts';
 import About from '@/pages/About';
 import Users from '@/pages/Users';
 import Topics from '@/pages/Topics';
+import Organizations from '@/pages/Organizations';
 import '@/App.scss';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/samples" component={Sample} />
           <Route path="/topics" component={Topics} />
+          <Route path="/organizations" component={Organizations} />
           <Route component={NoMatch} />
         </Switch>
         <Common />

@@ -17,16 +17,25 @@ const menus = [
     icon: 'fal fa-books',
     text: 'label.topic',
     to: '/topics',
+    side: 'left',
   },
   {
     icon: 'fal fa-book',
     text: 'label.chapter',
     to: '/chapters',
+    side: 'left',
   },
   {
     icon: 'fal fa-clipboard',
     text: 'label.page',
     to: '/pages',
+    side: 'left',
+  },
+  {
+    icon: 'fas fa-ball-pile',
+    text: 'label.org',
+    to: '/organizations',
+    side: 'right',
   },
 ];
 
@@ -75,25 +84,39 @@ class Header extends React.Component {
     return (
       <header className="top-header-wrapper g-no-select">
         <div className="top-header-menu">
-          <div className="menu-area text-left d-flex d-md-block pl-md-0">
-            <Menu menus={menus} pathname={location.pathname} openMenu={openMenu} setOpen={this.setOpen} />
+          <div className="left-menu-area text-left d-flex d-md-block pl-md-0">
+            <Menu
+              menus={menus.filter((menu) => menu.side === 'left')}
+              pathname={location.pathname}
+              openMenu={openMenu}
+              setOpen={this.setOpen}
+            />
           </div>
           <div className="logo-area">
             <TopLogo weatherEffect />
           </div>
-          <div className="shortcut-area">
-            <ShortCutMenu
-              ready={ready}
-              loggedIn={loggedIn}
-              setOpenQuickMenu={this.setOpenQuickMenu}
-              language={i18n.language}
-              onChangeLanguage={(language) => {
-                i18n.changeLanguage(language);
-              }}
-              onSearch={this.onSearch}
-              organizations={organizations}
-              user={user}
-            />
+          <div className="right-menu-area text-right pl-md-0">
+            <div className='right-menu'>
+              <Menu
+                menus={menus.filter((menu) => menu.side === 'right')}
+                pathname={location.pathname}
+              />
+            </div>
+            <div className='shortcut-menu'>
+              <ShortCutMenu
+                ready={ready}
+                loggedIn={loggedIn}
+                setOpenQuickMenu={this.setOpenQuickMenu}
+                language={i18n.language}
+                onChangeLanguage={(language) => {
+                  i18n.changeLanguage(language);
+                }}
+                onSearch={this.onSearch}
+                organizations={organizations}
+                user={user}
+              />
+            </div>
+
           </div>
         </div>
         <MobileMenu

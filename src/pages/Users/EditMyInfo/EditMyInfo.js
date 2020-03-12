@@ -94,7 +94,7 @@ class EditMyInfo extends React.PureComponent {
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.email')}</SubLabel>
           <FormGroup>
-            <P value={user.email} />
+            <P>{user.email}</P>
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
@@ -140,7 +140,9 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
-          <P className="bg-white" value={user.creationDate} />
+          <P className="bg-white">
+            {user.creationDate}
+          </P>
           <BottomButton onList={() => {}} onEdit={() => {}} />
         </Form>
       </RegisterLayout>

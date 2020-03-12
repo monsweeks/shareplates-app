@@ -65,11 +65,6 @@ class TopLogo extends React.Component {
           <div className="logo-text">
             <span>SHAREPLATES</span>
           </div>
-          <div className="logo-path">
-            <span>
-              <i className="fal fa-home" />
-            </span>
-          </div>
         </Link>
       </div>
     );
