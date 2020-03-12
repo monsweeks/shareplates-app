@@ -15,7 +15,18 @@ class Organization extends Component {
 
     this.state = {
       organization: null,
+      isAdmin: null,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.isAdmin === null && props.user && state.organization) {
+      return {
+        isAdmin: state.organization.admins.findIndex((u) => u.id === props.user.id) > -1,
+      };
+    }
+
+    return null;
   }
 
   componentDidMount() {
@@ -33,7 +44,6 @@ class Organization extends Component {
       `/api/organizations/${organizationId}`,
       null,
       (organization) => {
-        console.log(organization);
         this.setState({
           organization,
         });
@@ -63,7 +73,7 @@ class Organization extends Component {
       },
     } = this.props;
     const { t, history, setConfirm: setConfirmReducer } = this.props;
-    const { organization } = this.state;
+    const { organization, isAdmin } = this.state;
 
     return (
       <DetailLayout className="organization-wrapper">
@@ -125,19 +135,28 @@ class Organization extends Component {
             <div className="flex-grow-0 text-right small">
               <DateTime value={organization.creationDate} /> 생성
             </div>
-            <BottomButton
-              onDelete={() => {
-                setConfirmReducer(`${organization.name} 토픽을 정말 삭제하시겠습니까?`, () => {
-                  this.deleteOrganization(organization.id);
-                });
-              }}
-              onList={() => {
-                history.push('/organizations');
-              }}
-              onEdit={() => {
-                history.push(`/organizations/${organizationId}/edit`);
-              }}
-            />
+            {isAdmin && (
+              <BottomButton
+                onDelete={() => {
+                  setConfirmReducer(`${organization.name} 토픽을 정말 삭제하시겠습니까?`, () => {
+                    this.deleteOrganization(organization.id);
+                  });
+                }}
+                onList={() => {
+                  history.push('/organizations');
+                }}
+                onEdit={() => {
+                  history.push(`/organizations/${organizationId}/edit`);
+                }}
+              />
+            )}
+            {!isAdmin && (
+              <BottomButton
+                onList={() => {
+                  history.push('/organizations');
+                }}
+              />
+            )}
           </>
         )}
       </DetailLayout>

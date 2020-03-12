@@ -7,7 +7,6 @@ import { Avatar, Link } from '@/components';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
-import SearchInput from '@/components/SearchInput/SearchInput';
 
 class ShortCutMenu extends React.PureComponent {
   render() {
@@ -20,15 +19,11 @@ class ShortCutMenu extends React.PureComponent {
       t,
       language,
       onChangeLanguage,
-      onSearch,
       user,
     } = this.props;
 
     return (
       <div className={`short-cut-menu-wrapper ${className}`}>
-        <div>
-          <SearchInput className="d-none" onSearch={onSearch} />
-        </div>
         <div>
           <CircleIcon
             className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
@@ -58,7 +53,7 @@ class ShortCutMenu extends React.PureComponent {
             />
           )}
         </div>
-        <div className={ready && !loggedIn ? 'd-inline-block' : 'd-none'}>
+        <div className={ready && !loggedIn ? 'no-login-menu d-inline-block' : 'd-none'}>
           <Link
             className="login-label d-inline-block"
             underline={false}
@@ -105,7 +100,6 @@ ShortCutMenu.propTypes = {
   loggedIn: PropTypes.bool,
   language: PropTypes.string,
   onChangeLanguage: PropTypes.func,
-  onSearch: PropTypes.func,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
