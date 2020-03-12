@@ -32,16 +32,6 @@ class ShortCutMenu extends React.PureComponent {
         <div>
           <CircleIcon
             className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
-            icon={<i className="fas fa-ball-pile"/>}
-            onClick={() => {
-              const { history } = this.props;
-              history.push('/organizations');
-            }}
-          />
-        </div>
-        <div>
-          <CircleIcon
-            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
             icon={<i className="fal fa-bell" />}
             onClick={() => {}}
           />
