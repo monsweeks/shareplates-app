@@ -24,7 +24,7 @@ class Breadcrumbs extends React.PureComponent {
                 <Link underline={false} effect={false} componentClassName="px-2" to={item.to}>
                   {item.name}
                 </Link>
-                <i className="far fa-chevron-right" />
+                <i className="arrow fal fa-chevron-right" />
               </li>
             );
           })}

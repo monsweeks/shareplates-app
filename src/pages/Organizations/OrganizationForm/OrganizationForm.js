@@ -135,7 +135,7 @@ class OrganizationForm extends Component {
 
     return (
       <>
-        <Form onSubmit={this.onSubmit} className="organization-form-wrapper flex-grow-1 px-2">
+        <Form onSubmit={this.onSubmit} className="organization-form-wrapper flex-grow-1">
           <SubTitle>{t('GENERAL INFO')}</SubTitle>
           <SubLabel>{t('label.name')}</SubLabel>
           <Description>{t('message.organizationNameDesc')}</Description>

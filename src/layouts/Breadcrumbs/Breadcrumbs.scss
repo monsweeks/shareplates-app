@@ -5,19 +5,23 @@
     margin: 0;
     list-style: none;
 
+    .arrow {
+      color: $blue;
+      font-size: 0.7rem;
+      position: relative;
+      top: -1px;
+    }
+
     > li {
       display: inline-block;
 
       a {
-        background-color: $primary;
-        color: $white;
         border-radius: 10px;
         margin-right: 5px;
         margin-left: 5px;
 
         &:hover {
-          background-color: darken($primary, 5%);
-          color: $white;
+          color: darken($blue, 10%);
         }
 
         @media (max-width: 576px) {

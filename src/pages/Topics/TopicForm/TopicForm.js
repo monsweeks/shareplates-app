@@ -148,7 +148,7 @@ class TopicForm extends Component {
 
     return (
       <>
-        <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1 px-2">
+        <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
           <SubLabel>{t('ORGANIZATION')}</SubLabel>
           <Description>{t('message.selectOrgForTopic')}</Description>
           <FormGroup>
@@ -220,7 +220,7 @@ class TopicForm extends Component {
             <Button
               className="manager-button"
               color="primary"
-              size="sm"
+              size="xs"
               onClick={() => {
                 this.setOpenUserPopup(true);
               }}
