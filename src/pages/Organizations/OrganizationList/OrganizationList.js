@@ -15,7 +15,7 @@ const orders = [
     tooltip: '이름으로 정렬',
   },
   {
-    key: 'creationTime',
+    key: 'creationDate',
     value: <i className="fal fa-sort-numeric-up" />,
     tooltip: '생성일시로 정렬',
   },
@@ -51,21 +51,11 @@ class OrganizationList extends React.Component {
   }
 
   getOrganizations = (searchWord, order, direction) => {
-    request.get(
-      '/api/organizations',
-      { searchWord, order, direction },
-      (organizations) => {
-        console.log(organizations);
-        this.setState({
-          organizations,
-        });
-      },
-      () => {
-        this.setState({
-          organizations: [],
-        });
-      },
-    );
+    request.get('/api/organizations', { searchWord, order, direction }, (organizations) => {
+      this.setState({
+        organizations,
+      });
+    });
   };
 
   onSearch = () => {
@@ -84,12 +74,16 @@ class OrganizationList extends React.Component {
           onChangeOrder={(value) => {
             this.setState({
               order: value,
+            }, () => {
+              this.onSearch();
             });
           }}
           direction={direction}
           onChangeDirection={(value) => {
             this.setState({
               direction: value,
+            }, () => {
+              this.onSearch();
             });
           }}
           onSearch={this.onSearch}
@@ -109,9 +103,6 @@ class OrganizationList extends React.Component {
                     <OrganizationCard
                       organization={organization}
                       onCardClick={(organizationId) => {
-                        history.push(`/organizations/${organizationId}/chapters`);
-                      }}
-                      onConfigClick={(organizationId) => {
                         history.push(`/organizations/${organizationId}`);
                       }}
                     />

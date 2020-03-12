@@ -16,7 +16,7 @@ class OrganizationCard extends React.PureComponent {
         }}
       >
         <CardBody>
-          {!newCard && (
+          {!newCard && onConfigClick && (
             <span className="config-button">
               <CircleIcon
                 icon={<i className="fal fa-cog" />}

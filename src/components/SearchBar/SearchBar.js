@@ -81,7 +81,7 @@ class SearchBar extends React.Component {
                     tooltip: t('label.orderByName'),
                   },
                   {
-                    key: 'creationTime',
+                    key: 'creationDate',
                     value: <i className="fal fa-sort-numeric-up" />,
                     tooltip: t('label.orderByCreationTime'),
                   },

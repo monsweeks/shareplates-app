@@ -17,7 +17,7 @@ const orders = [
     tooltip: '이름으로 정렬',
   },
   {
-    key: 'creationTime',
+    key: 'creationDate',
     value: <i className="fal fa-sort-numeric-up" />,
     tooltip: '생성일시로 정렬',
   },
