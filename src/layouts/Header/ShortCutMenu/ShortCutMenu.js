@@ -26,7 +26,7 @@ class ShortCutMenu extends React.PureComponent {
       <div className={`short-cut-menu-wrapper ${className}`}>
         <div>
           <CircleIcon
-            className={ready && loggedIn ? 'd-inline-block mx-1' : 'd-none'}
+            className={ready && loggedIn ? 'd-inline-block mx-2' : 'd-none'}
             icon={<i className="fal fa-bell" />}
             onClick={() => {}}
           />
