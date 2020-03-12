@@ -67,26 +67,19 @@ $delay1: random(3);
         padding: 4px 8px 4px;
         border-radius: 4px 0 4px 0;
         color: $white;
+        transition: all 0.3s;
       }
     }
 
-    .logo-path {
-      position: absolute;
-      left: 0;
-      top: 5px;
-      width: 100%;
-      text-align: right;
-      font-size: 16px;
-      padding: 0 17px;
-      opacity: 0;
-      color: $white;
-    }
+
 
     &:hover {
       @media (min-width: 992px) {
-        .logo-path {
-          opacity: 1;
-          transition: opacity 0.3s;
+        .logo-text {
+          > span {
+            color: $yellow;
+            transition: all 0.3s;
+          }
         }
       }
     }
