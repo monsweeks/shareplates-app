@@ -95,7 +95,7 @@ class TopicForm extends Component {
     const { topic } = this.state;
 
     request.get(
-      '/api/topics/name',
+      '/api/topics/exist',
       { organizationId: topic.organizationId, name },
       (data) => {
         this.setState({

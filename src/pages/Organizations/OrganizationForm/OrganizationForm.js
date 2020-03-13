@@ -234,7 +234,7 @@ class OrganizationForm extends Component {
           <BottomButton className="text-center" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {(openAdminPopup || openMemberPopup) && (
-          <Popup title="사용자 검색" open setOpen={this.setOpenUserPopup}>
+          <Popup title="사용자 검색" open setOpen={this.setClosePopup}>
             <UserSearchPopup
               users={openAdminPopup ? organization.admins : organization.members}
               setOpen={this.setClosePopup}

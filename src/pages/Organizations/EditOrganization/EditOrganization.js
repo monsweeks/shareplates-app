@@ -42,7 +42,7 @@ class EditOrganization extends React.PureComponent {
   onSubmit = (organization) => {
     const { history } = this.props;
 
-    request.put(`/api/organizations/${organization.organizationId}`, organization, (data) => {
+    request.put(`/api/organizations/${organization.id}`, organization, (data) => {
       history.push(data._links.organizations.href);
     });
   };

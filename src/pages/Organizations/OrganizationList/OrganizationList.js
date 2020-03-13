@@ -51,9 +51,9 @@ class OrganizationList extends React.Component {
   }
 
   getOrganizations = (searchWord, order, direction) => {
-    request.get('/api/organizations', { searchWord, order, direction }, (organizations) => {
+    request.get('/api/organizations', { searchWord, order, direction }, (data) => {
       this.setState({
-        organizations,
+        organizations: data.organizations || [],
       });
     });
   };

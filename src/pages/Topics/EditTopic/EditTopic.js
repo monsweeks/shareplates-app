@@ -30,21 +30,10 @@ class EditTopic extends React.PureComponent {
     request.get(
       `/api/topics/${topicId}`,
       null,
-      (data) => {
-        const { topic } = data;
-
-        if (topic) {
-          topic.users = data.topicUsers;
-          delete topic.topicUser;
-
-          this.setState({
-            topic,
-          });
-        } else {
-          this.setState({
-            topic: false,
-          });
-        }
+      (topic) => {
+        this.setState({
+          topic,
+        });
       },
       null,
       true,
@@ -53,8 +42,7 @@ class EditTopic extends React.PureComponent {
 
   onSubmit = (topic) => {
     const { history } = this.props;
-    console.log(topic);
-    request.put('/api/topics', topic, (data) => {
+    request.put(`/api/topics/${topic.id}`, topic, (data) => {
       history.push(data._links.topics.href);
     });
   };
