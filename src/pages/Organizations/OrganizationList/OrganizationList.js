@@ -64,7 +64,7 @@ class OrganizationList extends React.Component {
   };
 
   render() {
-    const { order, direction, organizations } = this.state;
+    const { order, direction, organizations, searchWord } = this.state;
     const { history, t } = this.props;
 
     return (
@@ -93,6 +93,7 @@ class OrganizationList extends React.Component {
             });
           }}
           searchPlaceholder={t('label.searchByOrgName')}
+          searchWord={searchWord}
         />
         <FullLayout className="organization-list-content text-center align-self-center">
           <div className="organization-list">

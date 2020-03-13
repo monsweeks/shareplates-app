@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { setUserAndOrganization } from '@/actions';
 import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
-
 import request from '@/utils/request';
 import './TopicList.scss';
 
@@ -162,8 +160,7 @@ class TopicList extends React.Component {
 
   render() {
     const { order, direction, organizationId, topics, searchWord } = this.state;
-    // eslint-disable-next-line no-unused-vars
-    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history, t } = this.props;
+    const { organizations, history, t } = this.props;
 
     return (
       <div className="topic-list-wrapper">
@@ -245,12 +242,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
-  };
-};
-
 TopicList.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
@@ -265,7 +256,6 @@ TopicList.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
-  setUserAndOrganization: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -276,4 +266,4 @@ TopicList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(TopicList)));
