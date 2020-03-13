@@ -3,22 +3,24 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { setUserAndOrganization } from '@/actions';
-import { Col, Row, SearchBar, TopicCard, SocketClient } from '@/components';
-import './TopicList.scss';
+import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
+
 import request from '@/utils/request';
+import './TopicList.scss';
 
 const orders = [
   {
     key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
+    value: <i className="fal fa-sort-alpha-up"/>,
     tooltip: '이름으로 정렬',
   },
   {
     key: 'creationDate',
-    value: <i className="fal fa-sort-numeric-up" />,
+    value: <i className="fal fa-sort-numeric-up"/>,
     tooltip: '생성일시로 정렬',
   },
 ];
@@ -26,12 +28,12 @@ const orders = [
 const directions = [
   {
     key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
+    value: <i className="fal fa-sort-amount-down"/>,
     tooltip: '오름차순으로 정렬',
   },
   {
     key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
+    value: <i className="fal fa-sort-amount-up"/>,
     tooltip: '내림차순으로 정렬',
   },
 ];
@@ -39,11 +41,13 @@ const directions = [
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
+
+    const options = this.getOptions();
     this.state = {
-      order: orders[0].key,
-      direction: directions[0].key,
-      organizationId: null,
-      searchWord: '',
+      order: options.order ? options.order : orders[0].key,
+      direction: options.direction ? options.direction : directions[0].key,
+      organizationId: options.organizationId ? Number(options.organizationId) : null,
+      searchWord: options.searchWord ? options.searchWord : '',
       topics: [],
     };
   }
@@ -55,14 +59,28 @@ class TopicList extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { organizationId, searchWord, order, direction } = this.state;
-    const { organizationId: prevOrganizationId, order: prevOrder, direction: prevDirection } = prevState;
-
-    if (organizationId !== prevOrganizationId || order !== prevOrder || direction !== prevDirection) {
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+    if (location !== prevProps.location) {
+      const { organizationId, searchWord, order, direction } = this.state;
       this.getTopics(organizationId, searchWord, order, direction);
     }
   }
+
+  getOptions = () => {
+    const {
+      location: { search },
+    } = this.props;
+
+    const options = {};
+    const searchObject = qs.parse(search, { ignoreQueryPrefix: true });
+    if (searchObject.organizationId) options.organizationId = searchObject.organizationId;
+    if (searchObject.order) options.order = searchObject.order;
+    if (searchObject.direction) options.direction = searchObject.direction;
+    if (searchObject.searchWord) options.searchWord = searchObject.searchWord;
+
+    return options;
+  };
 
   getTopics = (organizationId, searchWord, order, direction) => {
     request.get(
@@ -91,42 +109,59 @@ class TopicList extends React.Component {
     return null;
   }
 
-  onSearch = () => {
+  setOptionToUrl = () => {
+    const {
+      location: { pathname },
+    } = this.props;
+
     const { organizationId, searchWord, order, direction } = this.state;
-    this.getTopics(organizationId, searchWord, order, direction);
+
+    const options = {
+      order,
+      direction,
+      organizationId,
+      searchWord,
+    };
+
+    const { history } = this.props;
+    history.push({
+      pathname,
+      search: qs.stringify(options, { addQueryPrefix: true }),
+    });
   };
-  
+
+
   createNewTopic = (topic) => {
-    const {topics} = this.state;
-    switch(topic.statusCode){
+    const { topics } = this.state;
+    switch (topic.statusCode) {
       case 'CREATE':
-        this.setState(prevState => ({
-          topics: [...prevState.topics, topic]
+        this.setState((prevState) => ({
+          topics: [...prevState.topics, topic],
         }));
         break;
-        
+
       case 'UPDATE':
         topics.forEach((t, idx) => {
-          if(t.id === topic.id){
+          if (t.id === topic.id) {
             topics[idx] = topic;
-        }});
+          }
+        });
         this.setState({
           topics,
         });
         break;
 
       case 'DELETE':
-        this.setState(prevState => ({
-          topics: [...prevState.topics, topic]
+        this.setState((prevState) => ({
+          topics: [...prevState.topics, topic],
         }));
         break;
       default:
-
     }
   };
 
   render() {
-    const { order, direction, organizationId, topics } = this.state;
+    const { order, direction, organizationId, topics, searchWord } = this.state;
     // eslint-disable-next-line no-unused-vars
     const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history, t } = this.props;
 
@@ -138,30 +173,36 @@ class TopicList extends React.Component {
           onChangeOrganization={(id) => {
             this.setState({
               organizationId: id,
+            }, () => {
+              this.setOptionToUrl();
             });
           }}
           order={order}
           onChangeOrder={(value) => {
             this.setState({
               order: value,
+            }, () => {
+              this.setOptionToUrl();
             });
           }}
           direction={direction}
           onChangeDirection={(value) => {
             this.setState({
               direction: value,
+            }, () => {
+              this.setOptionToUrl();
             });
           }}
           searchPlaceholder={t('label.searchByTopicName')}
-          onSearch={this.onSearch}
+          onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
               searchWord: value,
             });
           }}
+          searchWord={searchWord}
         />
-	      <SocketClient topics={['/sub/topic']}
-	      successRecieveMessage={(msg) => this.createNewTopic(msg)} />
+        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)}/>
 
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
@@ -229,6 +270,10 @@ TopicList.propTypes = {
     push: PropTypes.func,
   }),
   t: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }),
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));
