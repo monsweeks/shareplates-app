@@ -22,6 +22,10 @@ class UserSearchPopup extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.search();
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (!state.init && props.users && props.users.length > 0) {
       const tempSelectedUsers = {};
@@ -90,6 +94,13 @@ class UserSearchPopup extends React.Component {
                     onSearch={this.search}
                     placeholder={t('사용자 이름 또는 이메일')}
                     searchWord={searchWord}
+                    onClear={() => {
+                      this.setState({
+                        searchWord : '',
+                      }, () => {
+                        this.search();
+                      });
+                    }}
                   />
                 </div>
                 <div className="button-col">
