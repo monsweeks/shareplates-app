@@ -39,18 +39,18 @@ class UserSearchPopup extends React.Component {
     return null;
   }
 
-  search = (condition) => {
-    const { organizationId } = this.state;
-    request.get('/api/users', { organizationId, condition }, (users) => {
+  search = () => {
+    const { organizationId, searchWord } = this.state;
+    request.get('/api/users', { organizationId, condition: searchWord }, (users) => {
       this.setState({
         users,
       });
     });
   };
 
-  onChangeCondition = (condition) => {
+  onChangeSearchWord = (searchWord) => {
     this.setState({
-      condition,
+      searchWord,
     });
   };
 
@@ -86,7 +86,7 @@ class UserSearchPopup extends React.Component {
                 </div>
                 <div className="search-col">
                   <SearchInput
-                    onChange={this.onChangeCondition}
+                    onChange={this.onChangeSearchWord}
                     onSearch={this.search}
                     placeholder={t('사용자 이름 또는 이메일')}
                     searchWord={searchWord}
@@ -131,7 +131,7 @@ class UserSearchPopup extends React.Component {
                   selectedUsers={tempSelectedUsers}
                   markedUsers={markedUsers}
                   markedTag={markedTag}
-                  emptyContent='검색된 사용자가 없습니다'
+                  emptyContent="검색된 사용자가 없습니다"
                 />
               </div>
             </div>
@@ -164,7 +164,7 @@ class UserSearchPopup extends React.Component {
                   md={12}
                   sm={12}
                   users={selectedUsers}
-                  emptyContent='검색된 사용자가 없습니다'
+                  emptyContent="검색된 사용자가 없습니다"
                 />
               </div>
             </div>

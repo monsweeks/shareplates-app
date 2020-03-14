@@ -23,7 +23,7 @@ class SearchBar extends React.Component {
     const { organizations, organizationId, onChangeOrganization } = this.props;
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
-    const { onSearch, onChangeSearchWord, t, searchPlaceholder, searchWord } = this.props;
+    const { onSearch, onChangeSearchWord, t, searchPlaceholder, searchWord, onClear } = this.props;
 
     return (
       <div className="search-bar-wrapper g-no-select ">
@@ -54,6 +54,7 @@ class SearchBar extends React.Component {
                 onSearch={onSearch}
                 onChange={onChangeSearchWord}
                 searchWord={searchWord}
+                onClear={onClear}
               />
             </div>
           )}
@@ -147,6 +148,7 @@ SearchBar.propTypes = {
   t: PropTypes.func,
   searchPlaceholder : PropTypes.string,
   searchWord : PropTypes.string,
+  onClear : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(SearchBar));

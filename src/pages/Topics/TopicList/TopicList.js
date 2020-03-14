@@ -30,7 +30,10 @@ class TopicList extends React.Component {
         ...options,
       },
       topics: [],
+      init : false,
     };
+
+    this.setOptionToUrl();
   }
 
   componentDidMount() {
@@ -44,12 +47,13 @@ class TopicList extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.options.organizationId && props.organizations && props.organizations.length > 0) {
+    if (!state.init && !state.options.organizationId && props.organizations && props.organizations.length > 0) {
       return {
         options: {
           ...state.options,
           organizationId: props.organizations[0].id,
         },
+        init : true,
       };
     }
 
@@ -64,14 +68,23 @@ class TopicList extends React.Component {
 
     const {
       options,
-      options: { organizationId },
+      options : {organizationId},
+      init,
     } = this.state;
+
+    if (!init) {
+      return;
+    }
 
     const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
 
+    if (!pathOptions.organizationId) {
+      pathOptions.organizationId = organizationId;
+    }
+
+
     if (
-      (prevState.options.organizationId === null && prevState.options.organizationId !== organizationId) ||
-      location !== prevProps.location
+      (!prevState.init && init) || (location !== prevProps.location)
     ) {
       this.getTopics({
         ...options,
@@ -81,15 +94,11 @@ class TopicList extends React.Component {
   }
 
   getTopics = (options) => {
-    const { organizationId, searchWord, order, direction } = options;
-    request.get('/api/topics', { organizationId, searchWord, order, direction }, (data) => {
+    request.get('/api/topics', { ...options }, (data) => {
       this.setState({
         topics: data.topics || [],
         options: {
-          organizationId,
-          searchWord,
-          order,
-          direction,
+          ...options
         },
       });
     });
@@ -136,7 +145,6 @@ class TopicList extends React.Component {
   };
 
   render() {
-
     const { organizations, history, t } = this.props;
 
     const {
@@ -202,6 +210,19 @@ class TopicList extends React.Component {
             });
           }}
           searchWord={searchWord}
+          onClear={() => {
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  searchWord: '',
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
+          }}
         />
         <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)} />
         <FullLayout className="topic-list-content text-center align-self-center">

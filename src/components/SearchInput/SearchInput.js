@@ -22,7 +22,7 @@ class SearchInput extends React.Component {
   };
 
   render() {
-    const { className, placeholder, onChange, componentClassName, color, noBorder, searchWord } = this.props;
+    const { className, placeholder, onChange, componentClassName, color, noBorder, searchWord, onClear } = this.props;
     const { focus } = this.state;
     return (
       <div
@@ -71,8 +71,9 @@ class SearchInput extends React.Component {
         <div
           className="clear-icon"
           onClick={() => {
-            onChange('');
-            this.search();
+            if (onClear) {
+              onClear();
+            }
           }}
         >
           <i className="fal fa-times" />
@@ -103,6 +104,7 @@ SearchInput.defaultProps = {
 SearchInput.propTypes = {
   className: PropTypes.string,
   onSearch: PropTypes.func,
+  onClear : PropTypes.func,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   componentClassName: PropTypes.string,

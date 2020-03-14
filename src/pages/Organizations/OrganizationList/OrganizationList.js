@@ -130,6 +130,19 @@ class OrganizationList extends React.Component {
           }}
           searchWord={searchWord}
           searchPlaceholder={t('label.searchByOrgName')}
+          onClear={() => {
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  searchWord: '',
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
+          }}
         />
         <FullLayout className="organization-list-content text-center align-self-center">
           <div className="organization-list">
