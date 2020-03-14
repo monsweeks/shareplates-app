@@ -8,8 +8,6 @@ class SearchInput extends React.Component {
 
   changed = false;
 
-  timer = null;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -19,16 +17,8 @@ class SearchInput extends React.Component {
 
   search = () => {
     const { onSearch } = this.props;
-
-    if (this.timer) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-    this.timer = setTimeout(() => {
-      if (onSearch) {
-        onSearch('');
-      }
-    }, 200);
+    this.changed = false;
+    onSearch();
   };
 
   render() {
@@ -58,7 +48,7 @@ class SearchInput extends React.Component {
                   focus: false,
                 },
                 () => {
-                  if (this.changed) this.search(searchWord);
+                  if (this.changed) this.search();
                   this.changed = false;
                   this.focused = false;
                 },
@@ -74,7 +64,7 @@ class SearchInput extends React.Component {
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              this.search(searchWord);
+              this.search();
             }
           }}
         />
@@ -82,9 +72,7 @@ class SearchInput extends React.Component {
           className="clear-icon"
           onClick={() => {
             onChange('');
-            setTimeout(() => {
-              this.search('');
-            }, 100);
+            this.search();
           }}
         >
           <i className="fal fa-times" />
@@ -92,7 +80,7 @@ class SearchInput extends React.Component {
         <div
           className="search-icon"
           onClick={() => {
-            this.search(searchWord);
+            this.search();
           }}
         >
           <i className="fal fa-search" />

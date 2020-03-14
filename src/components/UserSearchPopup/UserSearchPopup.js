@@ -18,6 +18,7 @@ class UserSearchPopup extends React.Component {
       tempSelectedUsers: {},
       condition: '',
       init: false,
+      searchWord: '',
     };
   }
 
@@ -56,7 +57,7 @@ class UserSearchPopup extends React.Component {
   render() {
     const { t, className, organizations, setOpen, onApply } = this.props;
     const { markedUsers, markedTag } = this.props;
-    const { organizationId, users, selectedUsers, tempSelectedUsers, condition } = this.state;
+    const { organizationId, users, selectedUsers, tempSelectedUsers, condition, searchWord } = this.state;
 
     return (
       <div className={`user-search-popup-wrapper ${className}`}>
@@ -88,6 +89,7 @@ class UserSearchPopup extends React.Component {
                     onChange={this.onChangeCondition}
                     onSearch={this.search}
                     placeholder={t('사용자 이름 또는 이메일')}
+                    searchWord={searchWord}
                   />
                 </div>
                 <div className="button-col">

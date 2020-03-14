@@ -5,42 +5,25 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { Col, OrganizationCard, Row, SearchBar } from '@/components';
-import './OrganizationList.scss';
 import request from '@/utils/request';
-
-const orders = [
-  {
-    key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
-    tooltip: '이름으로 정렬',
-  },
-  {
-    key: 'creationDate',
-    value: <i className="fal fa-sort-numeric-up" />,
-    tooltip: '생성일시로 정렬',
-  },
-];
-
-const directions = [
-  {
-    key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
-    tooltip: '오름차순으로 정렬',
-  },
-  {
-    key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
-    tooltip: '내림차순으로 정렬',
-  },
-];
+import common from '@/utils/common';
+import { DIRECTIONS, ORDERS } from '@/constants/constants';
+import './OrganizationList.scss';
 
 class OrganizationList extends React.Component {
   constructor(props) {
     super(props);
+
+    const {
+      location: { search },
+    } = this.props;
+
+    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+
     this.state = {
-      order: orders[0].key,
-      direction: directions[0].key,
-      searchWord: '',
+      order: options.order ? options.order : ORDERS[0].key,
+      direction: options.direction ? options.direction : DIRECTIONS[0].key,
+      searchWord: options.searchWord ? options.searchWord : '',
       organizations: [],
     };
   }
@@ -50,17 +33,37 @@ class OrganizationList extends React.Component {
     this.getOrganizations(searchWord, order, direction);
   }
 
+  componentDidUpdate(prevProps) {
+    const { location } = this.props;
+    if (location !== prevProps.location) {
+      const { searchWord, order, direction } = this.state;
+      this.getOrganizations(searchWord, order, direction);
+    }
+  }
+
+  setOptionToUrl = () => {
+    const {
+      location: { pathname },
+      history,
+    } = this.props;
+
+    const { searchWord, order, direction } = this.state;
+
+    const options = {
+      order,
+      direction,
+      searchWord,
+    };
+
+    common.setOptions(history, pathname, options);
+  };
+
   getOrganizations = (searchWord, order, direction) => {
     request.get('/api/organizations', { searchWord, order, direction }, (data) => {
       this.setState({
         organizations: data.organizations || [],
       });
     });
-  };
-
-  onSearch = () => {
-    const { searchWord, order, direction } = this.state;
-    this.getOrganizations(searchWord, order, direction);
   };
 
   render() {
@@ -72,21 +75,27 @@ class OrganizationList extends React.Component {
         <SearchBar
           order={order}
           onChangeOrder={(value) => {
-            this.setState({
-              order: value,
-            }, () => {
-              this.onSearch();
-            });
+            this.setState(
+              {
+                order: value,
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           direction={direction}
           onChangeDirection={(value) => {
-            this.setState({
-              direction: value,
-            }, () => {
-              this.onSearch();
-            });
+            this.setState(
+              {
+                direction: value,
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
-          onSearch={this.onSearch}
+          onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
               searchWord: value,
@@ -126,24 +135,15 @@ class OrganizationList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user.user,
-  };
-};
-
 OrganizationList.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.string,
-  }),
-
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
   t: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(OrganizationList)));
+export default withRouter(withTranslation()(connect(undefined, undefined)(OrganizationList)));

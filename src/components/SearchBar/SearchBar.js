@@ -129,7 +129,7 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  organizationId: PropTypes.number,
+  organizationId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

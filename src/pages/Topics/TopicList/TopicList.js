@@ -3,50 +3,29 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import qs from 'qs';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
 import request from '@/utils/request';
+import common from '@/utils/common';
+import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import './TopicList.scss';
-
-const orders = [
-  {
-    key: 'name',
-    value: <i className="fal fa-sort-alpha-up"/>,
-    tooltip: '이름으로 정렬',
-  },
-  {
-    key: 'creationDate',
-    value: <i className="fal fa-sort-numeric-up"/>,
-    tooltip: '생성일시로 정렬',
-  },
-];
-
-const directions = [
-  {
-    key: 'asc',
-    value: <i className="fal fa-sort-amount-down"/>,
-    tooltip: '오름차순으로 정렬',
-  },
-  {
-    key: 'desc',
-    value: <i className="fal fa-sort-amount-up"/>,
-    tooltip: '내림차순으로 정렬',
-  },
-];
 
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
 
-    const options = this.getOptions();
+    const {
+      location: { search },
+    } = this.props;
+    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
     this.state = {
-      order: options.order ? options.order : orders[0].key,
-      direction: options.direction ? options.direction : directions[0].key,
-      organizationId: options.organizationId ? Number(options.organizationId) : null,
-      searchWord: options.searchWord ? options.searchWord : '',
+      order: ORDERS[0].key,
+      direction: DIRECTIONS[0].key,
+      organizationId: null,
+      searchWord: '',
       topics: [],
+      ...options,
     };
   }
 
@@ -56,46 +35,6 @@ class TopicList extends React.Component {
       this.getTopics(organizationId, searchWord, order, direction);
     }
   }
-
-  componentDidUpdate(prevProps) {
-    const { location } = this.props;
-    if (location !== prevProps.location) {
-      const { organizationId, searchWord, order, direction } = this.state;
-      this.getTopics(organizationId, searchWord, order, direction);
-    }
-  }
-
-  getOptions = () => {
-    const {
-      location: { search },
-    } = this.props;
-
-    const options = {};
-    const searchObject = qs.parse(search, { ignoreQueryPrefix: true });
-    if (searchObject.organizationId) options.organizationId = searchObject.organizationId;
-    if (searchObject.order) options.order = searchObject.order;
-    if (searchObject.direction) options.direction = searchObject.direction;
-    if (searchObject.searchWord) options.searchWord = searchObject.searchWord;
-
-    return options;
-  };
-
-  getTopics = (organizationId, searchWord, order, direction) => {
-    request.get(
-      '/api/topics',
-      { organizationId, searchWord, order, direction },
-      (data) => {
-        this.setState({
-          topics: data.topics || [],
-        });
-      },
-      () => {
-        this.setState({
-          topics: [],
-        });
-      },
-    );
-  };
 
   static getDerivedStateFromProps(props, state) {
     if (!state.organizationId && props.organizations && props.organizations.length > 0) {
@@ -107,9 +46,30 @@ class TopicList extends React.Component {
     return null;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { location } = this.props;
+    const { organizationId, searchWord, order, direction } = this.state;
+
+    if (
+      (prevState.organizationId === null && prevState.organizationId !== organizationId) ||
+      location !== prevProps.location
+    ) {
+      this.getTopics(organizationId, searchWord, order, direction);
+    }
+  }
+
+  getTopics = (organizationId, searchWord, order, direction) => {
+    request.get('/api/topics', { organizationId, searchWord, order, direction }, (data) => {
+      this.setState({
+        topics: data.topics || [],
+      });
+    });
+  };
+
   setOptionToUrl = () => {
     const {
       location: { pathname },
+      history,
     } = this.props;
 
     const { organizationId, searchWord, order, direction } = this.state;
@@ -121,13 +81,8 @@ class TopicList extends React.Component {
       searchWord,
     };
 
-    const { history } = this.props;
-    history.push({
-      pathname,
-      search: qs.stringify(options, { addQueryPrefix: true }),
-    });
+    common.setOptions(history, pathname, options);
   };
-
 
   createNewTopic = (topic) => {
     const { topics } = this.state;
@@ -168,27 +123,36 @@ class TopicList extends React.Component {
           organizations={organizations}
           organizationId={organizationId}
           onChangeOrganization={(id) => {
-            this.setState({
-              organizationId: id,
-            }, () => {
-              this.setOptionToUrl();
-            });
+            this.setState(
+              {
+                organizationId: id,
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           order={order}
           onChangeOrder={(value) => {
-            this.setState({
-              order: value,
-            }, () => {
-              this.setOptionToUrl();
-            });
+            this.setState(
+              {
+                order: value,
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           direction={direction}
           onChangeDirection={(value) => {
-            this.setState({
-              direction: value,
-            }, () => {
-              this.setOptionToUrl();
-            });
+            this.setState(
+              {
+                direction: value,
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           searchPlaceholder={t('label.searchByTopicName')}
           onSearch={this.setOptionToUrl}
@@ -199,8 +163,7 @@ class TopicList extends React.Component {
           }}
           searchWord={searchWord}
         />
-        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)}/>
-
+        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)} />
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
@@ -237,18 +200,11 @@ class TopicList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user,
     organizations: state.user.organizations,
   };
 };
 
 TopicList.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.string,
-  }),
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

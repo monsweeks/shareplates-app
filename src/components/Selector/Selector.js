@@ -14,7 +14,7 @@ class Selector extends React.Component {
   render() {
     const { open } = this.state;
     const { className, onChange, items, value, addAll, outline, color } = this.props;
-    let selcetedItem = items.find((item) => item.key === value);
+    let selcetedItem = items.find((item) => String(item.key) === String(value));
     if (addAll && value === '') {
       selcetedItem = {
         key: '',
