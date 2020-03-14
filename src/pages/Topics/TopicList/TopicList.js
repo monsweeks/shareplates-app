@@ -20,26 +20,34 @@ class TopicList extends React.Component {
     } = this.props;
     const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
     this.state = {
-      order: ORDERS[0].key,
-      direction: DIRECTIONS[0].key,
-      organizationId: null,
-      searchWord: '',
+      options: {
+        order: ORDERS[0].key,
+        direction: DIRECTIONS[0].key,
+        organizationId: null,
+        searchWord: '',
+        ...options,
+      },
       topics: [],
-      ...options,
     };
   }
 
   componentDidMount() {
-    const { organizationId, searchWord, order, direction } = this.state;
+    const {
+      options,
+      options: { organizationId },
+    } = this.state;
     if (organizationId) {
-      this.getTopics(organizationId, searchWord, order, direction);
+      this.getTopics(options);
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.organizationId && props.organizations && props.organizations.length > 0) {
+    if (!state.options.organizationId && props.organizations && props.organizations.length > 0) {
       return {
-        organizationId: props.organizations[0].id,
+        options: {
+          ...state.options,
+          organizationId: props.organizations[0].id,
+        },
       };
     }
 
@@ -48,20 +56,38 @@ class TopicList extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { location } = this.props;
-    const { organizationId, searchWord, order, direction } = this.state;
+    const {
+      options,
+      options: { organizationId },
+    } = this.state;
+
+    const {
+      location: { search },
+    } = this.props;
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
 
     if (
-      (prevState.organizationId === null && prevState.organizationId !== organizationId) ||
+      (prevState.options.organizationId === null && prevState.options.organizationId !== organizationId) ||
       location !== prevProps.location
     ) {
-      this.getTopics(organizationId, searchWord, order, direction);
+      this.getTopics({
+        ...options,
+        ...pathOptions,
+      });
     }
   }
 
-  getTopics = (organizationId, searchWord, order, direction) => {
+  getTopics = (options) => {
+    const { organizationId, searchWord, order, direction } = options;
     request.get('/api/topics', { organizationId, searchWord, order, direction }, (data) => {
       this.setState({
         topics: data.topics || [],
+        options: {
+          organizationId,
+          searchWord,
+          order,
+          direction,
+        },
       });
     });
   };
@@ -72,14 +98,7 @@ class TopicList extends React.Component {
       history,
     } = this.props;
 
-    const { organizationId, searchWord, order, direction } = this.state;
-
-    const options = {
-      order,
-      direction,
-      organizationId,
-      searchWord,
-    };
+    const { options } = this.state;
 
     common.setOptions(history, pathname, options);
   };
@@ -114,7 +133,11 @@ class TopicList extends React.Component {
   };
 
   render() {
-    const { order, direction, organizationId, topics, searchWord } = this.state;
+    const {
+      options,
+      options: { organizationId, searchWord, order, direction },
+      topics,
+    } = this.state;
     const { organizations, history, t } = this.props;
 
     return (
@@ -125,7 +148,10 @@ class TopicList extends React.Component {
           onChangeOrganization={(id) => {
             this.setState(
               {
-                organizationId: id,
+                options: {
+                  ...options,
+                  organizationId: id,
+                },
               },
               () => {
                 this.setOptionToUrl();
@@ -136,7 +162,10 @@ class TopicList extends React.Component {
           onChangeOrder={(value) => {
             this.setState(
               {
-                order: value,
+                options: {
+                  ...options,
+                  order: value,
+                },
               },
               () => {
                 this.setOptionToUrl();
@@ -147,7 +176,10 @@ class TopicList extends React.Component {
           onChangeDirection={(value) => {
             this.setState(
               {
-                direction: value,
+                options: {
+                  ...options,
+                  direction: value,
+                },
               },
               () => {
                 this.setOptionToUrl();
@@ -158,7 +190,10 @@ class TopicList extends React.Component {
           onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
-              searchWord: value,
+              options: {
+                ...options,
+                searchWord: value,
+              },
             });
           }}
           searchWord={searchWord}
