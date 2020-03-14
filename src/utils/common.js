@@ -11,14 +11,14 @@ function getOptions(search, keys) {
   return options;
 }
 
-function setOptions(history, pathname, options, isReplace) {
-  if (!isReplace) {
-    history.replace({
+function setOptions(history, pathname, options, isPush) {
+  if (isPush) {
+    history.push({
       pathname,
       search: qs.stringify(options, { addQueryPrefix: true }),
     });
   } else {
-    history.push({
+    history.replace({
       pathname,
       search: qs.stringify(options, { addQueryPrefix: true }),
     });
