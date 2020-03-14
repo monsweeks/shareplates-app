@@ -30,7 +30,7 @@ class TopicList extends React.Component {
         ...options,
       },
       topics: [],
-      init : false,
+      init: false,
     };
 
     this.setOptionToUrl();
@@ -47,13 +47,19 @@ class TopicList extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    if (!state.init && state.options.organizationId) {
+      return {
+        init: true,
+      };
+    }
+
     if (!state.init && !state.options.organizationId && props.organizations && props.organizations.length > 0) {
       return {
         options: {
           ...state.options,
           organizationId: props.organizations[0].id,
         },
-        init : true,
+        init: true,
       };
     }
 
@@ -68,10 +74,11 @@ class TopicList extends React.Component {
 
     const {
       options,
-      options : {organizationId},
+      options: { organizationId },
       init,
     } = this.state;
 
+    console.log(init);
     if (!init) {
       return;
     }
@@ -82,10 +89,7 @@ class TopicList extends React.Component {
       pathOptions.organizationId = organizationId;
     }
 
-
-    if (
-      (!prevState.init && init) || (location !== prevProps.location)
-    ) {
+    if ((!prevState.init && init) || location !== prevProps.location) {
       this.getTopics({
         ...options,
         ...pathOptions,
@@ -98,7 +102,7 @@ class TopicList extends React.Component {
       this.setState({
         topics: data.topics || [],
         options: {
-          ...options
+          ...options,
         },
       });
     });
