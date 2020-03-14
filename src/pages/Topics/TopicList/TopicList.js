@@ -18,7 +18,9 @@ class TopicList extends React.Component {
     const {
       location: { search },
     } = this.props;
+
     const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+
     this.state = {
       options: {
         order: ORDERS[0].key,
@@ -55,15 +57,16 @@ class TopicList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { location } = this.props;
+    const {
+      location,
+      location: { search },
+    } = this.props;
+
     const {
       options,
       options: { organizationId },
     } = this.state;
 
-    const {
-      location: { search },
-    } = this.props;
     const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
 
     if (
@@ -133,12 +136,14 @@ class TopicList extends React.Component {
   };
 
   render() {
+
+    const { organizations, history, t } = this.props;
+
     const {
       options,
       options: { organizationId, searchWord, order, direction },
       topics,
     } = this.state;
-    const { organizations, history, t } = this.props;
 
     return (
       <div className="topic-list-wrapper">

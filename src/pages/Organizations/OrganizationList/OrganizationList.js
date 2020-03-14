@@ -18,26 +18,39 @@ class OrganizationList extends React.Component {
       location: { search },
     } = this.props;
 
-    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+    const options = common.getOptions(search, ['order', 'direction', 'searchWord']);
 
     this.state = {
-      order: options.order ? options.order : ORDERS[0].key,
-      direction: options.direction ? options.direction : DIRECTIONS[0].key,
-      searchWord: options.searchWord ? options.searchWord : '',
+      options: {
+        order: ORDERS[0].key,
+        direction: DIRECTIONS[0].key,
+        searchWord: '',
+        ...options,
+      },
       organizations: [],
     };
   }
 
   componentDidMount() {
-    const { searchWord, order, direction } = this.state;
-    this.getOrganizations(searchWord, order, direction);
+    const { options } = this.state;
+    this.getOrganizations(options);
   }
 
   componentDidUpdate(prevProps) {
-    const { location } = this.props;
+    const {
+      location,
+      location: { search },
+    } = this.props;
+
+    const { options } = this.state;
+
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'searchWord']);
+
     if (location !== prevProps.location) {
-      const { searchWord, order, direction } = this.state;
-      this.getOrganizations(searchWord, order, direction);
+      this.getOrganizations({
+        ...options,
+        ...pathOptions,
+      });
     }
   }
 
@@ -47,28 +60,33 @@ class OrganizationList extends React.Component {
       history,
     } = this.props;
 
-    const { searchWord, order, direction } = this.state;
-
-    const options = {
-      order,
-      direction,
-      searchWord,
-    };
+    const { options } = this.state;
 
     common.setOptions(history, pathname, options);
   };
 
-  getOrganizations = (searchWord, order, direction) => {
+  getOrganizations = (options) => {
+    const { searchWord, order, direction } = options;
     request.get('/api/organizations', { searchWord, order, direction }, (data) => {
       this.setState({
         organizations: data.organizations || [],
+        options: {
+          searchWord,
+          order,
+          direction,
+        },
       });
     });
   };
 
   render() {
-    const { order, direction, organizations, searchWord } = this.state;
     const { history, t } = this.props;
+
+    const {
+      options,
+      options: { searchWord, order, direction },
+      organizations,
+    } = this.state;
 
     return (
       <div className="organization-list-wrapper">
@@ -77,7 +95,10 @@ class OrganizationList extends React.Component {
           onChangeOrder={(value) => {
             this.setState(
               {
-                order: value,
+                options: {
+                  ...options,
+                  order: value,
+                },
               },
               () => {
                 this.setOptionToUrl();
@@ -88,7 +109,10 @@ class OrganizationList extends React.Component {
           onChangeDirection={(value) => {
             this.setState(
               {
-                direction: value,
+                options: {
+                  ...options,
+                  direction: value,
+                },
               },
               () => {
                 this.setOptionToUrl();
@@ -98,11 +122,14 @@ class OrganizationList extends React.Component {
           onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
-              searchWord: value,
+              options: {
+                ...options,
+                searchWord: value,
+              },
             });
           }}
-          searchPlaceholder={t('label.searchByOrgName')}
           searchWord={searchWord}
+          searchPlaceholder={t('label.searchByOrgName')}
         />
         <FullLayout className="organization-list-content text-center align-self-center">
           <div className="organization-list">
