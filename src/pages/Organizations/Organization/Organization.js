@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, DateTime, EmptyMessage, P, SubLabel, UserManager, SubTitle } from '@/components';
+import { BottomButton, DateTime, EmptyMessage, P, SubLabel, UserManager, SubTitle, ObjectImage } from '@/components';
 
 class Organization extends Component {
   constructor(props) {
@@ -74,6 +74,11 @@ class Organization extends Component {
     const { t, history, setConfirm: setConfirmReducer } = this.props;
     const { organization, isAdmin } = this.state;
 
+    const list = [];
+    for (let i = 0; i < 30 * 35; i += 1) {
+      list.push(i);
+    }
+
     return (
       <DetailLayout className="organization-wrapper">
         {organization === false && (
@@ -108,6 +113,9 @@ class Organization extends Component {
             <hr className="d-none d-sm-block mb-3" />
             <div className="flex-grow-1">
               <SubTitle>{t('GENERAL INFO')}</SubTitle>
+              {list.map((i) => {
+                return <ObjectImage size='md' key={i} index={i} />;
+              })}
               <SubLabel>{t('label.name')}</SubLabel>
               <P className="bg-white" upppercase>
                 {organization.name}

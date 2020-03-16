@@ -1,0 +1,527 @@
+.object-image-wrapper {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  margin-left: 10px;
+
+  > div.img {
+    width: 100%;
+    height: 100%;
+    background-position: -30px -98px;
+    background-color: $light;
+    border-radius: 50%;
+
+  }
+
+  &.sm {
+    width: 24px;
+    height: 24px;
+
+    > div.img {
+      background-size: 224px 224px;
+    }
+  }
+
+  &.md {
+    width: 48px;
+    height: 48px;
+
+    > div.img {
+      background-size: 448px 448px;
+    }
+  }
+
+  &.lg {
+    width: 96px;
+    height: 96px;
+
+    > div.img {
+      background-size: 896px 896px;
+    }
+  }
+
+  > div.img {
+    &.set-0 {
+      background-image: url('../../images/material/208.svg');
+    }
+
+    &.set-1 {
+      background-image: url('../../images/material/210.svg');
+    }
+
+    &.set-2 {
+      background-image: url('../../images/material/211.svg');
+    }
+    &.set-3 {
+      background-image: url('../../images/material/212.png');
+    }
+    &.set-4 {
+      background-image: url('../../images/material/213.png');
+    }
+    &.set-5 {
+      background-image: url('../../images/material/214.png');
+    }
+    &.set-6 {
+      background-image: url('../../images/material/215.png');
+    }
+    &.set-7 {
+      background-image: url('../../images/material/216.png');
+    }
+    &.set-8 {
+      background-image: url('../../images/material/217.png');
+    }
+    &.set-9 {
+      background-image: url('../../images/material/218.png');
+    }
+    &.set-10 {
+      background-image: url('../../images/material/219.png');
+    }
+    &.set-11 {
+      background-image: url('../../images/material/220.png');
+    }
+    &.set-12 {
+      background-image: url('../../images/material/222.png');
+    }
+    &.set-13 {
+      background-image: url('../../images/material/223.png');
+    }
+    &.set-14 {
+      background-image: url('../../images/material/227.png');
+    }
+    &.set-15 {
+      background-image: url('../../images/material/228.png');
+    }
+    &.set-16 {
+      background-image: url('../../images/material/229.png');
+    }
+    &.set-17 {
+      background-image: url('../../images/material/230.png');
+    }
+    &.set-18 {
+      background-image: url('../../images/material/231.png');
+    }
+    &.set-19 {
+      background-image: url('../../images/material/232.png');
+    }
+    &.set-20 {
+      background-image: url('../../images/material/233.png');
+    }
+    &.set-21 {
+      background-image: url('../../images/material/234.png');
+    }
+    &.set-22 {
+      background-image: url('../../images/material/235.png');
+    }
+    &.set-23 {
+      background-image: url('../../images/material/237.png');
+    }
+    &.set-24 {
+      background-image: url('../../images/material/239.png');
+    }
+    &.set-25 {
+      background-image: url('../../images/material/240.png');
+    }
+    &.set-26 {
+      background-image: url('../../images/material/241.png');
+    }
+    &.set-27 {
+      background-image: url('../../images/material/242.png');
+    }
+    &.set-28 {
+      background-image: url('../../images/material/243.png');
+    }
+    &.set-29 {
+      background-image: url('../../images/material/244.png');
+    }
+    &.set-30 {
+      background-image: url('../../images/material/245.png');
+    }
+    &.set-31 {
+      background-image: url('../../images/material/246.png');
+    }
+    &.set-32 {
+      background-image: url('../../images/material/248.png');
+    }
+    &.set-33 {
+      background-image: url('../../images/material/249.png');
+    }
+    &.set-34 {
+      background-image: url('../../images/material/253.png');
+    }
+    &.set-35 {
+      background-image: url('../../images/material/254.png');
+    }
+  }
+
+  &.sm {
+    > div.img {
+      &.serial-0 {
+        background-position: -15px -49px;
+      }
+
+      &.serial-1 {
+        background-position: -48px -49px;
+      }
+
+      &.serial-2 {
+        background-position: -83px -49px;
+      }
+
+      &.serial-3 {
+        background-position: -117px -49px;
+      }
+
+      &.serial-4 {
+        background-position: -151px -49px;
+      }
+
+      &.serial-5 {
+        background-position: -184px -49px;
+      }
+
+      &.serial-6 {
+        background-position: -15px -83px;
+      }
+
+      &.serial-7 {
+        background-position: -48px -83px;
+      }
+
+      &.serial-8 {
+        background-position: -83px -83px;
+      }
+
+      &.serial-9 {
+        background-position: -117px -83px;
+      }
+
+      &.serial-10 {
+        background-position: -151px -83px;
+      }
+
+      &.serial-11 {
+        background-position: -184px -83px;
+      }
+
+      &.serial-12 {
+        background-position: -15px -117px;
+      }
+
+      &.serial-13 {
+        background-position: -48px -117px;
+      }
+
+      &.serial-14 {
+        background-position: -83px -117px;
+      }
+
+      &.serial-15 {
+        background-position: -117px -117px;
+      }
+
+      &.serial-16 {
+        background-position: -151px -117px;
+      }
+
+      &.serial-17 {
+        background-position: -184px -117px;
+      }
+
+      &.serial-18 {
+        background-position: -15px -151px;
+      }
+
+      &.serial-19 {
+        background-position: -48px -151px;
+      }
+
+      &.serial-20 {
+        background-position: -83px -151px;
+      }
+
+      &.serial-21 {
+        background-position: -117px -151px;
+      }
+
+      &.serial-22 {
+        background-position: -151px -151px;
+      }
+
+      &.serial-23 {
+        background-position: -184px -151px;
+      }
+
+      &.serial-24 {
+        background-position: -15px -184px;
+      }
+
+      &.serial-25 {
+        background-position: -48px -184px;
+      }
+
+      &.serial-26 {
+        background-position: -83px -184px;
+      }
+
+      &.serial-27 {
+        background-position: -117px -184px;
+      }
+
+      &.serial-28 {
+        background-position: -151px -184px;
+      }
+
+      &.serial-29 {
+        background-position: -184px -184px;
+      }
+    }
+  }
+
+  &.md {
+    > div.img {
+      &.serial-0 {
+        background-position: -30px -98px;
+      }
+
+      &.serial-1 {
+        background-position: -97px -98px;
+      }
+
+      &.serial-2 {
+        background-position: -166px -98px;
+      }
+
+      &.serial-3 {
+        background-position: -233px -98px;
+      }
+
+      &.serial-4 {
+        background-position: -302px -98px;
+      }
+
+      &.serial-5 {
+        background-position: -369px -98px;
+      }
+
+      &.serial-6 {
+        background-position: -30px -166px;
+      }
+
+      &.serial-7 {
+        background-position: -97px -166px;
+      }
+
+      &.serial-8 {
+        background-position: -166px -166px;
+      }
+
+      &.serial-9 {
+        background-position: -233px -166px;
+      }
+
+      &.serial-10 {
+        background-position: -302px -166px;
+      }
+
+      &.serial-11 {
+        background-position: -369px -166px;
+      }
+
+      &.serial-12 {
+        background-position: -30px -234px;
+      }
+
+      &.serial-13 {
+        background-position: -97px -234px;
+      }
+
+      &.serial-14 {
+        background-position: -166px -234px;
+      }
+
+      &.serial-15 {
+        background-position: -233px -234px;
+      }
+
+      &.serial-16 {
+        background-position: -302px -234px;
+      }
+
+      &.serial-17 {
+        background-position: -369px -234px;
+      }
+
+      &.serial-18 {
+        background-position: -30px -302px;
+      }
+
+      &.serial-19 {
+        background-position: -97px -302px;
+      }
+
+      &.serial-20 {
+        background-position: -166px -302px;
+      }
+
+      &.serial-21 {
+        background-position: -233px -302px;
+      }
+
+      &.serial-22 {
+        background-position: -302px -302px;
+      }
+
+      &.serial-23 {
+        background-position: -369px -302px;
+      }
+
+      &.serial-24 {
+        background-position: -30px -369px;
+      }
+
+      &.serial-25 {
+        background-position: -97px -369px;
+      }
+
+      &.serial-26 {
+        background-position: -166px -369px;
+      }
+
+      &.serial-27 {
+        background-position: -233px -369px;
+      }
+
+      &.serial-28 {
+        background-position: -302px -369px;
+      }
+
+      &.serial-29 {
+        background-position: -369px -369px;
+      }
+    }
+  }
+
+  &.lg {
+    > div.img {
+      &.serial-0 {
+        background-position: -60px -196px;
+      }
+
+      &.serial-1 {
+        background-position: -196px -196px;
+      }
+
+      &.serial-2 {
+        background-position: -332px -196px;
+      }
+
+      &.serial-3 {
+        background-position: -468px -196px;
+      }
+
+      &.serial-4 {
+        background-position: -604px -196px;
+      }
+
+      &.serial-5 {
+        background-position: -740px -196px;
+      }
+
+      &.serial-6 {
+        background-position: -60px -332px;
+      }
+
+      &.serial-7 {
+        background-position: -196px -332px;
+      }
+
+      &.serial-8 {
+        background-position: -332px -332px;
+      }
+
+      &.serial-9 {
+        background-position: -468px -332px;
+      }
+
+      &.serial-10 {
+        background-position: -604px -332px;
+      }
+
+      &.serial-11 {
+        background-position: -740px -332px;
+      }
+
+      &.serial-12 {
+        background-position: -60px -468px;
+      }
+
+      &.serial-13 {
+        background-position: -196px -468px;
+      }
+
+      &.serial-14 {
+        background-position: -332px -468px;
+      }
+
+      &.serial-15 {
+        background-position: -468px -468px;
+      }
+
+      &.serial-16 {
+        background-position: -604px -468px;
+      }
+
+      &.serial-17 {
+        background-position: -740px -468px;
+      }
+
+      &.serial-18 {
+        background-position: -60px -604px;
+      }
+
+      &.serial-19 {
+        background-position: -196px -604px;
+      }
+
+      &.serial-20 {
+        background-position: -332px -604px;
+      }
+
+      &.serial-21 {
+        background-position: -468px -604px;
+      }
+
+      &.serial-22 {
+        background-position: -604px -604px;
+      }
+
+      &.serial-23 {
+        background-position: -740px -604px;
+      }
+
+      &.serial-24 {
+        background-position: -60px -738px;
+      }
+
+      &.serial-25 {
+        background-position: -196px -738px;
+      }
+
+      &.serial-26 {
+        background-position: -332px -738px;
+      }
+
+      &.serial-27 {
+        background-position: -468px -738px;
+      }
+
+      &.serial-28 {
+        background-position: -604px -738px;
+      }
+
+      &.serial-29 {
+        background-position: -740px -738px;
+      }
+    }
+  }
+}
