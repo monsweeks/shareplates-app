@@ -1,4 +1,5 @@
 import moment from 'moment';
+import React from 'react';
 
 const MESSAGE_CATEGORY = {
   ERROR: 'ERROR',
@@ -83,4 +84,30 @@ DATETIME_FORMATS.forEach((info) => {
   DATETIME_FORMATS_MAP[info.key] = info.dateTimeFormat;
 });
 
-export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS, DATETIME_FORMATS, DATETIME_FORMATS_MAP };
+const ORDERS = [
+  {
+    key: 'name',
+    value: <i className="fal fa-sort-alpha-up" />,
+    tooltip: '이름으로 정렬',
+  },
+  {
+    key: 'creationDate',
+    value: <i className="fal fa-sort-numeric-up" />,
+    tooltip: '생성일시로 정렬',
+  },
+];
+
+const DIRECTIONS = [
+  {
+    key: 'asc',
+    value: <i className="fal fa-sort-amount-down" />,
+    tooltip: '오름차순으로 정렬',
+  },
+  {
+    key: 'desc',
+    value: <i className="fal fa-sort-amount-up" />,
+    tooltip: '내림차순으로 정렬',
+  },
+];
+
+export { MESSAGE_CATEGORY, DEFAULT_INPUT_VALIDATION_MESSAGE, VALIDATIONS, DATETIME_FORMATS, DATETIME_FORMATS_MAP, ORDERS, DIRECTIONS };

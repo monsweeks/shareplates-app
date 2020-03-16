@@ -15,7 +15,6 @@ class Topic extends Component {
 
     this.state = {
       topic: null,
-      users: [],
     };
   }
 
@@ -33,17 +32,10 @@ class Topic extends Component {
     request.get(
       `/api/topics/${topicId}`,
       null,
-      (data) => {
-        if (data.topic) {
-          this.setState({
-            topic: data.topic,
-            users: data.topicUsers,
-          });
-        } else {
-          this.setState({
-            topic: false,
-          });
-        }
+      (topic) => {
+        this.setState({
+          topic
+        });
       },
       null,
       true,
@@ -55,8 +47,8 @@ class Topic extends Component {
     request.del(
       `/api/topics/${topicId}`,
       null,
-      () => {
-        history.push('/topics');
+      (data) => {
+        history.push(data._links.topics.href);
       },
       null,
       true,
@@ -70,7 +62,7 @@ class Topic extends Component {
       },
     } = this.props;
     const { t, history, setConfirm: setConfirmReducer } = this.props;
-    const { topic, users } = this.state;
+    const { topic } = this.state;
 
     return (
       <DetailLayout className="topic-wrapper">
@@ -80,7 +72,7 @@ class Topic extends Component {
             message={
               <div>
                 <div className="h1">
-                  <i className="fal fa-exclamation-circle" />
+                  <i className="fal fa-exclamation-circle"/>
                 </div>
                 <div>{t('message.notFoundTopic')}</div>
               </div>
@@ -103,12 +95,12 @@ class Topic extends Component {
             >
               {topic.name}
             </PageTitle>
-            <hr className="d-none d-sm-block mb-3" />
+            <hr className="d-none d-sm-block mb-3"/>
             <div className="flex-grow-1">
               <Row className="m-0">
                 <Col sm={12} lg={2} className="text-center p-0">
                   <div className="topic-image m-2 m-lg-0">
-                    <IconViewer iconIndex={topic.iconIndex} />
+                    <IconViewer iconIndex={topic.iconIndex}/>
                   </div>
                 </Col>
                 <Col sm={12} lg={10} className="p-0">
@@ -118,7 +110,7 @@ class Topic extends Component {
                   </P>
                   <SubLabel>{t('ORG')}</SubLabel>
                   <P className="bg-white" upppercase>
-                    {topic.organization.name}
+                    {topic.organizationName}
                   </P>
                   <SubLabel>{t('label.desc')}</SubLabel>
                   <P className="bg-white" upppercase pre>
@@ -128,7 +120,7 @@ class Topic extends Component {
                   <P className="bg-white" upppercase>
                     {topic.privateYn ? 'private' : 'public'}
                   </P>
-                  <hr className="g-dashed mb-3" />
+                  <hr className="g-dashed mb-3"/>
                   <div className="position-relative mb-3">
                     <SubLabel>{t('label.topicAdmin')}</SubLabel>
                   </div>
@@ -139,14 +131,14 @@ class Topic extends Component {
                       md={4}
                       sm={6}
                       xl={12}
-                      users={users}
+                      users={topic.users}
                     />
                   </div>
                 </Col>
               </Row>
             </div>
             <div className="flex-grow-0 text-right small">
-              <DateTime value={topic.creationDate} /> 생성
+              <DateTime value={topic.creationDate}/> 생성
             </div>
             <BottomButton
               onDelete={() => {

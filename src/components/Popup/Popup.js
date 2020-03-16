@@ -28,7 +28,9 @@ class Popup extends React.PureComponent {
             className="close-popup-button bg-transparent"
             icon={<i className="fal fa-times" />}
             onClick={() => {
-              setOpen(false);
+              if (setOpen) {
+                setOpen(false);
+              }
             }}
           />
           <div className="popup-content">{children}</div>

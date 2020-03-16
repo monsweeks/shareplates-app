@@ -5,94 +5,144 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
 import { Col, OrganizationCard, Row, SearchBar } from '@/components';
-import './OrganizationList.scss';
 import request from '@/utils/request';
-
-const orders = [
-  {
-    key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
-    tooltip: '이름으로 정렬',
-  },
-  {
-    key: 'creationDate',
-    value: <i className="fal fa-sort-numeric-up" />,
-    tooltip: '생성일시로 정렬',
-  },
-];
-
-const directions = [
-  {
-    key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
-    tooltip: '오름차순으로 정렬',
-  },
-  {
-    key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
-    tooltip: '내림차순으로 정렬',
-  },
-];
+import common from '@/utils/common';
+import { DIRECTIONS, ORDERS } from '@/constants/constants';
+import './OrganizationList.scss';
 
 class OrganizationList extends React.Component {
   constructor(props) {
     super(props);
+
+    const {
+      location: { search },
+    } = this.props;
+
+    const options = common.getOptions(search, ['order', 'direction', 'searchWord']);
+
     this.state = {
-      order: orders[0].key,
-      direction: directions[0].key,
-      searchWord: '',
+      options: {
+        order: ORDERS[0].key,
+        direction: DIRECTIONS[0].key,
+        searchWord: '',
+        ...options,
+      },
       organizations: [],
     };
   }
 
   componentDidMount() {
-    const { searchWord, order, direction } = this.state;
-    this.getOrganizations(searchWord, order, direction);
+    const { options } = this.state;
+    this.getOrganizations(options);
   }
 
-  getOrganizations = (searchWord, order, direction) => {
-    request.get('/api/organizations', { searchWord, order, direction }, (organizations) => {
+  componentDidUpdate(prevProps) {
+    const {
+      location,
+      location: { search },
+    } = this.props;
+
+    const { options } = this.state;
+
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'searchWord']);
+
+    if (location !== prevProps.location) {
+      this.getOrganizations({
+        ...options,
+        ...pathOptions,
+      });
+    }
+  }
+
+  setOptionToUrl = () => {
+    const {
+      location: { pathname },
+      history,
+    } = this.props;
+
+    const { options } = this.state;
+
+    common.setOptions(history, pathname, options);
+  };
+
+  getOrganizations = (options) => {
+    const { searchWord, order, direction } = options;
+    request.get('/api/organizations', { searchWord, order, direction }, (data) => {
       this.setState({
-        organizations,
+        organizations: data.organizations || [],
+        options: {
+          searchWord,
+          order,
+          direction,
+        },
       });
     });
   };
 
-  onSearch = () => {
-    const { searchWord, order, direction } = this.state;
-    this.getOrganizations(searchWord, order, direction);
-  };
-
   render() {
-    const { order, direction, organizations } = this.state;
     const { history, t } = this.props;
+
+    const {
+      options,
+      options: { searchWord, order, direction },
+      organizations,
+    } = this.state;
 
     return (
       <div className="organization-list-wrapper">
         <SearchBar
           order={order}
           onChangeOrder={(value) => {
-            this.setState({
-              order: value,
-            }, () => {
-              this.onSearch();
-            });
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  order: value,
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           direction={direction}
           onChangeDirection={(value) => {
-            this.setState({
-              direction: value,
-            }, () => {
-              this.onSearch();
-            });
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  direction: value,
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
-          onSearch={this.onSearch}
+          onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
-              searchWord: value,
+              options: {
+                ...options,
+                searchWord: value,
+              },
             });
           }}
+          searchWord={searchWord}
           searchPlaceholder={t('label.searchByOrgName')}
+          onClear={() => {
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  searchWord: '',
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
+          }}
         />
         <FullLayout className="organization-list-content text-center align-self-center">
           <div className="organization-list">
@@ -125,24 +175,15 @@ class OrganizationList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user.user,
-  };
-};
-
 OrganizationList.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.string,
-  }),
-
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
   t: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(OrganizationList)));
+export default withRouter(withTranslation()(connect(undefined, undefined)(OrganizationList)));

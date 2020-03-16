@@ -5,130 +5,157 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { setUserAndOrganization } from '@/actions';
-import { Col, Row, SearchBar, TopicCard, SocketClient } from '@/components';
-import './TopicList.scss';
+import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
 import request from '@/utils/request';
-
-const orders = [
-  {
-    key: 'name',
-    value: <i className="fal fa-sort-alpha-up" />,
-    tooltip: '이름으로 정렬',
-  },
-  {
-    key: 'creationDate',
-    value: <i className="fal fa-sort-numeric-up" />,
-    tooltip: '생성일시로 정렬',
-  },
-];
-
-const directions = [
-  {
-    key: 'asc',
-    value: <i className="fal fa-sort-amount-down" />,
-    tooltip: '오름차순으로 정렬',
-  },
-  {
-    key: 'desc',
-    value: <i className="fal fa-sort-amount-up" />,
-    tooltip: '내림차순으로 정렬',
-  },
-];
+import common from '@/utils/common';
+import { DIRECTIONS, ORDERS } from '@/constants/constants';
+import './TopicList.scss';
 
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
+
+    const {
+      location: { search },
+    } = this.props;
+
+    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+
     this.state = {
-      order: orders[0].key,
-      direction: directions[0].key,
-      organizationId: null,
-      searchWord: '',
+      options: {
+        order: ORDERS[0].key,
+        direction: DIRECTIONS[0].key,
+        organizationId: null,
+        searchWord: '',
+        ...options,
+      },
       topics: [],
+      init: false,
     };
+
+    this.setOptionToUrl();
   }
 
   componentDidMount() {
-    const { organizationId, searchWord, order, direction } = this.state;
+    const {
+      options,
+      options: { organizationId },
+    } = this.state;
     if (organizationId) {
-      this.getTopics(organizationId, searchWord, order, direction);
+      this.getTopics(options);
     }
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { organizationId, searchWord, order, direction } = this.state;
-    const { organizationId: prevOrganizationId, order: prevOrder, direction: prevDirection } = prevState;
-
-    if (organizationId !== prevOrganizationId || order !== prevOrder || direction !== prevDirection) {
-      this.getTopics(organizationId, searchWord, order, direction);
-    }
-  }
-
-  getTopics = (organizationId, searchWord, order, direction) => {
-    request.get(
-      '/api/topics',
-      { organizationId, searchWord, order, direction },
-      (data) => {
-        this.setState({
-          topics: data.topics || [],
-        });
-      },
-      () => {
-        this.setState({
-          topics: [],
-        });
-      },
-    );
-  };
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.organizationId && props.organizations && props.organizations.length > 0) {
+    if (!state.init && state.options.organizationId) {
       return {
-        organizationId: props.organizations[0].id,
+        init: true,
+      };
+    }
+
+    if (!state.init && !state.options.organizationId && props.organizations && props.organizations.length > 0) {
+      return {
+        options: {
+          ...state.options,
+          organizationId: props.organizations[0].id,
+        },
+        init: true,
       };
     }
 
     return null;
   }
 
-  onSearch = () => {
-    const { organizationId, searchWord, order, direction } = this.state;
-    this.getTopics(organizationId, searchWord, order, direction);
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      location,
+      location: { search },
+    } = this.props;
+
+    const {
+      options,
+      options: { organizationId },
+      init,
+    } = this.state;
+
+    console.log(init);
+    if (!init) {
+      return;
+    }
+
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+
+    if (!pathOptions.organizationId) {
+      pathOptions.organizationId = organizationId;
+    }
+
+    if ((!prevState.init && init) || location !== prevProps.location) {
+      this.getTopics({
+        ...options,
+        ...pathOptions,
+      });
+    }
+  }
+
+  getTopics = (options) => {
+    request.get('/api/topics', { ...options }, (data) => {
+      this.setState({
+        topics: data.topics || [],
+        options: {
+          ...options,
+        },
+      });
+    });
   };
-  
+
+  setOptionToUrl = () => {
+    const {
+      location: { pathname },
+      history,
+    } = this.props;
+
+    const { options } = this.state;
+
+    common.setOptions(history, pathname, options);
+  };
+
   createNewTopic = (topic) => {
-    const {topics} = this.state;
-    switch(topic.statusCode){
+    const { topics } = this.state;
+    switch (topic.statusCode) {
       case 'CREATE':
-        this.setState(prevState => ({
-          topics: [...prevState.topics, topic]
+        this.setState((prevState) => ({
+          topics: [...prevState.topics, topic],
         }));
         break;
-        
+
       case 'UPDATE':
         topics.forEach((t, idx) => {
-          if(t.id === topic.id){
+          if (t.id === topic.id) {
             topics[idx] = topic;
-        }});
+          }
+        });
         this.setState({
           topics,
         });
         break;
 
       case 'DELETE':
-        this.setState(prevState => ({
-          topics: [...prevState.topics, topic]
+        this.setState((prevState) => ({
+          topics: [...prevState.topics, topic],
         }));
         break;
       default:
-
     }
   };
 
   render() {
-    const { order, direction, organizationId, topics } = this.state;
-    // eslint-disable-next-line no-unused-vars
-    const { organizations, setUserAndOrganization: setUserAndOrganizationReducer, history, t } = this.props;
+    const { organizations, history, t } = this.props;
+
+    const {
+      options,
+      options: { organizationId, searchWord, order, direction },
+      topics,
+    } = this.state;
 
     return (
       <div className="topic-list-wrapper">
@@ -136,33 +163,72 @@ class TopicList extends React.Component {
           organizations={organizations}
           organizationId={organizationId}
           onChangeOrganization={(id) => {
-            this.setState({
-              organizationId: id,
-            });
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  organizationId: id,
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           order={order}
           onChangeOrder={(value) => {
-            this.setState({
-              order: value,
-            });
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  order: value,
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           direction={direction}
           onChangeDirection={(value) => {
-            this.setState({
-              direction: value,
-            });
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  direction: value,
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
           }}
           searchPlaceholder={t('label.searchByTopicName')}
-          onSearch={this.onSearch}
+          onSearch={this.setOptionToUrl}
           onChangeSearchWord={(value) => {
             this.setState({
-              searchWord: value,
+              options: {
+                ...options,
+                searchWord: value,
+              },
             });
           }}
+          searchWord={searchWord}
+          onClear={() => {
+            this.setState(
+              {
+                options: {
+                  ...options,
+                  searchWord: '',
+                },
+              },
+              () => {
+                this.setOptionToUrl();
+              },
+            );
+          }}
         />
-	      <SocketClient topics={['/sub/topic']}
-	      successRecieveMessage={(msg) => this.createNewTopic(msg)} />
-
+        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)} />
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
@@ -199,24 +265,11 @@ class TopicList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user,
     organizations: state.user.organizations,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
-  };
-};
-
 TopicList.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.string,
-  }),
   organizations: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -224,11 +277,14 @@ TopicList.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
-  setUserAndOrganization: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
   t: PropTypes.func,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
+  }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(TopicList)));
