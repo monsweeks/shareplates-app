@@ -7,7 +7,6 @@ import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageContent, PageTitle, SubContentBox } from '@/layouts';
 import { Col, EmptyMessage, P, Row, SubLabel, SubTitle, UserManager } from '@/components';
-import './Organization.scss';
 
 class Organization extends Component {
   constructor(props) {
