@@ -52,8 +52,9 @@ $list-group-hover-bg: lighten($list-group-bg, 10%);
 $list-group-active-color: $white;
 $list-group-active-bg: $list-group-bg;
 $list-group-disabled-color: lighten($list-group-bg, 30%);
-$border-color: #999;
+$border-color: #BBB;
 $sea-blue: #0978ae;
+$sub-content-color : #3c4252;
 
 :export {
   primaryColor: $primary;

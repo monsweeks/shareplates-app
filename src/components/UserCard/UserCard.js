@@ -6,13 +6,13 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class UserCard extends React.PureComponent {
   render() {
-    const { className, user, blockStyle, hover, onClick, selected, onRemove, marked, markedTag } = this.props;
+    const { className, user, blockStyle, hover, onClick, selected, onRemove, marked, markedTag, border } = this.props;
 
     return (
       <Card
-        className={`user-card-wrapper g-no-select ${className} ${blockStyle ? 'block-style' : ''} ${
-          hover ? 'hover' : ''
-        } ${selected ? 'selected' : ''}`}
+        className={`user-card-wrapper g-no-select ${className} ${border ? 'has-border' : ''} ${
+          blockStyle ? 'block-style' : ''
+        } ${hover ? 'hover' : ''} ${selected ? 'selected' : ''}`}
         onClick={() => {
           if (onClick) {
             onClick(user.id);
@@ -34,7 +34,9 @@ class UserCard extends React.PureComponent {
             </div>
             <div className="user-text">
               <div className="name">{user.name}</div>
-              <div className="email" data-tip={user.email}>{user.email}</div>
+              <div className="email" data-tip={user.email}>
+                {user.email}
+              </div>
             </div>
           </div>
           {onRemove && (
@@ -46,7 +48,7 @@ class UserCard extends React.PureComponent {
               }}
             />
           )}
-          {marked && <div className='marked-tag'>{markedTag}</div>}
+          {marked && <div className="marked-tag">{markedTag}</div>}
         </CardBody>
       </Card>
     );
@@ -59,8 +61,9 @@ UserCard.defaultProps = {
   className: '',
   hover: false,
   selected: false,
-  marked : false,
-  markedTag : '',
+  marked: false,
+  markedTag: '',
+  border: true,
 };
 
 UserCard.propTypes = {
@@ -76,6 +79,7 @@ UserCard.propTypes = {
   onClick: PropTypes.func,
   selected: PropTypes.bool,
   onRemove: PropTypes.func,
-  marked : PropTypes.bool,
-  markedTag : PropTypes.string,
+  marked: PropTypes.bool,
+  markedTag: PropTypes.string,
+  border: PropTypes.bool,
 };

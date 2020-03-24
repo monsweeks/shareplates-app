@@ -8,12 +8,14 @@ class Breadcrumbs extends React.PureComponent {
     const { list, className } = this.props;
     return (
       <div className={`breadcrumbs-wrapper ${className}`}>
+
         <ul>
+          <li><i className="fal fa-bread-slice"/></li>
           {list.map((item, inx) => {
             if (list.length - 1 === inx) {
               return (
                 <li key={inx}>
-                  <Link underline={false} effect={false} componentClassName="px-2" to={item.to}>
+                  <Link underline={false} effect={false}  to={item.to}>
                     {item.name}
                   </Link>
                 </li>
@@ -21,7 +23,7 @@ class Breadcrumbs extends React.PureComponent {
             }
             return (
               <li key={inx}>
-                <Link underline={false} effect={false} componentClassName="px-2" to={item.to}>
+                <Link underline={false} effect={false} to={item.to}>
                   {item.name}
                 </Link>
                 <i className="arrow fal fa-chevron-right" />

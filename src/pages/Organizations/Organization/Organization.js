@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
-import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, DateTime, EmptyMessage, P, SubLabel, SubTitle, UserManager } from '@/components';
+import { DetailLayout, PageContent, PageTitle, SubContentBox } from '@/layouts';
+import { Col, EmptyMessage, P, Row, SubLabel, SubTitle, UserManager } from '@/components';
+import './Organization.scss';
 
 class Organization extends Component {
   constructor(props) {
@@ -65,26 +66,46 @@ class Organization extends Component {
     );
   };
 
+  onDelete = () => {
+    const { organization } = this.state;
+    const { setConfirm: setConfirmReducer } = this.props;
+    setConfirmReducer(`${organization.name} 토픽을 정말 삭제하시겠습니까?`, () => {
+      this.deleteOrganization(organization.id);
+    });
+  };
+
+  onList = () => {
+    const { history } = this.props;
+    history.push('/organizations');
+  };
+
+  onEdit = () => {
+    const { organization } = this.state;
+    const { history } = this.props;
+
+    history.push(`/organizations/${organization.id}/edit`);
+  };
+
   render() {
     const {
       match: {
         params: { organizationId },
       },
     } = this.props;
-    const { t, history, setConfirm: setConfirmReducer } = this.props;
+    const { t } = this.props;
     const { organization, isAdmin } = this.state;
 
     return (
-      <DetailLayout className="organization-wrapper">
-        {organization === false && (
+      <DetailLayout className="organization-wrapper" margin={false}>
+        {!organization && (
           <EmptyMessage
-            className="h5"
+            className="h5 bg-white"
             message={
               <div>
                 <div className="h1">
                   <i className="fal fa-exclamation-circle" />
                 </div>
-                <div>{t('message.notFoundOrganization')}</div>
+                <div>{t('message.notFoundResource')}</div>
               </div>
             }
           />
@@ -92,6 +113,7 @@ class Organization extends Component {
         {organization && (
           <>
             <PageTitle
+              className=""
               list={[
                 {
                   name: t('label.organizationList'),
@@ -102,60 +124,57 @@ class Organization extends Component {
                   to: `/organizations/${organizationId}`,
                 },
               ]}
+              onDelete={isAdmin ? this.onDelete : null}
+              onList={this.onList}
+              onEdit={isAdmin ? this.onEdit : null}
+              marginBottom={false}
+              border
             >
-              {organization.name}
+              {t('ORG 정보')}
             </PageTitle>
-            <hr className="d-none d-sm-block mb-3" />
-            <div className="flex-grow-1">
-              <SubTitle>{t('GENERAL INFO')}</SubTitle>
-              <SubLabel>{t('label.name')}</SubLabel>
-              <P className="bg-white" upppercase>
-                {organization.name}
-              </P>
-              <SubLabel>{t('label.desc')}</SubLabel>
-              <P className="bg-white" upppercase pre>
-                {organization.description}
-              </P>
-              <hr className="g-dashed mb-3" />
-              <SubTitle>{t('USERS')}</SubTitle>
-              <div className="position-relative mb-3">
-                <SubLabel>{t('label.organizationAdmin')}</SubLabel>
-              </div>
-              <div>
-                <UserManager lg={3} md={4} sm={6} xl={12} users={organization.admins} />
-              </div>
-              <div className="position-relative mb-3">
-                <SubLabel>{t('label.organizationMember')}</SubLabel>
-              </div>
-              <div>
-                <UserManager lg={3} md={4} sm={6} xl={12} users={organization.members} />
-              </div>
-            </div>
-            <div className="flex-grow-0 text-right small">
-              <DateTime value={organization.creationDate} /> 생성
-            </div>
-            {isAdmin && (
-              <BottomButton
-                onDelete={() => {
-                  setConfirmReducer(`${organization.name} 토픽을 정말 삭제하시겠습니까?`, () => {
-                    this.deleteOrganization(organization.id);
-                  });
-                }}
-                onList={() => {
-                  history.push('/organizations');
-                }}
-                onEdit={() => {
-                  history.push(`/organizations/${organizationId}/edit`);
-                }}
-              />
-            )}
-            {!isAdmin && (
-              <BottomButton
-                onList={() => {
-                  history.push('/organizations');
-                }}
-              />
-            )}
+            <PageContent>
+              <Row className="flex-grow-1">
+                <Col lg={4} className="d-flex flex-column flex-grow-1 pr-3 pr-lg-2">
+                  <SubTitle className="flex-grow-0 text-white">{t('GENERAL INFO')}</SubTitle>
+                  <SubContentBox className="flex-grow-1">
+                    <SubLabel>{t('label.name')}</SubLabel>
+                    <P upppercase className="mb-3">
+                      {organization.name}
+                    </P>
+                    <SubLabel>{t('label.desc')}</SubLabel>
+                    <P upppercase pre>
+                      {organization.description}
+                    </P>
+                  </SubContentBox>
+                </Col>
+                <Col lg={8} className="d-flex flex-column flex-grow-1">
+                  <SubTitle className="text-white flex-grow-0 mt-3 mt-lg-0">{t('어드민')}</SubTitle>
+                  <SubContentBox className="flex-grow-1">
+                    <UserManager
+                      className="h-auto pb-0"
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      xl={12}
+                      users={organization.admins}
+                      border
+                    />
+                  </SubContentBox>
+                  <SubTitle className="text-white flex-grow-0 mt-3">{t('label.organizationMember')}</SubTitle>
+                  <SubContentBox className="flex-grow-1">
+                    <UserManager
+                      className="h-auto pb-0"
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      xl={12}
+                      users={organization.members}
+                      border
+                    />
+                  </SubContentBox>
+                </Col>
+              </Row>
+            </PageContent>
           </>
         )}
       </DetailLayout>

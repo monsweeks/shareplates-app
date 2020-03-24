@@ -3,6 +3,9 @@
   height: 60px;
   background-color: $secondary;
   background-color: #42647F;
+  background-color: $primary;
+  background-color: #333;
+  background-color: lighten($primary, 10%);
   color: $white;
   overflow: hidden;
   text-align: center;
@@ -10,6 +13,7 @@
   display: flex;
   flex: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border: none;
 
   > div {
     flex: 1;

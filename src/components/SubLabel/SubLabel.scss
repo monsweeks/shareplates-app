@@ -1,13 +1,18 @@
 .sub-label-wrapper {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+
   > span {
-    display: inline-block;
-    background-color: $gray-600;
-    _background-color: $secondary;
-    color: $white;
-    font-size: 0.8rem;
-    padding: 4px 8px;
     border-radius: 3px;
+    font-size: 0.7rem;
+    display: inline-block;
     line-height: 100%;
+    _color: #21a9e1;
+    border: 1px solid $border-color;
+    padding: 4px 8px;
+    > span.icon {
+      margin-right: 0.25rem;
+    }
+    > span.text {
+    }
   }
 }

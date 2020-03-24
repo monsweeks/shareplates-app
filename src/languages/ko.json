@@ -109,6 +109,8 @@
   "message.organizationDescDesc": "ORG에 대한 설명을 입력해주세요.",
   "message.organizationAdminDesc": "ORG의 어드민을 지정합니다. 어드민은 ORG 정보를 변경하거나, 삭제할 수 있으며, ORG의 사용자를 추가하거나, 삭제할 수 있습니다.",
   "message.organizationUserDesc": "ORG의 멤버를 지정합니다. 멤버는 ORG의 토픽을 조회할 수 있습니다.",
+  "message.notFoundResource": "요청하신 리소스를 찾을 수 없습니다.",
+
 
 
 

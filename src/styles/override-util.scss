@@ -1,3 +1,34 @@
+.container {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+
+
+.bg-sub-content {
+  background-color: $sub-content-color;
+}
+
+.bg-dark-1 {
+  background-color: rgba(0,0,0,0.01);
+}
+
+.bg-dark-2 {
+  background-color: rgba(0,0,0,0.02);
+}
+
+.bg-dark-3 {
+  background-color: rgba(0,0,0,0.03);
+}
+
+.bg-dark-4 {
+  background-color: rgba(0,0,0,0.04);
+}
+
+.bg-dark-5 {
+  background-color: rgba(0,0,0,0.05);
+}
+
 .g-overlay {
   position: fixed;
   left: 0;
@@ -19,4 +50,8 @@
 
 .g-border-normal {
   border-color: rgba(0, 0, 0, 0.4);
+}
+
+.g-light-border-color {
+  border-color: #bbb !important;
 }

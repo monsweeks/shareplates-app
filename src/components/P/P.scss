@@ -1,8 +1,10 @@
 .p-wrapper {
-  padding: 0.25rem;
-  background-color: #f8f8f8;
-  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2px;
   margin-bottom: 0.5rem;
+  background-color: $sub-content-color;
+  background-color: $gray-700;
+  color: $white;
 
   @media (max-width: 576px) {
     font-size: 0.9rem;
