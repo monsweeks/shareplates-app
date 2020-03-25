@@ -143,6 +143,7 @@ class UserSearchPopup extends React.Component {
                   markedUsers={markedUsers}
                   markedTag={markedTag}
                   emptyContent="검색된 사용자가 없습니다"
+                  edit
                 />
               </div>
             </div>
@@ -154,7 +155,7 @@ class UserSearchPopup extends React.Component {
                   <span>추가된 사용자</span>
                 </div>
               </div>
-              <div className="user-select-result scrollbar">
+              <div className="user-select-result scrollbar ">
                 <UserManager
                   onRemove={(id) => {
                     const selected = selectedUsers.slice(0);
@@ -176,6 +177,7 @@ class UserSearchPopup extends React.Component {
                   sm={12}
                   users={selectedUsers}
                   emptyContent="검색된 사용자가 없습니다"
+                  edit
                 />
               </div>
             </div>

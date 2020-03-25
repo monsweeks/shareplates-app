@@ -6,28 +6,28 @@
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   max-width: 1200px !important;
-
-  > div {
-    background-color: $white;
-    background-color: lighten($secondary, 10%);
-    background-color: $white;
-    border-radius: 5px;
-    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
+  background-color: $white;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 1.5rem;
 
   &.fill {
     min-height: calc(100% - 60px);
   }
 
+  @media (max-width: 1248px) {
+    margin-left: 1.5rem !important;
+    margin-right: 1.5rem !important;
+  }
+
+  @media (max-width: 768px) {
+    margin: 0.75rem !important;
+  }
+
+
   @media (max-width: 576px) {
     border-radius: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: 10px 15px !important;
-
+    margin: 0 !important;
     &.fill {
       min-height: 100%;
     }

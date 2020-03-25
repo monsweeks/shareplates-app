@@ -11,7 +11,6 @@ import {
   Input,
   Popup,
   SubLabel,
-  SubTitle,
   TextArea,
   UserManager,
   UserSearchPopup,
@@ -136,7 +135,6 @@ class OrganizationForm extends Component {
     return (
       <>
         <Form onSubmit={this.onSubmit} className="organization-form-wrapper flex-grow-1">
-          <SubTitle>{t('GENERAL INFO')}</SubTitle>
           <SubLabel>{t('label.name')}</SubLabel>
           <Description>{t('message.organizationNameDesc')}</Description>
           <FormGroup>
@@ -153,6 +151,7 @@ class OrganizationForm extends Component {
             />
             {existName && <div className="small text-danger mt-2">{t('validation.dupName')}</div>}
           </FormGroup>
+          <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.desc')}</SubLabel>
           <Description>{t('message.organizationDescDesc')}</Description>
           <FormGroup>
@@ -166,22 +165,20 @@ class OrganizationForm extends Component {
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
-          <SubTitle>{t('USERS')}</SubTitle>
           <div className="position-relative">
             <SubLabel>{t('label.organizationAdmin')}</SubLabel>
             <Description>{t('message.organizationAdminDesc')}</Description>
             <Button
-              className="manager-button"
+              className="g-circle-icon-button manager-button"
               color="primary"
-              size="xs"
               onClick={() => {
                 this.setOpenPopup('openAdminPopup', true);
               }}
             >
-              {t('label.userManagement')}
+              <i className="fal fa-plus" />
             </Button>
           </div>
-          <FormGroup>
+          <FormGroup className="mt-2">
             <UserManager
               onRemove={(id) => {
                 const admins = organization.admins.splice(0);
@@ -191,29 +188,29 @@ class OrganizationForm extends Component {
                   organization: { ...organization, admins },
                 });
               }}
-              className="mt-3 mt-sm-0"
               lg={3}
               md={4}
               sm={6}
               xl={12}
               users={organization.admins}
+              className='bg-light'
             />
           </FormGroup>
+          <hr className="g-dashed mb-3" />
           <div className="position-relative">
             <SubLabel>{t('label.organizationMember')}</SubLabel>
             <Description>{t('message.organizationUserDesc')}</Description>
             <Button
-              className="manager-button"
+              className="g-circle-icon-button manager-button"
               color="primary"
-              size="xs"
               onClick={() => {
                 this.setOpenPopup('openMemberPopup', true);
               }}
             >
-              {t('label.userManagement')}
+              <i className="fal fa-plus" />
             </Button>
           </div>
-          <FormGroup>
+          <FormGroup className="mt-2">
             <UserManager
               onRemove={(id) => {
                 const members = organization.members.splice(0);
@@ -223,15 +220,15 @@ class OrganizationForm extends Component {
                   organization: { ...organization, members },
                 });
               }}
-              className="mt-3 mt-sm-0"
               lg={3}
               md={4}
               sm={6}
               xl={12}
               users={organization.members}
+              className='bg-light'
             />
           </FormGroup>
-          <BottomButton className="text-center" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-center mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {(openAdminPopup || openMemberPopup) && (
           <Popup title="사용자 검색" open setOpen={this.setClosePopup}>

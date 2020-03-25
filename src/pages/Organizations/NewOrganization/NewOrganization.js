@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { OrganizationForm } from '@/pages';
-import { Description } from '@/components';
+import { PageIntro } from '@/components';
 
 class NewOrganization extends React.PureComponent {
   onSubmit = (organization) => {
@@ -32,16 +32,16 @@ class NewOrganization extends React.PureComponent {
               to: '/organizations/new',
             },
           ]}
+          border
         >
           {t('label.makeOrg')}
         </PageTitle>
-        <hr className="d-none d-sm-block mb-3" />
-        <Description>
+        <PageIntro>
           {t(
             'SHAREPLATES에서 사용자들의 모임을 ORG라고 표현합니다. 동일한 관심사를 가진 사용자들이 모인 ORG를 만들어서, ORG에 포함된 토픽 컨텐츠를 공유할 수 있습니다.',
           )}
-        </Description>
-        <OrganizationForm saveText="label.makeTopic" onSave={this.onSubmit} user={user} organizations={organizations} />
+        </PageIntro>
+        <OrganizationForm saveText="label.makeOrg" onSave={this.onSubmit} user={user} organizations={organizations} />
       </RegisterLayout>
     );
   }

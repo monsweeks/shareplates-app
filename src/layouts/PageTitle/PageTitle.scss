@@ -1,18 +1,17 @@
 .page-title-wrapper {
   flex-grow: 0;
   line-height: 0;
-  padding: 1.75rem 1rem 1rem;
+  padding: 2rem 1.5rem 1rem;
   position: relative;
-  _background-color: red;
-  background-color: $white;
   border-radius: 5px 5px 0 0;
+  margin: -1.5rem -1.5rem 0;
 
   @media (max-width: 576px) {
     border-radius: 0;
   }
 
   &.has-border {
-    border-bottom: 1px double rgba(0,0,0,0.2);
+    border-bottom: 1px double rgba(0, 0, 0, 0.2);
   }
 
   > h1 {
@@ -85,7 +84,7 @@
     font-size: 0.7rem;
     line-height: 160%;
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: 1rem;
 
     @media (max-width: 576px) {

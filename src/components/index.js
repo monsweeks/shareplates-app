@@ -38,6 +38,7 @@ import OrganizationCard from '@/components/OrganizationCard/OrganizationCard';
 import SubTitle from '@/components/SubTitle/SubTitle';
 import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
+import PageIntro from '@/components/PageIntro/PageIntro';
 
 export {
   Button,
@@ -80,4 +81,5 @@ export {
   SocketClient,
   SubTitle,
   ObjectImage,
+  PageIntro,
 };
