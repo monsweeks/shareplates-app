@@ -95,8 +95,8 @@ class Organization extends Component {
     const { organization, isAdmin } = this.state;
 
     return (
-      <DetailLayout className="organization-wrapper" margin={false}>
-        {!organization && (
+      <DetailLayout margin={false}>
+        {!organization && organization === false  && (
           <EmptyMessage
             className="h5 bg-white"
             message={
@@ -127,15 +127,14 @@ class Organization extends Component {
               onList={this.onList}
               onEdit={isAdmin ? this.onEdit : null}
               marginBottom={false}
-              border
             >
               {t('ORG 정보')}
             </PageTitle>
             <PageContent>
               <Row className="flex-grow-1">
                 <Col lg={4} className="d-flex flex-column flex-grow-1 pr-3 pr-lg-2">
-                  <SubTitle className="flex-grow-0 text-white">{t('GENERAL INFO')}</SubTitle>
                   <SubContentBox className="flex-grow-1">
+                    <SubTitle className="flex-grow-0">{t('GENERAL INFO')}</SubTitle>
                     <SubLabel>{t('label.name')}</SubLabel>
                     <P upppercase className="mb-3">
                       {organization.name}
@@ -147,8 +146,8 @@ class Organization extends Component {
                   </SubContentBox>
                 </Col>
                 <Col lg={8} className="d-flex flex-column flex-grow-1">
-                  <SubTitle className="text-white flex-grow-0 mt-3 mt-lg-0">{t('어드민')}</SubTitle>
-                  <SubContentBox className="flex-grow-1">
+                  <SubContentBox className="flex-grow-1 mb-3">
+                    <SubTitle className="flex-grow-0">{t('어드민')}</SubTitle>
                     <UserManager
                       className="h-auto pb-0"
                       lg={3}
@@ -159,8 +158,8 @@ class Organization extends Component {
                       border
                     />
                   </SubContentBox>
-                  <SubTitle className="text-white flex-grow-0 mt-3">{t('label.organizationMember')}</SubTitle>
-                  <SubContentBox className="flex-grow-1">
+                  <SubContentBox className="flex-grow-1 mt-2">
+                    <SubTitle className="flex-grow-0">{t('label.organizationMember')}</SubTitle>
                     <UserManager
                       className="h-auto pb-0"
                       lg={3}

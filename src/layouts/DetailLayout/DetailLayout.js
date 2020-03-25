@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 
 class DetailLayout extends React.PureComponent {
   render() {
-    const { children, className, fill, margin } = this.props;
-    return <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}><div className={margin ? 'p-4' : ''}>{children}</div></div>;
+    const { children, className, fill } = this.props;
+    return (
+      <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}>
+        <div>{children}</div>
+      </div>
+    );
   }
 }
 
@@ -13,13 +17,11 @@ export default DetailLayout;
 
 DetailLayout.defaultProps = {
   className: '',
-  fill : false,
-  margin : true,
+  fill: false,
 };
 
 DetailLayout.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  fill : PropTypes.bool,
-  margin : PropTypes.bool,
+  fill: PropTypes.bool,
 };

@@ -78,7 +78,6 @@ class TopicList extends React.Component {
       init,
     } = this.state;
 
-    console.log(init);
     if (!init) {
       return;
     }

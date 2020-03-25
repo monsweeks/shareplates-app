@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
-import { PageTitle, RegisterLayout } from '@/layouts';
+import { PageContent, PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/pages';
 
 class NewTopic extends React.PureComponent {
@@ -31,11 +31,14 @@ class NewTopic extends React.PureComponent {
               to: '/topics/new',
             },
           ]}
+          marginBottom={false}
+          border
         >
           {t('message.makeNewTopic')}
         </PageTitle>
-        <hr className="d-none d-sm-block mb-3" />
-        <TopicForm saveText="label.makeTopic" onSave={this.onSubmit} user={user} organizations={organizations} />
+        <PageContent>
+          <TopicForm saveText="label.makeTopic" onSave={this.onSubmit} user={user} organizations={organizations} />
+        </PageContent>
       </RegisterLayout>
     );
   }

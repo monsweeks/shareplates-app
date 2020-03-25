@@ -19,7 +19,7 @@ class UserCard extends React.PureComponent {
           }
         }}
       >
-        <CardBody className="p-2">
+        <CardBody>
           <div className="user-card-content">
             <div className="user-icon">
               {user.info && <Avatar data={JSON.parse(user.info)} />}
@@ -28,9 +28,6 @@ class UserCard extends React.PureComponent {
                   <i className="fal fa-smile" />
                 </span>
               )}
-            </div>
-            <div className="separator">
-              <div />
             </div>
             <div className="user-text">
               <div className="name">{user.name}</div>
