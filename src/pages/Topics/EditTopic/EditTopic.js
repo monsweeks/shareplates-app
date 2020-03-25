@@ -56,7 +56,7 @@ class EditTopic extends React.PureComponent {
     const { t, organizations, user, history } = this.props;
     const { topic } = this.state;
     return (
-      <RegisterLayout className="new-topic-wrapper">
+      <RegisterLayout>
         {topic === false && (
           <EmptyMessage
             className="h5"
@@ -87,10 +87,10 @@ class EditTopic extends React.PureComponent {
                   to: `/topics/${topicId}/edit`,
                 },
               ]}
+              border
             >
               {t('message.editTopic')}
             </PageTitle>
-            <hr className="d-none d-sm-block mb-3" />
             <TopicForm
               edit
               saveText="button.edit"

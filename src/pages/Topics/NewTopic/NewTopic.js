@@ -4,8 +4,9 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
-import { PageContent, PageTitle, RegisterLayout } from '@/layouts';
+import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/pages';
+import { PageIntro } from '@/components';
 
 class NewTopic extends React.PureComponent {
   onSubmit = (topic) => {
@@ -16,10 +17,15 @@ class NewTopic extends React.PureComponent {
     });
   };
 
+  onCancel = () => {
+    const { history } = this.props;
+    history.push('/topics');
+  };
+
   render() {
     const { t, organizations, user } = this.props;
     return (
-      <RegisterLayout className="new-topic-wrapper">
+      <RegisterLayout>
         <PageTitle
           list={[
             {
@@ -31,14 +37,18 @@ class NewTopic extends React.PureComponent {
               to: '/topics/new',
             },
           ]}
-          marginBottom={false}
           border
         >
           {t('message.makeNewTopic')}
         </PageTitle>
-        <PageContent>
-          <TopicForm saveText="label.makeTopic" onSave={this.onSubmit} user={user} organizations={organizations} />
-        </PageContent>
+        <PageIntro>{t('토픽에 대한 설명')}</PageIntro>
+        <TopicForm
+          saveText="label.makeTopic"
+          onSave={this.onSubmit}
+          user={user}
+          organizations={organizations}
+          onCancel={this.onCancel}
+        />
       </RegisterLayout>
     );
   }

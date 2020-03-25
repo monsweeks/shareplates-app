@@ -17,13 +17,11 @@ import {
   Popup,
   Selector,
   SubLabel,
-  SubTitle,
   TextArea,
   UserManager,
   UserSearchPopup,
 } from '@/components';
 import './TopicForm.scss';
-import { SubContentBox } from '@/layouts';
 
 class TopicForm extends Component {
   constructor(props) {
@@ -151,29 +149,7 @@ class TopicForm extends Component {
     return (
       <>
         <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
-          <SubTitle className="flex-grow-0 mb-0">{t('ORGANIZATION')}</SubTitle>
-          <SubContentBox arrow={false} className="flex-grow-1 shadow-none px-0 pt-0">
-            <Description>{t('message.selectOrgForTopic')}</Description>
-            <Selector
-              outline
-              className="organization-selector ml-1"
-              items={organizations.map((org) => {
-                return {
-                  key: org.id,
-                  value: org.name,
-                };
-              })}
-              value={topic.organizationId}
-              onChange={this.onChange('organizationId')}
-            />
-          </SubContentBox>
-          <SubTitle className="flex-grow-0 mt-3 mb-0">{t('label.icon')}</SubTitle>
-          <SubContentBox arrow={false} className="flex-grow-1 shadow-none px-0 pt-0">
-            <Description>{t('message.topicIconDesc')}</Description>
-            <IconSelector className="icon-selector" iconIndex={topic.iconIndex} onChange={this.onChange('iconIndex')} />
-          </SubContentBox>
-
-          <SubLabel>{t('ORGANIZATION')}</SubLabel>
+          <SubLabel>{t('ORG')}</SubLabel>
           <Description>{t('message.selectOrgForTopic')}</Description>
           <FormGroup>
             <Selector
@@ -242,19 +218,17 @@ class TopicForm extends Component {
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
             <Button
-              className="manager-button"
+              className="g-circle-icon-button manager-button"
               color="primary"
-              size="xs"
               onClick={() => {
                 this.setOpenUserPopup(true);
               }}
             >
-              {t('label.userManagement')}
+              <i className="fal fa-plus" />
             </Button>
           </div>
-          <FormGroup>
+          <FormGroup className="mt-2">
             <UserManager
-              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const users = topic.users.splice(0);
                 const index = users.findIndex((u) => u.id === id);
@@ -263,7 +237,7 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
-              className="mt-3 mt-sm-0"
+              className="bg-light"
               lg={3}
               md={4}
               sm={6}
@@ -271,7 +245,7 @@ class TopicForm extends Component {
               users={topic.users}
             />
           </FormGroup>
-          <BottomButton className="text-center" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {openUserPopup && (
           <Popup title="사용자 검색" open setOpen={this.setOpenUserPopup}>

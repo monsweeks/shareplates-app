@@ -228,7 +228,7 @@ class OrganizationForm extends Component {
               className='bg-light'
             />
           </FormGroup>
-          <BottomButton className="text-center mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {(openAdminPopup || openMemberPopup) && (
           <Popup title="사용자 검색" open setOpen={this.setClosePopup}>
