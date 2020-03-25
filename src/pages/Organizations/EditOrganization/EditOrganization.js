@@ -47,12 +47,18 @@ class EditOrganization extends React.PureComponent {
     });
   };
 
+  onCancel = () => {
+    const { history } = this.props;
+    const { organization } = this.state;
+    history.push(`/organizations/${organization.id}`);
+  };
+
   render() {
     const { t } = this.props;
     const { organization } = this.state;
 
     return (
-      <RegisterLayout className="new-organization-wrapper">
+      <RegisterLayout>
         <PageTitle
           list={[
             {
@@ -64,11 +70,17 @@ class EditOrganization extends React.PureComponent {
               to: '/organizations/new',
             },
           ]}
+          border
         >
           {t('ORG 편집')}
         </PageTitle>
-        <hr className="d-none d-sm-block mb-3" />
-        <OrganizationForm edit saveText="label.saveOrg" onSave={this.onSubmit} organization={organization} />
+        <OrganizationForm
+          edit
+          saveText="label.saveOrg"
+          onSave={this.onSubmit}
+          onCancel={this.onCancel}
+          organization={organization}
+        />
       </RegisterLayout>
     );
   }

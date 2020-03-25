@@ -17,10 +17,15 @@ class NewOrganization extends React.PureComponent {
     });
   };
 
+  onCancel = () => {
+    const { history } = this.props;
+    history.push('/organizations');
+  };
+
   render() {
-    const { t, organizations, user } = this.props;
+    const { t, user } = this.props;
     return (
-      <RegisterLayout className="new-organization-wrapper">
+      <RegisterLayout>
         <PageTitle
           list={[
             {
@@ -41,7 +46,7 @@ class NewOrganization extends React.PureComponent {
             'SHAREPLATES에서 사용자들의 모임을 ORG라고 표현합니다. 동일한 관심사를 가진 사용자들이 모인 ORG를 만들어서, ORG에 포함된 토픽 컨텐츠를 공유할 수 있습니다.',
           )}
         </PageIntro>
-        <OrganizationForm saveText="label.makeOrg" onSave={this.onSubmit} user={user} organizations={organizations} />
+        <OrganizationForm saveText="label.makeOrg" onSave={this.onSubmit} user={user} onCancel={this.onCancel} />
       </RegisterLayout>
     );
   }
@@ -50,7 +55,6 @@ class NewOrganization extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
   };
 };
 
@@ -67,13 +71,6 @@ NewOrganization.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      publicYn: PropTypes.bool,
-    }),
-  ),
   t: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
