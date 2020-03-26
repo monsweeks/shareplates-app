@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
-import { DetailLayout, PageContent, PageTitle, SubContentBox } from '@/layouts';
-import { Col, EmptyMessage, P, Row, SubLabel, SubTitle, UserManager } from '@/components';
+import { DetailLayout, PageTitle } from '@/layouts';
+import { EmptyMessage, P, SubLabel, UserManager } from '@/components';
 
 class Organization extends Component {
   constructor(props) {
@@ -96,7 +96,7 @@ class Organization extends Component {
 
     return (
       <DetailLayout margin={false}>
-        {!organization && organization === false  && (
+        {!organization && organization === false && (
           <EmptyMessage
             className="h5 bg-white"
             message={
@@ -126,53 +126,22 @@ class Organization extends Component {
               onDelete={isAdmin ? this.onDelete : null}
               onList={this.onList}
               onEdit={isAdmin ? this.onEdit : null}
-              marginBottom={false}
+              border
             >
               {t('ORG 정보')}
             </PageTitle>
-            <PageContent>
-              <Row className="flex-grow-1">
-                <Col lg={4} className="d-flex flex-column flex-grow-1 pr-3 pr-lg-2">
-                  <SubContentBox className="flex-grow-1">
-                    <SubTitle className="flex-grow-0">{t('GENERAL INFO')}</SubTitle>
-                    <SubLabel>{t('label.name')}</SubLabel>
-                    <P upppercase className="mb-3">
-                      {organization.name}
-                    </P>
-                    <SubLabel>{t('label.desc')}</SubLabel>
-                    <P upppercase pre>
-                      {organization.description}
-                    </P>
-                  </SubContentBox>
-                </Col>
-                <Col lg={8} className="d-flex flex-column flex-grow-1">
-                  <SubContentBox className="flex-grow-1 mb-3">
-                    <SubTitle className="flex-grow-0">{t('어드민')}</SubTitle>
-                    <UserManager
-                      className="h-auto pb-0"
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      xl={12}
-                      users={organization.admins}
-                      border
-                    />
-                  </SubContentBox>
-                  <SubContentBox className="flex-grow-1 mt-2">
-                    <SubTitle className="flex-grow-0">{t('label.organizationMember')}</SubTitle>
-                    <UserManager
-                      className="h-auto pb-0"
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      xl={12}
-                      users={organization.members}
-                      border
-                    />
-                  </SubContentBox>
-                </Col>
-              </Row>
-            </PageContent>
+            <SubLabel>{t('label.name')}</SubLabel>
+            <P upppercase className="mb-3">
+              {organization.name}
+            </P>
+            <SubLabel>{t('label.desc')}</SubLabel>
+            <P upppercase pre>
+              {organization.description}
+            </P>
+            <SubLabel>{t('어드민')}</SubLabel>
+            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={organization.admins} border />
+            <SubLabel>{t('label.organizationMember')}</SubLabel>
+            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={organization.members} border />
           </>
         )}
       </DetailLayout>

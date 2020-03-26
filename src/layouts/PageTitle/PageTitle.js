@@ -18,7 +18,7 @@ class PageTitle extends React.PureComponent {
         </h1>
         <span className="page-title-button">
             {onDelete && (
-              <Button color="danger" onClick={onDelete}>
+              <Button className='mr-3' color="danger" onClick={onDelete}>
                 <i className="fal fa-trash-alt" />
               </Button>
             )}

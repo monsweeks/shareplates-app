@@ -6,9 +6,7 @@ class DetailLayout extends React.PureComponent {
   render() {
     const { children, className, fill } = this.props;
     return (
-      <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}>
-        <div>{children}</div>
-      </div>
+      <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}>{children}</div>
     );
   }
 }

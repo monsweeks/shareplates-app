@@ -1,8 +1,7 @@
 .user-card-wrapper {
   text-align: center;
   position: relative;
-  border: 1px solid $border-color;
-  border: 1px solid #A8A8A8;
+  border: 1px solid #a8a8a8 !important;
   border-radius: 2px;
 
   .remove-button {
@@ -21,6 +20,10 @@
     color: $white;
     padding: 1px 5px;
     border-radius: 3px;
+  }
+
+  .card-body {
+    padding: 0.75rem;
   }
 
   .user-card-content {
@@ -48,13 +51,12 @@
       }
 
       &.user-text {
-        background-color: lighten($secondary, 60%);
-        background-color: #f0f5f1;
         background-color: #eef3f7;
+        background-color: $light;
         text-align: left;
         align-items: center;
-        margin: -30px -1.25rem -1.25rem;
-        padding: 30px 1rem 1rem;
+        margin: -30px -0.75rem -0.75rem;
+        padding: 30px 0.75rem 0.75rem;
         border-top: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 0 0 2px 2px;
 
