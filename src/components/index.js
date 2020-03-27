@@ -39,6 +39,7 @@ import SubTitle from '@/components/SubTitle/SubTitle';
 import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
 import PageIntro from '@/components/PageIntro/PageIntro';
+import ChapterCard from '@/components/ChapterCard/ChapterCard';
 
 export {
   Button,
@@ -82,4 +83,5 @@ export {
   SubTitle,
   ObjectImage,
   PageIntro,
+  ChapterCard,
 };
