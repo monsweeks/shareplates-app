@@ -12,8 +12,8 @@ import '@/styles/lib/react-grid-layout.scss';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 export const GRID_SETTINGS = {
-  breakpoints: { lg: 801, md: 800 },
-  cols: { lg: 6, md: 6 },
+  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
+  cols: { lg: 6, md: 4, sm: 3, xs: 1 },
   defaultBoxSize: {
     lg: {
       width: 2,
@@ -24,6 +24,19 @@ export const GRID_SETTINGS = {
       height: 4,
     },
   },
+};
+
+const DEFAULT_LAYOUT_INFO = {
+  w: 1,
+  h: 1,
+  minW: 1,
+  maxW: 1,
+  minH: 1,
+  maxH: 1,
+  moved: false,
+  static: false,
+  isDraggable: true,
+  isResizable: false,
 };
 
 class ChapterList extends React.PureComponent {
@@ -40,6 +53,7 @@ class ChapterList extends React.PureComponent {
 
     this.state = {
       topicId,
+      topic: {},
       chapters: [],
       gridLayouts: this.getEmptyGridLayout(GRID_SETTINGS),
     };
@@ -74,8 +88,24 @@ class ChapterList extends React.PureComponent {
 
   getTopics = (topicId) => {
     request.get('/api/chapters', { topicId }, (data) => {
+      console.log(data);
+      const gridLayouts = this.getEmptyGridLayout(GRID_SETTINGS);
+
+      data.chapters.forEach((chapter) => {
+        Object.keys(gridLayouts).forEach((breakpoint) => {
+          gridLayouts[breakpoint].push({
+            ...DEFAULT_LAYOUT_INFO,
+            i: String(chapter.id),
+            x: this.getX(breakpoint, chapter.orderNo),
+            y: this.getY(breakpoint, chapter.orderNo),
+          });
+        });
+      });
+
       this.setState({
+        topic: data.topic || {},
         chapters: data.chapters || [],
+        gridLayouts,
       });
     });
   };
@@ -110,68 +140,63 @@ class ChapterList extends React.PureComponent {
   };
 
   onLayoutChange = (layout, layouts) => {
-    console.log(layout);
-    console.log(layouts);
+    const { chapters } = this.state;
 
+    // 현재 레이아웃 정보에서 col과 row 기준으로 순서대로 정렬
     layout.sort((a, b) => {
       return a.y * GRID_SETTINGS.cols[this.breakpoint] + a.x - (b.y * GRID_SETTINGS.cols[this.breakpoint] + b.x);
     });
 
-    const { chapters } = this.state;
-    const next = [];
+    // 정렬된 순서로 챕터의 orderNo를 다시 지정하고, 빈 곳이 없도록 레이아웃의 위치를 순서대로 다시 작성한다.
+    const nextChapters = [];
     const nextGridLayouts = { ...layouts };
-
-
-
     layout.forEach((item, inx) => {
-      const info = chapters.find((chapter) => String(chapter.id) === String(item.i));
-      next.push({
-        ...info,
+      const chapterInfo = chapters.find((chapter) => String(chapter.id) === String(item.i));
+      nextChapters.push({
+        ...chapterInfo,
         orderNo: inx + 1,
       });
 
-      const l = nextGridLayouts[this.breakpoint].find((d) => String(d.i) === String(item.i));
-      console.log(nextGridLayouts[this.breakpoint]);
-      if (l) {
-        l.x = this.getX(inx + 1);
-        l.y = this.getY(inx + 1);
-      }
-
+      Object.keys(nextGridLayouts).forEach((breakpoint) => {
+        const layoutInfo = nextGridLayouts[breakpoint].find((d) => String(d.i) === String(item.i));
+        if (layoutInfo) {
+          layoutInfo.x = this.getX(breakpoint, inx + 1);
+          layoutInfo.y = this.getY(breakpoint, inx + 1);
+        }
+      });
     });
 
-
-      this.setState({
-        chapters: next,
+    this.setState(
+      {
+        chapters: nextChapters,
         gridLayouts: nextGridLayouts,
-      });
-
-
-
-    console.log(nextGridLayouts);
-    console.log(next);
+      },
+      () => {
+        // update chapters orders
+      },
+    );
   };
 
-  getX = (orderNo) => {
-    const next = (orderNo % GRID_SETTINGS.cols[this.breakpoint]) - 1;
+  getX = (breakpoint, orderNo) => {
+    const next = (orderNo % GRID_SETTINGS.cols[breakpoint]) - 1;
     if (next < 0) {
-      return GRID_SETTINGS.cols[this.breakpoint] - 1;
+      return GRID_SETTINGS.cols[breakpoint] - 1;
     }
     return next;
   };
 
-  getY = (orderNo) => {
-    return Math.floor((orderNo - 1) / GRID_SETTINGS.cols[this.breakpoint]);
+  getY = (breakpoint, orderNo) => {
+    return Math.floor((orderNo - 1) / GRID_SETTINGS.cols[breakpoint]);
   };
 
   render() {
-    const { chapters, gridLayouts } = this.state;
-
-    console.log(gridLayouts);
+    const { topic, chapters, gridLayouts } = this.state;
 
     return (
       <FullLayout className="chapter-list-wrapper">
         <div className="chapter-list pt-4">
-          <div>
+          <div className="text-white text-center">{topic.name}</div>
+          <div className="text-right p-4">
             <Button
               onClick={() => {
                 this.createChapter();
@@ -180,49 +205,51 @@ class ChapterList extends React.PureComponent {
               추가
             </Button>
           </div>
-          <ResponsiveReactGridLayout
-            onLayoutChange={this.onLayoutChange}
-            className="layout"
-            breakpoints={GRID_SETTINGS.breakpoints}
-            cols={GRID_SETTINGS.cols}
-            rowHeight={120}
-            isResizable={false}
-            compactType="horizontal"
-            verticalCompact
-            layouts={gridLayouts}
-            onBreakpointChange={(newBreakpoint, newCols) => {
-              console.log(newBreakpoint, newCols);
-            }}
-            // layout={gridLayouts}
-          >
-            {chapters.map((chapter) => {
-              console.log(chapter.orderNo, this.getX(chapter.orderNo), this.getY(chapter.orderNo));
-              return (
-                <div
-                  key={chapter.id}
-                  data-grid={{
-                    i: String(chapter.id),
-                    w: 1,
-                    h: 1,
-                    x: this.getX(chapter.orderNo),
-                    y: this.getY(chapter.orderNo),
-                    minW: 1,
-                    minH: 1,
-                  }}
-                >
-                  <ChapterCard
-                    chapter={chapter}
-                    onCardClick={(chapterId) => {
-                      console.log(chapterId);
+          {chapters.length > 0 && (
+            <ResponsiveReactGridLayout
+              onLayoutChange={this.onLayoutChange}
+              className="layout"
+              breakpoints={GRID_SETTINGS.breakpoints}
+              cols={GRID_SETTINGS.cols}
+              rowHeight={120}
+              isResizable={false}
+              compactType="horizontal"
+              verticalCompact
+              layouts={gridLayouts}
+              onBreakpointChange={(newBreakpoint) => {
+                this.breakpoint = newBreakpoint;
+              }}
+              useCSSTransforms={false}
+              // layout={gridLayouts}
+            >
+              {chapters.map((chapter) => {
+                return (
+                  <div
+                    key={chapter.id}
+                    data-grid={{
+                      i: String(chapter.id),
+                      w: 1,
+                      h: 1,
+                      x: this.getX(this.breakpoint, chapter.orderNo),
+                      y: this.getY(this.breakpoint, chapter.orderNo),
+                      minW: 1,
+                      minH: 1,
                     }}
-                    onRemoveClick={(chapterId) => {
-                      this.deleteChapter(chapterId);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </ResponsiveReactGridLayout>
+                  >
+                    <ChapterCard
+                      chapter={chapter}
+                      onCardClick={(chapterId) => {
+                        console.log(chapterId);
+                      }}
+                      onRemoveClick={(chapterId) => {
+                        this.deleteChapter(chapterId);
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </ResponsiveReactGridLayout>
+          )}
         </div>
       </FullLayout>
     );
