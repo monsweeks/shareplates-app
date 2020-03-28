@@ -14,7 +14,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 export const GRID_SETTINGS = {
   breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
-  cols: { lg: 6, md: 4, sm: 3, xs: 1 },
+  cols: { lg: 5, md: 4, sm: 3, xs: 1 },
   defaultBoxSize: {
     lg: {
       width: 2,
@@ -75,7 +75,7 @@ class ChapterList extends React.PureComponent {
     const { topicId } = this.state;
 
     if (topicId) {
-      this.getTopics(topicId);
+      this.getChapters(topicId);
     }
   }
 
@@ -88,7 +88,7 @@ class ChapterList extends React.PureComponent {
     return gridLayouts;
   };
 
-  getTopics = (topicId) => {
+  getChapters = (topicId) => {
     request.get('/api/chapters', { topicId }, (data) => {
       console.log(data);
       const gridLayouts = this.getEmptyGridLayout(GRID_SETTINGS);
@@ -143,10 +143,29 @@ class ChapterList extends React.PureComponent {
 
         if (index > -1) {
           next.splice(index, 1);
+
           this.setState({
             chapters: next,
           });
         }
+      },
+      null,
+      true,
+    );
+  };
+
+  updateChapterTitle = (chapterId, title) => {
+    request.put(
+      `/api/chapters/${chapterId}/title`,
+      { title },
+      (data) => {
+        const { chapters } = this.state;
+        const next = chapters.slice(0);
+        const chapter = next.find((d) => String(d.id) === String(data.chapter.id));
+        chapter.title = data.chapter.title;
+        this.setState({
+          chapters: next,
+        });
       },
       null,
       true,
@@ -222,17 +241,17 @@ class ChapterList extends React.PureComponent {
           title={
             <>
               <span className="topic-tag g-tag bg-primary mr-2">TOPIC</span>
-              <span className='mr-3 topic-name'>{topic.name}</span>
-              <div className='summary'>
-                <span className='chapter-count mr-1'>{chapters.length}</span>
-                <span className='summary-label'>CHAPTERS</span>
-                <span className='page-count ml-2 mr-1'>0</span>
-                <span className='summary-label'>PAGES</span>
+              <span className="mr-3 topic-name">{topic.name}</span>
+              <div className="summary">
+                <span className="chapter-count mr-1">{chapters.length}</span>
+                <span className="summary-label">CHAPTERS</span>
+                <span className="page-count ml-2 mr-1">0</span>
+                <span className="summary-label">PAGES</span>
               </div>
             </>
           }
           buttons={[
-            <Button onClick={this.createChapter} className="option" color="white" size="sm">
+            <Button key="add" onClick={this.createChapter} className="option" color="white" size="sm">
               <i className="fal fa-plus" /> 챕터 추가
             </Button>,
           ]}
@@ -293,6 +312,7 @@ class ChapterList extends React.PureComponent {
                         onRemoveClick={(chapterId) => {
                           this.deleteChapter(chapterId);
                         }}
+                        onChangeTitle={this.updateChapterTitle}
                       />
                     </div>
                   );

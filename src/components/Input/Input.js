@@ -47,6 +47,13 @@ class Input extends React.Component {
     });
   };
 
+  onKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      const { onEnter } = this.props;
+      if (onEnter) onEnter();
+    }
+  };
+
   render() {
     const {
       color,
@@ -98,6 +105,7 @@ class Input extends React.Component {
             onChange(e.target.value);
             this.setValid(this.control.current.validity);
           }}
+          onKeyDown={this.onKeyDown}
           value={value}
           required={required}
         />
@@ -136,6 +144,7 @@ Input.propTypes = {
   externalValidationMessage : PropTypes.string,
   simple : PropTypes.bool,
   border : PropTypes.bool,
+  onEnter : PropTypes.func,
 };
 
 export default withTranslation()(Input);
