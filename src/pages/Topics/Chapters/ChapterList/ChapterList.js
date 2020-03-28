@@ -55,7 +55,7 @@ class ChapterList extends React.PureComponent {
     this.state = {
       topicId,
       topic: {},
-      chapters: [],
+      chapters: false,
       gridLayouts: this.getEmptyGridLayout(GRID_SETTINGS),
       viewType: 'card',
     };
@@ -90,19 +90,22 @@ class ChapterList extends React.PureComponent {
 
   getChapters = (topicId) => {
     request.get('/api/chapters', { topicId }, (data) => {
-      console.log(data);
       const gridLayouts = this.getEmptyGridLayout(GRID_SETTINGS);
 
-      data.chapters.forEach((chapter) => {
-        Object.keys(gridLayouts).forEach((breakpoint) => {
-          gridLayouts[breakpoint].push({
-            ...DEFAULT_LAYOUT_INFO,
-            i: String(chapter.id),
-            x: this.getX(breakpoint, chapter.orderNo),
-            y: this.getY(breakpoint, chapter.orderNo),
+      data.chapters
+        .sort((a, b) => {
+          return a.orderNo - b.order;
+        })
+        .forEach((chapter) => {
+          Object.keys(gridLayouts).forEach((breakpoint) => {
+            gridLayouts[breakpoint].push({
+              ...DEFAULT_LAYOUT_INFO,
+              i: String(chapter.id),
+              x: this.getX(breakpoint, chapter.orderNo),
+              y: this.getY(breakpoint, chapter.orderNo),
+            });
           });
         });
-      });
 
       this.setState({
         topic: data.topic || {},
@@ -172,8 +175,20 @@ class ChapterList extends React.PureComponent {
     );
   };
 
+  updateChapterOrders = (topicId, chapters) => {
+    request.put('/api/chapters/orders', { topicId, chapters }, null, null, true);
+  };
+
   onLayoutChange = (layout, layouts) => {
-    const { chapters } = this.state;
+    const { topicId, chapters } = this.state;
+
+    // 순서 변경을 감지하기 위해, 변경전 순서를 기록
+    const beforeOrders = chapters.map((chapter) => {
+      return {
+        id: chapter.id,
+        orderNo: chapter.orderNo,
+      };
+    });
 
     // 현재 레이아웃 정보에서 col과 row 기준으로 순서대로 정렬
     layout.sort((a, b) => {
@@ -199,15 +214,23 @@ class ChapterList extends React.PureComponent {
       });
     });
 
-    this.setState(
-      {
-        chapters: nextChapters,
-        gridLayouts: nextGridLayouts,
-      },
-      () => {
-        // update chapters orders
-      },
-    );
+    const afterOrders = nextChapters.map((chapter) => {
+      return {
+        id: chapter.id,
+        orderNo: chapter.orderNo,
+      };
+    });
+
+    // 순서가 변경되었다면, 업데이트
+    console.log(JSON.stringify(beforeOrders) === JSON.stringify(afterOrders));
+    if (JSON.stringify(beforeOrders) !== JSON.stringify(afterOrders)) {
+      this.updateChapterOrders(topicId, afterOrders);
+    }
+
+    this.setState({
+      chapters: nextChapters,
+      gridLayouts: nextGridLayouts,
+    });
   };
 
   getX = (breakpoint, orderNo) => {
@@ -256,6 +279,7 @@ class ChapterList extends React.PureComponent {
             </Button>,
           ]}
         />
+        {chapters !== false &&
         <FullLayout className="flex-grow-1">
           {chapters.length < 1 && (
             <EmptyMessage
@@ -265,7 +289,7 @@ class ChapterList extends React.PureComponent {
                   <div className="mb-2">{t('아직 생성된 챕터가 없습니다')}</div>
                   <div className="mb-4">{t('챕터를 추가해서, 토픽을 만들기를 시작해보세요.')}</div>
                   <Button onClick={this.createChapter} color="white">
-                    <i className="fal fa-plus mr-2" />
+                    <i className="fal fa-plus mr-2"/>
                     챕터 추가
                   </Button>
                 </div>
@@ -321,6 +345,7 @@ class ChapterList extends React.PureComponent {
             </div>
           )}
         </FullLayout>
+        }
       </div>
     );
   }
