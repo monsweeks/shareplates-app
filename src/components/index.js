@@ -40,6 +40,7 @@ import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
 import PageIntro from '@/components/PageIntro/PageIntro';
 import ChapterCard from '@/components/ChapterCard/ChapterCard';
+import ListControlBar from '@/components/ListControlBar/ListControlBar';
 
 export {
   Button,
@@ -84,4 +85,5 @@ export {
   ObjectImage,
   PageIntro,
   ChapterCard,
+  ListControlBar,
 };

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { withRouter } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FullLayout } from '@/layouts';
 import request from '@/utils/request';
-import { Button, ChapterCard } from '@/components';
+import { Button, ChapterCard, EmptyMessage, ListControlBar } from '@/components';
 import './ChapterList.scss';
 import '@/styles/lib/react-grid-layout.scss';
 
@@ -56,6 +57,7 @@ class ChapterList extends React.PureComponent {
       topic: {},
       chapters: [],
       gridLayouts: this.getEmptyGridLayout(GRID_SETTINGS),
+      viewType: 'card',
     };
   }
 
@@ -115,28 +117,40 @@ class ChapterList extends React.PureComponent {
     const orderNo = chapters.length + 1;
     const title = `CHAPTER-${orderNo}`;
 
-    request.post('/api/chapters', { topicId, title, orderNo }, (data) => {
-      const next = chapters.slice(0);
-      next.push(data.chapter);
-      this.setState({
-        chapters: next,
-      });
-    });
-  };
-
-  deleteChapter = (chapterId) => {
-    request.del(`/api/chapters/${chapterId}`, null, () => {
-      const { chapters } = this.state;
-      const next = chapters.slice(0);
-      const index = next.findIndex((chapter) => chapter.id === chapterId);
-
-      if (index > -1) {
-        next.splice(index, 1);
+    request.post(
+      '/api/chapters',
+      { topicId, title, orderNo },
+      (data) => {
+        const next = chapters.slice(0);
+        next.push(data.chapter);
         this.setState({
           chapters: next,
         });
-      }
-    });
+      },
+      null,
+      true,
+    );
+  };
+
+  deleteChapter = (chapterId) => {
+    request.del(
+      `/api/chapters/${chapterId}`,
+      null,
+      () => {
+        const { chapters } = this.state;
+        const next = chapters.slice(0);
+        const index = next.findIndex((chapter) => chapter.id === chapterId);
+
+        if (index > -1) {
+          next.splice(index, 1);
+          this.setState({
+            chapters: next,
+          });
+        }
+      },
+      null,
+      true,
+    );
   };
 
   onLayoutChange = (layout, layouts) => {
@@ -189,69 +203,105 @@ class ChapterList extends React.PureComponent {
     return Math.floor((orderNo - 1) / GRID_SETTINGS.cols[breakpoint]);
   };
 
+  onChangeViewType = (viewType) => {
+    this.setState({
+      viewType,
+    });
+  };
+
   render() {
-    const { topic, chapters, gridLayouts } = this.state;
+    const { t } = this.props;
+    const { topic, chapters, gridLayouts, viewType } = this.state;
 
     return (
-      <FullLayout className="chapter-list-wrapper">
-        <div className="chapter-list pt-4">
-          <div className="text-white text-center">{topic.name}</div>
-          <div className="text-right p-4">
-            <Button
-              onClick={() => {
-                this.createChapter();
-              }}
-            >
-              추가
-            </Button>
-          </div>
-          {chapters.length > 0 && (
-            <ResponsiveReactGridLayout
-              onLayoutChange={this.onLayoutChange}
-              className="layout"
-              breakpoints={GRID_SETTINGS.breakpoints}
-              cols={GRID_SETTINGS.cols}
-              rowHeight={120}
-              isResizable={false}
-              compactType="horizontal"
-              verticalCompact
-              layouts={gridLayouts}
-              onBreakpointChange={(newBreakpoint) => {
-                this.breakpoint = newBreakpoint;
-              }}
-              useCSSTransforms={false}
-              // layout={gridLayouts}
-            >
-              {chapters.map((chapter) => {
-                return (
-                  <div
-                    key={chapter.id}
-                    data-grid={{
-                      i: String(chapter.id),
-                      w: 1,
-                      h: 1,
-                      x: this.getX(this.breakpoint, chapter.orderNo),
-                      y: this.getY(this.breakpoint, chapter.orderNo),
-                      minW: 1,
-                      minH: 1,
-                    }}
-                  >
-                    <ChapterCard
-                      chapter={chapter}
-                      onCardClick={(chapterId) => {
-                        console.log(chapterId);
-                      }}
-                      onRemoveClick={(chapterId) => {
-                        this.deleteChapter(chapterId);
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </ResponsiveReactGridLayout>
+      <div className="chapter-list-wrapper">
+        <ListControlBar
+          className="flex-grow-0"
+          viewType={viewType}
+          onChangeViewType={this.onChangeViewType}
+          title={
+            <>
+              <span className="topic-tag g-tag bg-primary mr-2">TOPIC</span>
+              <span className='mr-3 topic-name'>{topic.name}</span>
+              <div className='summary'>
+                <span className='chapter-count mr-1'>{chapters.length}</span>
+                <span className='summary-label'>CHAPTERS</span>
+                <span className='page-count ml-2 mr-1'>0</span>
+                <span className='summary-label'>PAGES</span>
+              </div>
+            </>
+          }
+          buttons={[
+            <Button onClick={this.createChapter} className="option" color="white" size="sm">
+              <i className="fal fa-plus" /> 챕터 추가
+            </Button>,
+          ]}
+        />
+        <FullLayout className="flex-grow-1">
+          {chapters.length < 1 && (
+            <EmptyMessage
+              className="h5 text-white"
+              message={
+                <div>
+                  <div className="mb-2">{t('아직 생성된 챕터가 없습니다')}</div>
+                  <div className="mb-4">{t('챕터를 추가해서, 토픽을 만들기를 시작해보세요.')}</div>
+                  <Button onClick={this.createChapter} color="white">
+                    <i className="fal fa-plus mr-2" />
+                    챕터 추가
+                  </Button>
+                </div>
+              }
+            />
           )}
-        </div>
-      </FullLayout>
+          {chapters.length > 0 && (
+            <div className="chapter-list pt-4">
+              <ResponsiveReactGridLayout
+                onLayoutChange={this.onLayoutChange}
+                className="layout"
+                breakpoints={GRID_SETTINGS.breakpoints}
+                cols={GRID_SETTINGS.cols}
+                rowHeight={120}
+                isResizable={false}
+                compactType="horizontal"
+                verticalCompact
+                layouts={gridLayouts}
+                onBreakpointChange={(newBreakpoint) => {
+                  this.breakpoint = newBreakpoint;
+                }}
+                useCSSTransforms={false}
+                // layout={gridLayouts}
+              >
+                {chapters.map((chapter) => {
+                  return (
+                    <div
+                      key={chapter.id}
+                      data-grid={{
+                        i: String(chapter.id),
+                        w: 1,
+                        h: 1,
+                        x: this.getX(this.breakpoint, chapter.orderNo),
+                        y: this.getY(this.breakpoint, chapter.orderNo),
+                        minW: 1,
+                        minH: 1,
+                      }}
+                    >
+                      <ChapterCard
+                        chapter={chapter}
+                        onCardClick={(chapterId) => {
+                          console.log(chapterId);
+                        }}
+                        onRemoveClick={(chapterId) => {
+                          this.deleteChapter(chapterId);
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </ResponsiveReactGridLayout>
+            </div>
+          )}
+        </FullLayout>
+      </div>
     );
   }
 }
@@ -270,6 +320,7 @@ ChapterList.propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }),
+  t: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
       topicId: PropTypes.string,
@@ -277,4 +328,4 @@ ChapterList.propTypes = {
   }),
 };
 
-export default withRouter(connect(mapStateToProps, undefined)(ChapterList));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ChapterList)));

@@ -1,0 +1,68 @@
+.list-control-bar-wrapper {
+  flex: 0;
+  position: relative;
+  background-color: $sea-blue;
+  min-height: 50px;
+  width: 100%;
+
+  > div {
+    height: 50px;
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: right;
+
+    @media (max-width: 1200px) {
+      padding: 0 1rem;
+    }
+
+    > .text {
+      flex-grow: 1;
+      vertical-align: middle;
+      align-self: center;
+      text-align: left;
+      color: $white;
+      padding: 0 0.75rem;
+
+      span {
+        vertical-align: middle;
+        align-self: center;
+      }
+    }
+
+    > .options {
+      text-align: right;
+      flex-grow: 0;
+      white-space: nowrap;
+      border-radius: 3px;
+      vertical-align: middle;
+      align-self: center;
+
+      .separator {
+        display: inline-block;
+        height: 10px;
+        background-color: white;
+        width: 1px;
+        margin: 0 0.75rem 0;
+        position: relative;
+        top: 2px;
+      }
+
+      .option {
+        display: inline-block;
+        vertical-align: middle;
+        align-self: center;
+
+        .label {
+          color: $white;
+          position: relative;
+          top: 3px;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}

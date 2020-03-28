@@ -11,16 +11,25 @@ const pageMainColors = {
   '/users/join': variables.primaryColor,
   '/': variables.seaBlueColor,
   '/topics': variables.seaBlueColor,
+  '/topics/[0-9]+/chapters': variables.seaBlueColor,
   '/organizations': variables.seaBlueColor,
 };
 
 class Menu extends React.PureComponent {
   getPageMainColor = (path) => {
-    if (pageMainColors[path]) {
-      return pageMainColors[path];
+    let color = null;
+    Object.keys(pageMainColors).forEach((express) => {
+      const re = new RegExp(`^(${express})$`);
+      if (re.test(path)) {
+        color = pageMainColors[express];
+      }
+    });
+
+    if (!color) {
+      color = pageMainColors.default;
     }
 
-    return pageMainColors.default;
+    return color;
   };
 
   render() {
