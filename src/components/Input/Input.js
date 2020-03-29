@@ -72,6 +72,7 @@ class Input extends React.Component {
       customInputValidationMessage,
       externalValidationMessage,
       simple,
+      onEnter,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;

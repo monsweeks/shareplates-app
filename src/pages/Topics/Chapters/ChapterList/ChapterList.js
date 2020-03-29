@@ -1,63 +1,16 @@
 import React from 'react';
-import { Responsive, WidthProvider } from 'react-grid-layout';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FullLayout } from '@/layouts';
 import request from '@/utils/request';
-import { Button, ChapterCard, EmptyMessage, ListControlBar } from '@/components';
+import { Button, EmptyMessage, ListControlBar } from '@/components';
+import ChapterCardLayoutList from './ChapterCardLayoutList';
 import './ChapterList.scss';
 import '@/styles/lib/react-grid-layout.scss';
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
-export const CARD_GRID_SETTINGS = {
-  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
-  cols: { lg: 5, md: 4, sm: 3, xs: 1 },
-  defaultBoxSize: {
-    lg: {
-      width: 2,
-      height: 4,
-    },
-    md: {
-      width: 2,
-      height: 4,
-    },
-  },
-};
-
-export const LIST_GRID_SETTINGS = {
-  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
-  cols: { lg: 1, md: 1, sm: 1, xs: 1 },
-  defaultBoxSize: {
-    lg: {
-      width: 2,
-      height: 4,
-    },
-    md: {
-      width: 2,
-      height: 4,
-    },
-  },
-};
-
-const DEFAULT_LAYOUT_INFO = {
-  w: 1,
-  h: 1,
-  minW: 1,
-  maxW: 1,
-  minH: 1,
-  maxH: 1,
-  moved: false,
-  static: false,
-  isDraggable: true,
-  isResizable: false,
-};
-
 class ChapterList extends React.PureComponent {
-  timer = null;
-
   breakpoint = 'lg';
 
   constructor(props) {
@@ -73,7 +26,6 @@ class ChapterList extends React.PureComponent {
       topicId,
       topic: {},
       chapters: false,
-      gridLayouts: this.getEmptyGridLayout(CARD_GRID_SETTINGS),
       viewType: 'card',
     };
   }
@@ -96,38 +48,15 @@ class ChapterList extends React.PureComponent {
     }
   }
 
-  getEmptyGridLayout = (gridSettings) => {
-    const gridLayouts = {};
-    Object.keys(gridSettings.cols).forEach((breakpoint) => {
-      gridLayouts[breakpoint] = [];
-    });
-
-    return gridLayouts;
-  };
-
   getChapters = (topicId) => {
     request.get('/api/chapters', { topicId }, (data) => {
-      const gridLayouts = this.getEmptyGridLayout(CARD_GRID_SETTINGS);
-
-      data.chapters
-        .sort((a, b) => {
-          return a.orderNo - b.order;
-        })
-        .forEach((chapter) => {
-          Object.keys(gridLayouts).forEach((breakpoint) => {
-            gridLayouts[breakpoint].push({
-              ...DEFAULT_LAYOUT_INFO,
-              i: String(chapter.id),
-              x: this.getX(breakpoint, chapter.orderNo),
-              y: this.getY(breakpoint, chapter.orderNo),
-            });
-          });
-        });
+      data.chapters.sort((a, b) => {
+        return a.orderNo - b.order;
+      });
 
       this.setState({
         topic: data.topic || {},
         chapters: data.chapters || [],
-        gridLayouts,
       });
     });
   };
@@ -196,152 +125,21 @@ class ChapterList extends React.PureComponent {
     request.put('/api/chapters/orders', { topicId, chapters }, null, null, true);
   };
 
-  onLayoutChange = (layout, layouts) => {
-    if (this.timer !== null) {
-      clearTimeout(this.timer);
-      this.timer = null;
-    }
-
-    setTimeout(() => {
-      this.applyLayout(layout, layouts);
-    }, 300);
-
-    /*
-    const { topicId, chapters } = this.state;
-
-    // 순서 변경을 감지하기 위해, 변경전 순서를 기록
-    const beforeOrders = chapters.map((chapter) => {
-      return {
-        id: chapter.id,
-        orderNo: chapter.orderNo,
-      };
-    });
-
-    // 현재 레이아웃 정보에서 col과 row 기준으로 순서대로 정렬
-    layout.sort((a, b) => {
-      return (
-        a.y * CARD_GRID_SETTINGS.cols[this.breakpoint] + a.x - (b.y * CARD_GRID_SETTINGS.cols[this.breakpoint] + b.x)
-      );
-    });
-
-    // 정렬된 순서로 챕터의 orderNo를 다시 지정하고, 빈 곳이 없도록 레이아웃의 위치를 순서대로 다시 작성한다.
-    const nextChapters = [];
-    const nextGridLayouts = { ...layouts };
-    layout.forEach((item, inx) => {
-      const chapterInfo = chapters.find((chapter) => String(chapter.id) === String(item.i));
-      nextChapters.push({
-        ...chapterInfo,
-        orderNo: inx + 1,
-      });
-
-      Object.keys(nextGridLayouts).forEach((breakpoint) => {
-        const layoutInfo = nextGridLayouts[breakpoint].find((d) => String(d.i) === String(item.i));
-        if (layoutInfo) {
-          layoutInfo.x = this.getX(breakpoint, inx + 1);
-          layoutInfo.y = this.getY(breakpoint, inx + 1);
-        }
-      });
-    });
-
-    const afterOrders = nextChapters.map((chapter) => {
-      return {
-        id: chapter.id,
-        orderNo: chapter.orderNo,
-      };
-    });
-
-    // 순서가 변경되었다면, 업데이트
-    if (JSON.stringify(beforeOrders) !== JSON.stringify(afterOrders)) {
-      this.updateChapterOrders(topicId, afterOrders);
-    }
-
-    this.setState({
-      chapters: nextChapters,
-      gridLayouts: nextGridLayouts,
-    });
-
-
-     */
-  };
-
-  applyLayout = (layout, layouts) => {
-    const { topicId, chapters } = this.state;
-
-    // 순서 변경을 감지하기 위해, 변경전 순서를 기록
-    const beforeOrders = chapters.map((chapter) => {
-      return {
-        id: chapter.id,
-        orderNo: chapter.orderNo,
-      };
-    });
-
-    console.log({ ...layout });
-    // 현재 레이아웃 정보에서 col과 row 기준으로 순서대로 정렬
-    layout.sort((a, b) => {
-      return (
-        a.y * CARD_GRID_SETTINGS.cols[this.breakpoint] + a.x - (b.y * CARD_GRID_SETTINGS.cols[this.breakpoint] + b.x)
-      );
-    });
-
-    // 정렬된 순서로 챕터의 orderNo를 다시 지정하고, 빈 곳이 없도록 레이아웃의 위치를 순서대로 다시 작성한다.
-    const nextChapters = [];
-    const nextGridLayouts = { ...layouts };
-    layout.forEach((item, inx) => {
-      const chapterInfo = chapters.find((chapter) => String(chapter.id) === String(item.i));
-      nextChapters.push({
-        ...chapterInfo,
-        orderNo: inx + 1,
-      });
-
-      Object.keys(nextGridLayouts).forEach((breakpoint) => {
-        const layoutInfo = nextGridLayouts[breakpoint].find((d) => String(d.i) === String(item.i));
-        if (layoutInfo) {
-          layoutInfo.x = this.getX(breakpoint, inx + 1);
-          layoutInfo.y = this.getY(breakpoint, inx + 1);
-        }
-      });
-    });
-
-    const afterOrders = nextChapters.map((chapter) => {
-      return {
-        id: chapter.id,
-        orderNo: chapter.orderNo,
-      };
-    });
-
-    // 순서가 변경되었다면, 업데이트
-    if (JSON.stringify(beforeOrders) !== JSON.stringify(afterOrders)) {
-      this.updateChapterOrders(topicId, afterOrders);
-    }
-
-    this.setState({
-      chapters: nextChapters,
-      gridLayouts: nextGridLayouts,
-    });
-  };
-
-  getX = (breakpoint, orderNo) => {
-    const next = (orderNo % CARD_GRID_SETTINGS.cols[breakpoint]) - 1;
-    if (next < 0) {
-      return CARD_GRID_SETTINGS.cols[breakpoint] - 1;
-    }
-    return next;
-  };
-
-  getY = (breakpoint, orderNo) => {
-    return Math.floor((orderNo - 1) / CARD_GRID_SETTINGS.cols[breakpoint]);
-  };
-
   onChangeViewType = (viewType) => {
     this.setState({
       viewType,
     });
   };
 
+  setChapters = (chapters) => {
+    this.setState({
+      chapters,
+    });
+  };
+
   render() {
     const { t } = this.props;
-    const { topic, chapters, gridLayouts, viewType } = this.state;
-
+    const { topic, chapters, viewType } = this.state;
 
     return (
       <div className="chapter-list-wrapper">
@@ -388,46 +186,14 @@ class ChapterList extends React.PureComponent {
                 }
               />
             )}
-            {chapters.length > 0 && (
-              <div className="chapter-list pt-4">
-                <ResponsiveReactGridLayout
-                  onLayoutChange={this.onLayoutChange}
-                  className="layout"
-                  breakpoints={CARD_GRID_SETTINGS.breakpoints}
-                  cols={CARD_GRID_SETTINGS.cols}
-                  rowHeight={120}
-                  isResizable={false}
-                  compactType="horizontal"
-                  verticalCompact
-                  layouts={gridLayouts}
-                  onBreakpointChange={(newBreakpoint) => {
-                    this.breakpoint = newBreakpoint;
-                  }}
-                  useCSSTransforms={false}
-                  // layout={gridLayouts}
-                >
-                  {chapters.map((chapter) => {
-                    return (
-                      <div
-                        key={chapter.id}
-                        data-grid={gridLayouts[this.breakpoint].find((d) => String(d.id) === String(chapter.id))}
-                      >
-                        <ChapterCard
-                          chapter={chapter}
-                          onCardClick={(chapterId) => {
-                            console.log(chapterId);
-                          }}
-                          onRemoveClick={(chapterId) => {
-                            this.deleteChapter(chapterId);
-                          }}
-                          onChangeTitle={this.updateChapterTitle}
-                        />
-                      </div>
-                    );
-                  })}
-                </ResponsiveReactGridLayout>
-              </div>
-            )}
+            {viewType === 'card' && <ChapterCardLayoutList
+              topicId={topic.id}
+              chapters={chapters}
+              updateChapterOrders={this.updateChapterOrders}
+              updateChapterTitle={this.updateChapterTitle}
+              deleteChapter={this.deleteChapter}
+              setChapters={this.setChapters}
+            />}
           </FullLayout>
         )}
       </div>
