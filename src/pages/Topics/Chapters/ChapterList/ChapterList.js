@@ -9,13 +9,14 @@ import { Button, EmptyMessage, ListControlBar } from '@/components';
 import ChapterCardLayoutList from './ChapterCardLayoutList';
 import './ChapterList.scss';
 import '@/styles/lib/react-grid-layout.scss';
+import storage from '@/utils/storage';
 
 class ChapterList extends React.PureComponent {
   breakpoint = 'lg';
 
   constructor(props) {
     super(props);
-
+    const viewType = storage.getItem('chapters', 'viewType');
     const {
       match: {
         params: { topicId },
@@ -26,7 +27,8 @@ class ChapterList extends React.PureComponent {
       topicId,
       topic: {},
       chapters: false,
-      viewType: 'list',
+      viewType: viewType || 'card',
+      role : 'NONE'
     };
   }
 
@@ -57,6 +59,7 @@ class ChapterList extends React.PureComponent {
       this.setState({
         topic: data.topic || {},
         chapters: data.chapters || [],
+        role : data.role
       });
     });
   };
@@ -126,6 +129,7 @@ class ChapterList extends React.PureComponent {
   };
 
   onChangeViewType = (viewType) => {
+    storage.setItem('chapters', 'viewType', viewType);
     this.setState({
       viewType,
     });
@@ -139,7 +143,8 @@ class ChapterList extends React.PureComponent {
 
   render() {
     const { t } = this.props;
-    const { topic, chapters, viewType } = this.state;
+    const { topic, chapters, viewType, role } = this.state;
+    const isWriter = role === 'WRITE';
 
     return (
       <div className="chapter-list-wrapper">
@@ -159,15 +164,14 @@ class ChapterList extends React.PureComponent {
               </div>
             </>
           }
-          buttons={[
+          buttons={isWriter ? [
             <Button key="add" onClick={this.createChapter} className="option" color="white" size="sm">
               <i className="fal fa-plus" /> 챕터 추가
             </Button>,
-          ]}
+          ] : []}
         />
         <div className="d-none">
-          반응형 처리, 권한에 따른 기능 및 버튼 제한 (쓰기 권한 없으면, 드래그 안되고, 변경 삭제 버튼 노출되면 안됨),
-          카드형, 리스트형 보기 처리
+          반응형 처리,
         </div>
         {chapters !== false && (
           <FullLayout className="flex-grow-1">
@@ -177,11 +181,13 @@ class ChapterList extends React.PureComponent {
                 message={
                   <div>
                     <div className="mb-2">{t('아직 생성된 챕터가 없습니다')}</div>
-                    <div className="mb-4">{t('챕터를 추가해서, 토픽을 만들기를 시작해보세요.')}</div>
+                    {isWriter && <div className="mb-4">{t('챕터를 추가해서, 토픽을 만들기를 시작해보세요.')}</div>}
+                    {isWriter &&
                     <Button onClick={this.createChapter} color="white">
-                      <i className="fal fa-plus mr-2" />
+                      <i className="fal fa-plus mr-2"/>
                       챕터 추가
                     </Button>
+                    }
                   </div>
                 }
               />
@@ -212,6 +218,7 @@ class ChapterList extends React.PureComponent {
                     isResizable: false,
                   },
                 }}
+                isWriter={isWriter}
               />
             )}
             {viewType === 'list' && (
@@ -240,6 +247,7 @@ class ChapterList extends React.PureComponent {
                     isResizable: false,
                   },
                 }}
+                isWriter={isWriter}
               />
             )}
           </FullLayout>

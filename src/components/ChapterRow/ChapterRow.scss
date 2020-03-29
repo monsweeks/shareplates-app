@@ -66,8 +66,10 @@ $mover-height: 24px;
       }
 
       &.title {
+        font-size: 0.8rem;
         flex-grow: 1;
         padding: 0 0.5rem;
+        font-family: LGSmHaB;
       }
 
       &.buttons {

@@ -51,18 +51,20 @@ class ChapterRow extends React.Component {
 
   render() {
     const { onCardClick, onRemoveClick, onChangeTitle } = this.props;
-    const { className, chapter, t } = this.props;
+    const { className, chapter, t, isWriter } = this.props;
     const { isEdit, isDelete, title } = this.state;
 
     return (
       <div className={`chapter-row-wrapper g-no-select border-0 ${className}`}>
         <div>
-          <div className="grab">
-            <div>
-              <i className="fas fa-grip-vertical" />
+          {isWriter && (
+            <div className="grab">
+              <div>
+                <i className="fas fa-grip-vertical" />
+              </div>
             </div>
-          </div>
-          <div className="order-no">
+          )}
+          <div className="order-no" onTouchStart={this.stopProgation} onMouseDown={this.stopProgation}>
             <div>
               <span className="no-text d-none">NO</span>
               <span className="no-count">{chapter.orderNo}</span>
@@ -86,34 +88,36 @@ class ChapterRow extends React.Component {
           >
             <div>{chapter.title}</div>
           </div>
-          <div className="buttons">
-            <div>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  this.setState({
-                    isEdit: true,
-                  });
-                }}
-                className="edit-button"
-              >
-                <i className="fal fa-pen-nib" />
-              </Button>
-              <Button
-                onTouchStart={this.stopProgation}
-                onMouseDown={this.stopProgation}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  this.setState({
-                    isDelete: !isDelete,
-                  });
-                }}
-                className="remove-button"
-              >
-                <i className="fal fa-times" />
-              </Button>
+          {isWriter && (
+            <div className="buttons">
+              <div>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.setState({
+                      isEdit: true,
+                    });
+                  }}
+                  className="edit-button"
+                >
+                  <i className="fal fa-pen-nib" />
+                </Button>
+                <Button
+                  onTouchStart={this.stopProgation}
+                  onMouseDown={this.stopProgation}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.setState({
+                      isDelete: !isDelete,
+                    });
+                  }}
+                  className="remove-button"
+                >
+                  <i className="fal fa-times" />
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
           {isDelete && (
             <div className="inner-popup">
               <div className="inner-popup-content">
@@ -226,4 +230,5 @@ ChapterRow.propTypes = {
   onRemoveClick: PropTypes.func,
   t: PropTypes.func,
   onChangeTitle: PropTypes.func,
+  isWriter: PropTypes.bool,
 };

@@ -51,36 +51,45 @@ class ChapterCard extends React.Component {
 
   render() {
     const { onCardClick, onRemoveClick, onChangeTitle } = this.props;
-    const { className, chapter, t } = this.props;
+    const { className, chapter, t, isWriter } = this.props;
     const { isEdit, isDelete, title } = this.state;
 
     return (
       <div className={`chapter-card-wrapper g-no-select border-0 ${className}`}>
-        <div className="card-buttons">
-          <Button
-            onTouchStart={this.stopProgation}
-            onMouseDown={this.stopProgation}
-            onClick={(e) => {
-              e.stopPropagation();
-              this.setState({
-                isDelete: !isDelete,
-              });
-            }}
-            className="remove-button"
-          >
-            <i className="fal fa-times" />
-          </Button>
-        </div>
+        {isWriter && (
+          <div className="card-buttons">
+            <Button
+              onTouchStart={this.stopProgation}
+              onMouseDown={this.stopProgation}
+              onClick={(e) => {
+                e.stopPropagation();
+                this.setState({
+                  isDelete: !isDelete,
+                });
+              }}
+              className="remove-button"
+            >
+              <i className="fal fa-times" />
+            </Button>
+          </div>
+        )}
         <div className="chapter-card-content">
-          <div className="mover">
+          <div
+            className={`mover ${isWriter ? 'mover-on' : ''}`}
+            onTouchStart={isWriter ? null : this.stopProgation}
+            onMouseDown={isWriter ? null : this.stopProgation}
+          >
             <span className="order-no">
               <span className="no-text">NO</span>
               <span className="no-count">{chapter.orderNo}</span>
             </span>
-            <span className="grap">
-              <i className="fas fa-grip-horizontal" />
-            </span>
+            {isWriter && (
+              <span className="grap">
+                <i className="fas fa-grip-horizontal" />
+              </span>
+            )}
           </div>
+
           <div
             className="content"
             onTouchStart={this.stopProgation}
@@ -91,25 +100,30 @@ class ChapterCard extends React.Component {
               }
             }}
           >
-            <div className="chapter-title" onDoubleClick={(e) => {
-              e.stopPropagation();
-              this.setState({
-                isEdit: true,
-              });
-            }}>
+            <div
+              className="chapter-title"
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                this.setState({
+                  isEdit: true,
+                });
+              }}
+            >
               <div>
                 {chapter.title}
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    this.setState({
-                      isEdit: true,
-                    });
-                  }}
-                  className="edit"
-                >
-                  <i className="fal fa-pen-nib" />
-                </Button>
+                {isWriter && (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      this.setState({
+                        isEdit: true,
+                      });
+                    }}
+                    className="edit"
+                  >
+                    <i className="fal fa-pen-nib" />
+                  </Button>
+                )}
               </div>
             </div>
             {isDelete && (
@@ -222,4 +236,5 @@ ChapterCard.propTypes = {
   onRemoveClick: PropTypes.func,
   t: PropTypes.func,
   onChangeTitle: PropTypes.func,
+  isWriter: PropTypes.bool,
 };

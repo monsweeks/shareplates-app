@@ -136,7 +136,7 @@ class ChapterCardLayoutList extends React.PureComponent {
   };
 
   render() {
-    const { updateChapterTitle, deleteChapter, chapters, gridSetting, viewType, rowHeight } = this.props;
+    const { updateChapterTitle, deleteChapter, chapters, gridSetting, viewType, rowHeight, isWriter } = this.props;
     const { gridLayouts } = this.state;
 
     return (
@@ -175,6 +175,7 @@ class ChapterCardLayoutList extends React.PureComponent {
                           deleteChapter(chapterId);
                         }}
                         onChangeTitle={updateChapterTitle}
+                        isWriter={isWriter}
                       />
                     )}
                     {viewType === 'list' && (
@@ -187,6 +188,7 @@ class ChapterCardLayoutList extends React.PureComponent {
                           deleteChapter(chapterId);
                         }}
                         onChangeTitle={updateChapterTitle}
+                        isWriter={isWriter}
                       />
                     )}
                   </div>
@@ -210,6 +212,7 @@ ChapterCardLayoutList.propTypes = {
   gridSetting: PropTypes.objectOf(PropTypes.any),
   viewType: PropTypes.string,
   rowHeight : PropTypes.number,
+  isWriter : PropTypes.bool,
 };
 
 export default ChapterCardLayoutList;

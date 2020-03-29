@@ -19,7 +19,7 @@ class ListControlBar extends React.PureComponent {
               buttons.map((button) => {
                 return button;
               })}
-            <div className="separator" />
+            {buttons.length > 0 && <div className="separator" />}
             <div className="order-col option">
               <span className="label small">{t('표시 옵션')}</span>
               <RadioButton
