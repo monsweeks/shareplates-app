@@ -10,7 +10,7 @@ class TopicCard extends React.PureComponent {
 
     return (
       <Card
-        className={`topic-card-wrapper g-no-select ${className}`}
+        className={`topic-card-wrapper g-no-select border-0 ${className}`}
         onClick={() => {
           onCardClick(topic ? topic.id : null);
         }}
