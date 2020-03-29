@@ -27,9 +27,21 @@ $mover-height: 24px;
       border-radius: 50%;
       cursor: pointer;
 
+      @media (min-width: 992px) {
+        display: none;
+      }
+
       &:hover {
         background-color: $danger;
         color: $white;
+      }
+    }
+  }
+
+  &:hover {
+    .card-buttons {
+      > button {
+        display: inline-block;
       }
     }
   }
@@ -63,6 +75,7 @@ $mover-height: 24px;
         &.mover-on:hover {
           background-color: $light;
           transition: all 0.3s;
+
           .grap {
             color: $gray-700;
             transition: all 0.3s;
@@ -74,6 +87,7 @@ $mover-height: 24px;
           top: 5px;
           left: 7px;
           font-size: 0.7rem;
+
           .no-text {
             font-family: LGSmHaB;
             margin-right: 0.125rem;
@@ -123,6 +137,9 @@ $mover-height: 24px;
               font-size: 14px;
               border: none;
               padding: 3px 0 0;
+              @media (min-width: 992px) {
+                display: none;
+              }
 
               &:hover {
                 color: $white;
@@ -149,6 +166,7 @@ $mover-height: 24px;
           bottom: 0;
           background-color: $light;
           padding: 0.5rem;
+
           .inner-popup-content {
             font-size: 0.75rem;
             height: calc(100% - 30px);
@@ -186,6 +204,18 @@ $mover-height: 24px;
           .buttons {
             height: 30px;
             padding-top: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover {
+    @media (min-width: 992px) {
+      .chapter-title {
+        > div {
+          .edit {
+            display: inline-block !important;
           }
         }
       }
