@@ -26,7 +26,7 @@ class ChapterList extends React.PureComponent {
       topicId,
       topic: {},
       chapters: false,
-      viewType: 'card',
+      viewType: 'list',
     };
   }
 
@@ -186,14 +186,62 @@ class ChapterList extends React.PureComponent {
                 }
               />
             )}
-            {viewType === 'card' && <ChapterCardLayoutList
-              topicId={topic.id}
-              chapters={chapters}
-              updateChapterOrders={this.updateChapterOrders}
-              updateChapterTitle={this.updateChapterTitle}
-              deleteChapter={this.deleteChapter}
-              setChapters={this.setChapters}
-            />}
+            {viewType === 'card' && (
+              <ChapterCardLayoutList
+                topicId={topic.id}
+                chapters={chapters}
+                updateChapterOrders={this.updateChapterOrders}
+                updateChapterTitle={this.updateChapterTitle}
+                deleteChapter={this.deleteChapter}
+                setChapters={this.setChapters}
+                viewType={viewType}
+                rowHeight={120}
+                gridSetting={{
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
+                  cols: { lg: 5, md: 4, sm: 3, xs: 1 },
+                  defaultBox: {
+                    w: 1,
+                    h: 1,
+                    minW: 1,
+                    maxW: 1,
+                    minH: 1,
+                    maxH: 1,
+                    moved: false,
+                    static: false,
+                    isDraggable: true,
+                    isResizable: false,
+                  },
+                }}
+              />
+            )}
+            {viewType === 'list' && (
+              <ChapterCardLayoutList
+                topicId={topic.id}
+                chapters={chapters}
+                updateChapterOrders={this.updateChapterOrders}
+                updateChapterTitle={this.updateChapterTitle}
+                deleteChapter={this.deleteChapter}
+                setChapters={this.setChapters}
+                viewType={viewType}
+                rowHeight={40}
+                gridSetting={{
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
+                  cols: { lg: 1, md: 1, sm: 1, xs: 1 },
+                  defaultBox: {
+                    w: 1,
+                    h: 1,
+                    minW: 1,
+                    maxW: 1,
+                    minH: 1,
+                    maxH: 1,
+                    moved: false,
+                    static: false,
+                    isDraggable: true,
+                    isResizable: false,
+                  },
+                }}
+              />
+            )}
           </FullLayout>
         )}
       </div>

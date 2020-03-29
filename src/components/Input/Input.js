@@ -52,6 +52,11 @@ class Input extends React.Component {
       const { onEnter } = this.props;
       if (onEnter) onEnter();
     }
+
+    if (e.keyCode === 27) {
+      const { onESC } = this.props;
+      if (onESC) onESC();
+    }
   };
 
   render() {
@@ -73,6 +78,7 @@ class Input extends React.Component {
       externalValidationMessage,
       simple,
       onEnter,
+      onESC,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
@@ -146,6 +152,7 @@ Input.propTypes = {
   simple : PropTypes.bool,
   border : PropTypes.bool,
   onEnter : PropTypes.func,
+  onESC : PropTypes.func,
 };
 
 export default withTranslation()(Input);

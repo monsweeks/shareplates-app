@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { Button, Input } from '@/components';
-import './ChapterCard.scss';
+import './ChapterRow.scss';
 
-class ChapterCard extends React.Component {
+class ChapterRow extends React.Component {
   constructor(props) {
     super(props);
 
@@ -55,66 +55,69 @@ class ChapterCard extends React.Component {
     const { isEdit, isDelete, title } = this.state;
 
     return (
-      <div className={`chapter-card-wrapper g-no-select border-0 ${className}`}>
-        <div className="card-buttons">
-          <Button
-            onTouchStart={this.stopProgation}
-            onMouseDown={this.stopProgation}
-            onClick={(e) => {
-              e.stopPropagation();
-              this.setState({
-                isDelete: !isDelete,
-              });
-            }}
-            className="remove-button"
-          >
-            <i className="fal fa-times" />
-          </Button>
-        </div>
-        <div className="chapter-card-content">
-          <div className="mover">
-            <span className="order-no">
-              <span className="no-text">NO</span>
+      <div className={`chapter-row-wrapper g-no-select border-0 ${className}`}>
+        <div>
+          <div className="grab">
+            <div>
+              <i className="fas fa-grip-vertical" />
+            </div>
+          </div>
+          <div className="order-no">
+            <div>
+              <span className="no-text d-none">NO</span>
               <span className="no-count">{chapter.orderNo}</span>
-            </span>
-            <span className="grap">
-              <i className="fas fa-grip-horizontal" />
-            </span>
+            </div>
           </div>
           <div
-            className="content"
+            className="title"
             onTouchStart={this.stopProgation}
             onMouseDown={this.stopProgation}
+            onDoubleClick={(e) => {
+              e.stopPropagation();
+              this.setState({
+                isEdit: true,
+              });
+            }}
             onClick={() => {
               if (onCardClick) {
                 onCardClick(chapter ? chapter.id : null);
               }
             }}
           >
-            <div className="chapter-title" onDoubleClick={(e) => {
-              e.stopPropagation();
-              this.setState({
-                isEdit: true,
-              });
-            }}>
-              <div>
-                {chapter.title}
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    this.setState({
-                      isEdit: true,
-                    });
-                  }}
-                  className="edit"
-                >
-                  <i className="fal fa-pen-nib" />
-                </Button>
-              </div>
+            <div>{chapter.title}</div>
+          </div>
+          <div className="buttons">
+            <div>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  this.setState({
+                    isEdit: true,
+                  });
+                }}
+                className="edit-button"
+              >
+                <i className="fal fa-pen-nib" />
+              </Button>
+              <Button
+                onTouchStart={this.stopProgation}
+                onMouseDown={this.stopProgation}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  this.setState({
+                    isDelete: !isDelete,
+                  });
+                }}
+                className="remove-button"
+              >
+                <i className="fal fa-times" />
+              </Button>
             </div>
-            {isDelete && (
-              <div className="inner-popup">
-                <div className="inner-popup-content scrollbar text-danger">
+          </div>
+          {isDelete && (
+            <div className="inner-popup">
+              <div className="inner-popup-content">
+                <div className="warning-message text-danger">
                   <div>챕터 및 챕터에 포함된 페이지도 함께 삭제됩니다.</div>
                 </div>
                 <div className="buttons">
@@ -142,13 +145,14 @@ class ChapterCard extends React.Component {
                   </Button>
                 </div>
               </div>
-            )}
-            {isEdit && (
-              <div className="inner-popup">
-                <div className="inner-popup-content scrollbar">
-                  <div className="chapter-name-text">{t('챕터 이름')}</div>
+            </div>
+          )}
+          {isEdit && (
+            <div className="inner-popup" onTouchStart={this.stopProgation} onMouseDown={this.stopProgation}>
+              <div className="inner-popup-content">
+                <div className="chapter-name-text">{t('챕터 이름')}</div>
+                <div className="chapter-name-input">
                   <Input
-                    className="chapter-name-input"
                     label={t('label.name')}
                     value={title}
                     required
@@ -197,21 +201,21 @@ class ChapterCard extends React.Component {
                   </Button>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 }
 
-export default withTranslation()(ChapterCard);
+export default withTranslation()(ChapterRow);
 
-ChapterCard.defaultProps = {
+ChapterRow.defaultProps = {
   className: '',
 };
 
-ChapterCard.propTypes = {
+ChapterRow.propTypes = {
   chapter: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,

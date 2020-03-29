@@ -41,6 +41,7 @@ import ObjectImage from '@/components/ObjectImage/ObjectImage';
 import PageIntro from '@/components/PageIntro/PageIntro';
 import ChapterCard from '@/components/ChapterCard/ChapterCard';
 import ListControlBar from '@/components/ListControlBar/ListControlBar';
+import ChapterRow from '@/components/ChapterRow/ChapterRow';
 
 export {
   Button,
@@ -86,4 +87,5 @@ export {
   PageIntro,
   ChapterCard,
   ListControlBar,
+  ChapterRow,
 };
