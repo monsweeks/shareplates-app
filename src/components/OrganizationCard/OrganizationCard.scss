@@ -1,5 +1,5 @@
 .organization-card-wrapper {
-  border: 1px solid transparent;
+  border: none;
   height: 220px;
   border-radius: 3px;
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
@@ -129,6 +129,6 @@
 
 @media (min-width: 992px) {
   .organization-card-wrapper:hover {
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.3);
   }
 }
