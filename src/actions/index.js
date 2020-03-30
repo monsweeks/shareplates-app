@@ -15,8 +15,6 @@ export function setJoinEmail(email) {
 }
 
 export function setUserAndGrp(user, grps) {
-
-  console.log('action', user);
   return {
     type: SET_USER_AND_GRP,
     user,
@@ -24,7 +22,7 @@ export function setUserAndGrp(user, grps) {
   };
 }
 
-export function setGrp(user, grpId) {
+export function setGrp(grpId) {
   return {
     type: SET_GRP_ID,
     grpId,
