@@ -250,7 +250,7 @@ class TopicList extends React.Component {
                 <TopicCard
                   newCard
                   onCardClick={() => {
-                    history.push('/topics/new');
+                    history.push(`/topics/new?organizationId=${organizationId}`);
                   }}
                 />
               </Col>

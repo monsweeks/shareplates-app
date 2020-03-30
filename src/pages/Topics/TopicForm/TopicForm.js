@@ -67,7 +67,12 @@ class TopicForm extends Component {
         props.user &&
         props.user.id
       ) {
-        topic.organizationId = props.organizations[0].id;
+        if (props.organizationId) {
+          topic.organizationId = props.organizationId;
+        } else {
+          topic.organizationId = props.organizations[0].id;
+        }
+
         topic.users = [
           {
             id: user.id,
@@ -300,4 +305,5 @@ TopicForm.propTypes = {
   onSave: PropTypes.func,
   saveText: PropTypes.string,
   onCancel: PropTypes.func,
+  organizationId : PropTypes.string,
 };

@@ -7,6 +7,7 @@ import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/pages';
 import { PageIntro } from '@/components';
+import common from '@/utils/common';
 
 class NewTopic extends React.PureComponent {
   onSubmit = (topic) => {
@@ -23,7 +24,9 @@ class NewTopic extends React.PureComponent {
   };
 
   render() {
-    const { t, organizations, user } = this.props;
+    const { t, organizations, user, location: { search } } = this.props;
+    const options = common.getOptions(search, ['organizationId']);
+
     return (
       <RegisterLayout>
         <PageTitle
@@ -47,6 +50,7 @@ class NewTopic extends React.PureComponent {
           onSave={this.onSubmit}
           user={user}
           organizations={organizations}
+          organizationId={options.organizationId}
           onCancel={this.onCancel}
         />
       </RegisterLayout>
@@ -84,5 +88,9 @@ NewTopic.propTypes = {
   t: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
+  }),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
   }),
 };
