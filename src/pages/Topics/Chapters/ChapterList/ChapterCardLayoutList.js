@@ -142,7 +142,7 @@ class ChapterCardLayoutList extends React.PureComponent {
     return (
       <div className="chapter-card-layout-list">
         {chapters !== false && chapters.length > 0 && (
-          <div className="chapter-list pt-4">
+          <div className="chapter-list">
             <ResponsiveReactGridLayout
               onLayoutChange={this.onLayoutChange}
               className="layout"

@@ -114,8 +114,8 @@ $mover-height: 24px;
           font-family: LGSmHaB;
           font-size: 0.8rem;
           position: relative;
-          padding-right: 24px;
-          margin-right: -24px;
+          width: calc(100% - 24px);
+          padding: 0 1rem;
 
           > div {
             display: inline-block;

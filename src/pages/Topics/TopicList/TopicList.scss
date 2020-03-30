@@ -10,18 +10,22 @@
   }
 
   .topic-list-content {
-    padding-top: 15px;
-    padding-left: 7.5px;
-    padding-right: 7.5px;
-    margin: 0;
+    _padding-top: 15px;
+    _padding-left: 7.5px;
+    _padding-right: 7.5px;
+    _margin: 0;
 
     .row {
-      margin: 0;
+      _margin: 0;
 
       .topic-col {
-        padding-left: 7.5px;
-        padding-right: 7.5px;
-        margin-bottom: 15px;
+        _padding-left: 7.5px;
+        _padding-right: 7.5px;
+        _margin-bottom: 15px;
+
+        _padding-left: 0.75rem;
+        _padding-right: 0.75rem;
+        _margin-bottom: 1.5rem;
 
 
       }
