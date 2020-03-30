@@ -13,6 +13,10 @@
     padding: 0.25rem 0.5rem;
     border-radius: 10px;
 
+    @media (max-width: 768px) {
+      display: none;
+    }
+
     .page-count,
     .chapter-count {
       display: inline-block;
@@ -35,5 +39,39 @@
 
   .react-resizable-handle {
     display: none;
+  }
+
+  .sm-control-bar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .list-control-bar {
+      .add-button {
+        display: none !important;
+      }
+
+      .separator {
+        display: none !important;
+      }
+    }
+
+    .sm-control-bar {
+      position: relative;
+      display: block;
+      margin: 1rem 1rem 0;
+
+      .add-button {
+        position: absolute;
+        right: 0;
+        top: 2px;
+      }
+    }
+
+    .sm-summary {
+      display: inline-block;
+      color: $white;
+      margin-right: 1rem;
+    }
   }
 }

@@ -28,7 +28,7 @@ class ChapterList extends React.PureComponent {
       topic: {},
       chapters: false,
       viewType: viewType || 'card',
-      role : 'NONE'
+      role: 'NONE',
     };
   }
 
@@ -59,7 +59,7 @@ class ChapterList extends React.PureComponent {
       this.setState({
         topic: data.topic || {},
         chapters: data.chapters || [],
-        role : data.role
+        role: data.role,
       });
     });
   };
@@ -149,7 +149,7 @@ class ChapterList extends React.PureComponent {
     return (
       <div className="chapter-list-wrapper">
         <ListControlBar
-          className="flex-grow-0"
+          className="list-control-bar flex-grow-0"
           viewType={viewType}
           onChangeViewType={this.onChangeViewType}
           title={
@@ -164,14 +164,26 @@ class ChapterList extends React.PureComponent {
               </div>
             </>
           }
-          buttons={isWriter ? [
-            <Button key="add" onClick={this.createChapter} className="option" color="white" size="sm">
-              <i className="fal fa-plus" /> 챕터 추가
-            </Button>,
-          ] : []}
+          buttons={
+            isWriter
+              ? [
+                  <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
+                    <i className="fal fa-plus" /> 챕터 추가
+                  </Button>,
+                ]
+              : []
+          }
         />
-        <div className="d-none">
-          반응형 처리,
+        <div className='sm-control-bar'>
+          <div className="summary sm-summary">
+            <span className="chapter-count mr-1">{chapters.length}</span>
+            <span className="summary-label">CHAPTERS</span>
+            <span className="page-count ml-2 mr-1">0</span>
+            <span className="summary-label">PAGES</span>
+          </div>
+          <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
+            <i className="fal fa-plus" /> 챕터 추가
+          </Button>
         </div>
         {chapters !== false && (
           <FullLayout className="flex-grow-1">
@@ -182,12 +194,12 @@ class ChapterList extends React.PureComponent {
                   <div>
                     <div className="mb-2">{t('아직 생성된 챕터가 없습니다')}</div>
                     {isWriter && <div className="mb-4">{t('챕터를 추가해서, 토픽을 만들기를 시작해보세요.')}</div>}
-                    {isWriter &&
-                    <Button onClick={this.createChapter} color="white">
-                      <i className="fal fa-plus mr-2"/>
-                      챕터 추가
-                    </Button>
-                    }
+                    {isWriter && (
+                      <Button onClick={this.createChapter} color="white">
+                        <i className="fal fa-plus mr-2" />
+                        챕터 추가
+                      </Button>
+                    )}
                   </div>
                 }
               />
@@ -202,9 +214,10 @@ class ChapterList extends React.PureComponent {
                 setChapters={this.setChapters}
                 viewType={viewType}
                 rowHeight={120}
+                margin={[12, 12]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
-                  cols: { lg: 5, md: 4, sm: 3, xs: 1 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
+                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs : 1 },
                   defaultBox: {
                     w: 1,
                     h: 1,
@@ -231,9 +244,10 @@ class ChapterList extends React.PureComponent {
                 setChapters={this.setChapters}
                 viewType={viewType}
                 rowHeight={40}
+                margin={[12, 4]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576 },
-                  cols: { lg: 1, md: 1, sm: 1, xs: 1 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
+                  cols: { lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 },
                   defaultBox: {
                     w: 1,
                     h: 1,

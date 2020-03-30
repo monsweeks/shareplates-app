@@ -136,7 +136,7 @@ class ChapterCardLayoutList extends React.PureComponent {
   };
 
   render() {
-    const { updateChapterTitle, deleteChapter, chapters, gridSetting, viewType, rowHeight, isWriter } = this.props;
+    const { updateChapterTitle, deleteChapter, chapters, gridSetting, viewType, rowHeight, isWriter, margin } = this.props;
     const { gridLayouts } = this.state;
 
     return (
@@ -153,6 +153,7 @@ class ChapterCardLayoutList extends React.PureComponent {
               compactType="horizontal"
               verticalCompact
               layouts={gridLayouts}
+              margin={margin}
               onBreakpointChange={(newBreakpoint) => {
                 this.breakpoint = newBreakpoint;
               }}
@@ -213,6 +214,7 @@ ChapterCardLayoutList.propTypes = {
   viewType: PropTypes.string,
   rowHeight : PropTypes.number,
   isWriter : PropTypes.bool,
+  margin : PropTypes.arrayOf(PropTypes.number)
 };
 
 export default ChapterCardLayoutList;

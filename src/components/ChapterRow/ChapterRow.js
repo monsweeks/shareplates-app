@@ -176,7 +176,7 @@ class ChapterRow extends React.Component {
                 </div>
                 <div className="buttons">
                   <Button
-                    size="sm px-3"
+                    size="sm px-2 px-sm-3"
                     onClick={(e) => {
                       e.stopPropagation();
                       this.setState({
@@ -187,7 +187,7 @@ class ChapterRow extends React.Component {
                     취소
                   </Button>
                   <Button
-                    className="ml-1 px-3"
+                    className="ml-1 px-2 px-sm-3"
                     size="sm"
                     color="primary"
                     onClick={(e) => {
