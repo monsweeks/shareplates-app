@@ -58,8 +58,8 @@ class Topic extends Component {
     request.del(
       `/api/topics/${topicId}`,
       null,
-      (data) => {
-        history.push(data._links.topics.href);
+      () => {
+        history.push('/topics');
       },
       null,
       true,
@@ -144,8 +144,8 @@ class Topic extends Component {
             </div>
             <SubLabel>{t('label.name')}</SubLabel>
             <P>{topic.name}</P>
-            <SubLabel>{t('ORG')}</SubLabel>
-            <P upppercase>{topic.organizationName}</P>
+            <SubLabel>{t('그룹')}</SubLabel>
+            <P upppercase>{topic.grpName}</P>
             <SubLabel>{t('label.desc')}</SubLabel>
             <P pre>{topic.summary}</P>
             <SubLabel>{t('label.privateTopic')}</SubLabel>

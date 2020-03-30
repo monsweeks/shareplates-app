@@ -15,14 +15,14 @@ import {
   UserManager,
   UserSearchPopup,
 } from '@/components';
-import './OrganizationForm.scss';
+import './GrpForm.scss';
 
-class OrganizationForm extends Component {
+class GrpForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      organization: {
+      grp: {
         name: '',
         description: '',
         admins: [],
@@ -41,16 +41,16 @@ class OrganizationForm extends Component {
     }
 
     const { edit, user } = props;
-    let organization = { ...state.organization };
+    let grp = { ...state.grp };
 
-    if (edit && props.organization) {
-      organization = props.organization;
+    if (edit && props.grp) {
+      grp = props.grp;
       initialized = true;
     }
 
     if (!edit) {
-      if (organization.admins.length < 1 && props.user && props.user.id) {
-        organization.admins = [
+      if (grp.admins.length < 1 && props.user && props.user.id) {
+        grp.admins = [
           {
             id: user.id,
             email: user.email,
@@ -63,19 +63,19 @@ class OrganizationForm extends Component {
     }
 
     return {
-      organization,
+      grp,
       initialized,
     };
   }
 
   onChange = (field) => (value) => {
-    const { organization } = this.state;
+    const { grp } = this.state;
 
     const v = {};
     v[field] = value;
 
     this.setState({
-      organization: { ...organization, ...v },
+      grp: { ...grp, ...v },
     });
   };
 
@@ -95,15 +95,15 @@ class OrganizationForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { organization } = this.state;
+    const { grp } = this.state;
     const { onSave } = this.props;
 
-    onSave(organization);
+    onSave(grp);
   };
 
   onApply = (isAdmin, users) => {
-    const { organization } = this.state;
-    const info = { ...organization };
+    const { grp } = this.state;
+    const info = { ...grp };
     if (isAdmin) {
       info.admins = users;
       info.admins.forEach((admin) => {
@@ -124,23 +124,23 @@ class OrganizationForm extends Component {
     }
 
     this.setState({
-      organization: info,
+      grp: info,
     });
   };
 
   render() {
     const { t, saveText, onCancel } = this.props;
-    const { organization, existName, openAdminPopup, openMemberPopup } = this.state;
+    const { grp, existName, openAdminPopup, openMemberPopup } = this.state;
 
     return (
       <>
-        <Form onSubmit={this.onSubmit} className="organization-form-wrapper flex-grow-1">
+        <Form onSubmit={this.onSubmit} className="grp-form-wrapper flex-grow-1">
           <SubLabel>{t('label.name')}</SubLabel>
-          <Description>{t('message.organizationNameDesc')}</Description>
+          <Description>{t('message.grpNameDesc')}</Description>
           <FormGroup>
             <Input
               label={t('label.name')}
-              value={organization.name}
+              value={grp.name}
               required
               minLength={2}
               maxLength={100}
@@ -153,12 +153,12 @@ class OrganizationForm extends Component {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.desc')}</SubLabel>
-          <Description>{t('message.organizationDescDesc')}</Description>
+          <Description>{t('message.grpDescDesc')}</Description>
           <FormGroup>
             <TextArea
               label={t('label.desc')}
-              placeholderMessage={t('message.organizationDescDesc')}
-              value={organization.description}
+              placeholderMessage={t('message.grpDescDesc')}
+              value={grp.description}
               onChange={this.onChange('description')}
               simple
               componentClassName="border-primary"
@@ -166,8 +166,8 @@ class OrganizationForm extends Component {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <div className="position-relative">
-            <SubLabel>{t('label.organizationAdmin')}</SubLabel>
-            <Description>{t('message.organizationAdminDesc')}</Description>
+            <SubLabel>{t('label.grpAdmin')}</SubLabel>
+            <Description>{t('message.grpAdminDesc')}</Description>
             <Button
               className="g-circle-icon-button manager-button"
               color="primary"
@@ -181,25 +181,25 @@ class OrganizationForm extends Component {
           <FormGroup className="mt-2">
             <UserManager
               onRemove={(id) => {
-                const admins = organization.admins.splice(0);
+                const admins = grp.admins.splice(0);
                 const index = admins.findIndex((u) => u.id === id);
                 admins.splice(index, 1);
                 this.setState({
-                  organization: { ...organization, admins },
+                  grp: { ...grp, admins },
                 });
               }}
               lg={3}
               md={4}
               sm={6}
               xl={12}
-              users={organization.admins}
+              users={grp.admins}
               className='bg-light'
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <div className="position-relative">
-            <SubLabel>{t('label.organizationMember')}</SubLabel>
-            <Description>{t('message.organizationUserDesc')}</Description>
+            <SubLabel>{t('label.grpMember')}</SubLabel>
+            <Description>{t('message.grpUserDesc')}</Description>
             <Button
               className="g-circle-icon-button manager-button"
               color="primary"
@@ -213,18 +213,18 @@ class OrganizationForm extends Component {
           <FormGroup className="mt-2">
             <UserManager
               onRemove={(id) => {
-                const members = organization.members.splice(0);
+                const members = grp.members.splice(0);
                 const index = members.findIndex((u) => u.id === id);
                 members.splice(index, 1);
                 this.setState({
-                  organization: { ...organization, members },
+                  grp: { ...grp, members },
                 });
               }}
               lg={3}
               md={4}
               sm={6}
               xl={12}
-              users={organization.members}
+              users={grp.members}
               className='bg-light'
             />
           </FormGroup>
@@ -233,12 +233,12 @@ class OrganizationForm extends Component {
         {(openAdminPopup || openMemberPopup) && (
           <Popup title="사용자 검색" open setOpen={this.setClosePopup}>
             <UserSearchPopup
-              users={openAdminPopup ? organization.admins : organization.members}
+              users={openAdminPopup ? grp.admins : grp.members}
               setOpen={this.setClosePopup}
               onApply={(users) => {
                 this.onApply(openAdminPopup, users);
               }}
-              markedUsers={openAdminPopup ? organization.members : organization.admins}
+              markedUsers={openAdminPopup ? grp.members : grp.admins}
               markedTag={openAdminPopup ? 'MEMBER' : 'ADMIN'}
             />
           </Popup>
@@ -248,17 +248,17 @@ class OrganizationForm extends Component {
   }
 }
 
-export default withRouter(withTranslation()(OrganizationForm));
+export default withRouter(withTranslation()(GrpForm));
 
-OrganizationForm.defaultProps = {
+GrpForm.defaultProps = {
   t: null,
   edit: false,
   saveText: '',
 };
 
-OrganizationForm.propTypes = {
+GrpForm.propTypes = {
   edit: PropTypes.bool,
-  organization: PropTypes.shape({
+  grp: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }),

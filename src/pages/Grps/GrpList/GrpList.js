@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, OrganizationCard, Row, SearchBar } from '@/components';
+import { Col, GrpCard, Row, SearchBar } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import './OrganizationList.scss';
+import './GrpList.scss';
 
-class OrganizationList extends React.Component {
+class GrpList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -27,13 +27,13 @@ class OrganizationList extends React.Component {
         searchWord: '',
         ...options,
       },
-      organizations: [],
+      grps: [],
     };
   }
 
   componentDidMount() {
     const { options } = this.state;
-    this.getOrganizations(options);
+    this.getGrps(options);
   }
 
   componentDidUpdate(prevProps) {
@@ -47,7 +47,7 @@ class OrganizationList extends React.Component {
     const pathOptions = common.getOptions(search, ['order', 'direction', 'searchWord']);
 
     if (location !== prevProps.location) {
-      this.getOrganizations({
+      this.getGrps({
         ...options,
         ...pathOptions,
       });
@@ -65,11 +65,11 @@ class OrganizationList extends React.Component {
     common.setOptions(history, pathname, options);
   };
 
-  getOrganizations = (options) => {
+  getGrps = (options) => {
     const { searchWord, order, direction } = options;
-    request.get('/api/organizations', { searchWord, order, direction }, (data) => {
+    request.get('/api/groups', { searchWord, order, direction }, (data) => {
       this.setState({
-        organizations: data.organizations || [],
+        grps: data.grps || [],
         options: {
           searchWord,
           order,
@@ -85,11 +85,11 @@ class OrganizationList extends React.Component {
     const {
       options,
       options: { searchWord, order, direction },
-      organizations,
+      grps,
     } = this.state;
 
     return (
-      <div className="organization-list-wrapper">
+      <div className="grp-list-wrapper">
         <SearchBar
           order={order}
           onChangeOrder={(value) => {
@@ -129,7 +129,7 @@ class OrganizationList extends React.Component {
             });
           }}
           searchWord={searchWord}
-          searchPlaceholder={t('label.searchByOrgName')}
+          searchPlaceholder={t('label.searchByGrpName')}
           onClear={() => {
             this.setState(
               {
@@ -144,26 +144,26 @@ class OrganizationList extends React.Component {
             );
           }}
         />
-        <FullLayout className="organization-list-content text-center align-self-center">
-          <div className="organization-list">
+        <FullLayout className="grp-list-content text-center align-self-center">
+          <div className="grp-list">
             <Row>
-              {organizations.map((organization, i) => {
+              {grps.map((grp, i) => {
                 return (
-                  <Col key={i} className="organization-col" xl={4} lg={4} md={6} sm={6}>
-                    <OrganizationCard
-                      organization={organization}
-                      onCardClick={(organizationId) => {
-                        history.push(`/organizations/${organizationId}`);
+                  <Col key={i} className="grp-col" xl={4} lg={4} md={6} sm={6}>
+                    <GrpCard
+                      grp={grp}
+                      onCardClick={(grpId) => {
+                        history.push(`/groups/${grpId}`);
                       }}
                     />
                   </Col>
                 );
               })}
-              <Col className="organization-col" xl={4} lg={4} md={6} sm={6}>
-                <OrganizationCard
+              <Col className="grp-col" xl={4} lg={4} md={6} sm={6}>
+                <GrpCard
                   newCard
                   onCardClick={() => {
-                    history.push('/organizations/new');
+                    history.push('/groups/new');
                   }}
                 />
               </Col>
@@ -175,7 +175,7 @@ class OrganizationList extends React.Component {
   }
 }
 
-OrganizationList.propTypes = {
+GrpList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -186,4 +186,4 @@ OrganizationList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(undefined, undefined)(OrganizationList)));
+export default withRouter(withTranslation()(connect(undefined, undefined)(GrpList)));

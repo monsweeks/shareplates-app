@@ -12,7 +12,7 @@ const pageMainColors = {
   '/': variables.seaBlueColor,
   '/topics': variables.seaBlueColor,
   '/topics/[0-9]+/chapters': variables.seaBlueColor,
-  '/organizations': variables.seaBlueColor,
+  '/groups': variables.seaBlueColor,
 };
 
 class Menu extends React.PureComponent {
@@ -56,8 +56,8 @@ class Menu extends React.PureComponent {
             alias = '/chapters';
           } else if (pathname.indexOf('/topics') > -1) {
             alias = '/topics';
-          } else if (pathname.indexOf('/organizations') > -1) {
-            alias = '/organizations';
+          } else if (pathname.indexOf('/groups') > -1) {
+            alias = '/groups';
           } else if (pathname === '/') {
             alias = '/topics';
           }

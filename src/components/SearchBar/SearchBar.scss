@@ -24,7 +24,7 @@
       align-self: center;
     }
 
-    .organization-col {
+    .grp-col {
       flex: 0;
       white-space: nowrap;
       margin-right: 1rem;
@@ -33,7 +33,7 @@
         margin-right: 0.5rem;
       }
 
-      .organization-selector {
+      .grp-selector {
         min-width: 120px;
 
         @media (max-width: 768px) {

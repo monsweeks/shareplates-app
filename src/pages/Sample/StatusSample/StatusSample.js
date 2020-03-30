@@ -21,13 +21,13 @@ class StatusSample extends React.PureComponent {
           <Button
             className="mr-4"
             onClick={() => {
-              request.get('/api/organizations', null, (data) => {
+              request.get('/api/groups', null, (data) => {
                 // eslint-disable-next-line no-console
                 console.log(data);
               });
             }}
           >
-            GET ORG LIST
+            GET 그룹 LIST
           </Button>
           <Button
             className="mr-4"

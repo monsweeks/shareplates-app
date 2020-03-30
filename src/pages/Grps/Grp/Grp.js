@@ -8,20 +8,20 @@ import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { EmptyMessage, P, SubLabel, UserManager } from '@/components';
 
-class Organization extends Component {
+class Grp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      organization: null,
+      grp: null,
       isAdmin: null,
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (state.isAdmin === null && props.user && state.organization) {
+    if (state.isAdmin === null && props.user && state.grp) {
       return {
-        isAdmin: state.organization.admins.findIndex((u) => u.id === props.user.id) > -1,
+        isAdmin: state.grp.admins.findIndex((u) => u.id === props.user.id) > -1,
       };
     }
 
@@ -31,20 +31,21 @@ class Organization extends Component {
   componentDidMount() {
     const {
       match: {
-        params: { organizationId },
+        params: { grpId },
       },
     } = this.props;
 
-    this.getOrganization(organizationId);
+    this.getGrp(grpId);
   }
 
-  getOrganization = (organizationId) => {
+  getGrp = (grpId) => {
     request.get(
-      `/api/organizations/${organizationId}`,
+      `/api/groups/${grpId}`,
       null,
-      (organization) => {
+      (grp) => {
+        console.log(grp);
         this.setState({
-          organization,
+          grp,
         });
       },
       null,
@@ -52,13 +53,13 @@ class Organization extends Component {
     );
   };
 
-  deleteOrganization = (organizationId) => {
+  deleteGrp = (grpId) => {
     const { history } = this.props;
     request.del(
-      `/api/organizations/${organizationId}`,
+      `/api/groups/${grpId}`,
       null,
       () => {
-        history.push('/organizations');
+        history.push('/groups');
       },
       null,
       true,
@@ -66,37 +67,37 @@ class Organization extends Component {
   };
 
   onDelete = () => {
-    const { organization } = this.state;
+    const { grp } = this.state;
     const { setConfirm: setConfirmReducer } = this.props;
-    setConfirmReducer(`${organization.name} 토픽을 정말 삭제하시겠습니까?`, () => {
-      this.deleteOrganization(organization.id);
+    setConfirmReducer(`${grp.name} 그룹을 정말 삭제하시겠습니까?`, () => {
+      this.deleteGrp(grp.id);
     });
   };
 
   onList = () => {
     const { history } = this.props;
-    history.push('/organizations');
+    history.push('/groups');
   };
 
   onEdit = () => {
-    const { organization } = this.state;
+    const { grp } = this.state;
     const { history } = this.props;
 
-    history.push(`/organizations/${organization.id}/edit`);
+    history.push(`/groups/${grp.id}/edit`);
   };
 
   render() {
     const {
       match: {
-        params: { organizationId },
+        params: { grpId },
       },
     } = this.props;
     const { t } = this.props;
-    const { organization, isAdmin } = this.state;
+    const { grp, isAdmin } = this.state;
 
     return (
       <DetailLayout margin={false}>
-        {!organization && organization === false && (
+        {!grp && grp === false && (
           <EmptyMessage
             className="h5 bg-white"
             message={
@@ -109,18 +110,18 @@ class Organization extends Component {
             }
           />
         )}
-        {organization && (
+        {grp && (
           <>
             <PageTitle
               className=""
               list={[
                 {
-                  name: t('label.organizationList'),
-                  to: '/organizations',
+                  name: t('label.grpList'),
+                  to: '/groups',
                 },
                 {
-                  name: organization && organization.name,
-                  to: `/organizations/${organizationId}`,
+                  name: grp && grp.name,
+                  to: `/groups/${grpId}`,
                 },
               ]}
               onDelete={isAdmin ? this.onDelete : null}
@@ -128,20 +129,20 @@ class Organization extends Component {
               onEdit={isAdmin ? this.onEdit : null}
               border
             >
-              {t('ORG 정보')}
+              {t('그룹 정보')}
             </PageTitle>
             <SubLabel>{t('label.name')}</SubLabel>
             <P upppercase className="mb-3">
-              {organization.name}
+              {grp.name}
             </P>
             <SubLabel>{t('label.desc')}</SubLabel>
             <P upppercase pre>
-              {organization.description}
+              {grp.description}
             </P>
             <SubLabel>{t('어드민')}</SubLabel>
-            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={organization.admins} border />
-            <SubLabel>{t('label.organizationMember')}</SubLabel>
-            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={organization.members} border />
+            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={grp.admins} border />
+            <SubLabel>{t('label.grpMember')}</SubLabel>
+            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={grp.members} border />
           </>
         )}
       </DetailLayout>
@@ -161,13 +162,13 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Organization)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Grp)));
 
-Organization.defaultProps = {
+Grp.defaultProps = {
   t: null,
 };
 
-Organization.propTypes = {
+Grp.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -180,7 +181,7 @@ Organization.propTypes = {
   }),
   match: PropTypes.shape({
     params: PropTypes.shape({
-      organizationId: PropTypes.string,
+      grpId: PropTypes.string,
     }),
   }),
   setConfirm: PropTypes.func,

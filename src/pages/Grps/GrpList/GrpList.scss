@@ -1,4 +1,4 @@
-.organization-list-wrapper {
+.grp-list-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -9,7 +9,7 @@
     margin-right: 0.5rem;
   }
 
-  .organization-list-content {
+  .grp-list-content {
     _padding-top: 15px;
     _padding-left: 7.5px;
     _padding-right: 7.5px;
@@ -18,7 +18,7 @@
     .row {
       _margin: 0;
 
-      .organization-col {
+      .grp-col {
         _padding-left: 7.5px;
         _padding-right: 7.5px;
         _margin-bottom: 15px;

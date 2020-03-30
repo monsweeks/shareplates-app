@@ -61,14 +61,14 @@
       > div {
         align-self: center;
 
-        &.organization-col {
+        &.grp-col {
           padding-right: 1rem;
 
           @media (max-width: 576px) {
             padding-right: 0.5rem;
           }
 
-          .organization-selector {
+          .grp-selector {
             min-width: 100px;
 
             @media (max-width: 576px) {

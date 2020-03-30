@@ -1,4 +1,4 @@
-.organization-card-wrapper {
+.grp-card-wrapper {
   border: none;
   height: 220px;
   border-radius: 3px;
@@ -23,12 +23,12 @@
       width: 100%;
     }
 
-    .organization-card-content {
+    .grp-card-content {
       height: 100%;
       display: flex;
       flex-direction: column;
 
-      .new-organization-content {
+      .new-grp-content {
         align-self: center;
         justify-content: center;
         vertical-align: middle;
@@ -37,19 +37,19 @@
         display: flex;
         flex-direction: column;
 
-        .new-organization-icon {
+        .new-grp-icon {
           font-size: 40px;
         }
       }
 
-      .organization-title {
+      .grp-title {
         flex: 0;
         padding: 0.25rem;
         font-size: 1.1rem;
         font-weight: bold;
       }
 
-      .organization-description {
+      .grp-description {
         flex: 0;
         font-size: 0.8rem;
         margin-bottom: 0.5rem;
@@ -78,7 +78,7 @@
       }
     }
 
-    .organization-stats {
+    .grp-stats {
       position: relative;
       .user-count {
         display: inline-block;
@@ -128,7 +128,7 @@
 }
 
 @media (min-width: 992px) {
-  .organization-card-wrapper:hover {
+  .grp-card-wrapper:hover {
     box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.3);
   }
 }

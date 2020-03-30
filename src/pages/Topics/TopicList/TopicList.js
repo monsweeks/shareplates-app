@@ -19,13 +19,13 @@ class TopicList extends React.Component {
       location: { search },
     } = this.props;
 
-    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+    const options = common.getOptions(search, ['order', 'direction', 'grpId', 'searchWord']);
 
     this.state = {
       options: {
         order: ORDERS[0].key,
         direction: DIRECTIONS[0].key,
-        organizationId: null,
+        grpId: null,
         searchWord: '',
         ...options,
       },
@@ -39,25 +39,25 @@ class TopicList extends React.Component {
   componentDidMount() {
     const {
       options,
-      options: { organizationId },
+      options: { grpId },
     } = this.state;
-    if (organizationId) {
+    if (grpId) {
       this.getTopics(options);
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.init && state.options.organizationId) {
+    if (!state.init && state.options.grpId) {
       return {
         init: true,
       };
     }
 
-    if (!state.init && !state.options.organizationId && props.organizations && props.organizations.length > 0) {
+    if (!state.init && !state.options.grpId && props.grps && props.grps.length > 0) {
       return {
         options: {
           ...state.options,
-          organizationId: props.organizations[0].id,
+          grpId: props.grps[0].id,
         },
         init: true,
       };
@@ -74,7 +74,7 @@ class TopicList extends React.Component {
 
     const {
       options,
-      options: { organizationId },
+      options: { grpId },
       init,
     } = this.state;
 
@@ -82,10 +82,10 @@ class TopicList extends React.Component {
       return;
     }
 
-    const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'grpId', 'searchWord']);
 
-    if (!pathOptions.organizationId) {
-      pathOptions.organizationId = organizationId;
+    if (!pathOptions.grpId) {
+      pathOptions.grpId = grpId;
     }
 
     if ((!prevState.init && init) || location !== prevProps.location) {
@@ -148,25 +148,25 @@ class TopicList extends React.Component {
   };
 
   render() {
-    const { organizations, history, t } = this.props;
+    const { grps, history, t } = this.props;
 
     const {
       options,
-      options: { organizationId, searchWord, order, direction },
+      options: { grpId, searchWord, order, direction },
       topics,
     } = this.state;
 
     return (
       <div className="topic-list-wrapper">
         <SearchBar
-          organizations={organizations}
-          organizationId={organizationId}
-          onChangeOrganization={(id) => {
+          grps={grps}
+          grpId={grpId}
+          onChangeGrp={(id) => {
             this.setState(
               {
                 options: {
                   ...options,
-                  organizationId: id,
+                  grpId: id,
                 },
               },
               () => {
@@ -250,7 +250,7 @@ class TopicList extends React.Component {
                 <TopicCard
                   newCard
                   onCardClick={() => {
-                    history.push(`/topics/new?organizationId=${organizationId}`);
+                    history.push(`/topics/new?grpId=${grpId}`);
                   }}
                 />
               </Col>
@@ -264,12 +264,12 @@ class TopicList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 
 TopicList.propTypes = {
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

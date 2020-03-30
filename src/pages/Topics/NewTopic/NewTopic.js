@@ -14,7 +14,7 @@ class NewTopic extends React.PureComponent {
     const { history } = this.props;
 
     request.post('/api/topics', topic, (data) => {
-      history.push(data._links.topics.href);
+      history.push(`/topics/${data.id}`);
     });
   };
 
@@ -24,8 +24,8 @@ class NewTopic extends React.PureComponent {
   };
 
   render() {
-    const { t, organizations, user, location: { search } } = this.props;
-    const options = common.getOptions(search, ['organizationId']);
+    const { t, grps, user, location: { search } } = this.props;
+    const options = common.getOptions(search, ['grpId']);
 
     return (
       <RegisterLayout>
@@ -49,8 +49,8 @@ class NewTopic extends React.PureComponent {
           saveText="label.makeTopic"
           onSave={this.onSubmit}
           user={user}
-          organizations={organizations}
-          organizationId={options.organizationId}
+          grps={grps}
+          grpId={options.grpId}
           onCancel={this.onCancel}
         />
       </RegisterLayout>
@@ -61,7 +61,7 @@ class NewTopic extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 
@@ -78,7 +78,7 @@ NewTopic.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

@@ -5,33 +5,33 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
-import { OrganizationForm } from '@/pages';
+import { GrpForm } from '@/pages';
 
-class EditOrganization extends React.PureComponent {
+class EditGrp extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      organization: null,
+      grp: null,
     };
   }
 
   componentDidMount() {
     const {
       match: {
-        params: { organizationId },
+        params: { grpId },
       },
     } = this.props;
 
-    this.getOrganization(organizationId);
+    this.getGrp(grpId);
   }
 
-  getOrganization = (organizationId) => {
+  getGrp = (grpId) => {
     request.get(
-      `/api/organizations/${organizationId}`,
+      `/api/groups/${grpId}`,
       null,
-      (organization) => {
+      (grp) => {
         this.setState({
-          organization,
+          grp,
         });
       },
       null,
@@ -39,47 +39,47 @@ class EditOrganization extends React.PureComponent {
     );
   };
 
-  onSubmit = (organization) => {
+  onSubmit = (grp) => {
     const { history } = this.props;
 
-    request.put(`/api/organizations/${organization.id}`, organization, (data) => {
-      history.push(data._links.organizations.href);
+    request.put(`/api/groups/${grp.id}`, grp, () => {
+      history.push(`/groups/${grp.id}`);
     });
   };
 
   onCancel = () => {
     const { history } = this.props;
-    const { organization } = this.state;
-    history.push(`/organizations/${organization.id}`);
+    const { grp } = this.state;
+    history.push(`/groups/${grp.id}`);
   };
 
   render() {
     const { t } = this.props;
-    const { organization } = this.state;
+    const { grp } = this.state;
 
     return (
       <RegisterLayout>
         <PageTitle
           list={[
             {
-              name: t('label.organizationList'),
-              to: '/organizations',
+              name: t('label.grpList'),
+              to: '/groups',
             },
             {
-              name: t('label.newOrg'),
-              to: '/organizations/new',
+              name: t('label.newGrp'),
+              to: '/groups/new',
             },
           ]}
           border
         >
-          {t('ORG 편집')}
+          {t('그룹 편집')}
         </PageTitle>
-        <OrganizationForm
+        <GrpForm
           edit
-          saveText="label.saveOrg"
+          saveText="label.saveGrp"
           onSave={this.onSubmit}
           onCancel={this.onCancel}
-          organization={organization}
+          grp={grp}
         />
       </RegisterLayout>
     );
@@ -92,13 +92,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(EditOrganization)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(EditGrp)));
 
-EditOrganization.defaultProps = {
+EditGrp.defaultProps = {
   t: null,
 };
 
-EditOrganization.propTypes = {
+EditGrp.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -111,7 +111,7 @@ EditOrganization.propTypes = {
   }),
   match: PropTypes.shape({
     params: PropTypes.shape({
-      organizationId: PropTypes.string,
+      grpId: PropTypes.string,
     }),
   }),
 };

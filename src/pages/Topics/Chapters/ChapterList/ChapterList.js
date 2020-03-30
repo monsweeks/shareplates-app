@@ -273,7 +273,7 @@ class ChapterList extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 

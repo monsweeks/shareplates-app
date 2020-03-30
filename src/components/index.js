@@ -34,7 +34,7 @@ import TopicCard from '@/components/TopicCard/TopicCard';
 import BottomButton from '@/components/BottomButton/BottomButton';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 import DateTime from '@/components/DateTime/DateTime';
-import OrganizationCard from '@/components/OrganizationCard/OrganizationCard';
+import GrpCard from '@/components/GrpCard/GrpCard';
 import SubTitle from '@/components/SubTitle/SubTitle';
 import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
@@ -80,7 +80,7 @@ export {
   BottomButton,
   EmptyMessage,
   DateTime,
-  OrganizationCard,
+  GrpCard,
   SocketClient,
   SubTitle,
   ObjectImage,

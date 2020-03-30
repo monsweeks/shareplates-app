@@ -1,11 +1,11 @@
-export const SET_USER_AND_ORGANIZATION = 'SET_USER_AND_ORGANIZATION';
+export const SET_USER_AND_GRP = 'SET_USER_AND_GRP';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_CONFIRM = 'SET_CONFIRM';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
-export const SET_ORGANIZATION_ID = 'SET_ORGANIZATION_ID';
+export const SET_GRP_ID = 'SET_GRP_ID';
 
 export function setJoinEmail(email) {
   return {
@@ -14,20 +14,20 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUserAndOrganization(user, organizations) {
+export function setUserAndGrp(user, grps) {
 
   console.log('action', user);
   return {
-    type: SET_USER_AND_ORGANIZATION,
+    type: SET_USER_AND_GRP,
     user,
-    organizations,
+    grps,
   };
 }
 
-export function setOrganization(user, organizationId) {
+export function setGrp(user, grpId) {
   return {
-    type: SET_ORGANIZATION_ID,
-    organizationId,
+    type: SET_GRP_ID,
+    grpId,
   };
 }
 

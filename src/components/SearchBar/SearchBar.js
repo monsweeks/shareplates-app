@@ -20,7 +20,7 @@ class SearchBar extends React.Component {
   render() {
     const { openOptions } = this.state;
 
-    const { organizations, organizationId, onChangeOrganization } = this.props;
+    const { grps, grpId, onChangeGrp } = this.props;
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
     const { onSearch, onChangeSearchWord, t, searchPlaceholder, searchWord, onClear } = this.props;
@@ -28,20 +28,20 @@ class SearchBar extends React.Component {
     return (
       <div className="search-bar-wrapper g-no-select ">
         <div>
-          {onChangeOrganization && (
-            <div className="organization-col">
+          {onChangeGrp && (
+            <div className="grp-col">
               <span className="label small text-white d-none d-md-inline">{t('label.org')}</span>
               <Selector
                 outline
-                className="organization-selector"
-                items={organizations.map((org) => {
+                className="grp-selector"
+                items={grps.map((org) => {
                   return {
                     key: org.id,
                     value: org.name,
                   };
                 })}
-                value={organizationId}
-                onChange={onChangeOrganization}
+                value={grpId}
+                onChange={onChangeGrp}
               />
             </div>
           )}
@@ -130,15 +130,15 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  organizationId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  organizations: PropTypes.arrayOf(
+  grpId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
       publicYn: PropTypes.bool,
     }),
   ),
-  onChangeOrganization: PropTypes.func,
+  onChangeGrp: PropTypes.func,
   order: PropTypes.string,
   direction: PropTypes.string,
   onChangeOrder: PropTypes.func,
