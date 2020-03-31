@@ -34,6 +34,16 @@
     &:hover {
       background-color: darken($danger, 10%);
     }
+  }
 
+  &.white {
+    padding-top: 2px;
+    background-color: $light;
+    color: $black;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: $yellow;
+    }
   }
 }

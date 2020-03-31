@@ -239,7 +239,7 @@ class TopicList extends React.Component {
             <Row>
               {topics.map((topic, i) => {
                 return (
-                  <Col key={i} className="topic-col" xl={4} lg={4} md={6} sm={6}>
+                  <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
                     <TopicCard
                       topic={topic}
                       onCardClick={(topicId) => {
@@ -252,7 +252,7 @@ class TopicList extends React.Component {
                   </Col>
                 );
               })}
-              <Col className="topic-col" xl={4} lg={4} md={6} sm={6}>
+              <Col className="topic-col" xl={3} lg={4} md={6} sm={6}>
                 <TopicCard
                   newCard
                   onCardClick={() => {
