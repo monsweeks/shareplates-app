@@ -10,14 +10,21 @@
     text-align: center;
     img {
       width: 500px;
+
+      @media (max-width: 576px) {
+        width: 95%;
+      }
     }
   }
 
   .error-message {
     text-align: center;
-    font-family: LGSmHaB;
     color: $white;
     font-size: 24px;
+
+    @media (max-width: 576px) {
+      font-size: 18px;
+    }
   }
 
   .error-buttons {

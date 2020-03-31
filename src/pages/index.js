@@ -8,7 +8,7 @@ import Topic from './Topics/Topic/Topic';
 import NewTopic from './Topics/NewTopic/NewTopic';
 import TopicForm from './Topics/TopicForm/TopicForm';
 import EditTopic from './Topics/EditTopic/EditTopic';
-import NoMatch from './NoMatch/NoMatch';
+import NoMatch from './Etcs/NoMatch/NoMatch';
 import Sample from './Sample';
 import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
 import GrpList from './Grps/GrpList/GrpList';
@@ -16,6 +16,7 @@ import NewGrp from './Grps/NewGrp/NewGrp';
 import GrpForm from './Grps/GrpForm/GrpForm';
 import EditGrp from './Grps/EditGrp/EditGrp';
 import Grp from './Grps/Grp/Grp';
+import UnderConstruction from './Etcs/UnderConstruction/UnderConstruction';
 
 export {
   Common,
@@ -36,4 +37,5 @@ export {
   NewGrp,
   EditGrp,
   Grp,
+  UnderConstruction,
 };
