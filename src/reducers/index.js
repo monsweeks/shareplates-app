@@ -4,16 +4,16 @@ import {
   CLEAR_MESSAGE,
   SET_JOIN_EMAIL,
   SET_LOADING,
-  SET_ORGANIZATION_ID,
+  SET_GRP_ID,
   SET_SUPPORTED,
-  SET_USER_AND_ORGANIZATION,
+  SET_USER_AND_GRP,
   SET_CONFIRM,
 } from '../actions';
 
 const userState = {
   user: null,
-  organizationId: null,
-  organizations: [],
+  grpId: null,
+  grps: [],
   join: {
     email: null,
   },
@@ -23,11 +23,11 @@ const user = (state = userState, action) => {
   const currentState = { ...state };
 
   switch (action.type) {
-    case SET_USER_AND_ORGANIZATION:
-      return { ...state, user: action.user, organizations: action.organizations };
+    case SET_USER_AND_GRP:
+      return { ...state, user: action.user, grps: action.grps };
 
-    case SET_ORGANIZATION_ID:
-      return { ...state, organizationId: action.organizationId };
+    case SET_GRP_ID:
+      return { ...state, grpId: action.grpId };
 
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });

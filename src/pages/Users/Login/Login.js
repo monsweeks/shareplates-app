@@ -9,7 +9,7 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setUserAndOrganization } from '@/actions';
+import { addMessage, setUserAndGrp } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
 import './Login.scss';
 
@@ -62,7 +62,7 @@ class Login extends React.PureComponent {
     e.preventDefault();
 
     const { email, password, saveEmail, url } = this.state;
-    const { history, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+    const { history, setUserAndGrp: setUserAndGrpReducer } = this.props;
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
@@ -79,7 +79,7 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            setUserAndOrganizationReducer(data.user || {}, data.organizations);
+            setUserAndGrpReducer(data.user || {}, data.grps);
             if (url) {
               history.push(url);
             } else {
@@ -283,7 +283,7 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
+    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
   };
 };
 
@@ -292,7 +292,7 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 Login.propTypes = {
   t: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
-  setUserAndOrganization: PropTypes.func.isRequired,
+  setUserAndGrp: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

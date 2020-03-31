@@ -7,7 +7,12 @@ class SubTitle extends React.PureComponent {
     const { children, className } = this.props;
     return (
       <div className={`sub-title-wrapper ${className}`}>
-        <span className='icon'><i className="fal fa-hashtag"/></span><span className='text'>{children}</span>
+        <span>
+          <span className="icon">
+            <i className="fal fa-info-circle" />
+          </span>
+          <span className="text">{children}</span>
+        </span>
       </div>
     );
   }

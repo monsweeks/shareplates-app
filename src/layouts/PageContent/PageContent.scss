@@ -1,0 +1,9 @@
+.page-content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  padding: 1.5rem;
+
+  @media (max-width: 576px) {
+    padding: 1rem;
+  }
+}

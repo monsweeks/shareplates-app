@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { BottomButton, Col, DateTime, EmptyMessage, IconViewer, P, Row, SubLabel, UserManager } from '@/components';
+import { EmptyMessage, IconViewer, P, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
 
 class Topic extends Component {
@@ -15,7 +15,18 @@ class Topic extends Component {
 
     this.state = {
       topic: null,
+      isAdmin: null,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (state.isAdmin === null && props.user && state.topic) {
+      return {
+        isAdmin: state.topic.users.findIndex((u) => u.id === props.user.id) > -1,
+      };
+    }
+
+    return null;
   }
 
   componentDidMount() {
@@ -34,7 +45,7 @@ class Topic extends Component {
       null,
       (topic) => {
         this.setState({
-          topic
+          topic,
         });
       },
       null,
@@ -47,12 +58,37 @@ class Topic extends Component {
     request.del(
       `/api/topics/${topicId}`,
       null,
-      (data) => {
-        history.push(data._links.topics.href);
+      () => {
+        history.push('/topics');
       },
       null,
       true,
     );
+  };
+
+  onDelete = () => {
+    const { topic } = this.state;
+    const { setConfirm: setConfirmReducer } = this.props;
+
+    setConfirmReducer(`${topic.name} 토픽을 정말 삭제하시겠습니까?`, () => {
+      this.deleteTopic(topic.id);
+    });
+  };
+
+  onList = () => {
+    const { history } = this.props;
+    history.push('/topics');
+  };
+
+  onEdit = () => {
+    const {
+      match: {
+        params: { topicId },
+      },
+    } = this.props;
+    const { history } = this.props;
+
+    history.push(`/topics/${topicId}/edit`);
   };
 
   render() {
@@ -61,20 +97,20 @@ class Topic extends Component {
         params: { topicId },
       },
     } = this.props;
-    const { t, history, setConfirm: setConfirmReducer } = this.props;
-    const { topic } = this.state;
+    const { t } = this.props;
+    const { topic, isAdmin } = this.state;
 
     return (
-      <DetailLayout className="topic-wrapper">
-        {topic === false && (
+      <DetailLayout className="topic-wrapper" margin={false}>
+        {!topic && topic === false && (
           <EmptyMessage
-            className="h5"
+            className="h5 bg-white"
             message={
               <div>
                 <div className="h1">
-                  <i className="fal fa-exclamation-circle"/>
+                  <i className="fal fa-exclamation-circle" />
                 </div>
-                <div>{t('message.notFoundTopic')}</div>
+                <div>{t('message.notFoundResource')}</div>
               </div>
             }
           />
@@ -82,6 +118,7 @@ class Topic extends Component {
         {topic && (
           <>
             <PageTitle
+              className=""
               list={[
                 {
                   name: t('label.topicList'),
@@ -92,67 +129,29 @@ class Topic extends Component {
                   to: `/topics/${topicId}`,
                 },
               ]}
+              onDelete={isAdmin ? this.onDelete : null}
+              onList={this.onList}
+              onEdit={isAdmin ? this.onEdit : null}
+              border
             >
-              {topic.name}
+              {t('토픽 정보')}
             </PageTitle>
-            <hr className="d-none d-sm-block mb-3"/>
-            <div className="flex-grow-1">
-              <Row className="m-0">
-                <Col sm={12} lg={2} className="text-center p-0">
-                  <div className="topic-image m-2 m-lg-0">
-                    <IconViewer iconIndex={topic.iconIndex}/>
-                  </div>
-                </Col>
-                <Col sm={12} lg={10} className="p-0">
-                  <SubLabel>{t('label.name')}</SubLabel>
-                  <P className="bg-white" upppercase>
-                    {topic.name}
-                  </P>
-                  <SubLabel>{t('ORG')}</SubLabel>
-                  <P className="bg-white" upppercase>
-                    {topic.organizationName}
-                  </P>
-                  <SubLabel>{t('label.desc')}</SubLabel>
-                  <P className="bg-white" upppercase pre>
-                    {topic.summary}
-                  </P>
-                  <SubLabel>{t('label.privateTopic')}</SubLabel>
-                  <P className="bg-white" upppercase>
-                    {topic.privateYn ? 'private' : 'public'}
-                  </P>
-                  <hr className="g-dashed mb-3"/>
-                  <div className="position-relative mb-3">
-                    <SubLabel>{t('label.topicAdmin')}</SubLabel>
-                  </div>
-                  <div>
-                    <UserManager
-                      className="mt-3 mt-sm-1"
-                      lg={3}
-                      md={4}
-                      sm={6}
-                      xl={12}
-                      users={topic.users}
-                    />
-                  </div>
-                </Col>
-              </Row>
+            <SubLabel>{t('label.icon')}</SubLabel>
+            <div className="text-center py-4 bg-light mb-3 rounded">
+              <div className="topic-image m-2 m-lg-0">
+                <IconViewer iconIndex={topic.iconIndex} />
+              </div>
             </div>
-            <div className="flex-grow-0 text-right small">
-              <DateTime value={topic.creationDate}/> 생성
-            </div>
-            <BottomButton
-              onDelete={() => {
-                setConfirmReducer(`${topic.name} 토픽을 정말 삭제하시겠습니까?`, () => {
-                  this.deleteTopic(topic.id);
-                });
-              }}
-              onList={() => {
-                history.push('/topics');
-              }}
-              onEdit={() => {
-                history.push(`/topics/${topicId}/edit`);
-              }}
-            />
+            <SubLabel>{t('label.name')}</SubLabel>
+            <P>{topic.name}</P>
+            <SubLabel>{t('그룹')}</SubLabel>
+            <P upppercase>{topic.grpName}</P>
+            <SubLabel>{t('label.desc')}</SubLabel>
+            <P pre>{topic.summary}</P>
+            <SubLabel>{t('label.privateTopic')}</SubLabel>
+            <P upppercase>{topic.privateYn ? 'private' : 'public'}</P>
+            <SubLabel>{t('label.topicAdmin')}</SubLabel>
+            <UserManager className="bg-light" lg={3} md={4} sm={6} xl={12} users={topic.users} blockStyle />
           </>
         )}
       </DetailLayout>

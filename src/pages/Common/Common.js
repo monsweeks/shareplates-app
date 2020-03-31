@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setConfirm, setUserAndOrganization } from 'actions';
+import { addMessage, clearMessage, setConfirm, setUserAndGrp } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
@@ -20,17 +20,48 @@ const UNAUTH_URLS = {
   '/users/join/success': true,
 };
 
-class Common extends React.PureComponent {
+class Common extends React.Component {
   initialized = false;
+
+  timer = null;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showLoading: false,
+    };
+  }
 
   componentDidMount() {
     this.getMyInfo();
   }
 
   componentDidUpdate(prevProps) {
-    const { location } = this.props;
+    const { location, loading } = this.props;
     if (this.initialized && prevProps.location.pathname !== location.pathname) {
       this.checkAuthentification(location.pathname);
+    }
+
+    if (!prevProps.loading && loading) {
+      setTimeout(() => {
+        this.setState({
+          showLoading: true,
+        });
+      }, 0);
+    }
+
+    if (prevProps.loading && !loading) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+
+      this.timer = setTimeout(() => {
+        this.setState({
+          showLoading: false,
+        });
+      }, 300);
     }
   }
 
@@ -42,17 +73,17 @@ class Common extends React.PureComponent {
   };
 
   getMyInfo = () => {
-    const { location, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+    const { location, setUserAndGrp: setUserAndGrpReducer } = this.props;
     request.get(
       '/api/users/my-info',
       null,
       (data) => {
-        setUserAndOrganizationReducer(data.user || {}, data.organizations);
+        setUserAndGrpReducer(data.user || {}, data.grps);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
       () => {
-        setUserAndOrganizationReducer({}, []);
+        setUserAndGrpReducer({}, []);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
@@ -82,6 +113,7 @@ class Common extends React.PureComponent {
   render() {
     const { messages, loading, t, confirm } = this.props;
     const { setConfirm: setConfirmReducer } = this.props;
+    const { showLoading } = this.state;
 
     return (
       <div className="common-wrapper">
@@ -146,8 +178,8 @@ class Common extends React.PureComponent {
             </div>
           </div>
         )}
-        {loading && (
-          <div className="g-overlay">
+        {(loading || showLoading) && (
+          <div className={`g-overlay ${showLoading ? 'show-loading' : 'hide-loading'}`}>
             <div>
               <div>
                 <Logo size="md" rotate text={<span>LOADING</span>} />
@@ -174,7 +206,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
+    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
     setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
   };
 };
@@ -195,7 +227,7 @@ Common.propTypes = {
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,
-  setUserAndOrganization: PropTypes.func,
+  setUserAndGrp: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),

@@ -18,12 +18,14 @@ class UserManager extends React.PureComponent {
       sm,
       xs,
       onRemove,
+      border,
+      edit,
     } = this.props;
 
     const { markedUsers, markedTag } = this.props;
 
     return (
-      <div className={`user-manager-wrapper ${className}`}>
+      <div className={`user-manager-wrapper ${className} ${!(users && users.length > 0) ? 'p-0 m-0' : ''}`}>
         {!(users && users.length > 0) && (
           <EmptyMessage
             className="h6 mb-0"
@@ -40,7 +42,7 @@ class UserManager extends React.PureComponent {
           />
         )}
         {users && users.length > 0 && (
-          <Row>
+          <Row className='w-100'>
             {users.map((user) => {
               return (
                 <Col className="user-col" key={user.id} lg={lg} md={md} sm={sm} xs={xs}>
@@ -53,6 +55,8 @@ class UserManager extends React.PureComponent {
                     marked={markedUsers.find((u) => u.id === user.id)}
                     markedTag={markedTag}
                     onRemove={onRemove}
+                    border={border}
+                    edit={edit}
                   />
                 </Col>
               );
@@ -78,6 +82,8 @@ UserManager.defaultProps = {
   xs: 12,
   markedUsers: [],
   markedTag: null,
+  border : true,
+  edit : false,
 };
 
 UserManager.propTypes = {
@@ -101,4 +107,6 @@ UserManager.propTypes = {
   onRemove: PropTypes.func,
   markedUsers: PropTypes.arrayOf(PropTypes.any),
   markedTag: PropTypes.string,
+  border : PropTypes.bool,
+  edit : PropTypes.bool,
 };

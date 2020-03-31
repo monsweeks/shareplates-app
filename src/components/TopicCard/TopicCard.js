@@ -19,7 +19,7 @@ class TopicCard extends React.PureComponent {
           {!newCard && (
             <span className="config-button">
               <CircleIcon
-                icon={<i className="fal fa-cog" />}
+                icon={<i className="fal fa-info-circle"/>}
                 onClick={(e) => {
                   e.stopPropagation();
                   onConfigClick(topic ? topic.id : null);
@@ -27,11 +27,11 @@ class TopicCard extends React.PureComponent {
               />
             </span>
           )}
-          {topic && topic.privateYn && <span className='private'>private</span>}
+          {topic && topic.privateYn && <span className="private">private</span>}
           <div className="topic-card-content">
             {newCard && (
               <>
-                <div className='new-topic-content'>
+                <div className="new-topic-content">
                   <div className="new-topic-icon">
                     <i className="fal fa-plus" />
                   </div>
@@ -56,14 +56,14 @@ class TopicCard extends React.PureComponent {
                           <i className="fal fa-book" />
                         </div>
                         <div className="level-count">10</div>
-                        <div className='tag'>CHAPTERS</div>
+                        <div className="tag">CHAPTERS</div>
                       </div>
                       <div>
                         <div className="level-icon">
                           <i className="fal fa-clipboard" />
                         </div>
                         <div className="level-count">10</div>
-                        <div className='tag'>PAGES</div>
+                        <div className="tag">PAGES</div>
                       </div>
                     </div>
                   </div>
@@ -90,7 +90,7 @@ TopicCard.propTypes = {
     name: PropTypes.string,
     iconIndex: PropTypes.number,
     summary: PropTypes.string,
-    privateYn : PropTypes.bool,
+    privateYn: PropTypes.bool,
   }),
   className: PropTypes.string,
   onCardClick: PropTypes.func,

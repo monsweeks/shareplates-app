@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGripVertical } from '@fortawesome/pro-solid-svg-icons';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
@@ -7,24 +9,25 @@ import { Button } from '@/components';
 import request from '@/utils/request';
 import { addMessage } from '@/actions';
 
+
 class StatusSample extends React.PureComponent {
   render() {
     const { t, i18n } = this.props;
 
     return (
       <div>
-        <h2>서버 요청에 대한 샘플</h2>
+        <h2>서버 요청에 대한 샘플<FontAwesomeIcon icon={faGripVertical} size='2x'/></h2>
         <div>
           <Button
             className="mr-4"
             onClick={() => {
-              request.get('/api/organizations', null, (data) => {
+              request.get('/api/groups', null, (data) => {
                 // eslint-disable-next-line no-console
                 console.log(data);
               });
             }}
           >
-            GET ORG LIST
+            GET 그룹 LIST
           </Button>
           <Button
             className="mr-4"

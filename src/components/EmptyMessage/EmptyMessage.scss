@@ -2,6 +2,12 @@
   flex-grow: 1;
   width: 100%;
   display: flex;
+  margin-bottom: 0 !important;
+  border-radius: 3px;
+
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
 
   > div {
     align-self: center;

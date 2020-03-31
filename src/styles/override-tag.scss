@@ -24,7 +24,7 @@ hr {
   }
 
   &.g-dashed {
-    border-style: dashed !important;;
+    border-style: dashed !important;
   }
 }
 
@@ -40,4 +40,13 @@ span.g-shareplates {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.g-tag {
+  font-size: 0.65rem;
+  line-height: 100%;
+  display: inline-block;
+  padding: 3px 6px;
+
+  border-radius: 4px;
 }

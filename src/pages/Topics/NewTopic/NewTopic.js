@@ -6,20 +6,29 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/pages';
+import { PageIntro } from '@/components';
+import common from '@/utils/common';
 
 class NewTopic extends React.PureComponent {
   onSubmit = (topic) => {
     const { history } = this.props;
 
     request.post('/api/topics', topic, (data) => {
-      history.push(data._links.topics.href);
+      history.push(`/topics/${data.id}`);
     });
   };
 
+  onCancel = () => {
+    const { history } = this.props;
+    history.push('/topics');
+  };
+
   render() {
-    const { t, organizations, user } = this.props;
+    const { t, grps, user, location: { search } } = this.props;
+    const options = common.getOptions(search, ['grpId']);
+
     return (
-      <RegisterLayout className="new-topic-wrapper">
+      <RegisterLayout>
         <PageTitle
           list={[
             {
@@ -31,11 +40,19 @@ class NewTopic extends React.PureComponent {
               to: '/topics/new',
             },
           ]}
+          border
         >
           {t('message.makeNewTopic')}
         </PageTitle>
-        <hr className="d-none d-sm-block mb-3" />
-        <TopicForm saveText="label.makeTopic" onSave={this.onSubmit} user={user} organizations={organizations} />
+        <PageIntro>{t('토픽에 대한 설명')}</PageIntro>
+        <TopicForm
+          saveText="label.makeTopic"
+          onSave={this.onSubmit}
+          user={user}
+          grps={grps}
+          grpId={options.grpId}
+          onCancel={this.onCancel}
+        />
       </RegisterLayout>
     );
   }
@@ -44,7 +61,7 @@ class NewTopic extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 
@@ -61,7 +78,7 @@ NewTopic.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
@@ -71,5 +88,9 @@ NewTopic.propTypes = {
   t: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
+  }),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    search: PropTypes.string,
   }),
 };

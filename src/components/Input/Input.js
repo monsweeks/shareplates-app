@@ -47,6 +47,18 @@ class Input extends React.Component {
     });
   };
 
+  onKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      const { onEnter } = this.props;
+      if (onEnter) onEnter();
+    }
+
+    if (e.keyCode === 27) {
+      const { onESC } = this.props;
+      if (onESC) onESC();
+    }
+  };
+
   render() {
     const {
       color,
@@ -65,6 +77,8 @@ class Input extends React.Component {
       customInputValidationMessage,
       externalValidationMessage,
       simple,
+      onEnter,
+      onESC,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
@@ -98,6 +112,7 @@ class Input extends React.Component {
             onChange(e.target.value);
             this.setValid(this.control.current.validity);
           }}
+          onKeyDown={this.onKeyDown}
           value={value}
           required={required}
         />
@@ -136,6 +151,8 @@ Input.propTypes = {
   externalValidationMessage : PropTypes.string,
   simple : PropTypes.bool,
   border : PropTypes.bool,
+  onEnter : PropTypes.func,
+  onESC : PropTypes.func,
 };
 
 export default withTranslation()(Input);

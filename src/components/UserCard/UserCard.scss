@@ -1,6 +1,8 @@
 .user-card-wrapper {
   text-align: center;
   position: relative;
+  border: 1px solid #a8a8a8 !important;
+  border-radius: 2px;
 
   .remove-button {
     position: absolute;
@@ -20,116 +22,86 @@
     border-radius: 3px;
   }
 
+  .card-body {
+    padding: 0.75rem;
+  }
+
   .user-card-content {
-    display: flex;
+    display: block;
     align-items: center;
 
     > div {
       align-items: center;
       &.user-icon {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
+        width: 60px;
+        height: 60px;
         text-align: center;
+        margin: 0 auto;
 
         > span {
           display: inline-block;
-          width: 50px;
-          height: 50px;
-          font-size: 28px;
-          background-color: $gray-300;
-          color: $gray-600;
+          width: 60px;
+          height: 60px;
+          font-size: 34px;
           border-radius: 50%;
           padding-top: 5px;
+          background-color: $white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
         }
-      }
-
-      &.separator {
-        display: none;
       }
 
       &.user-text {
-        flex: 1;
+        background-color: #eef3f7;
+        background-color: $light;
         text-align: left;
         align-items: center;
-        padding: 0 0 0 0.5rem;
-        width: calc(100% - 50px);
+        margin: -30px -0.75rem -0.75rem;
+        padding: 30px 0.75rem 0.75rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 0 0 2px 2px;
 
         .name {
-          font-size: 0.8rem;
+          font-size: 0.9rem;
+          font-weight: bold;
+          text-align: center;
         }
 
         .email {
-          font-size: 0.7rem;
+          font-size: 0.8rem;
           overflow: hidden;
           width: 100%;
           white-space: nowrap;
           text-overflow: ellipsis;
-        }
-      }
-    }
-  }
-
-  &.block-style {
-    .user-card-content {
-      display: block;
-
-      > div {
-        &.user-icon {
-          width: 100%;
-        }
-
-        &.separator {
-          height: 1px;
-          padding: 0 1rem;
-          margin: 0.5rem 0;
-          display: block;
-          > div {
-            width: 100%;
-            height: 100%;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          }
-        }
-
-        &.user-text {
-          padding: 0.25rem 0;
           text-align: center;
+          text-transform: uppercase;
+          _font-weight: bold;
         }
       }
     }
   }
 
-  &.card {
-    border: 1px solid $border-color;
-    border-radius: 2px;
-  }
-
-  &.hover {
-    cursor: pointer;
+  &.edit {
     &:hover {
-      color: $white;
-      background-color: $primary;
-      .user-icon {
-        > span {
-          background-color: transparent !important;
-          color: $white;
-        }
-      }
+      cursor: pointer;
+      border-color: $primary;
     }
   }
 
   &.selected {
-    color: $white;
     background-color: $primary;
+    border-radius: 2px;
+
+    .card-body {
+      border-radius: 2px;
+    }
     .user-icon {
       > span {
-        background-color: transparent !important;
-        color: $white !important;
+        border: 4px solid black;
       }
     }
 
     &:hover {
-      background-color: darken($primary, 10%);
+      border-color: $primary;
     }
   }
 }

@@ -10,6 +10,7 @@ import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import './TopicList.scss';
+import { setGrp } from '@/actions';
 
 class TopicList extends React.Component {
   constructor(props) {
@@ -19,13 +20,15 @@ class TopicList extends React.Component {
       location: { search },
     } = this.props;
 
-    const options = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+    const { grpId: globalGropId } = this.props;
+
+    const options = common.getOptions(search, ['order', 'direction', 'grpId', 'searchWord']);
 
     this.state = {
       options: {
         order: ORDERS[0].key,
         direction: DIRECTIONS[0].key,
-        organizationId: null,
+        grpId: globalGropId,
         searchWord: '',
         ...options,
       },
@@ -36,34 +39,36 @@ class TopicList extends React.Component {
     this.setOptionToUrl();
   }
 
-  componentDidMount() {
-    const {
-      options,
-      options: { organizationId },
-    } = this.state;
-    if (organizationId) {
-      this.getTopics(options);
-    }
-  }
-
   static getDerivedStateFromProps(props, state) {
-    if (!state.init && state.options.organizationId) {
+    if (!state.init && state.options.grpId) {
+      props.setGrp(Number(state.options.grpId));
       return {
         init: true,
       };
     }
 
-    if (!state.init && !state.options.organizationId && props.organizations && props.organizations.length > 0) {
+    if (!state.init && !state.options.grpId && props.grps && props.grps.length > 0) {
       return {
         options: {
           ...state.options,
-          organizationId: props.organizations[0].id,
+          grpId: props.grps[0].id,
         },
         init: true,
       };
     }
 
     return null;
+  }
+
+  componentDidMount() {
+    const {
+      options,
+      options: { grpId },
+    } = this.state;
+
+    if (grpId) {
+      this.getTopics(options);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,19 +79,18 @@ class TopicList extends React.Component {
 
     const {
       options,
-      options: { organizationId },
+      options: { grpId },
       init,
     } = this.state;
 
-    console.log(init);
     if (!init) {
       return;
     }
 
-    const pathOptions = common.getOptions(search, ['order', 'direction', 'organizationId', 'searchWord']);
+    const pathOptions = common.getOptions(search, ['order', 'direction', 'grpId', 'searchWord']);
 
-    if (!pathOptions.organizationId) {
-      pathOptions.organizationId = organizationId;
+    if (!pathOptions.grpId) {
+      pathOptions.grpId = grpId;
     }
 
     if ((!prevState.init && init) || location !== prevProps.location) {
@@ -149,25 +153,26 @@ class TopicList extends React.Component {
   };
 
   render() {
-    const { organizations, history, t } = this.props;
+    const { grps, history, t, setGrp: setGrpAction } = this.props;
 
     const {
       options,
-      options: { organizationId, searchWord, order, direction },
+      options: { grpId, searchWord, order, direction },
       topics,
     } = this.state;
 
     return (
       <div className="topic-list-wrapper">
         <SearchBar
-          organizations={organizations}
-          organizationId={organizationId}
-          onChangeOrganization={(id) => {
+          grps={grps}
+          grpId={grpId}
+          onChangeGrp={(id) => {
+            setGrpAction(id);
             this.setState(
               {
                 options: {
                   ...options,
-                  organizationId: id,
+                  grpId: id,
                 },
               },
               () => {
@@ -251,7 +256,7 @@ class TopicList extends React.Component {
                 <TopicCard
                   newCard
                   onCardClick={() => {
-                    history.push('/topics/new');
+                    history.push(`/topics/new?grpId=${grpId}`);
                   }}
                 />
               </Col>
@@ -265,12 +270,19 @@ class TopicList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    organizations: state.user.organizations,
+    grps: state.user.grps,
+    grpId: state.user.grpId,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setGrp: (grpId) => dispatch(setGrp(grpId)),
   };
 };
 
 TopicList.propTypes = {
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
@@ -285,6 +297,8 @@ TopicList.propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }),
+  setGrp: PropTypes.func,
+  grpId: PropTypes.number,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(TopicList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

@@ -6,5 +6,18 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import PageTitle from './PageTitle/PageTitle';
+import PageContent from './PageContent/PageContent';
+import SubContentBox from './SubContentBox/SubContentBox';
 
-export { RegisterLayout, Header, DetailLayout, FullLayout, Footer, Breadcrumbs, PageTitle, CenterBoxLayout };
+export {
+  RegisterLayout,
+  Header,
+  DetailLayout,
+  FullLayout,
+  Footer,
+  Breadcrumbs,
+  PageTitle,
+  CenterBoxLayout,
+  PageContent,
+  SubContentBox,
+};

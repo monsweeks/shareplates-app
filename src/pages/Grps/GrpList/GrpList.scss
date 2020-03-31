@@ -1,0 +1,30 @@
+.grp-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .label {
+    position: relative;
+    margin-right: 0.5rem;
+  }
+
+  .grp-list-content {
+    _padding-top: 15px;
+    _padding-left: 7.5px;
+    _padding-right: 7.5px;
+    _margin: 0;
+
+    .row {
+      _margin: 0;
+
+      .grp-col {
+        _padding-left: 7.5px;
+        _padding-right: 7.5px;
+        _margin-bottom: 15px;
+
+
+      }
+    }
+  }
+}

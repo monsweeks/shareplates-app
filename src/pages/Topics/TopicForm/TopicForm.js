@@ -31,7 +31,7 @@ class TopicForm extends Component {
       topic: {
         name: '',
         summary: '',
-        organizationId: '',
+        grpId: '',
         iconIndex: null,
         users: [],
         privateYn: false,
@@ -60,20 +60,25 @@ class TopicForm extends Component {
 
     if (!edit) {
       if (
-        !topic.organizationId &&
-        props.organizations &&
-        props.organizations.length > 0 &&
+        !topic.grpId &&
+        props.grps &&
+        props.grps.length > 0 &&
         topic.users.length < 1 &&
         props.user &&
         props.user.id
       ) {
-        topic.organizationId = props.organizations[0].id;
+        if (props.grpId) {
+          topic.grpId = props.grpId;
+        } else {
+          topic.grpId = props.grps[0].id;
+        }
+
         topic.users = [
           {
             id: user.id,
             email: user.email,
             name: user.name,
-            organizationId: props.organizations && props.organizations.length > 0 ? props.organizations[0].id : null,
+            grpId: props.grps && props.grps.length > 0 ? props.grps[0].id : null,
             info: user.info,
           },
         ];
@@ -96,7 +101,7 @@ class TopicForm extends Component {
 
     request.get(
       '/api/topics/exist',
-      { organizationId: topic.organizationId, name },
+      { grpId: topic.grpId, name },
       (data) => {
         this.setState({
           existName: data,
@@ -143,26 +148,26 @@ class TopicForm extends Component {
   };
 
   render() {
-    const { t, organizations, saveText, onCancel } = this.props;
+    const { t, grps, saveText, onCancel } = this.props;
     const { topic, existName, openUserPopup } = this.state;
 
     return (
       <>
         <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
-          <SubLabel>{t('ORGANIZATION')}</SubLabel>
-          <Description>{t('message.selectOrgForTopic')}</Description>
+          <SubLabel>{t('그룹')}</SubLabel>
+          <Description>{t('message.selectGrpForTopic')}</Description>
           <FormGroup>
             <Selector
               outline
-              className="organization-selector"
-              items={organizations.map((org) => {
+              className="grp-selector"
+              items={grps.map((org) => {
                 return {
                   key: org.id,
                   value: org.name,
                 };
               })}
-              value={topic.organizationId}
-              onChange={this.onChange('organizationId')}
+              value={topic.grpId}
+              onChange={this.onChange('grpId')}
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
@@ -218,19 +223,17 @@ class TopicForm extends Component {
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
             <Button
-              className="manager-button"
+              className="g-circle-icon-button manager-button"
               color="primary"
-              size="xs"
               onClick={() => {
                 this.setOpenUserPopup(true);
               }}
             >
-              {t('label.userManagement')}
+              <i className="fal fa-plus" />
             </Button>
           </div>
-          <FormGroup>
+          <FormGroup className="mt-2">
             <UserManager
-              emptyBackgroundColor="#F6F6F6"
               onRemove={(id) => {
                 const users = topic.users.splice(0);
                 const index = users.findIndex((u) => u.id === id);
@@ -239,7 +242,7 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
-              className="mt-3 mt-sm-0"
+              className="bg-light"
               lg={3}
               md={4}
               sm={6}
@@ -247,12 +250,7 @@ class TopicForm extends Component {
               users={topic.users}
             />
           </FormGroup>
-          <BottomButton
-            className="text-center"
-            saveText={saveText}
-            onSave={() => {}}
-            onCancel={onCancel}
-          />
+          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {openUserPopup && (
           <Popup title="사용자 검색" open setOpen={this.setOpenUserPopup}>
@@ -280,7 +278,7 @@ TopicForm.defaultProps = {
   t: null,
   edit: false,
   saveText: '',
-  organizations: [],
+  grps: [],
 };
 
 TopicForm.propTypes = {
@@ -296,7 +294,7 @@ TopicForm.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
@@ -307,4 +305,5 @@ TopicForm.propTypes = {
   onSave: PropTypes.func,
   saveText: PropTypes.string,
   onCancel: PropTypes.func,
+  grpId : PropTypes.string,
 };

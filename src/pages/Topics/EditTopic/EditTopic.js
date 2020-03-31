@@ -42,8 +42,8 @@ class EditTopic extends React.PureComponent {
 
   onSubmit = (topic) => {
     const { history } = this.props;
-    request.put(`/api/topics/${topic.id}`, topic, (data) => {
-      history.push(data._links.topics.href);
+    request.put(`/api/topics/${topic.id}`, topic, () => {
+      history.push(`/topics/${topic.id}`);
     });
   };
 
@@ -53,10 +53,10 @@ class EditTopic extends React.PureComponent {
         params: { topicId },
       },
     } = this.props;
-    const { t, organizations, user, history } = this.props;
+    const { t, grps, user, history } = this.props;
     const { topic } = this.state;
     return (
-      <RegisterLayout className="new-topic-wrapper">
+      <RegisterLayout>
         {topic === false && (
           <EmptyMessage
             className="h5"
@@ -87,16 +87,16 @@ class EditTopic extends React.PureComponent {
                   to: `/topics/${topicId}/edit`,
                 },
               ]}
+              border
             >
               {t('message.editTopic')}
             </PageTitle>
-            <hr className="d-none d-sm-block mb-3" />
             <TopicForm
               edit
               saveText="button.edit"
               topic={topic}
               user={user}
-              organizations={organizations}
+              grps={grps}
               onSave={this.onSubmit}
               onCancel={() => {
                 history.push(`/topics/${topicId}`);
@@ -112,7 +112,7 @@ class EditTopic extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 
@@ -129,7 +129,7 @@ EditTopic.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

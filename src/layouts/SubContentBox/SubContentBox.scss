@@ -1,0 +1,22 @@
+.sub-content-box-wrapper {
+  background-color: $white;
+  padding: 1rem;
+  border-radius: 5px;
+  position: relative;
+  _box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0,0,0,0.2);
+  position: relative;
+
+  > .arrow {
+    display: none;
+    border: 1px solid rgba(0,0,0,0.2);
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    transform: rotate(45deg);
+    top: -2px;
+    left: 0.75rem;
+    background-color: $white;
+    border-radius: 2px;
+  }
+}

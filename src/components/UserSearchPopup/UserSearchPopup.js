@@ -12,7 +12,7 @@ class UserSearchPopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      organizationId: '',
+      grpId: '',
       users: [],
       selectedUsers: [],
       tempSelectedUsers: {},
@@ -44,8 +44,8 @@ class UserSearchPopup extends React.Component {
   }
 
   search = () => {
-    const { organizationId, searchWord } = this.state;
-    request.get('/api/users', { organizationId, condition: searchWord }, (users) => {
+    const { grpId, searchWord } = this.state;
+    request.get('/api/users', { grpId, condition: searchWord }, (users) => {
       this.setState({
         users,
       });
@@ -59,9 +59,9 @@ class UserSearchPopup extends React.Component {
   };
 
   render() {
-    const { t, className, organizations, setOpen, onApply } = this.props;
+    const { t, className, grps, setOpen, onApply } = this.props;
     const { markedUsers, markedTag } = this.props;
-    const { organizationId, users, selectedUsers, tempSelectedUsers, condition, searchWord } = this.state;
+    const { grpId, users, selectedUsers, tempSelectedUsers, condition, searchWord } = this.state;
 
     return (
       <div className={`user-search-popup-wrapper ${className}`}>
@@ -69,21 +69,21 @@ class UserSearchPopup extends React.Component {
           <Col className="user-search-col" lg={9}>
             <div className="user-search-content first">
               <div className="search-bar">
-                <div className="organization-col">
-                  <span className="label small mr-2 d-none d-sm-inline-block">ORG</span>
+                <div className="grp-col">
+                  <span className="label small mr-2 d-none d-sm-inline-block">그룹</span>
                   <Selector
-                    className="organization-selector"
-                    items={organizations.map((org) => {
+                    className="grp-selector"
+                    items={grps.map((org) => {
                       return {
                         key: org.id,
                         value: org.name,
                       };
                     })}
                     addAll
-                    value={organizationId}
+                    value={grpId}
                     onChange={(id) => {
                       this.setState({
-                        organizationId: id,
+                        grpId: id,
                       });
                     }}
                   />
@@ -143,6 +143,7 @@ class UserSearchPopup extends React.Component {
                   markedUsers={markedUsers}
                   markedTag={markedTag}
                   emptyContent="검색된 사용자가 없습니다"
+                  edit
                 />
               </div>
             </div>
@@ -154,7 +155,7 @@ class UserSearchPopup extends React.Component {
                   <span>추가된 사용자</span>
                 </div>
               </div>
-              <div className="user-select-result scrollbar">
+              <div className="user-select-result scrollbar ">
                 <UserManager
                   onRemove={(id) => {
                     const selected = selectedUsers.slice(0);
@@ -176,6 +177,7 @@ class UserSearchPopup extends React.Component {
                   sm={12}
                   users={selectedUsers}
                   emptyContent="검색된 사용자가 없습니다"
+                  edit
                 />
               </div>
             </div>
@@ -212,8 +214,8 @@ class UserSearchPopup extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
-    organizationId: state.user.organizationId,
+    grps: state.user.grps,
+    grpId: state.user.grpId,
   };
 };
 
@@ -224,7 +226,7 @@ UserSearchPopup.defaultProps = {
 UserSearchPopup.propTypes = {
   t: PropTypes.func,
   className: PropTypes.string,
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

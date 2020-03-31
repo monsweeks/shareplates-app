@@ -1,17 +1,24 @@
 .sub-title-wrapper {
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: $secondary;
-  > span.icon {
-    margin-right: 2px;
-    position: relative;
-    top : -1px;
-  }
-  > span.text {
-    font-family: Comfortaa;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  margin: -1rem -1rem 1rem;
+  padding: 1rem;
+
+  > span {
     display: inline-block;
-    padding: 0;
+    padding: 0.25rem 0.25rem;
     border-radius: 3px;
-    line-height: 100%;
+    line-height: 0;
+    > span.icon {
+      margin-right: 5px;
+    }
+    > span.text {
+      _font-family: Comfortaa;
+      display: inline-block;
+      padding: 0;
+      border-radius: 3px;
+      line-height: 100%;
+    }
   }
 }

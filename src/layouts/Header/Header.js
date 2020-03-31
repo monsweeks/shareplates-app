@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { setUserAndOrganization } from '@/actions';
+import { setUserAndGrp } from '@/actions';
 import Menu from '@/layouts/Header/Menu/Menu';
 import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
@@ -32,9 +32,9 @@ const menus = [
     side: 'left',
   },
   {
-    icon: 'fas fa-ball-pile',
+    icon: 'fal fa-building',
     text: 'label.org',
-    to: '/organizations',
+    to: '/groups',
     side: 'right',
   },
 ];
@@ -65,17 +65,17 @@ class Header extends React.Component {
   };
 
   logout = () => {
-    const { history, setUserAndOrganization: setUserAndOrganizationReducer } = this.props;
+    const { history, setUserAndGrp: setUserAndGrpReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
-      setUserAndOrganizationReducer({}, []);
+      setUserAndGrpReducer({}, []);
       this.setOpenQuickMenu(false);
       history.push('/');
     });
   };
 
   render() {
-    const { i18n, user, location, organizations } = this.props;
+    const { i18n, user, location, grps } = this.props;
     const { openMenu, openQuickMenu } = this.state;
 
     const ready = user !== null;
@@ -112,7 +112,7 @@ class Header extends React.Component {
                   i18n.changeLanguage(language);
                 }}
                 onSearch={this.onSearch}
-                organizations={organizations}
+                grps={grps}
                 user={user}
               />
             </div>
@@ -156,13 +156,13 @@ class Header extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    organizations: state.user.organizations,
+    grps: state.user.grps,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserAndOrganization: (user, organizations) => dispatch(setUserAndOrganization(user, organizations)),
+    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
   };
 };
 
@@ -174,7 +174,7 @@ Header.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
-  organizations: PropTypes.arrayOf(
+  grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
@@ -187,7 +187,7 @@ Header.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  setUserAndOrganization: PropTypes.func,
+  setUserAndGrp: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));
