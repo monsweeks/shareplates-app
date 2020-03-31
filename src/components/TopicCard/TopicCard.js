@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardBody, IconViewer } from '@/components';
+import { Card, CardBody, ObjectImage } from '@/components';
 import './TopicCard.scss';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
@@ -19,7 +19,8 @@ class TopicCard extends React.PureComponent {
           {!newCard && (
             <span className="config-button">
               <CircleIcon
-                icon={<i className="fal fa-info-circle"/>}
+                color='white'
+                icon={<i className="fal fa-info-circle" />}
                 onClick={(e) => {
                   e.stopPropagation();
                   onConfigClick(topic ? topic.id : null);
@@ -46,7 +47,7 @@ class TopicCard extends React.PureComponent {
                 <div className="topic-description">
                   <div className="icon">
                     <div>
-                      <IconViewer circle iconIndex={topic.iconIndex} />
+                      <ObjectImage circle size="md" index={topic.iconIndex} />
                     </div>
                   </div>
                   <div className="counts">
@@ -55,14 +56,14 @@ class TopicCard extends React.PureComponent {
                         <div className="level-icon">
                           <i className="fal fa-book" />
                         </div>
-                        <div className="level-count">10</div>
+                        <div className="level-count">{topic.chapterCount}</div>
                         <div className="tag">CHAPTERS</div>
                       </div>
                       <div>
                         <div className="level-icon">
                           <i className="fal fa-clipboard" />
                         </div>
-                        <div className="level-count">10</div>
+                        <div className="level-count">{topic.pageCount}</div>
                         <div className="tag">PAGES</div>
                       </div>
                     </div>
@@ -91,6 +92,8 @@ TopicCard.propTypes = {
     iconIndex: PropTypes.number,
     summary: PropTypes.string,
     privateYn: PropTypes.bool,
+    chapterCount: PropTypes.number,
+    pageCount: PropTypes.number,
   }),
   className: PropTypes.string,
   onCardClick: PropTypes.func,

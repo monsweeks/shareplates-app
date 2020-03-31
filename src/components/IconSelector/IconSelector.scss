@@ -3,8 +3,8 @@
 
   .clear-image {
     position: absolute;
-    top: 0;
-    left: 90px;
+    top: 7px;
+    left: 104px;
 
     @media (max-width: 576px) {
       left: calc(50% + 20px);
@@ -32,15 +32,17 @@
     .current-images {
       flex: 0;
       align-self: center;
-      padding: 0 20px;
+      padding: 8px 20px 0;
       position: relative;
-      margin-bottom: 1rem;
+      height: 135px;
 
       .image-item {
-        background-color: $primary;
-        width: 100px;
-        height: 100px;
-        padding: 10px;
+        background-color: $white;
+        width: 120px;
+        height: 120px;
+        padding: 8px;
+        border-radius: 50%;
+        border: 2px solid rgba(0,0,0,0.4);
 
         @media (max-width: 576px) {
           display: block;
@@ -87,28 +89,29 @@
       line-height: 0;
       align-self: center;
       text-align: center;
+      padding-top: 5px;
 
       @media (max-width: 576px) {
         display: block;
       }
 
       .image-item {
-        background-color: $gray-400;
-        width: 50px;
-        height: 50px;
-        padding: 5px;
+        border: 2px solid transparent;
+        width: 60px;
+        height: 60px;
+        padding: 4px;
         margin-right: 5px;
         margin-bottom: 5px;
         cursor: pointer;
         transition: all 0.3s;
 
         &:hover {
-          background-color: $primary;
+          border: 2px solid $primary;
           transition: all 0.3s;
         }
 
         &.selected {
-          background-color: $primary;
+          border: 2px solid $primary;
           transition: all 0.3s;
         }
       }

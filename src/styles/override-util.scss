@@ -7,15 +7,9 @@
 }
 
 .row {
-  margin-left: -0.75rem;
-  margin-right: -0.75rem;
-  margin-bottom: -1.5rem;
-
-  @media (max-width: 768px) {
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-    margin-bottom: -1rem;
-  }
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+  margin-bottom: -0.5rem;
 }
 
 .col-1,
@@ -88,15 +82,9 @@
 .col-xl-12,
 .col-xl,
 .col-xl-auto {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 768px) {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    margin-bottom: 1rem;
-  }
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .bg-sub-content {
@@ -121,6 +109,10 @@
 
 .bg-dark-5 {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bg-yellow {
+  background-color: $yellow;
 }
 
 .g-overlay {

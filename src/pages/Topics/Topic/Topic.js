@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, IconViewer, P, SubLabel, UserManager } from '@/components';
+import { EmptyMessage, ObjectImage, P, SubLabel, UserManager } from '@/components';
 import './Topic.scss';
 
 class Topic extends Component {
@@ -139,7 +139,7 @@ class Topic extends Component {
             <SubLabel>{t('label.icon')}</SubLabel>
             <div className="text-center py-4 bg-light mb-3 rounded">
               <div className="topic-image m-2 m-lg-0">
-                <IconViewer iconIndex={topic.iconIndex} />
+                <ObjectImage size="lg" index={topic.iconIndex} />
               </div>
             </div>
             <SubLabel>{t('label.name')}</SubLabel>

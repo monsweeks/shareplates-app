@@ -149,7 +149,7 @@ class GrpList extends React.Component {
             <Row>
               {grps.map((grp, i) => {
                 return (
-                  <Col key={i} className="grp-col" xl={4} lg={4} md={6} sm={6}>
+                  <Col key={i} className="grp-col" xl={3} lg={4} md={6} sm={6}>
                     <GrpCard
                       grp={grp}
                       onCardClick={(grpId) => {
@@ -159,7 +159,7 @@ class GrpList extends React.Component {
                   </Col>
                 );
               })}
-              <Col className="grp-col" xl={4} lg={4} md={6} sm={6}>
+              <Col className="grp-col" xl={3} lg={4} md={6} sm={6}>
                 <GrpCard
                   newCard
                   onCardClick={() => {
