@@ -10,6 +10,8 @@
   "button.edit": "변경",
   "button.list": "목록",
   "button.delete": "삭제",
+  "button.goBack": "뒤로가기",
+  "button.goFirst": "첫 화면으로",
 
   "label.topicList": "토픽 리스트",
   "label.grpList": "그룹 리스트",
@@ -48,6 +50,7 @@
   "label.edit": "변경",
   "label.newTopic": "새 토픽",
   "label.newGrp": "새 그룹",
+  "label.share": "공유",
 
 
   "label.searchByTopicName": "토픽 이름으로 검색",
