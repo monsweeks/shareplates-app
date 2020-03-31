@@ -5,9 +5,11 @@ import i18n from 'i18next';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 const local = ['localhost', '127.0.0.1', '192.168.39.3'].some((d) => d === window.location.hostname);
+
 const logging = true;
 // eslint-disable-next-line no-nested-ternary
-const base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
+let base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
+base = window.location.port === '3000' ? `http://${window.location.hostname}:8080` : '';
 
 function beforeRequest(quiet) {
   if (!quiet) {
