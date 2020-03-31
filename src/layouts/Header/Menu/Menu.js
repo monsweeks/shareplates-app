@@ -69,7 +69,7 @@ class Menu extends React.PureComponent {
               underline={false}
               key={menu.text}
               className={`${
-                alias === menu.to || pathname === menu.to ? 'selected' : ''
+                alias === menu.alias || pathname === menu.alias ? 'selected' : ''
               } d-none d-md-inline-block menu-item ${enabled ? '' : 'disabled'}`}
               to={menu.to}
               effect={false}
@@ -106,6 +106,7 @@ Menu.propTypes = {
       icon: PropTypes.string,
       text: PropTypes.string,
       to: PropTypes.string,
+      alias: PropTypes.string,
       activePropsKey: PropTypes.string,
     }),
   ),

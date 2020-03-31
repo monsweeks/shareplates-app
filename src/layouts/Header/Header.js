@@ -12,48 +12,55 @@ import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
 import QuickMenu from '@//layouts/Header/QuickMenu/QuickMenu';
 
-const menus = [
-  {
-    icon: 'fal fa-books',
-    text: 'label.topic',
-    to: '/topics',
-    side: 'left',
-  },
-  {
-    icon: 'fal fa-book',
-    text: 'label.chapter',
-    to: '/chapters',
-    side: 'left',
-    activePropsKey : 'topicId',
-  },
-  {
-    icon: 'fal fa-clipboard',
-    text: 'label.page',
-    to: '/pages',
-    side: 'left',
-    activePropsKey : 'chapterId',
-  },
-  {
-    icon: 'fal fa-building',
-    text: 'label.org',
-    to: '/groups',
-    side: 'right',
-  },
-];
-
 class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       openMenu: null,
       openQuickMenu: false,
-      activePropsKeys: {}
+      activePropsKeys: {},
+      menus: [
+        {
+          key: 'topics',
+          icon: 'fal fa-books',
+          text: 'label.topic',
+          to: '/topics',
+          side: 'left',
+          alias: '/topics',
+        },
+        {
+          key: 'chapters',
+          icon: 'fal fa-book',
+          text: 'label.chapter',
+          to: '/chapters',
+          side: 'left',
+          activePropsKey: 'topicId',
+          alias: '/chapters',
+        },
+        {
+          key: 'pages',
+          icon: 'fal fa-clipboard',
+          text: 'label.page',
+          to: '/pages',
+          side: 'left',
+          activePropsKey: 'chapterId',
+          alias: '/pages',
+        },
+        {
+          key: 'groups',
+          icon: 'fal fa-building',
+          text: 'label.org',
+          to: '/groups',
+          side: 'right',
+          alias: '/groups',
+        },
+      ],
     };
   }
 
   componentDidUpdate() {
     const { location } = this.props;
-    const { activePropsKeys } = this.state;
+    const { activePropsKeys, menus } = this.state;
     const values = location.pathname.split('/');
     let currentTopicId = null;
     let currentChapterId = null;
@@ -73,10 +80,22 @@ class Header extends React.Component {
       chapterId: currentChapterId,
     };
 
+    const nextMenus = menus.slice(0);
+    if (nextActivePropsKeys.topicId) {
+      const chapters = nextMenus.find((d) => d.key === 'chapters');
+      chapters.to = `/topics/${nextActivePropsKeys.topicId}/chapters`;
+    }
+
+    if (nextActivePropsKeys.topicId && nextActivePropsKeys.chapterId) {
+      const pages = nextMenus.find((d) => d.key === 'pages');
+      pages.to = `/topics/${nextActivePropsKeys.topicId}/chapters/${nextActivePropsKeys.chapterId}/pages`;
+    }
+
     if (JSON.stringify(activePropsKeys) !== JSON.stringify(nextActivePropsKeys)) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        activePropsKeys : nextActivePropsKeys
+        activePropsKeys: nextActivePropsKeys,
+        menus: nextMenus,
       });
     }
   }
@@ -109,7 +128,7 @@ class Header extends React.Component {
 
   render() {
     const { i18n, user, location, grps } = this.props;
-    const { openMenu, openQuickMenu, activePropsKeys } = this.state;
+    const { openMenu, openQuickMenu, activePropsKeys, menus } = this.state;
 
     const ready = user !== null;
     const loggedIn = !!(user && user.id);
