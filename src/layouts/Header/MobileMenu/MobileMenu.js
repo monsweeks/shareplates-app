@@ -21,7 +21,7 @@ class MobileMenu extends React.PureComponent {
   };
 
   render() {
-    const { t, menus, openMenu, ready, loggedIn, onChangeLanguage, language, setOpen } = this.props;
+    const { t, menus, openMenu, ready, loggedIn, onChangeLanguage, language, setOpen, activePropsKeys } = this.props;
 
     return (
       <div className="mobile-menu-wrapper">
@@ -50,15 +50,23 @@ class MobileMenu extends React.PureComponent {
             <div className="menu-list">
               <ul>
                 {menus.map((menu) => {
+                  const enabled = !!(!menu.activePropsKey || (menu.activePropsKey && activePropsKeys[menu.activePropsKey]));
+
                   return (
                     <li key={menu.text}>
                       <Link
                         underline={false}
-                        className="d-inline-block menu-item"
-                        onClick={() => {
-                          setOpen(false);
+                        className={`d-inline-block menu-item ${enabled ? 'en' : 'dis'}`}
+                        onClick={(e) => {
+                          if (enabled) {
+                            setOpen(false);
+                          } else {
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }
                         }}
                         to={menu.to}
+                        enabled={enabled}
                       >
                         <div className="icon">
                           <span>
@@ -126,6 +134,7 @@ MobileMenu.propTypes = {
       icon: PropTypes.string,
       text: PropTypes.string,
       to: PropTypes.string,
+      activePropsKey: PropTypes.string,
     }),
   ),
   openMenu: PropTypes.bool,
@@ -134,6 +143,7 @@ MobileMenu.propTypes = {
   loggedIn: PropTypes.bool,
   onChangeLanguage: PropTypes.func,
   language: PropTypes.string,
+  activePropsKeys: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(MobileMenu));

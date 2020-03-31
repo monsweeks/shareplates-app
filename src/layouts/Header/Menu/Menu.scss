@@ -77,6 +77,12 @@
       }
     }
 
+    &.disabled {
+      .current-arrow {
+        display: none;
+      }
+    }
+
     &.selected {
       .current-arrow {
         opacity: 1;
