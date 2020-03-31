@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
+import { Col, Row, SearchBar, TopicCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
@@ -233,7 +233,7 @@ class TopicList extends React.Component {
             );
           }}
         />
-        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)} />
+
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
