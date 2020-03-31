@@ -24,12 +24,14 @@ const menus = [
     text: 'label.chapter',
     to: '/chapters',
     side: 'left',
+    activePropsKey : 'topicId',
   },
   {
     icon: 'fal fa-clipboard',
     text: 'label.page',
     to: '/pages',
     side: 'left',
+    activePropsKey : 'chapterId',
   },
   {
     icon: 'fal fa-building',
@@ -45,7 +47,38 @@ class Header extends React.Component {
     this.state = {
       openMenu: null,
       openQuickMenu: false,
+      activePropsKeys: {}
     };
+  }
+
+  componentDidUpdate() {
+    const { location } = this.props;
+    const { activePropsKeys } = this.state;
+    const values = location.pathname.split('/');
+    let currentTopicId = null;
+    let currentChapterId = null;
+
+    if (values.length > 0) {
+      if (values[1] === 'topics' && values[2] && !Number.isNaN(values[2])) {
+        currentTopicId = Number(values[2]);
+      }
+
+      if (values[3] === 'chapters' && values[4] && !Number.isNaN(values[4])) {
+        currentChapterId = Number(values[4]);
+      }
+    }
+
+    const nextActivePropsKeys = {
+      topicId: currentTopicId,
+      chapterId: currentChapterId,
+    };
+
+    if (JSON.stringify(activePropsKeys) !== JSON.stringify(nextActivePropsKeys)) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        activePropsKeys : nextActivePropsKeys
+      });
+    }
   }
 
   setOpen = (openMenu) => {
@@ -76,7 +109,7 @@ class Header extends React.Component {
 
   render() {
     const { i18n, user, location, grps } = this.props;
-    const { openMenu, openQuickMenu } = this.state;
+    const { openMenu, openQuickMenu, activePropsKeys } = this.state;
 
     const ready = user !== null;
     const loggedIn = !!(user && user.id);
@@ -90,19 +123,17 @@ class Header extends React.Component {
               pathname={location.pathname}
               openMenu={openMenu}
               setOpen={this.setOpen}
+              activePropsKeys={activePropsKeys}
             />
           </div>
           <div className="logo-area">
             <TopLogo weatherEffect />
           </div>
           <div className="right-menu-area text-right pl-md-0">
-            <div className='right-menu'>
-              <Menu
-                menus={menus.filter((menu) => menu.side === 'right')}
-                pathname={location.pathname}
-              />
+            <div className="right-menu">
+              <Menu menus={menus.filter((menu) => menu.side === 'right')} pathname={location.pathname} />
             </div>
-            <div className='shortcut-menu'>
+            <div className="shortcut-menu">
               <ShortCutMenu
                 ready={ready}
                 loggedIn={loggedIn}
@@ -116,7 +147,6 @@ class Header extends React.Component {
                 user={user}
               />
             </div>
-
           </div>
         </div>
         <MobileMenu
@@ -129,6 +159,7 @@ class Header extends React.Component {
             i18n.changeLanguage(language);
           }}
           language={i18n.language}
+          activePropsKeys={activePropsKeys}
         />
         {openMenu && (
           <div

@@ -5,11 +5,20 @@ import './Link.scss';
 
 class Link extends React.PureComponent {
   render() {
-    const { color, className, componentClassName, underline, effect, ...last } = this.props;
+    const { enabled, color, className, componentClassName, underline, effect, ...last } = this.props;
 
     return (
-      <span className={`link-wrapper text-${color} ${className} ${underline ? 'underline' : ''}`}>
-        <RouterLink className={`text-${color} ${componentClassName}`} {...last} />
+      <span className={`link-wrapper ${enabled ? '' : 'disabled'} text-${color} ${className} ${underline ? 'underline' : ''}`}>
+        <RouterLink
+          onClick={(e) => {
+            if (!enabled) {
+              e.stopPropagation();
+              e.preventDefault();
+            }
+          }}
+          className={`text-${color} ${componentClassName}`}
+          {...last}
+        />
         {underline && <span className="underline" />}
         {effect && <span className="liner" />}
       </span>
@@ -22,7 +31,8 @@ Link.defaultProps = {
   className: '',
   color: 'blue',
   componentClassName: '',
-  effect : true,
+  effect: true,
+  enabled: true,
 };
 
 Link.propTypes = {
@@ -30,7 +40,8 @@ Link.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
   componentClassName: PropTypes.string,
-  effect : PropTypes.bool,
+  effect: PropTypes.bool,
+  enabled: PropTypes.bool,
 };
 
 export default Link;

@@ -33,7 +33,7 @@ class Menu extends React.PureComponent {
   };
 
   render() {
-    const { t, pathname, menus, openMenu, setOpen } = this.props;
+    const { t, pathname, menus, openMenu, setOpen, activePropsKeys } = this.props;
 
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
@@ -62,15 +62,18 @@ class Menu extends React.PureComponent {
             alias = '/topics';
           }
 
+          const enabled = !!(!menu.activePropsKey || (menu.activePropsKey && activePropsKeys[menu.activePropsKey]));
+
           return (
             <Link
               underline={false}
               key={menu.text}
               className={`${
                 alias === menu.to || pathname === menu.to ? 'selected' : ''
-              } d-none d-md-inline-block menu-item`}
+              } d-none d-md-inline-block menu-item ${enabled ? '' : 'disabled'}`}
               to={menu.to}
               effect={false}
+              enabled={enabled}
             >
               <div className="current-arrow">
                 <span
@@ -103,10 +106,12 @@ Menu.propTypes = {
       icon: PropTypes.string,
       text: PropTypes.string,
       to: PropTypes.string,
+      activePropsKey: PropTypes.string,
     }),
   ),
   openMenu: PropTypes.bool,
   setOpen: PropTypes.func,
+  activePropsKeys: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(Menu));
