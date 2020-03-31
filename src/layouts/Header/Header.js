@@ -27,6 +27,7 @@ class Header extends React.Component {
           to: '/shares',
           side: 'left',
           alias: '/shares',
+          split : true,
         },
         {
           key: 'topics',
@@ -151,6 +152,7 @@ class Header extends React.Component {
               openMenu={openMenu}
               setOpen={this.setOpen}
               activePropsKeys={activePropsKeys}
+              shareBadgeCount={7}
             />
           </div>
           <div className="logo-area">

@@ -7,18 +7,47 @@
   }
   .menu-item {
     color: $white !important;
-    min-width: 80px;
+    min-width: 65px;
     height: 100%;
     margin: 0 5px 0 0;
     position: relative;
     padding: 0;
     text-align: center;
 
+    .split-arrow {
+      background: $white;
+      position: absolute;
+      top: -5px;
+      right: -0.75rem;
+      width: 10px;
+      height: 10px;
+      transform: rotate(45deg);
+      display: none;
+    }
+
+    &.split {
+      margin-right: 1.5rem;
+    }
+
+    .share-badge-count {
+      position: absolute;
+      top: 6px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      background-color: $yellow;
+      border-radius: 50%;
+      font-family: Righteous;
+      color: $black;
+      font-size: 12px;
+      text-align: center;
+    }
+
     .icon {
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       position: absolute;
-      top: 9px;
+      top: 11px;
       left: 0;
       width: 100%;
       color: $white !important;
