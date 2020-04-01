@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FullLayout } from '@/layouts';
 import request from '@/utils/request';
@@ -144,6 +143,12 @@ class ChapterList extends React.PureComponent {
     });
   };
 
+  moveToPages = (chapterId) => {
+    const { history } = this.props;
+    const { topic } = this.state;
+    history.push(`/topics/${topic.id}/chapters/${chapterId}/pages`);
+  };
+
   render() {
     const { t } = this.props;
     const { topic, chapters, viewType, role } = this.state;
@@ -177,7 +182,7 @@ class ChapterList extends React.PureComponent {
               : []
           }
         />
-        <div className='sm-control-bar'>
+        <div className="sm-control-bar">
           <div className="summary sm-summary">
             <span className="chapter-count mr-1">{chapters.length}</span>
             <span className="summary-label">CHAPTERS</span>
@@ -215,12 +220,13 @@ class ChapterList extends React.PureComponent {
                 updateChapterTitle={this.updateChapterTitle}
                 deleteChapter={this.deleteChapter}
                 setChapters={this.setChapters}
+                onChapterClick={this.moveToPages}
                 viewType={viewType}
                 rowHeight={120}
                 margin={[12, 12]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
-                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs : 1 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
+                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
                   defaultBox: {
                     w: 1,
                     h: 1,
@@ -245,11 +251,12 @@ class ChapterList extends React.PureComponent {
                 updateChapterTitle={this.updateChapterTitle}
                 deleteChapter={this.deleteChapter}
                 setChapters={this.setChapters}
+                onChapterClick={this.moveToPages}
                 viewType={viewType}
                 rowHeight={40}
                 margin={[12, 4]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
                   cols: { lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 },
                   defaultBox: {
                     w: 1,
@@ -274,12 +281,6 @@ class ChapterList extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    grps: state.user.grps,
-  };
-};
-
 ChapterList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -296,4 +297,4 @@ ChapterList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ChapterList)));
+export default withRouter(withTranslation()(ChapterList));

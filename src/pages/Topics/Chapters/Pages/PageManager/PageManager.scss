@@ -1,0 +1,23 @@
+.page-manager-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .page-list-layout {
+    width: 240px;
+    flex-grow: 0;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+
+    .page-list{
+      background-color: $white;
+      flex-grow: 1;
+    }
+  }
+
+  .page-editor {
+    flex-grow: 1;
+    _background-color: #1c7430;
+  }
+}

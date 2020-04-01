@@ -27,7 +27,7 @@ function getEmptyGridLayout(gridSetting) {
   return gridLayouts;
 }
 
-class ChapterCardLayoutList extends React.PureComponent {
+class PageCardLayoutList extends React.PureComponent {
   timer = null;
 
   breakpoint = 'lg';
@@ -203,7 +203,7 @@ class ChapterCardLayoutList extends React.PureComponent {
   }
 }
 
-ChapterCardLayoutList.propTypes = {
+PageCardLayoutList.propTypes = {
   updateChapterTitle: PropTypes.func,
   updateChapterOrders: PropTypes.func,
   deleteChapter: PropTypes.func,
@@ -218,4 +218,4 @@ ChapterCardLayoutList.propTypes = {
   onChapterClick : PropTypes.func,
 };
 
-export default ChapterCardLayoutList;
+export default PageCardLayoutList;
