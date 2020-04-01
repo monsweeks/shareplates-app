@@ -33,7 +33,7 @@ class Menu extends React.PureComponent {
   };
 
   render() {
-    const { t, pathname, menus, openMenu, setOpen, activePropsKeys } = this.props;
+    const { t, pathname, menus, openMenu, setOpen, activePropsKeys, shareBadgeCount } = this.props;
 
     return (
       <div className="menu-wrapper align-self-center justify-content-center align-middle">
@@ -68,13 +68,14 @@ class Menu extends React.PureComponent {
             <Link
               underline={false}
               key={menu.text}
-              className={`${
+              className={`menu-item ${
                 alias === menu.alias || pathname === menu.alias ? 'selected' : ''
-              } d-none d-md-inline-block menu-item ${enabled ? '' : 'disabled'}`}
+              } d-none d-md-inline-block ${enabled ? '' : 'disabled'} ${menu.split ? 'split' : ''}`}
               to={menu.to}
               effect={false}
               enabled={enabled}
             >
+              {menu.key === 'shares' && <div className="share-badge-count">{shareBadgeCount}</div>}
               <div className="current-arrow">
                 <span
                   style={{
@@ -108,11 +109,13 @@ Menu.propTypes = {
       to: PropTypes.string,
       alias: PropTypes.string,
       activePropsKey: PropTypes.string,
+      split: PropTypes.bool,
     }),
   ),
   openMenu: PropTypes.bool,
   setOpen: PropTypes.func,
   activePropsKeys: PropTypes.objectOf(PropTypes.any),
+  shareBadgeCount: PropTypes.number,
 };
 
 export default withRouter(withTranslation()(Menu));

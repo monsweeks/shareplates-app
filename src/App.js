@@ -7,6 +7,7 @@ import About from '@/pages/About';
 import Users from '@/pages/Users';
 import Topics from '@/pages/Topics';
 import Grps from '@/pages/Grps';
+import Shares from '@/pages/Shares';
 import '@/App.scss';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/samples" component={Sample} />
           <Route path="/topics" component={Topics} />
           <Route path="/groups" component={Grps} />
+          <Route path="/shares" component={Shares} />
           <Route component={NoMatch} />
         </Switch>
         <Common />

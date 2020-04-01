@@ -21,6 +21,15 @@ class Header extends React.Component {
       activePropsKeys: {},
       menus: [
         {
+          key: 'shares',
+          icon: 'fal fa-broadcast-tower',
+          text: 'label.share',
+          to: '/shares',
+          side: 'left',
+          alias: '/shares',
+          split : true,
+        },
+        {
           key: 'topics',
           icon: 'fal fa-books',
           text: 'label.topic',
@@ -143,6 +152,7 @@ class Header extends React.Component {
               openMenu={openMenu}
               setOpen={this.setOpen}
               activePropsKeys={activePropsKeys}
+              shareBadgeCount={7}
             />
           </div>
           <div className="logo-area">

@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FullLayout } from '@/layouts';
 import request from '@/utils/request';
@@ -51,7 +50,7 @@ class ChapterList extends React.PureComponent {
   }
 
   getChapters = (topicId) => {
-    request.get('/api/chapters', { topicId }, (data) => {
+    request.get(`/api/topics/${topicId}/chapters`, { topicId }, (data) => {
       data.chapters.sort((a, b) => {
         return a.orderNo - b.order;
       });
@@ -70,7 +69,7 @@ class ChapterList extends React.PureComponent {
     const title = `CHAPTER-${orderNo}`;
 
     request.post(
-      '/api/chapters',
+      `/api/topics/${topicId}/chapters`,
       { topicId, title, orderNo },
       (data) => {
         const next = chapters.slice(0);
@@ -85,8 +84,10 @@ class ChapterList extends React.PureComponent {
   };
 
   deleteChapter = (chapterId) => {
+    const { topicId } = this.state;
+
     request.del(
-      `/api/chapters/${chapterId}`,
+      `/api/topics/${topicId}/chapters/${chapterId}`,
       null,
       () => {
         const { chapters } = this.state;
@@ -107,8 +108,9 @@ class ChapterList extends React.PureComponent {
   };
 
   updateChapterTitle = (chapterId, title) => {
+    const { topicId } = this.state;
     request.put(
-      `/api/chapters/${chapterId}/title`,
+      `/api/topics/${topicId}/chapters/${chapterId}/title`,
       { title },
       (data) => {
         const { chapters } = this.state;
@@ -125,7 +127,7 @@ class ChapterList extends React.PureComponent {
   };
 
   updateChapterOrders = (topicId, chapters) => {
-    request.put('/api/chapters/orders', { topicId, chapters }, null, null, true);
+    request.put(`/api/topics/${topicId}/chapters/orders`, { topicId, chapters }, null, null, true);
   };
 
   onChangeViewType = (viewType) => {
@@ -139,6 +141,12 @@ class ChapterList extends React.PureComponent {
     this.setState({
       chapters,
     });
+  };
+
+  moveToPages = (chapterId) => {
+    const { history } = this.props;
+    const { topic } = this.state;
+    history.push(`/topics/${topic.id}/chapters/${chapterId}/pages`);
   };
 
   render() {
@@ -174,7 +182,7 @@ class ChapterList extends React.PureComponent {
               : []
           }
         />
-        <div className='sm-control-bar'>
+        <div className="sm-control-bar">
           <div className="summary sm-summary">
             <span className="chapter-count mr-1">{chapters.length}</span>
             <span className="summary-label">CHAPTERS</span>
@@ -212,12 +220,13 @@ class ChapterList extends React.PureComponent {
                 updateChapterTitle={this.updateChapterTitle}
                 deleteChapter={this.deleteChapter}
                 setChapters={this.setChapters}
+                onChapterClick={this.moveToPages}
                 viewType={viewType}
                 rowHeight={120}
                 margin={[12, 12]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
-                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs : 1 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
+                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
                   defaultBox: {
                     w: 1,
                     h: 1,
@@ -242,11 +251,12 @@ class ChapterList extends React.PureComponent {
                 updateChapterTitle={this.updateChapterTitle}
                 deleteChapter={this.deleteChapter}
                 setChapters={this.setChapters}
+                onChapterClick={this.moveToPages}
                 viewType={viewType}
                 rowHeight={40}
                 margin={[12, 4]}
                 gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs : 0 },
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
                   cols: { lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 },
                   defaultBox: {
                     w: 1,
@@ -271,12 +281,6 @@ class ChapterList extends React.PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    grps: state.user.grps,
-  };
-};
-
 ChapterList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -293,4 +297,4 @@ ChapterList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ChapterList)));
+export default withRouter(withTranslation()(ChapterList));

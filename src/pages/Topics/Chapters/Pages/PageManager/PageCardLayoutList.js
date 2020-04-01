@@ -1,8 +1,7 @@
 import React from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import PropTypes from 'prop-types';
-import { ChapterCard, ChapterRow } from '@/components';
-
+import { PageCard } from '@/components';
 import '@/styles/lib/react-grid-layout.scss';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -27,7 +26,7 @@ function getEmptyGridLayout(gridSetting) {
   return gridLayouts;
 }
 
-class ChapterCardLayoutList extends React.PureComponent {
+class PageCardLayoutList extends React.PureComponent {
   timer = null;
 
   breakpoint = 'lg';
@@ -41,12 +40,12 @@ class ChapterCardLayoutList extends React.PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.init && props.chapters) {
+    if (!state.init && props.pages) {
       const gridLayouts = getEmptyGridLayout(props.gridSetting);
       Object.keys(props.gridSetting.cols).forEach((breakpoint) => {
         gridLayouts[breakpoint] = [];
       });
-      props.chapters.forEach((chapter) => {
+      props.pages.forEach((chapter) => {
         Object.keys(gridLayouts).forEach((breakpoint) => {
           gridLayouts[breakpoint].push({
             ...props.gridSetting.defaultBox,
@@ -78,14 +77,14 @@ class ChapterCardLayoutList extends React.PureComponent {
   };
 
   applyLayout = (layout, layouts) => {
-    const { topicId, updateChapterOrders, chapters, setChapters, gridSetting } = this.props;
+    const { topicId, chapterId, updatePageOrders, pages, setPages, gridSetting } = this.props;
 
-    if (!chapters) {
+    if (!pages) {
       return;
     }
 
     // 순서 변경을 감지하기 위해, 변경전 순서를 기록
-    const beforeOrders = chapters.map((chapter) => {
+    const beforeOrders = pages.map((chapter) => {
       return {
         id: chapter.id,
         orderNo: chapter.orderNo,
@@ -101,7 +100,7 @@ class ChapterCardLayoutList extends React.PureComponent {
     const nextChapters = [];
     const nextGridLayouts = { ...layouts };
     layout.forEach((item, inx) => {
-      const chapterInfo = chapters.find((chapter) => String(chapter.id) === String(item.i));
+      const chapterInfo = pages.find((chapter) => String(chapter.id) === String(item.i));
       nextChapters.push({
         ...chapterInfo,
         orderNo: inx + 1,
@@ -125,23 +124,37 @@ class ChapterCardLayoutList extends React.PureComponent {
 
     // 순서가 변경되었다면, 업데이트
     if (JSON.stringify(beforeOrders) !== JSON.stringify(afterOrders)) {
-      updateChapterOrders(topicId, afterOrders);
+      updatePageOrders(topicId, chapterId, afterOrders);
     }
 
     this.setState({
       gridLayouts: nextGridLayouts,
     });
 
-    setChapters(nextChapters);
+    setPages(nextChapters);
   };
 
   render() {
-    const { updateChapterTitle, deleteChapter, chapters, gridSetting, viewType, rowHeight, isWriter, margin, onChapterClick } = this.props;
+    const {
+      chapterId,
+      updatePageTitle,
+      deletePage,
+      pages,
+      gridSetting,
+      rowHeight,
+      isWriter,
+      margin,
+      onPageClick,
+      selectedId,
+    } = this.props;
     const { gridLayouts } = this.state;
+
+    console.log(chapterId);
+    console.log(pages);
 
     return (
       <div className="chapter-card-layout-list">
-        {chapters !== false && chapters.length > 0 && (
+        {pages !== false && pages.length > 0 && (
           <div className="chapter-list">
             <ResponsiveReactGridLayout
               onLayoutChange={this.onLayoutChange}
@@ -160,38 +173,24 @@ class ChapterCardLayoutList extends React.PureComponent {
               useCSSTransforms={false}
               // layout={gridLayouts}
             >
-              {chapters.map((chapter) => {
+              {pages.map((page) => {
                 return (
                   <div
-                    key={chapter.id}
-                    data-grid={gridLayouts[this.breakpoint].find((d) => String(d.id) === String(chapter.id))}
+                    key={page.id}
+                    data-grid={gridLayouts[this.breakpoint].find((d) => String(d.id) === String(page.id))}
                   >
-                    {viewType === 'card' && (
-                      <ChapterCard
-                        chapter={chapter}
-                        onCardClick={(chapterId) => {
-                          onChapterClick(chapterId);
-                        }}
-                        onRemoveClick={(chapterId) => {
-                          deleteChapter(chapterId);
-                        }}
-                        onChangeTitle={updateChapterTitle}
-                        isWriter={isWriter}
-                      />
-                    )}
-                    {viewType === 'list' && (
-                      <ChapterRow
-                        chapter={chapter}
-                        onCardClick={(chapterId) => {
-                          onChapterClick(chapterId);
-                        }}
-                        onRemoveClick={(chapterId) => {
-                          deleteChapter(chapterId);
-                        }}
-                        onChangeTitle={updateChapterTitle}
-                        isWriter={isWriter}
-                      />
-                    )}
+                    <PageCard
+                      className={page.id === selectedId ? 'selected' : ''}
+                      page={page}
+                      onCardClick={(pageId) => {
+                        onPageClick(pageId);
+                      }}
+                      onRemoveClick={(pageId) => {
+                        deletePage(pageId);
+                      }}
+                      onChangeTitle={updatePageTitle}
+                      isWriter={isWriter}
+                    />
                   </div>
                 );
               })}
@@ -203,19 +202,20 @@ class ChapterCardLayoutList extends React.PureComponent {
   }
 }
 
-ChapterCardLayoutList.propTypes = {
-  updateChapterTitle: PropTypes.func,
-  updateChapterOrders: PropTypes.func,
-  deleteChapter: PropTypes.func,
-  chapters: PropTypes.arrayOf(PropTypes.any),
+PageCardLayoutList.propTypes = {
+  updatePageTitle: PropTypes.func,
+  updatePageOrders: PropTypes.func,
+  deletePage: PropTypes.func,
+  pages: PropTypes.arrayOf(PropTypes.any),
   topicId: PropTypes.number,
-  setChapters: PropTypes.func,
+  chapterId: PropTypes.number,
+  setPages: PropTypes.func,
   gridSetting: PropTypes.objectOf(PropTypes.any),
-  viewType: PropTypes.string,
-  rowHeight : PropTypes.number,
-  isWriter : PropTypes.bool,
-  margin : PropTypes.arrayOf(PropTypes.number),
-  onChapterClick : PropTypes.func,
+  rowHeight: PropTypes.number,
+  isWriter: PropTypes.bool,
+  margin: PropTypes.arrayOf(PropTypes.number),
+  onPageClick: PropTypes.func,
+  selectedId : PropTypes.number,
 };
 
-export default ChapterCardLayoutList;
+export default PageCardLayoutList;

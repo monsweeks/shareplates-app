@@ -1,0 +1,15 @@
+.page-manager-top-control-bar-wrapper {
+  flex: 0;
+  position: relative;
+  background-color: $sea-blue;
+  min-height: 40px;
+  width: 100%;
+  display: flex;
+
+  > div {
+    width: 100%;
+    align-self: center;
+    padding: 0 0.5rem;
+    text-align: right;
+  }
+}
