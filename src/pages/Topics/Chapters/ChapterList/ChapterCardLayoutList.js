@@ -150,8 +150,8 @@ class ChapterCardLayoutList extends React.PureComponent {
               cols={gridSetting.cols}
               rowHeight={rowHeight}
               isResizable={false}
-              compactType="horizontal"
-              verticalCompact
+              // compactType="horizontal"
+              // verticalCompact
               layouts={gridLayouts}
               margin={margin}
               onBreakpointChange={(newBreakpoint) => {
