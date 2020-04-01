@@ -51,7 +51,7 @@ class ChapterList extends React.PureComponent {
   }
 
   getChapters = (topicId) => {
-    request.get('/api/chapters', { topicId }, (data) => {
+    request.get(`/api/topics/${topicId}/chapters`, { topicId }, (data) => {
       data.chapters.sort((a, b) => {
         return a.orderNo - b.order;
       });
@@ -70,7 +70,7 @@ class ChapterList extends React.PureComponent {
     const title = `CHAPTER-${orderNo}`;
 
     request.post(
-      '/api/chapters',
+      `/api/topics/${topicId}/chapters`,
       { topicId, title, orderNo },
       (data) => {
         const next = chapters.slice(0);
@@ -85,8 +85,10 @@ class ChapterList extends React.PureComponent {
   };
 
   deleteChapter = (chapterId) => {
+    const { topicId } = this.state;
+
     request.del(
-      `/api/chapters/${chapterId}`,
+      `/api/topics/${topicId}/chapters/${chapterId}`,
       null,
       () => {
         const { chapters } = this.state;
@@ -107,8 +109,9 @@ class ChapterList extends React.PureComponent {
   };
 
   updateChapterTitle = (chapterId, title) => {
+    const { topicId } = this.state;
     request.put(
-      `/api/chapters/${chapterId}/title`,
+      `/api/topics/${topicId}/chapters/${chapterId}/title`,
       { title },
       (data) => {
         const { chapters } = this.state;
@@ -125,7 +128,7 @@ class ChapterList extends React.PureComponent {
   };
 
   updateChapterOrders = (topicId, chapters) => {
-    request.put('/api/chapters/orders', { topicId, chapters }, null, null, true);
+    request.put(`/api/topics/${topicId}/chapters/orders`, { topicId, chapters }, null, null, true);
   };
 
   onChangeViewType = (viewType) => {
