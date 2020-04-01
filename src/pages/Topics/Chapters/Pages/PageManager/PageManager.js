@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, PageManagerTopControlBar } from '@/components';
 import request from '@/utils/request';
 import './PageManager.scss';
+import PageCardLayoutList from '@/pages/Topics/Chapters/Pages/PageManager/PageCardLayoutList';
 
 class PageManager extends React.Component {
   constructor(props) {
@@ -55,6 +56,12 @@ class PageManager extends React.Component {
     });
   };
 
+  setPages = (pages) => {
+    this.setState({
+      pages,
+    });
+  };
+
   createPage = () => {
     const { topicId, chapterId, pages } = this.state;
     const orderNo = pages.length + 1;
@@ -77,7 +84,9 @@ class PageManager extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { chapter, pages } = this.state;
+    const { topicId, chapterId, chapter, pages } = this.state;
+
+    console.log(pages);
     return (
       <div className="page-manager-wrapper">
         <div className="page-list-layout">
@@ -93,13 +102,40 @@ class PageManager extends React.Component {
             ]}
           />
           <div className="page-list">
-            {pages &&
-              pages.map((page) => {
-                return <div key={page.id}>{page.title}</div>;
-              })}
+            <div className='scrollbar'>
+              <PageCardLayoutList
+                topicId={topicId}
+                chapterId={chapterId}
+                pages={pages}
+                updatePageOrders={this.updateChapterOrders}
+                updatePageTitle={this.updateChapterTitle}
+                deletePage={this.deleteChapter}
+                setPages={this.setPages}
+                onPageClick={this.moveToPages}
+                rowHeight={120}
+                margin={[12, 12]}
+                gridSetting={{
+                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
+                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
+                  defaultBox: {
+                    w: 1,
+                    h: 1,
+                    minW: 1,
+                    maxW: 1,
+                    minH: 1,
+                    maxH: 1,
+                    moved: false,
+                    static: false,
+                    isDraggable: true,
+                    isResizable: false,
+                  },
+                }}
+                isWriter
+              />
+            </div>
           </div>
         </div>
-        <div className="page-editor"/>
+        <div className="page-editor" />
       </div>
     );
   }
