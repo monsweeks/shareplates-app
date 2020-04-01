@@ -1,7 +1,7 @@
 import React from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import PropTypes from 'prop-types';
-import { ChapterCard } from '@/components';
+import { PageCard } from '@/components';
 import '@/styles/lib/react-grid-layout.scss';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -77,7 +77,7 @@ class PageCardLayoutList extends React.PureComponent {
   };
 
   applyLayout = (layout, layouts) => {
-    const { topicId, updatePageOrders, pages, setPages, gridSetting } = this.props;
+    const { topicId, chapterId, updatePageOrders, pages, setPages, gridSetting } = this.props;
 
     if (!pages) {
       return;
@@ -124,7 +124,7 @@ class PageCardLayoutList extends React.PureComponent {
 
     // 순서가 변경되었다면, 업데이트
     if (JSON.stringify(beforeOrders) !== JSON.stringify(afterOrders)) {
-      updatePageOrders(topicId, afterOrders);
+      updatePageOrders(topicId, chapterId, afterOrders);
     }
 
     this.setState({
@@ -145,6 +145,7 @@ class PageCardLayoutList extends React.PureComponent {
       isWriter,
       margin,
       onPageClick,
+      selectedId,
     } = this.props;
     const { gridLayouts } = this.state;
 
@@ -178,8 +179,9 @@ class PageCardLayoutList extends React.PureComponent {
                     key={page.id}
                     data-grid={gridLayouts[this.breakpoint].find((d) => String(d.id) === String(page.id))}
                   >
-                    <ChapterCard
-                      chapter={page}
+                    <PageCard
+                      className={page.id === selectedId ? 'selected' : ''}
+                      page={page}
                       onCardClick={(pageId) => {
                         onPageClick(pageId);
                       }}
@@ -213,6 +215,7 @@ PageCardLayoutList.propTypes = {
   isWriter: PropTypes.bool,
   margin: PropTypes.arrayOf(PropTypes.number),
   onPageClick: PropTypes.func,
+  selectedId : PropTypes.number,
 };
 
 export default PageCardLayoutList;

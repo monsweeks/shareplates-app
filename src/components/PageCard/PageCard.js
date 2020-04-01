@@ -17,11 +17,11 @@ class PageCard extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { isEdit } = this.state;
-    const { chapter } = this.props;
+    const { page } = this.props;
     if (!prevState.isEdit && isEdit) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        title: chapter.title,
+        title: page.title,
       });
     }
   }
@@ -37,11 +37,11 @@ class PageCard extends React.Component {
   };
 
   onApply = (e) => {
-    const { chapter, onChangeTitle } = this.props;
+    const { page, onChangeTitle } = this.props;
     const { title } = this.state;
     if (e) e.stopPropagation();
     if (onChangeTitle) {
-      onChangeTitle(chapter.id, title);
+      onChangeTitle(page.id, title);
     }
 
     this.setState({
@@ -51,11 +51,11 @@ class PageCard extends React.Component {
 
   render() {
     const { onCardClick, onRemoveClick, onChangeTitle } = this.props;
-    const { className, chapter, t, isWriter } = this.props;
+    const { className, page, t, isWriter } = this.props;
     const { isEdit, isDelete, title } = this.state;
 
     return (
-      <div className={`chapter-card-wrapper g-no-select border-0 ${className}`}>
+      <div className={`page-card-wrapper g-no-select ${className}`}>
         {isWriter && (
           <div className="card-buttons">
             <Button
@@ -73,35 +73,32 @@ class PageCard extends React.Component {
             </Button>
           </div>
         )}
-        <div className="chapter-card-content">
+        <div className='selected-arrow'/>
+        <div className="page-card-content">
           <div
             className={`mover ${isWriter ? 'mover-on' : ''}`}
             onTouchStart={isWriter ? null : this.stopProgation}
             onMouseDown={isWriter ? null : this.stopProgation}
           >
-            <span className="order-no">
-              <span className="no-text">NO</span>
-              <span className="no-count">{chapter.orderNo}</span>
-            </span>
+            <span className="order-no">{page.orderNo}</span>
             {isWriter && (
               <span className="grap">
                 <i className="fas fa-grip-horizontal" />
               </span>
             )}
           </div>
-
           <div
             className="content"
             onTouchStart={this.stopProgation}
             onMouseDown={this.stopProgation}
             onClick={() => {
               if (onCardClick) {
-                onCardClick(chapter ? chapter.id : null);
+                onCardClick(page ? page.id : null);
               }
             }}
           >
             <div
-              className="chapter-title"
+              className="page-title"
               onDoubleClick={(e) => {
                 e.stopPropagation();
                 this.setState({
@@ -110,7 +107,7 @@ class PageCard extends React.Component {
               }}
             >
               <div>
-                {chapter.title}
+                {page.title}
                 {isWriter && (
                   <Button
                     onClick={(e) => {
@@ -129,7 +126,7 @@ class PageCard extends React.Component {
             {isDelete && (
               <div className="inner-popup">
                 <div className="inner-popup-content scrollbar text-danger">
-                  <div>챕터 및 챕터에 포함된 페이지도 함께 삭제됩니다.</div>
+                  <div>페이지가 삭제됩니다.</div>
                 </div>
                 <div className="buttons">
                   <Button
@@ -149,7 +146,7 @@ class PageCard extends React.Component {
                     color="danger"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onRemoveClick(chapter ? chapter.id : null);
+                      onRemoveClick(page ? page.id : null);
                     }}
                   >
                     삭제
@@ -160,9 +157,9 @@ class PageCard extends React.Component {
             {isEdit && (
               <div className="inner-popup">
                 <div className="inner-popup-content scrollbar">
-                  <div className="chapter-name-text">{t('챕터 이름')}</div>
+                  <div className="page-name-text">{t('페이지 이름')}</div>
                   <Input
-                    className="chapter-name-input"
+                    className="page-name-input"
                     label={t('label.name')}
                     value={title}
                     required
@@ -199,7 +196,7 @@ class PageCard extends React.Component {
                     onClick={(e) => {
                       e.stopPropagation();
                       if (onChangeTitle) {
-                        onChangeTitle(chapter.id, title);
+                        onChangeTitle(page.id, title);
                       }
 
                       this.setState({
@@ -226,7 +223,7 @@ PageCard.defaultProps = {
 };
 
 PageCard.propTypes = {
-  chapter: PropTypes.shape({
+  page: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
     orderNo: PropTypes.number,

@@ -21,6 +21,7 @@ class PageManager extends React.Component {
       chapterId: Number(chapterId),
       chapter: {},
       pages: [],
+      selectedPageId: null,
     };
   }
 
@@ -82,9 +83,68 @@ class PageManager extends React.Component {
     );
   };
 
+  updatePageOrders = (topicId, chapterId, pages) => {
+    request.put(
+      `/api/topics/${topicId}/chapters/${chapterId}/pages/orders`,
+      { topicId, chapterId, pages },
+      null,
+      null,
+      true,
+    );
+  };
+
+  setSelectedPageId = (selectedPageId) => {
+    this.setState({
+      selectedPageId,
+    });
+  };
+
+  updatePageTitle = (pageId, title) => {
+    const { topicId, chapterId } = this.state;
+    request.put(
+      `/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}/title`,
+      { title },
+      (data) => {
+        const { pages } = this.state;
+        const next = pages.slice(0);
+        const page = next.find((d) => String(d.id) === String(data.page.id));
+        page.title = data.page.title;
+        this.setState({
+          pages: next,
+        });
+      },
+      null,
+      true,
+    );
+  };
+
+  deletePage = (pageId) => {
+    const { topicId, chapterId } = this.state;
+
+    request.del(
+      `/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}`,
+      null,
+      () => {
+        const { pages } = this.state;
+        const next = pages.slice(0);
+        const index = next.findIndex((page) => page.id === pageId);
+
+        if (index > -1) {
+          next.splice(index, 1);
+
+          this.setState({
+            pages: next,
+          });
+        }
+      },
+      null,
+      true,
+    );
+  };
+
   render() {
     const { t } = this.props;
-    const { topicId, chapterId, chapter, pages } = this.state;
+    const { topicId, chapterId, chapter, pages, selectedPageId } = this.state;
 
     console.log(pages);
     return (
@@ -102,17 +162,18 @@ class PageManager extends React.Component {
             ]}
           />
           <div className="page-list">
-            <div className='scrollbar'>
+            <div className="scrollbar">
               <PageCardLayoutList
                 topicId={topicId}
                 chapterId={chapterId}
                 pages={pages}
-                updatePageOrders={this.updateChapterOrders}
-                updatePageTitle={this.updateChapterTitle}
-                deletePage={this.deleteChapter}
+                updatePageOrders={this.updatePageOrders}
+                updatePageTitle={this.updatePageTitle}
+                deletePage={this.deletePage}
                 setPages={this.setPages}
-                onPageClick={this.moveToPages}
+                onPageClick={this.setSelectedPageId}
                 rowHeight={120}
+                selectedId={selectedPageId}
                 margin={[12, 12]}
                 gridSetting={{
                   breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },

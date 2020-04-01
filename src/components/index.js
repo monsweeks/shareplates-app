@@ -40,6 +40,7 @@ import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
 import PageIntro from '@/components/PageIntro/PageIntro';
 import ChapterCard from '@/components/ChapterCard/ChapterCard';
+import PageCard from '@/components/PageCard/PageCard';
 import ListControlBar from '@/components/ListControlBar/ListControlBar';
 import ChapterRow from '@/components/ChapterRow/ChapterRow';
 import PageManagerTopControlBar from '@/components/PageManagerTopControlBar/PageManagerTopControlBar';
@@ -90,4 +91,5 @@ export {
   ListControlBar,
   ChapterRow,
   PageManagerTopControlBar,
+  PageCard,
 };
