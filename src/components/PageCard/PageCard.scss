@@ -20,6 +20,10 @@ $mover-height: 24px;
     opacity: 0;
   }
 
+  &:hover {
+    border-color: rgba(0, 0, 0, 0.6);
+  }
+
   &.selected {
     border-color: $primary;
     transition: all 0.3s;
@@ -41,9 +45,7 @@ $mover-height: 24px;
     }
   }
 
-  &:hover {
-    border-color: rgba(0, 0, 0, 0.6);
-  }
+
 
   .card-buttons {
     position: absolute;
