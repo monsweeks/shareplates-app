@@ -136,7 +136,6 @@ class PageCardLayoutList extends React.PureComponent {
 
   render() {
     const {
-      chapterId,
       updatePageTitle,
       deletePage,
       pages,
@@ -148,9 +147,6 @@ class PageCardLayoutList extends React.PureComponent {
       selectedId,
     } = this.props;
     const { gridLayouts } = this.state;
-
-    console.log(chapterId);
-    console.log(pages);
 
     return (
       <div className="chapter-card-layout-list">
@@ -215,7 +211,7 @@ PageCardLayoutList.propTypes = {
   isWriter: PropTypes.bool,
   margin: PropTypes.arrayOf(PropTypes.number),
   onPageClick: PropTypes.func,
-  selectedId : PropTypes.number,
+  selectedId: PropTypes.number,
 };
 
 export default PageCardLayoutList;

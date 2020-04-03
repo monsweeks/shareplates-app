@@ -26,10 +26,7 @@ class PropertyManager extends React.Component {
   render() {
     const { t, className } = this.props;
     const { showPageList, setShowPageList, createPage } = this.props;
-
     const { selectedTab } = this.state;
-
-    console.log(t);
 
     return (
       <div className={`property-manager g-no-select ${className}`}>
@@ -61,7 +58,7 @@ class PropertyManager extends React.Component {
                   createPage();
                 }}
               >
-                <div>새 페이지</div>
+                <div>{t('새 페이지')}</div>
               </li>
               <li className="separator">
                 <div />

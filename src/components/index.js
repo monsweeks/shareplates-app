@@ -46,6 +46,7 @@ import ChapterRow from '@/components/ChapterRow/ChapterRow';
 import PageManagerTopControlBar from '@/components/PageManagerTopControlBar/PageManagerTopControlBar';
 import PageEditor from '@/components/PageEditor/PageEditor';
 import PropertyManager from '@/components/PropertyManager/PropertyManager';
+import PageContent from '@/components/PageContent/PageContent';
 
 export {
   Button,
@@ -96,4 +97,5 @@ export {
   PageCard,
   PageEditor,
   PropertyManager,
+  PageContent,
 };

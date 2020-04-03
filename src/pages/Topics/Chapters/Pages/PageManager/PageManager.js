@@ -33,8 +33,8 @@ class PageManager extends React.Component {
       (state.topicId !== props.match.params.topicId || state.chapterId !== props.match.params.chapterId)
     ) {
       return {
-        topicId: props.match.params.topicId,
-        chapterId: props.match.params.chapterId,
+        topicId: Number(props.match.params.topicId),
+        chapterId: Number(props.match.params.chapterId),
       };
     }
 
@@ -149,10 +149,25 @@ class PageManager extends React.Component {
     });
   };
 
+  setPageContent = (pageId, content) => {
+    const { pages } = this.state;
+    const next = pages.slice(0);
+    const page = next.find((p) => p.id === pageId);
+    if (page) {
+      page.content = content;
+    }
+
+    this.setState({
+      pages: next,
+    });
+  };
+
   render() {
     const { t } = this.props;
     const { topicId, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
     const isWriter = true;
+
+    console.log(selectedPageId);
 
     return (
       <div className="page-manager-wrapper">
@@ -225,7 +240,14 @@ class PageManager extends React.Component {
           </div>
         )}
         <div className="page-editor">
-          <PageEditor createPage={this.createPage} showPageList={showPageList} setShowPageList={this.setShowPageList} />
+          <PageEditor
+            createPage={this.createPage}
+            showPageList={showPageList}
+            setShowPageList={this.setShowPageList}
+            pageId={selectedPageId}
+            page={pages ? pages.find((d) => d.id === selectedPageId) : {}}
+            setPageContent={this.setPageContent}
+          />
         </div>
       </div>
     );

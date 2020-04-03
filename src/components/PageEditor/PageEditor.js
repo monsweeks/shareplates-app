@@ -1,21 +1,44 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import { PageContent, PropertyManager } from '@/components';
 import './PageEditor.scss';
-import { PropertyManager } from '@/components';
 
-class PageEditor extends React.PureComponent {
+class PageEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: '',
+      pageId: -1,
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.pageId !== state.pageId) {
+      return {
+        pageId: props.pageId,
+        content: props.content,
+      };
+    }
+
+    return null;
+  }
+
+  setPageContent = () => {
+    const { setPageContent } = this.props;
+    const { pageId, content } = this.state;
+    setPageContent(pageId, content);
+  };
+
   render() {
-    const { t, className, ...last } = this.props;
-
-    console.log(t);
+    const { className, setPageContent, ...last } = this.props;
+    const { pageId, content } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
         <PropertyManager className="property-manager" {...last} />
         <div className="editor-content">
-          <div />
+          <PageContent pageId={pageId} content={content} setPageContent={this.setPageContent} />
         </div>
       </div>
     );
@@ -23,8 +46,10 @@ class PageEditor extends React.PureComponent {
 }
 
 PageEditor.propTypes = {
-  t: PropTypes.func,
   className: PropTypes.string,
+  setPageContent: PropTypes.func,
+  pageId: PropTypes.number,
+  content: PropTypes.string,
 };
 
-export default withRouter(withTranslation()(PageEditor));
+export default withRouter(PageEditor);
