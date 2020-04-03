@@ -176,7 +176,7 @@ class PageCardLayoutList extends React.PureComponent {
                     data-grid={gridLayouts[this.breakpoint].find((d) => String(d.id) === String(page.id))}
                   >
                     <PageCard
-                      className={page.id === selectedId ? 'selected' : ''}
+                      className={`${page.id === selectedId ? 'selected' : ''} ${page.dirty ? 'dirty' : ''}`}
                       page={page}
                       onCardClick={(pageId) => {
                         onPageClick(pageId);

@@ -1,33 +1,91 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { PageContent, PropertyManager } from '@/components';
+import { PageContent, PageController } from '@/components';
 import './PageEditor.scss';
 
 class PageEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '',
+      content: {
+        layouts: {},
+        items: [],
+      },
+      originalContent: null,
       pageId: -1,
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.pageId !== state.pageId) {
+    if (props.pageId && props.pageId !== state.pageId) {
+      console.log(props);
       return {
         pageId: props.pageId,
-        content: props.content,
+        content: props.page.content
+          ? JSON.parse(props.page.content)
+          : {
+              layouts: {},
+              items: [],
+            },
+        originalContent: props.page.content,
       };
     }
 
     return null;
   }
 
+  checkDirty = () => {
+    const { pageId, setPageDirty } = this.props;
+    const { content, originalContent } = this.state;
+    setPageDirty(pageId, JSON.stringify(content) !== originalContent);
+  };
+
   setPageContent = () => {
     const { setPageContent } = this.props;
     const { pageId, content } = this.state;
     setPageContent(pageId, content);
+  };
+
+  addItem = (key) => {
+    const { pageId, content } = this.state;
+
+    const next = { ...content };
+    const id = String(new Date().getTime());
+
+    if (pageId && pageId > -1) {
+      next.items.push({
+        id,
+        key,
+      });
+
+      if (!next.layouts.lg) {
+        next.layouts.lg = [];
+      }
+
+      next.layouts.lg.push({
+        i: id,
+        w: 120,
+        h: 13,
+        x: 0,
+        y: 0,
+      });
+
+      this.setState(
+        {
+          content: next,
+        },
+        () => {
+          this.checkDirty();
+        },
+      );
+    }
+  };
+
+  updateContent = () => {
+    const { updatePage } = this.props;
+    const { pageId, content } = this.state;
+    updatePage(pageId, JSON.stringify(content));
   };
 
   render() {
@@ -36,7 +94,12 @@ class PageEditor extends React.Component {
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
-        <PropertyManager className="property-manager" {...last} />
+        <PageController
+          className="property-manager"
+          addItem={this.addItem}
+          {...last}
+          updateContent={this.updateContent}
+        />
         <div className="editor-content">
           <PageContent pageId={pageId} content={content} setPageContent={this.setPageContent} />
         </div>
@@ -49,7 +112,12 @@ PageEditor.propTypes = {
   className: PropTypes.string,
   setPageContent: PropTypes.func,
   pageId: PropTypes.number,
-  content: PropTypes.string,
+  page: PropTypes.shape({
+    title: PropTypes.string,
+    content: PropTypes.string,
+  }),
+  setPageDirty: PropTypes.func,
+  updatePage: PropTypes.func,
 };
 
 export default withRouter(PageEditor);

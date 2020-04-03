@@ -45,7 +45,7 @@ import ListControlBar from '@/components/ListControlBar/ListControlBar';
 import ChapterRow from '@/components/ChapterRow/ChapterRow';
 import PageManagerTopControlBar from '@/components/PageManagerTopControlBar/PageManagerTopControlBar';
 import PageEditor from '@/components/PageEditor/PageEditor';
-import PropertyManager from '@/components/PropertyManager/PropertyManager';
+import PageController from '@/components/PageController/PageController';
 import PageContent from '@/components/PageContent/PageContent';
 
 export {
@@ -96,6 +96,6 @@ export {
   PageManagerTopControlBar,
   PageCard,
   PageEditor,
-  PropertyManager,
+  PageController,
   PageContent,
 };

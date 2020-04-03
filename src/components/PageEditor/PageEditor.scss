@@ -10,13 +10,14 @@
 
   .editor-content {
     padding: 1rem;
+    padding: 0.5rem;
     flex: 1;
     display: flex;
 
     > div {
       flex-grow: 1;
       background-color: $white;
-      border: 1px solid rgba(0,0,0,0.2);
+      _border: 1px solid rgba(0,0,0,0.2);
     }
   }
 }

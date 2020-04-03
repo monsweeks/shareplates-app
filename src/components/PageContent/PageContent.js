@@ -1,21 +1,50 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Responsive, WidthProvider } from 'react-grid-layout';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import './PageContent.scss';
 
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
 class PageContent extends React.PureComponent {
+  breakpoint = 'lg';
+
   render() {
-    const { className, pageId, content } = this.props;
+    const {
+      className,
+      pageId,
+      content: { layouts, items },
+    } = this.props;
 
-    console.log(pageId, content);
-
-
+    console.log(pageId, layouts, items);
 
     return (
       <div className={`page-content-wrapper g-no-select ${className}`}>
         <div>
-          {pageId} {content}
+          <ResponsiveReactGridLayout
+            className="layout"
+            breakpoints={{ lg: 1 }}
+            cols={{ lg: 120 }}
+            rowHeight={20}
+            isResizable
+            layouts={layouts}
+            margin={[0, 0]}
+            onBreakpointChange={(newBreakpoint) => {
+              this.breakpoint = newBreakpoint;
+            }}
+            verticalCompact={false}
+            useCSSTransforms={false}
+          >
+            {items.map((item) => {
+              const l = layouts[this.breakpoint].find((d) => String(d.i) === String(item.id));
+              return (
+                <div className="page-item" key={item.id} data-grid={{ ...l }}>
+                  1111
+                </div>
+              );
+            })}
+          </ResponsiveReactGridLayout>
         </div>
       </div>
     );
@@ -25,7 +54,7 @@ class PageContent extends React.PureComponent {
 PageContent.propTypes = {
   className: PropTypes.string,
   pageId: PropTypes.number,
-  content: PropTypes.string,
+  content: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(PageContent));

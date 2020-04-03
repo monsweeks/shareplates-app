@@ -143,6 +143,31 @@ class PageManager extends React.Component {
     );
   };
 
+  updatePage = (pageId, content) => {
+    const { topicId, chapterId } = this.state;
+
+    request.put(
+      `/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}`,
+      {
+        content,
+      },
+      (data) => {
+        console.log(data);
+
+        const { pages } = this.state;
+        const next = pages.slice(0);
+        const index = next.findIndex((p) => p.id === pageId);
+        next[index] = data.page;
+
+        this.setState({
+          pages: next,
+        });
+      },
+      null,
+      true,
+    );
+  };
+
   setShowPageList = (value) => {
     this.setState({
       showPageList: value,
@@ -162,12 +187,23 @@ class PageManager extends React.Component {
     });
   };
 
+  setPageDirty = (pageId, dirty) => {
+    const { pages } = this.state;
+    const next = pages.slice(0);
+    const page = next.find((p) => p.id === pageId);
+    if (page) {
+      page.dirty = dirty;
+    }
+
+    this.setState({
+      pages: next,
+    });
+  };
+
   render() {
     const { t } = this.props;
     const { topicId, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
     const isWriter = true;
-
-    console.log(selectedPageId);
 
     return (
       <div className="page-manager-wrapper">
@@ -247,6 +283,8 @@ class PageManager extends React.Component {
             pageId={selectedPageId}
             page={pages ? pages.find((d) => d.id === selectedPageId) : {}}
             setPageContent={this.setPageContent}
+            setPageDirty={this.setPageDirty}
+            updatePage={this.updatePage}
           />
         </div>
       </div>
