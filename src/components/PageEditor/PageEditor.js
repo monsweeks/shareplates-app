@@ -59,6 +59,7 @@ class PageEditor extends React.Component {
       next.items.push({
         id,
         name,
+        options : {...setting.pageItemProps}
       });
 
       if (!next.layouts.lg) {

@@ -43,6 +43,7 @@ class PageContent extends React.PureComponent {
                 <div className="page-item" key={item.id} data-grid={{ ...l }}>
                   {React.createElement(getItem(item.name), {
                     item,
+                    editable : true,
                   })}
                 </div>
               );

@@ -47,7 +47,6 @@ import PageManagerTopControlBar from '@/components/PageManagerTopControlBar/Page
 import PageEditor from '@/components/PageEditor/PageEditor';
 import PageController from '@/components/PageController/PageController';
 import PageContent from '@/components/PageContent/PageContent';
-import withPageItem from '@/components/PageContentItems/withPageItem';
 
 
 export {
@@ -100,5 +99,4 @@ export {
   PageEditor,
   PageController,
   PageContent,
-  withPageItem,
 };

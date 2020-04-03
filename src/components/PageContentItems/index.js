@@ -4,7 +4,7 @@ import Temp from './Temp/Temp';
 const list = [Text, Temp];
 
 function getSetting(name) {
-  const item = list.find((d) => d.name === name);
+  const item = list.find((d) => d.itemName === name);
   if (item) {
     return item.setting;
   }
@@ -13,7 +13,7 @@ function getSetting(name) {
 }
 
 function getItem(name) {
-  return list.find((d) => d.name === name);
+  return list.find((d) => d.itemName === name);
 }
 
 export { Temp, Text, getSetting, getItem };
