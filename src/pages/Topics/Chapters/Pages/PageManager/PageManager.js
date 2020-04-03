@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import { Button, EmptyMessage, PageManagerTopControlBar } from '@/components';
+import { Button, EmptyMessage, PageEditor, PageManagerTopControlBar } from '@/components';
 import request from '@/utils/request';
 import './PageManager.scss';
 import PageCardLayoutList from '@/pages/Topics/Chapters/Pages/PageManager/PageCardLayoutList';
@@ -22,6 +22,7 @@ class PageManager extends React.Component {
       chapter: {},
       pages: false,
       selectedPageId: null,
+      showPageList: true,
     };
   }
 
@@ -142,81 +143,90 @@ class PageManager extends React.Component {
     );
   };
 
+  setShowPageList = (value) => {
+    this.setState({
+      showPageList: value,
+    });
+  };
+
   render() {
     const { t } = this.props;
-    const { topicId, chapterId, chapter, pages, selectedPageId } = this.state;
+    const { topicId, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
     const isWriter = true;
 
-    console.log(pages);
     return (
       <div className="page-manager-wrapper">
-        <div className="page-list-layout">
-          <PageManagerTopControlBar
-            title={chapter && chapter.title}
-            t={t}
-            buttons={[
-              <Button key="add" onClick={this.createPage} className="g-icon-button" color="white" size="sm">
-                <div>
-                  <i className="fal fa-plus" />
-                </div>
-              </Button>,
-            ]}
-          />
-          {pages.length < 1 && (
-            <EmptyMessage
-              className="h5 p-3"
-              message={
-                <div>
-                  <div className="mb-2">{t('페이지가 없습니다.')}</div>
-                  {isWriter && <div className="mb-4">{t('페이지를 추가해서 컨텐츠를 만들어보세요.')}</div>}
-                  {isWriter && (
-                    <Button onClick={this.createPage} color="primary">
-                      <i className="fal fa-plus mr-2" />
-                      페이지 추가
-                    </Button>
-                  )}
-                </div>
-              }
+        {showPageList && (
+          <div className="page-list-layout">
+            <PageManagerTopControlBar
+              title={chapter && chapter.title}
+              t={t}
+              buttons={[
+                <Button key="add" onClick={this.createPage} className="g-icon-button" color="white" size="sm">
+                  <div>
+                    <i className="fal fa-plus" />
+                  </div>
+                </Button>,
+              ]}
             />
-          )}
-          {pages !== false && pages.length > 0 && (
-            <div className="page-list">
-              <div className="scrollbar">
-                <PageCardLayoutList
-                  topicId={topicId}
-                  chapterId={chapterId}
-                  pages={pages}
-                  updatePageOrders={this.updatePageOrders}
-                  updatePageTitle={this.updatePageTitle}
-                  deletePage={this.deletePage}
-                  setPages={this.setPages}
-                  onPageClick={this.setSelectedPageId}
-                  rowHeight={120}
-                  selectedId={selectedPageId}
-                  margin={[12, 12]}
-                  gridSetting={{
-                    breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
-                    cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
-                    defaultBox: {
-                      w: 1,
-                      h: 1,
-                      minW: 1,
-                      maxW: 1,
-                      minH: 1,
-                      maxH: 1,
-                      moved: false,
-                      static: false,
-                      isDraggable: true,
-                      isResizable: false,
-                    },
-                  }}
-                  isWriter
-                />
+            {pages.length < 1 && (
+              <EmptyMessage
+                className="h5 p-3"
+                message={
+                  <div>
+                    <div className="mb-2">{t('페이지가 없습니다.')}</div>
+                    {isWriter && <div className="mb-4">{t('페이지를 추가해서 컨텐츠를 만들어보세요.')}</div>}
+                    {isWriter && (
+                      <Button onClick={this.createPage} color="primary">
+                        <i className="fal fa-plus mr-2" />
+                        페이지 추가
+                      </Button>
+                    )}
+                  </div>
+                }
+              />
+            )}
+            {pages !== false && pages.length > 0 && (
+              <div className="page-list">
+                <div className="scrollbar">
+                  <PageCardLayoutList
+                    topicId={topicId}
+                    chapterId={chapterId}
+                    pages={pages}
+                    updatePageOrders={this.updatePageOrders}
+                    updatePageTitle={this.updatePageTitle}
+                    deletePage={this.deletePage}
+                    setPages={this.setPages}
+                    onPageClick={this.setSelectedPageId}
+                    rowHeight={120}
+                    selectedId={selectedPageId}
+                    margin={[12, 12]}
+                    gridSetting={{
+                      breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
+                      cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
+                      defaultBox: {
+                        w: 1,
+                        h: 1,
+                        minW: 1,
+                        maxW: 1,
+                        minH: 1,
+                        maxH: 1,
+                        moved: false,
+                        static: false,
+                        isDraggable: true,
+                        isResizable: false,
+                      },
+                    }}
+                    isWriter
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
+        <div className="page-editor">
+          <PageEditor createPage={this.createPage} showPageList={showPageList} setShowPageList={this.setShowPageList} />
         </div>
-        <div className="page-editor" />
       </div>
     );
   }
