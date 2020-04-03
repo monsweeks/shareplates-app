@@ -152,8 +152,6 @@ class PageManager extends React.Component {
         content,
       },
       (data) => {
-        console.log(data);
-
         const { pages } = this.state;
         const next = pages.slice(0);
         const index = next.findIndex((p) => p.id === pageId);

@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { PageContent, PageController } from '@/components';
 import './PageEditor.scss';
+import { getSetting } from '@/components/PageContentItems';
 
 class PageEditor extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class PageEditor extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.pageId && props.pageId !== state.pageId) {
-      console.log(props);
       return {
         pageId: props.pageId,
         content: props.page.content
@@ -47,7 +47,9 @@ class PageEditor extends React.Component {
     setPageContent(pageId, content);
   };
 
-  addItem = (key) => {
+  addItem = (name) => {
+    const setting = getSetting(name);
+
     const { pageId, content } = this.state;
 
     const next = { ...content };
@@ -56,7 +58,7 @@ class PageEditor extends React.Component {
     if (pageId && pageId > -1) {
       next.items.push({
         id,
-        key,
+        name,
       });
 
       if (!next.layouts.lg) {
@@ -65,8 +67,8 @@ class PageEditor extends React.Component {
 
       next.layouts.lg.push({
         i: id,
-        w: 120,
-        h: 13,
+        w: setting.w,
+        h: setting.h,
         x: 0,
         y: 0,
       });

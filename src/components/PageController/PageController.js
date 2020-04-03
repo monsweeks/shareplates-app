@@ -90,7 +90,7 @@ class PageController extends React.Component {
                 <li
                   className="item"
                   onClick={() => {
-                    addItem('text');
+                    addItem('Text');
                   }}
                 >
                   <div>텍스트 상자</div>

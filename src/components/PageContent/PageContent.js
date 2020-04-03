@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+import { getItem } from '@/components/PageContentItems';
 import './PageContent.scss';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -25,7 +26,7 @@ class PageContent extends React.PureComponent {
           <ResponsiveReactGridLayout
             className="layout"
             breakpoints={{ lg: 1 }}
-            cols={{ lg: 120 }}
+            cols={{ lg: 24 }}
             rowHeight={20}
             isResizable
             layouts={layouts}
@@ -40,7 +41,9 @@ class PageContent extends React.PureComponent {
               const l = layouts[this.breakpoint].find((d) => String(d.i) === String(item.id));
               return (
                 <div className="page-item" key={item.id} data-grid={{ ...l }}>
-                  1111
+                  {React.createElement(getItem(item.name), {
+                    item,
+                  })}
                 </div>
               );
             })}
