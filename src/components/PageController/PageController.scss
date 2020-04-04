@@ -49,13 +49,31 @@
           &.item {
             padding: 0 0.75rem;
             border-bottom: 2px solid transparent;
-            margin-right: 2px;
+            margin: 0 1px;
+            border-radius: 2px;
+
+            &:first-child {
+              margin-left: 0;
+            }
+
+            &.icon {
+              padding: 0 0.25rem;
+            }
+
+            &.in-active {
+              opacity: 0.4;
+            }
+
+            &.selected {
+              background-color: $yellow;
+            }
           }
 
           &.separator {
             > div {
               width: 1px;
               height: 50%;
+              margin: 0 5px;
               background-color: $gray-600;
             }
           }

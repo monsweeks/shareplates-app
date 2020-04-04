@@ -21,12 +21,38 @@ class PageController extends React.Component {
     super(props);
     this.state = {
       selectedTab: 'insert',
+      selectedItemId: null,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!props.selectedItemId && state.selectedItemId) {
+      return {
+        selectedItemId: null,
+      };
+    }
+
+    if (props.selectedItemId && props.selectedItemId !== state.selectedItemId) {
+      return {
+        selectedItemId: props.selectedItemId,
+        selectedTab: 'home',
+      };
+    }
+
+    return null;
   }
 
   render() {
     const { t, className } = this.props;
-    const { showPageList, setShowPageList, createPage, addItem, updateContent, itemOptions } = this.props;
+    const {
+      showPageList,
+      setShowPageList,
+      createPage,
+      addItem,
+      updateContent,
+      itemOptions,
+      onChangeOption,
+    } = this.props;
     const { selectedTab } = this.state;
 
     console.log(itemOptions);
@@ -68,13 +94,64 @@ class PageController extends React.Component {
                   <div />
                 </li>
                 <li
-                  className="item"
+                  className="item icon"
                   onClick={() => {
                     setShowPageList(!showPageList);
                   }}
                 >
                   <div>
                     <i className="fal fa-window" />
+                  </div>
+                </li>
+                <li className="separator">
+                  <div />
+                </li>
+                <li
+                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
+                    itemOptions.textAlign === 'left' ? 'selected' : ''
+                  }`}
+                  onClick={() => {
+                    onChangeOption('textAlign', 'left');
+                  }}
+                >
+                  <div>
+                    <i className="fas fa-align-left" />
+                  </div>
+                </li>
+                <li
+                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
+                    itemOptions.textAlign === 'center' ? 'selected' : ''
+                  }`}
+                  onClick={() => {
+                    onChangeOption('textAlign', 'center');
+                  }}
+                >
+                  <div>
+                    <i className="fas fa-align-center" />
+                  </div>
+                </li>
+                <li
+                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
+                    itemOptions.textAlign === 'right' ? 'selected' : ''
+                  }`}
+                  onClick={() => {
+                    onChangeOption('textAlign', 'right');
+                  }}
+                >
+                  <div>
+                    <i className="fas fa-align-right" />
+                  </div>
+                </li>
+                <li
+                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
+                    itemOptions.textAlign === 'justify' ? 'selected' : ''
+                  }`}
+                  onClick={() => {
+                    onChangeOption('textAlign', 'justify');
+                  }}
+                >
+                  <div>
+                    <i className="fas fa-align-justify" />
                   </div>
                 </li>
               </ul>
@@ -128,7 +205,9 @@ PageController.propTypes = {
   createPage: PropTypes.func,
   addItem: PropTypes.func,
   updateContent: PropTypes.func,
-  itemOptions : PropTypes.objectOf(PropTypes.any)
+  itemOptions: PropTypes.objectOf(PropTypes.any),
+  onChangeOption: PropTypes.func,
+  selectedItemId: PropTypes.string,
 };
 
 export default withRouter(withTranslation()(PageController));

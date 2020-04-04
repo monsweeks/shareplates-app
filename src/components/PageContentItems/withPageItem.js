@@ -7,7 +7,6 @@ const withPageItem = () => (WrappedComponent) => {
     constructor(props) {
       super(props);
       this.state = {
-        options: { ...props.item.options },
         editable: props.editable,
       };
     }
@@ -21,8 +20,9 @@ const withPageItem = () => (WrappedComponent) => {
     };
 
     render() {
-      const { options, editable } = this.state;
+      const { editable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
+
 
       return (
         <div
@@ -31,7 +31,7 @@ const withPageItem = () => (WrappedComponent) => {
           }`}
           onClick={(e) => {
             e.stopPropagation();
-            setSelectedItem(item.id, options);
+            setSelectedItem(item.id, item.options);
           }}
         >
           <div className="grab grab-top" />
@@ -39,7 +39,7 @@ const withPageItem = () => (WrappedComponent) => {
           <div className="grab grab-bottom" />
           <div className="grab grab-left" />
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
-            <WrappedComponent style={options} {...this.props} editable={editable} />
+            <WrappedComponent style={item.options} {...this.props} editable={editable} />
           </div>
         </div>
       );

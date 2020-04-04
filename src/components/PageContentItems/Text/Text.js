@@ -29,11 +29,11 @@ Text.propTypes = {
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
 pageItemProps[withPageItem.options.verticalAlign] = 'middle';
-pageItemProps[withPageItem.options.textAlign] = 'center';
-pageItemProps[withPageItem.options.color] = 'red';
+pageItemProps[withPageItem.options.textAlign] = 'left';
+pageItemProps[withPageItem.options.color] = 'black';
 pageItemProps[withPageItem.options.fontFamily] = '';
 pageItemProps[withPageItem.options.fontSize] = '1rem';
-pageItemProps[withPageItem.options.padding] = '0';
+pageItemProps[withPageItem.options.padding] = '1rem';
 pageItemProps[withPageItem.options.backgroundColor] = 'white';
 
 Text.setting = {

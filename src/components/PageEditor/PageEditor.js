@@ -116,6 +116,26 @@ class PageEditor extends React.Component {
     });
   };
 
+  onChangeOption = (optionKey, optionValue) => {
+    const { selectedItemId, content } = this.state;
+    if (selectedItemId) {
+      const next = { ...content };
+      const item = next.items.find((i) => i.id === selectedItemId);
+      const options = { ...item.options };
+      options[optionKey] = optionValue;
+      item.options = options;
+      this.setState(
+        {
+          content: next,
+          itemOptions: options,
+        },
+        () => {
+          this.checkDirty();
+        },
+      );
+    }
+  };
+
   render() {
     const { className, setPageContent, ...last } = this.props;
     const { content, selectedItemId, itemOptions } = this.state;
@@ -128,6 +148,8 @@ class PageEditor extends React.Component {
           {...last}
           updateContent={this.updateContent}
           itemOptions={itemOptions}
+          onChangeOption={this.onChangeOption}
+          selectedItemId={selectedItemId}
         />
         <div className="editor-content">
           <PageContent

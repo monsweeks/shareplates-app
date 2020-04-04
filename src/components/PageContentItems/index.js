@@ -6,7 +6,7 @@ const list = [Text, Temp];
 function getSetting(name) {
   const item = list.find((d) => d.itemName === name);
   if (item) {
-    return item.setting;
+    return JSON.parse(JSON.stringify(item.setting));
   }
 
   return {};
