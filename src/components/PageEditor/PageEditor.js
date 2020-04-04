@@ -166,6 +166,10 @@ class PageEditor extends React.Component {
   }
 }
 
+PageEditor.defaultProps = {
+  className: '',
+};
+
 PageEditor.propTypes = {
   className: PropTypes.string,
   setPageContent: PropTypes.func,

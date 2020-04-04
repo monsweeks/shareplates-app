@@ -1,0 +1,11 @@
+.separator-wrapper {
+  display: flex;
+
+  > div {
+    width: 1px;
+    height: 50%;
+    margin: 0 5px;
+    background-color: $gray-600;
+    align-self: center;
+  }
+}

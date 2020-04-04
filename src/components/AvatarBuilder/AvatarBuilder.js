@@ -4,15 +4,15 @@ import Color from 'color';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardHeader, CircleIcon, Nav, NavItem } from '@/components';
 import {
-  forms,
-  hairs,
+  accessories,
   allColors,
   bgColors,
   clothColors,
-  faces,
   faceColors,
+  faces,
+  forms,
   hairColors,
-  accessories,
+  hairs,
 } from './avatar.js';
 
 const tabs = [
@@ -385,6 +385,10 @@ class AvatarBuilder extends React.Component {
   }
 }
 export default AvatarBuilder;
+
+AvatarBuilder.defaultProps = {
+  className: '',
+};
 
 AvatarBuilder.propTypes = {
   onChange: PropTypes.func,

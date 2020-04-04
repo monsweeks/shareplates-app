@@ -20,6 +20,10 @@ class PageManagerTopControlBar extends React.PureComponent {
   }
 }
 
+PageManagerTopControlBar.defaultProps = {
+  className: '',
+};
+
 PageManagerTopControlBar.propTypes = {
   buttons: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,

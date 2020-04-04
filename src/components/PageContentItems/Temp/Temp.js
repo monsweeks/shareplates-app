@@ -14,6 +14,10 @@ class Temp extends React.PureComponent {
   }
 }
 
+Temp.defaultProps = {
+  className: '',
+};
+
 Temp.propTypes = {
   className: PropTypes.string,
 };

@@ -46,7 +46,7 @@ class PageContent extends React.Component {
             rowHeight={20}
             isResizable
             layouts={layouts}
-            margin={[0, 1]}
+            margin={[0, 0]}
             onBreakpointChange={(newBreakpoint) => {
               this.breakpoint = newBreakpoint;
             }}
@@ -94,6 +94,10 @@ class PageContent extends React.Component {
     );
   }
 }
+
+PageContent.defaultProps = {
+  className: '',
+};
 
 PageContent.propTypes = {
   className: PropTypes.string,

@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import './PageController.scss';
 import { Button } from '@/components';
+import CheckControl from '@/components/PageController/CheckControl/CheckControl';
+import ButtonControl from '@/components/PageController/ButtonControl/ButtonControl';
+import Separator from '@/components/PageController/Separator/Separator';
+import ControllerTabs from '@/components/PageController/ControllerTabs/ControllerTabs';
 
 const tabs = [
   {
@@ -61,123 +65,88 @@ class PageController extends React.Component {
       <div className={`page-controller-wrapper g-no-select ${className}`}>
         <div className="controller-menu">
           <div className="context-menu">
-            <ul>
-              {tabs.map((tab) => {
-                return (
-                  <li
-                    onClick={() => {
-                      this.setState({
-                        selectedTab: tab.key,
-                      });
-                    }}
-                    key={tab.key}
-                    className={`item ${tab.key === selectedTab ? 'selected' : ''}`}
-                  >
-                    <div>{tab.name}</div>
-                  </li>
-                );
-              })}
-            </ul>
+            <ControllerTabs tabs={tabs} currentTab={selectedTab} onClick={(key) => {
+              this.setState({
+                selectedTab: key,
+              });
+            }} />
           </div>
           <div className="sub-menu">
             {selectedTab === 'home' && (
-              <ul>
-                <li
-                  className="item"
+              <>
+                <ButtonControl
                   onClick={() => {
                     createPage();
                   }}
                 >
-                  <div>{t('새 페이지')}</div>
-                </li>
-                <li className="separator">
-                  <div />
-                </li>
-                <li
-                  className="item icon"
+                  {t('새 페이지')}
+                </ButtonControl>
+                <Separator />
+                <ButtonControl
+                  icon
                   onClick={() => {
                     setShowPageList(!showPageList);
                   }}
                 >
-                  <div>
-                    <i className="fal fa-window" />
-                  </div>
-                </li>
-                <li className="separator">
-                  <div />
-                </li>
-                <li
-                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
-                    itemOptions.textAlign === 'left' ? 'selected' : ''
-                  }`}
-                  onClick={() => {
-                    onChangeOption('textAlign', 'left');
-                  }}
+                  <i className="fal fa-window" />
+                </ButtonControl>
+                <Separator />
+                <CheckControl
+                  optionKey="textAlign"
+                  optionValue="left"
+                  active={itemOptions.textAlign}
+                  value={itemOptions.textAlign}
+                  onClick={onChangeOption}
                 >
-                  <div>
-                    <i className="fas fa-align-left" />
-                  </div>
-                </li>
-                <li
-                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
-                    itemOptions.textAlign === 'center' ? 'selected' : ''
-                  }`}
-                  onClick={() => {
-                    onChangeOption('textAlign', 'center');
-                  }}
+                  <i className="fas fa-align-left" />
+                </CheckControl>
+                <CheckControl
+                  optionKey="textAlign"
+                  optionValue="center"
+                  active={itemOptions.textAlign}
+                  value={itemOptions.textAlign}
+                  onClick={onChangeOption}
                 >
-                  <div>
-                    <i className="fas fa-align-center" />
-                  </div>
-                </li>
-                <li
-                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
-                    itemOptions.textAlign === 'right' ? 'selected' : ''
-                  }`}
-                  onClick={() => {
-                    onChangeOption('textAlign', 'right');
-                  }}
+                  <i className="fas fa-align-center" />
+                </CheckControl>
+                <CheckControl
+                  optionKey="textAlign"
+                  optionValue="right"
+                  active={itemOptions.textAlign}
+                  value={itemOptions.textAlign}
+                  onClick={onChangeOption}
                 >
-                  <div>
-                    <i className="fas fa-align-right" />
-                  </div>
-                </li>
-                <li
-                  className={`item icon ${itemOptions.textAlign ? 'active' : 'in-active'} ${
-                    itemOptions.textAlign === 'justify' ? 'selected' : ''
-                  }`}
-                  onClick={() => {
-                    onChangeOption('textAlign', 'justify');
-                  }}
+                  <i className="fas fa-align-right" />
+                </CheckControl>
+                <CheckControl
+                  optionKey="textAlign"
+                  optionValue="justify"
+                  active={itemOptions.textAlign}
+                  value={itemOptions.textAlign}
+                  onClick={onChangeOption}
                 >
-                  <div>
-                    <i className="fas fa-align-justify" />
-                  </div>
-                </li>
-              </ul>
+                  <i className="fas fa-align-justify" />
+                </CheckControl>
+              </>
             )}
             {selectedTab === 'insert' && (
-              <ul>
-                <li
-                  className="item"
+              <>
+                <ButtonControl
                   onClick={() => {
                     createPage();
                   }}
                 >
-                  <div>새 페이지</div>
-                </li>
-                <li
-                  className="item"
+                  {t('새 페이지')}
+                </ButtonControl>
+                <Separator />
+                <ButtonControl
                   onClick={() => {
                     addItem('Text');
                   }}
                 >
-                  <div>텍스트 상자</div>
-                </li>
-                <li className="separator">
-                  <div />
-                </li>
-              </ul>
+                  {t('텍스트 상자')}
+                </ButtonControl>
+              </>
             )}
           </div>
         </div>
@@ -196,6 +165,10 @@ class PageController extends React.Component {
     );
   }
 }
+
+PageController.defaultProps = {
+  className: '',
+};
 
 PageController.propTypes = {
   t: PropTypes.func,

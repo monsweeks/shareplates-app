@@ -12,12 +12,16 @@ class Text extends React.PureComponent {
     return (
       <div className={`text-wrapper ${className} ${editable ? 'editable' : ''}`} {...item} style={style}>
         <div>
-          <div>TEXTEXT</div>
+          <div>텍스트를 입력해주세요.</div>
         </div>
       </div>
     );
   }
 }
+
+Text.defaultProps = {
+  className: '',
+};
 
 Text.propTypes = {
   className: PropTypes.string,

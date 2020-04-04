@@ -15,92 +15,19 @@
     align-self: center;
     padding: 0;
     text-align: right;
-    min-height: 23px;
-    background-color: $light;
     background-color: $white;
     display: flex;
     flex-direction: column;
 
-    > div {
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        text-align: left !important;
-        display: flex;
-        height: 23px;
-        flex-direction: row;
-        vertical-align: middle;
-        align-self: center;
-
-        li {
-          height: 100%;
-          vertical-align: middle;
-          align-self: center;
-          display: flex;
-          cursor: pointer;
-          line-height: 0;
-
-          > div {
-            vertical-align: middle;
-            align-self: center;
-          }
-
-          &.item {
-            padding: 0 0.75rem;
-            border-bottom: 2px solid transparent;
-            margin: 0 1px;
-            border-radius: 2px;
-
-            &:first-child {
-              margin-left: 0;
-            }
-
-            &.icon {
-              padding: 0 0.25rem;
-            }
-
-            &.in-active {
-              opacity: 0.4;
-            }
-
-            &.selected {
-              background-color: $yellow;
-            }
-          }
-
-          &.separator {
-            > div {
-              width: 1px;
-              height: 50%;
-              margin: 0 5px;
-              background-color: $gray-600;
-            }
-          }
-        }
-      }
-
-      &.context-menu {
-        li.item:hover {
-          background-color: $gray-300;
-        }
-
-        li.item.selected {
-          font-family: LGSmHaB;
-          border-bottom: 2px solid $primary;
-        }
-      }
-
-      &.sub-menu {
-        li.item:hover {
-          background-color: $gray-300;
-        }
-
-        li.item:active {
-          color: $primary;
-          background-color: $white;
-        }
-      }
+    .sub-menu {
+      margin-top: 2px;
+      text-align: left;
+      display: flex;
+      height: 22px;
+      flex-direction: row;
+      vertical-align: middle;
+      align-self: center;
+      width: 100%;
     }
   }
 
