@@ -8,6 +8,7 @@ import CheckControl from '@/components/PageController/CheckControl/CheckControl'
 import ButtonControl from '@/components/PageController/ButtonControl/ButtonControl';
 import Separator from '@/components/PageController/Separator/Separator';
 import ControllerTabs from '@/components/PageController/ControllerTabs/ControllerTabs';
+import SelectControl from '@/components/PageController/SelectControl/SelectControl';
 
 const tabs = [
   {
@@ -17,6 +18,45 @@ const tabs = [
   {
     key: 'insert',
     name: '삽입',
+  },
+];
+
+const fontFamilies = [
+  {
+    value: 'LGSmHaL',
+    name: 'LG스마트체(L)',
+  },
+  {
+    value: 'LGSmHaR',
+    name: 'LG스마트체(R)',
+  },
+  {
+    value: 'LGSmHaB',
+    name: 'LG스마트체(B)',
+  },
+  {
+    value: 'NanumGothic',
+    name: '나눔고딕',
+  },
+  {
+    value: 'NanumGothicCoding',
+    name: '나눔고딕코딩',
+  },
+  {
+    value: 'Righteous',
+    name: 'Righteous',
+  },
+  {
+    value: 'Baloo Bhai',
+    name: 'Baloo Bhai',
+  },
+  {
+    value: 'Baloo Bhaina',
+    name: 'Baloo Bhaina',
+  },
+  {
+    value: 'Comfortaa',
+    name: 'Comfortaa',
   },
 ];
 
@@ -65,11 +105,15 @@ class PageController extends React.Component {
       <div className={`page-controller-wrapper g-no-select ${className}`}>
         <div className="controller-menu">
           <div className="context-menu">
-            <ControllerTabs tabs={tabs} currentTab={selectedTab} onClick={(key) => {
-              this.setState({
-                selectedTab: key,
-              });
-            }} />
+            <ControllerTabs
+              tabs={tabs}
+              currentTab={selectedTab}
+              onClick={(key) => {
+                this.setState({
+                  selectedTab: key,
+                });
+              }}
+            />
           </div>
           <div className="sub-menu">
             {selectedTab === 'home' && (
@@ -127,6 +171,20 @@ class PageController extends React.Component {
                 >
                   <i className="fas fa-align-justify" />
                 </CheckControl>
+                <SelectControl
+                  min="120px"
+                  type="text"
+                  optionKey="fontFamily"
+                  list={fontFamilies}
+                  active={itemOptions.fontFamily}
+                  value={itemOptions.fontFamily}
+                  onSelect={onChangeOption}
+                >
+                  <span>
+                    {itemOptions.fontFamily &&
+                      fontFamilies.find((fontFamily) => fontFamily.value === itemOptions.fontFamily).name}
+                  </span>
+                </SelectControl>
               </>
             )}
             {selectedTab === 'insert' && (

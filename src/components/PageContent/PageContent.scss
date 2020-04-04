@@ -1,4 +1,6 @@
 .page-content-wrapper {
+  position: relative;
+  z-index: 0;
   .react-resizable-handle {
     opacity: 0;
   }
