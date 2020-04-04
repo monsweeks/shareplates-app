@@ -1,5 +1,20 @@
 .page-content-wrapper {
-  .page-item {
-    border: 1px dashed rgba(0, 0, 0, 0.2);
+  .react-resizable-handle {
+    opacity: 0;
+  }
+
+  .react-grid-item {
+    z-index: 0;
+
+    &.selected {
+      z-index: 1;
+    }
+
+    &:hover {
+      z-index: 1;
+      .react-resizable-handle {
+        opacity: 1;
+      }
+    }
   }
 }

@@ -26,7 +26,7 @@ class PageCard extends React.Component {
     }
   }
 
-  stopProgation = (e) => {
+  stopPropagation = (e) => {
     e.stopPropagation();
   };
 
@@ -59,8 +59,8 @@ class PageCard extends React.Component {
         {isWriter && (
           <div className="card-buttons">
             <Button
-              onTouchStart={this.stopProgation}
-              onMouseDown={this.stopProgation}
+              onTouchStart={this.stopPropagation}
+              onMouseDown={this.stopPropagation}
               onClick={(e) => {
                 e.stopPropagation();
                 this.setState({
@@ -77,8 +77,8 @@ class PageCard extends React.Component {
         <div className="page-card-content">
           <div
             className={`mover ${isWriter ? 'mover-on' : ''}`}
-            onTouchStart={isWriter ? null : this.stopProgation}
-            onMouseDown={isWriter ? null : this.stopProgation}
+            onTouchStart={isWriter ? null : this.stopPropagation}
+            onMouseDown={isWriter ? null : this.stopPropagation}
           >
             <span className="order-no">{page.orderNo}</span>
             {isWriter && (
@@ -89,8 +89,8 @@ class PageCard extends React.Component {
           </div>
           <div
             className="content"
-            onTouchStart={this.stopProgation}
-            onMouseDown={this.stopProgation}
+            onTouchStart={this.stopPropagation}
+            onMouseDown={this.stopPropagation}
             onClick={() => {
               if (onCardClick) {
                 onCardClick(page ? page.id : null);

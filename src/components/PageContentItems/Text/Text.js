@@ -5,13 +5,15 @@ import withPageItem from '@/components/PageContentItems/withPageItem';
 
 class Text extends React.PureComponent {
   render() {
-    const { className, item, style } = this.props;
+    const { className, item, style, editable } = this.props;
 
     console.log(item);
 
     return (
-      <div className={`text-wrapper ${className}`} {...item} style={style}>
-        <div>TEXTEXT</div>
+      <div className={`text-wrapper ${className} ${editable ? 'editable' : ''}`} {...item} style={style}>
+        <div>
+          <div>TEXTEXT</div>
+        </div>
       </div>
     );
   }
@@ -21,6 +23,7 @@ Text.propTypes = {
   className: PropTypes.string,
   item: PropTypes.objectOf(PropTypes.any),
   style: PropTypes.objectOf(PropTypes.any),
+  editable : PropTypes.bool,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅

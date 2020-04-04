@@ -1,0 +1,67 @@
+$grap-size: 8px;
+
+.page-item {
+  &:hover {
+    .with-page-item-wrapper {
+      outline: 1px dashed rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+.with-page-item-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &:hover {
+    outline: 1px dashed rgba(0, 0, 0, 0.4);
+  }
+
+  &.show-layout {
+    outline: 1px dashed rgba(0, 0, 0, 0.4);
+  }
+
+  &.selected {
+    outline: 1px solid rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .grab {
+    position: absolute;
+    &:hover {
+      cursor: move;
+    }
+  }
+
+  .grab-top {
+    height: $grap-size;
+    width: 100%;
+    top: -$grap-size;
+    left: 0;
+  }
+
+  .grab-left {
+    width: $grap-size;
+    height: 100%;
+    left: -$grap-size;
+    top: 0;
+  }
+
+  .grab-right {
+    width: $grap-size;
+    height: 100%;
+    right: -$grap-size;
+    top: 0;
+  }
+
+  .grab-bottom {
+    height: $grap-size;
+    width: 100%;
+    bottom: -$grap-size;
+    left: 0;
+  }
+
+  .anti-mover {
+    width: 100%;
+    height: 100%;
+  }
+}

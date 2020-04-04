@@ -26,8 +26,10 @@ class PageController extends React.Component {
 
   render() {
     const { t, className } = this.props;
-    const { showPageList, setShowPageList, createPage, addItem, updateContent } = this.props;
+    const { showPageList, setShowPageList, createPage, addItem, updateContent, itemOptions } = this.props;
     const { selectedTab } = this.state;
+
+    console.log(itemOptions);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -126,6 +128,7 @@ PageController.propTypes = {
   createPage: PropTypes.func,
   addItem: PropTypes.func,
   updateContent: PropTypes.func,
+  itemOptions : PropTypes.objectOf(PropTypes.any)
 };
 
 export default withRouter(withTranslation()(PageController));

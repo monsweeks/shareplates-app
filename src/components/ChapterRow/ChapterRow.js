@@ -26,7 +26,7 @@ class ChapterRow extends React.Component {
     }
   }
 
-  stopProgation = (e) => {
+  stopPropagation = (e) => {
     e.stopPropagation();
   };
 
@@ -64,7 +64,7 @@ class ChapterRow extends React.Component {
               </div>
             </div>
           )}
-          <div className="order-no" onTouchStart={this.stopProgation} onMouseDown={this.stopProgation}>
+          <div className="order-no" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
             <div>
               <span className="no-text d-none">NO</span>
               <span className="no-count">{chapter.orderNo}</span>
@@ -72,8 +72,8 @@ class ChapterRow extends React.Component {
           </div>
           <div
             className="title"
-            onTouchStart={this.stopProgation}
-            onMouseDown={this.stopProgation}
+            onTouchStart={this.stopPropagation}
+            onMouseDown={this.stopPropagation}
             onDoubleClick={(e) => {
               e.stopPropagation();
               this.setState({
@@ -103,8 +103,8 @@ class ChapterRow extends React.Component {
                   <i className="fal fa-pen-nib" />
                 </Button>
                 <Button
-                  onTouchStart={this.stopProgation}
-                  onMouseDown={this.stopProgation}
+                  onTouchStart={this.stopPropagation}
+                  onMouseDown={this.stopPropagation}
                   onClick={(e) => {
                     e.stopPropagation();
                     this.setState({
@@ -152,7 +152,7 @@ class ChapterRow extends React.Component {
             </div>
           )}
           {isEdit && (
-            <div className="inner-popup" onTouchStart={this.stopProgation} onMouseDown={this.stopProgation}>
+            <div className="inner-popup" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
               <div className="inner-popup-content">
                 <div className="chapter-name-text">{t('챕터 이름')}</div>
                 <div className="chapter-name-input">

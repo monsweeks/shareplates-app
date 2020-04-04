@@ -15,6 +15,9 @@ class PageEditor extends React.Component {
       },
       originalContent: null,
       pageId: -1,
+
+      selectedItemId: null,
+      itemOptions: {},
     };
   }
 
@@ -59,7 +62,7 @@ class PageEditor extends React.Component {
       next.items.push({
         id,
         name,
-        options : {...setting.pageItemProps}
+        options: { ...setting.pageItemProps },
       });
 
       if (!next.layouts.lg) {
@@ -91,9 +94,31 @@ class PageEditor extends React.Component {
     updatePage(pageId, JSON.stringify(content));
   };
 
+  onLayoutChange = (layout, layouts) => {
+    const { content } = this.state;
+    const next = { ...content };
+    next.layouts = layouts;
+
+    this.setState(
+      {
+        content: next,
+      },
+      () => {
+        this.checkDirty();
+      },
+    );
+  };
+
+  setSelectedItem = (selectedItemId, itemOptions) => {
+    this.setState({
+      selectedItemId,
+      itemOptions,
+    });
+  };
+
   render() {
     const { className, setPageContent, ...last } = this.props;
-    const { pageId, content } = this.state;
+    const { content, selectedItemId, itemOptions } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
@@ -102,9 +127,17 @@ class PageEditor extends React.Component {
           addItem={this.addItem}
           {...last}
           updateContent={this.updateContent}
+          itemOptions={itemOptions}
         />
         <div className="editor-content">
-          <PageContent pageId={pageId} content={content} setPageContent={this.setPageContent} />
+          <PageContent
+            content={content}
+            setPageContent={this.setPageContent}
+            onLayoutChange={this.onLayoutChange}
+            selectedItemId={selectedItemId}
+            setSelectedItem={this.setSelectedItem}
+            editable
+          />
         </div>
       </div>
     );
