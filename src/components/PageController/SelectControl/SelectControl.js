@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import './SelectControl.scss';
 
 class SelectControl extends React.Component {
+  control = React.createRef();
+
+  list = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -10,7 +14,7 @@ class SelectControl extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { active } = this.props;
     const { open } = this.state;
     if (prevProps.active && !active && open) {
@@ -19,16 +23,42 @@ class SelectControl extends React.Component {
         open: false,
       });
     }
+
+    if (!prevState.open && open) {
+      document.addEventListener('mousedown', this.onOutsideClick);
+      this.adjustScroll();
+    }
+
+    if (prevState.open && !open) {
+      document.removeEventListener('mousedown', this.onOutsideClick);
+    }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick);
+  }
+
+  onOutsideClick = (e) => {
+    if (!this.control.current.contains(e.target)) {
+      this.setState({
+        open: false,
+      });
+    }
+  };
+
+  adjustScroll = () => {
+    this.list.current.scrollTop = this.list.current.querySelector('.selected').offsetTop;
+  };
+
   render() {
-    const { className, optionKey, min, active, value, onSelect, children, type, list } = this.props;
+    const { className, optionKey, minWidth, height, active, value, onSelect, children, type, list } = this.props;
     const { open } = this.state;
 
     return (
       <div
+        ref={this.control}
         style={{
-          minWidth: min,
+          minWidth,
         }}
         className={`select-control-wrapper ${className} type-${type} ${active ? 'active' : 'in-active'} ${
           open ? 'open' : ''
@@ -41,23 +71,19 @@ class SelectControl extends React.Component {
           }
         }}
       >
-        {open && (
-          <div
-            className="bg-clicker"
-            onClick={() => {
-              this.setState({
-                open: false,
-              });
-            }}
-          />
-        )}
         <div className="select-control-content">
           <div className="select-content">{children}</div>
           <div className="bullet">
             <i className="far fa-angle-down" />
           </div>
         </div>
-        <ul className={`select-control-list scrollbar ${active && open ? 'open' : ''}`}>
+        <ul
+          ref={this.list}
+          className={`select-control-list scrollbar ${active && open ? 'open' : ''}`}
+          style={{
+            height,
+          }}
+        >
           {list.map((item) => {
             return (
               <li
@@ -90,7 +116,8 @@ SelectControl.propTypes = {
   children: PropTypes.node,
   list: PropTypes.arrayOf(PropTypes.any),
   optionKey: PropTypes.string,
-  min: PropTypes.string,
+  minWidth: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default SelectControl;

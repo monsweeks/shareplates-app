@@ -9,6 +9,7 @@ import ButtonControl from '@/components/PageController/ButtonControl/ButtonContr
 import Separator from '@/components/PageController/Separator/Separator';
 import ControllerTabs from '@/components/PageController/ControllerTabs/ControllerTabs';
 import SelectControl from '@/components/PageController/SelectControl/SelectControl';
+import { FONT_FAMILIES, FONT_SIZES } from './data';
 
 const tabs = [
   {
@@ -18,45 +19,6 @@ const tabs = [
   {
     key: 'insert',
     name: '삽입',
-  },
-];
-
-const fontFamilies = [
-  {
-    value: 'LGSmHaL',
-    name: 'LG스마트체(L)',
-  },
-  {
-    value: 'LGSmHaR',
-    name: 'LG스마트체(R)',
-  },
-  {
-    value: 'LGSmHaB',
-    name: 'LG스마트체(B)',
-  },
-  {
-    value: 'NanumGothic',
-    name: '나눔고딕',
-  },
-  {
-    value: 'NanumGothicCoding',
-    name: '나눔고딕코딩',
-  },
-  {
-    value: 'Righteous',
-    name: 'Righteous',
-  },
-  {
-    value: 'Baloo Bhai',
-    name: 'Baloo Bhai',
-  },
-  {
-    value: 'Baloo Bhaina',
-    name: 'Baloo Bhaina',
-  },
-  {
-    value: 'Comfortaa',
-    name: 'Comfortaa',
   },
 ];
 
@@ -101,6 +63,11 @@ class PageController extends React.Component {
 
     console.log(itemOptions);
 
+    const fontFamily = itemOptions.fontFamily
+      ? FONT_FAMILIES.find((info) => info.value === itemOptions.fontFamily)
+      : {};
+    const fontSize = itemOptions.fontSize ? FONT_SIZES.find((info) => info.value === itemOptions.fontSize) : {};
+
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
         <div className="controller-menu">
@@ -138,7 +105,7 @@ class PageController extends React.Component {
                 <CheckControl
                   optionKey="textAlign"
                   optionValue="left"
-                  active={itemOptions.textAlign}
+                  active={!!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -147,7 +114,7 @@ class PageController extends React.Component {
                 <CheckControl
                   optionKey="textAlign"
                   optionValue="center"
-                  active={itemOptions.textAlign}
+                  active={!!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -156,7 +123,7 @@ class PageController extends React.Component {
                 <CheckControl
                   optionKey="textAlign"
                   optionValue="right"
-                  active={itemOptions.textAlign}
+                  active={!!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -165,25 +132,35 @@ class PageController extends React.Component {
                 <CheckControl
                   optionKey="textAlign"
                   optionValue="justify"
-                  active={itemOptions.textAlign}
+                  active={!!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
                   <i className="fas fa-align-justify" />
                 </CheckControl>
                 <SelectControl
-                  min="120px"
+                  minWidth="120px"
+                  height="140px"
                   type="text"
                   optionKey="fontFamily"
-                  list={fontFamilies}
-                  active={itemOptions.fontFamily}
+                  list={FONT_FAMILIES}
+                  active={!!itemOptions.fontFamily}
                   value={itemOptions.fontFamily}
                   onSelect={onChangeOption}
                 >
-                  <span>
-                    {itemOptions.fontFamily &&
-                      fontFamilies.find((fontFamily) => fontFamily.value === itemOptions.fontFamily).name}
-                  </span>
+                  <span>{fontFamily ? fontFamily.name : itemOptions.fontFamily}</span>
+                </SelectControl>
+                <SelectControl
+                  minWidth="60px"
+                  height="140px"
+                  type="text"
+                  optionKey="fontSize"
+                  list={FONT_SIZES}
+                  active={!!itemOptions.fontSize}
+                  value={itemOptions.fontSize}
+                  onSelect={onChangeOption}
+                >
+                  <span>{fontSize ? fontSize.name : itemOptions.fontSize}</span>
                 </SelectControl>
               </>
             )}
