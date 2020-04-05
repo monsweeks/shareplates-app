@@ -15,12 +15,23 @@
     border-radius: 2px 2px 0 0;
   }
 
+  .bg-clicker {
+    position: fixed;
+    top : 0;
+    left : 0;
+    right : 0;
+    bottom : 0;
+    z-index: 0;
+  }
+
   .select-control-content {
     display: flex;
     vertical-align: middle;
     align-self: center;
     flex-direction: row;
     height: 100%;
+    position: relative;
+    z-index: 1;
 
     .select-content {
       flex: 1;
@@ -63,7 +74,7 @@
     padding: 0.25rem;
     background-color: $white;
     position: absolute;
-    top: 20px;
+    top: 21px;
     left: -1px;
     list-style: none;
     margin: 0;
@@ -72,7 +83,9 @@
     line-height: 100%;
     overflow-y: auto;
     border: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: none;
     display: none;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
 
     &.open {
       display: block;

@@ -10,6 +10,17 @@ class SelectControl extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { active } = this.props;
+    const { open } = this.state;
+    if (prevProps.active && !active && open) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        open: false,
+      });
+    }
+  }
+
   render() {
     const { className, optionKey, min, active, value, onSelect, children, type, list } = this.props;
     const { open } = this.state;
@@ -30,13 +41,23 @@ class SelectControl extends React.Component {
           }
         }}
       >
+        {open && (
+          <div
+            className="bg-clicker"
+            onClick={() => {
+              this.setState({
+                open: false,
+              });
+            }}
+          />
+        )}
         <div className="select-control-content">
           <div className="select-content">{children}</div>
           <div className="bullet">
             <i className="far fa-angle-down" />
           </div>
         </div>
-        <ul className={`select-control-list scrollbar ${open ? 'open' : ''}`}>
+        <ul className={`select-control-list scrollbar ${active && open ? 'open' : ''}`}>
           {list.map((item) => {
             return (
               <li
