@@ -51,7 +51,7 @@ class SelectControl extends React.Component {
   };
 
   render() {
-    const { className, optionKey, minWidth, height, active, value, onSelect, children, type, list } = this.props;
+    const { className, optionKey, minWidth, height, active, value, onSelect, children, list } = this.props;
     const { open } = this.state;
 
     return (
@@ -60,7 +60,7 @@ class SelectControl extends React.Component {
         style={{
           minWidth,
         }}
-        className={`select-control-wrapper ${className} type-${type} ${active ? 'active' : 'in-active'} ${
+        className={`select-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${
           open ? 'open' : ''
         }`}
         onClick={() => {
@@ -109,7 +109,6 @@ SelectControl.defaultProps = {
 
 SelectControl.propTypes = {
   className: PropTypes.string,
-  type: PropTypes.string,
   active: PropTypes.bool,
   value: PropTypes.string,
   onSelect: PropTypes.func,

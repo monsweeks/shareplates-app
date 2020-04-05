@@ -10,6 +10,7 @@ import Separator from '@/components/PageController/Separator/Separator';
 import ControllerTabs from '@/components/PageController/ControllerTabs/ControllerTabs';
 import SelectControl from '@/components/PageController/SelectControl/SelectControl';
 import { FONT_FAMILIES, FONT_SIZES } from './data';
+import ColorControl from '@/components/PageController/ColorControl/ColorControl';
 
 const tabs = [
   {
@@ -141,7 +142,6 @@ class PageController extends React.Component {
                 <SelectControl
                   minWidth="120px"
                   height="140px"
-                  type="text"
                   optionKey="fontFamily"
                   list={FONT_FAMILIES}
                   active={!!itemOptions.fontFamily}
@@ -153,7 +153,6 @@ class PageController extends React.Component {
                 <SelectControl
                   minWidth="60px"
                   height="140px"
-                  type="text"
                   optionKey="fontSize"
                   list={FONT_SIZES}
                   active={!!itemOptions.fontSize}
@@ -162,6 +161,18 @@ class PageController extends React.Component {
                 >
                   <span>{fontSize ? fontSize.name : itemOptions.fontSize}</span>
                 </SelectControl>
+                <ColorControl
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="color"
+                  active={!!itemOptions.color}
+                  value={itemOptions.color}
+                  onSelect={onChangeOption}
+                >
+                  <span className='color-border' style={{
+                    borderBottomColor : itemOptions.color
+                  }}>가</span>
+                </ColorControl>
               </>
             )}
             {selectedTab === 'insert' && (
