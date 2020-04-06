@@ -194,7 +194,7 @@ class Login extends React.PureComponent {
                     color="kakao"
                     className="g-image-button ml-1"
                     onClick={() => {
-                      this.onSocialLogin('kakao');
+                      this.onSocialLogin('KAKAO');
                     }}
                   >
                     <div>
