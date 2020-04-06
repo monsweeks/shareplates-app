@@ -6,3 +6,4 @@ webpackDevServer.config.js
 /App.test.js
 /scripts/**
 /build/**
+/src/vendor/**
