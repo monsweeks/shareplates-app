@@ -20,6 +20,9 @@ class Login extends React.PureComponent {
 
     const email = storage.getItem('login', 'email');
 
+    if(!Kakao.isInitialized())
+      Kakao.init('863525fbdd02a15ac03536bbfcf0151d');
+      
     this.state = {
       email: email || '',
       password: '',
@@ -41,7 +44,6 @@ class Login extends React.PureComponent {
         url: params.url,
       });
     }
-    Kakao.init('863525fbdd02a15ac03536bbfcf0151d');
    
   }
 
