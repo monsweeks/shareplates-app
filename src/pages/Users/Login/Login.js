@@ -106,7 +106,7 @@ class Login extends React.PureComponent {
       case 'KAKAO':  
         if( Kakao.isInitialized()){
           Kakao.Auth.login({
-            redirectUri: 'http://localhost:8080/oauth/kakao/token',
+            redirectUri: window.location.port === '3000' ? `http://${window.location.hostname}:8080/oauth/kakao/token` : 'http://mindplates.com/oauth/kakao/token',
             scope: 'account_email'
           });
         }else{
