@@ -113,14 +113,14 @@
 
   .padding-picker-div {
     position: absolute;
+    width: 348px;
     top: 21px;
-    left: -135px;
+    left: -149px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
     background-color: $white;
     display: none;
-    _width: 300px;
-    padding: 1rem;
+    padding: 1.5rem 1rem 1rem;
     text-align: center;
 
     &.open {
@@ -182,11 +182,12 @@
       }
 
       .box {
-        background-color: $gray-300;
+        background-color: $light;
         align-self: center;
         flex-grow: 1;
         border: 1px solid rgba(0, 0, 0, 0.4);
         padding: 0.75rem;
+        border-radius: 2px;
 
         > div {
           width: 100%;

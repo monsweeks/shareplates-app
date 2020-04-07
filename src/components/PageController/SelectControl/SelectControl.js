@@ -47,7 +47,9 @@ class SelectControl extends React.Component {
   };
 
   adjustScroll = () => {
-    this.list.current.scrollTop = this.list.current.querySelector('.selected').offsetTop;
+    if (this.list.current.querySelector('.selected')) {
+      this.list.current.scrollTop = this.list.current.querySelector('.selected').offsetTop;
+    }
   };
 
   render() {
