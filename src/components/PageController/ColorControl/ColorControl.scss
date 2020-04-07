@@ -1,15 +1,10 @@
-.select-control-wrapper {
+.color-control-wrapper {
   height: 100%;
   cursor: pointer;
   padding: 0;
   margin: 0 1px;
   border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
   position: relative;
-
-  &:hover {
-    border: 1px solid rgba(0, 0, 0, 0.7);
-  }
 
   &.open {
     border-radius: 2px 2px 0 0;
@@ -24,7 +19,7 @@
     z-index: 0;
   }
 
-  .select-control-content {
+  .color-control-content {
     display: flex;
     vertical-align: middle;
     align-self: center;
@@ -33,28 +28,45 @@
     position: relative;
     z-index: 1;
 
-    .select-content {
+    .color-content {
       flex: 1;
-      padding: 0 0.4rem;
+      padding: 0;
       align-self: center;
+      height: 100%;
+      display: flex;
+      text-align: center;
+
+      > span {
+        align-self: center;
+      }
+
+      &:hover {
+        background-color: $gray-300;
+      }
     }
 
     .bullet {
+      height: 100%;
       flex-grow: 0;
-      padding: 0 0.4rem;
-      vertical-align: middle;
+      padding: 0 0.125rem 0;
       align-self: center;
-      border-left: 1px solid rgba(0, 0, 0, 0.3);
       position: relative;
-
+      display: flex;
       line-height: 0;
+
+      > span {
+        align-self: center;
+      }
+
+      &:hover {
+        background-color: $gray-300;
+      }
     }
   }
 
   &.in-active {
     opacity: 0.3;
     transition: all 0.1s;
-    background-color: $gray-400;
   }
 
   &.active {

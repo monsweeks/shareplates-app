@@ -29,6 +29,7 @@ class PageController extends React.Component {
     this.state = {
       selectedTab: 'insert',
       selectedItemId: null,
+      lastColors: {},
     };
   }
 
@@ -49,6 +50,17 @@ class PageController extends React.Component {
     return null;
   }
 
+  onChangeColor = (optionKey, color) => {
+    const { onChangeOption } = this.props;
+    const { lastColors } = this.state;
+    const next = { ...lastColors };
+    next[optionKey] = color;
+    this.setState({
+      lastColors: next,
+    });
+    onChangeOption(optionKey, color);
+  };
+
   render() {
     const { t, className } = this.props;
     const {
@@ -60,7 +72,7 @@ class PageController extends React.Component {
       itemOptions,
       onChangeOption,
     } = this.props;
-    const { selectedTab } = this.state;
+    const { selectedTab, lastColors } = this.state;
 
     console.log(itemOptions);
 
@@ -151,7 +163,7 @@ class PageController extends React.Component {
                   <span>{fontFamily ? fontFamily.name : itemOptions.fontFamily}</span>
                 </SelectControl>
                 <SelectControl
-                  minWidth="60px"
+                  minWidth="64px"
                   height="140px"
                   optionKey="fontSize"
                   list={FONT_SIZES}
@@ -167,11 +179,37 @@ class PageController extends React.Component {
                   optionKey="color"
                   active={!!itemOptions.color}
                   value={itemOptions.color}
-                  onSelect={onChangeOption}
+                  onSelect={this.onChangeColor}
+                  lastColor={lastColors.color || itemOptions.color}
                 >
-                  <span className='color-border' style={{
-                    borderBottomColor : itemOptions.color
-                  }}>가</span>
+                  <span className="color-border">
+                    가
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: lastColors.color || itemOptions.color,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <ColorControl
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="backgroundColor"
+                  active={!!itemOptions.backgroundColor}
+                  value={itemOptions.backgroundColor}
+                  onSelect={this.onChangeColor}
+                  lastColor={lastColors.backgroundColor || itemOptions.backgroundColor}
+                >
+                  <span className="color-border fill-color">
+                    <i className="fal fa-fill" />
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: lastColors.backgroundColor || itemOptions.backgroundColor,
+                      }}
+                    />
+                  </span>
                 </ColorControl>
               </>
             )}

@@ -35,7 +35,27 @@
 
   .color-border {
     font-size: 12px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    padding: 0.25rem;
+    display: inline-block;
+    position: relative;
+
+    .color-bar {
+      position: absolute;
+      bottom: 4px;
+      left: 2px;
+      right: 2px;
+      height: 3px;
+      background-color: $gray-300;
+      border-radius: 2px;
+    }
+  }
+
+  .fill-color {
+    font-size: 11px;
+
+    .color-bar {
+      bottom: 3px;
+    }
   }
 
   .always-menu {

@@ -51,25 +51,51 @@ class ColorControl extends React.Component {
   };
 
   render() {
-    const { className, optionKey, colorPickerWidth, colorPickerHeight, active, value, onSelect, children } = this.props;
+    const {
+      className,
+      optionKey,
+      colorPickerWidth,
+      colorPickerHeight,
+      active,
+      value,
+      onSelect,
+      children,
+      lastColor,
+    } = this.props;
     const { open, color } = this.state;
 
     return (
       <div
         ref={this.control}
-        className={`select-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
-        onClick={() => {
-          if (active) {
-            this.setState({
-              open: !open,
-            });
-          }
-        }}
+        className={`color-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
       >
-        <div className="select-control-content">
-          <div className="select-content">{children}</div>
-          <div className="bullet">
-            <i className="far fa-angle-down" />
+        <div className="color-control-content">
+          <div
+            className="color-content"
+            onClick={() => {
+              if (active) {
+                this.setState({
+                  open: false,
+                });
+                onSelect(optionKey, lastColor);
+              }
+            }}
+          >
+            {children}
+          </div>
+          <div
+            className="bullet"
+            onClick={() => {
+              if (active) {
+                this.setState({
+                  open: !open,
+                });
+              }
+            }}
+          >
+            <span>
+              <i className="far fa-angle-down" />
+            </span>
           </div>
         </div>
         <div
@@ -113,7 +139,6 @@ class ColorControl extends React.Component {
               </Button>
             </div>
           </div>
-
           <SwatchesPicker
             className="swatches-color-picker"
             color={color}
@@ -143,6 +168,7 @@ ColorControl.propTypes = {
   optionKey: PropTypes.string,
   colorPickerWidth: PropTypes.string,
   colorPickerHeight: PropTypes.string,
+  lastColor: PropTypes.string,
 };
 
 export default ColorControl;
