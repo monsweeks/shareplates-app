@@ -133,6 +133,10 @@ class PaddingControl extends React.Component {
   };
 
   onBlur = (field, value, apply) => {
+    if (!value) {
+      return;
+    }
+
     const v = this.getValue(value, true);
     if (apply && field === 'paddingAll') {
       this.onApply(v, v, v, v);
@@ -218,6 +222,7 @@ class PaddingControl extends React.Component {
               disabled={!active}
               value={active ? paddingAll : ''}
               type="text"
+              placeholder=''
               onChange={(e) => {
                 this.onChange('paddingAll', e.target.value);
               }}
