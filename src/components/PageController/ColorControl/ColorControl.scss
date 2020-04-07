@@ -39,10 +39,6 @@
       > span {
         align-self: center;
       }
-
-      &:hover {
-        background-color: $gray-300;
-      }
     }
 
     .bullet {
@@ -57,10 +53,6 @@
       > span {
         align-self: center;
       }
-
-      &:hover {
-        background-color: $gray-300;
-      }
     }
   }
 
@@ -72,6 +64,20 @@
   &.active {
     opacity: 1;
     transition: all 0.1s;
+
+    .color-control-content {
+      .color-content {
+        &:hover {
+          background-color: $gray-300;
+        }
+      }
+
+      .bullet {
+        &:hover {
+          background-color: $gray-300;
+        }
+      }
+    }
   }
 
   &:first-child {

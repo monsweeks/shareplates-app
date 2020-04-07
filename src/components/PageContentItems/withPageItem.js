@@ -23,7 +23,6 @@ const withPageItem = () => (WrappedComponent) => {
       const { editable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
 
-
       return (
         <div
           className={`with-page-item-wrapper ${editable ? 'editable' : ''} ${selected ? 'selected' : ''} ${
@@ -49,13 +48,13 @@ const withPageItem = () => (WrappedComponent) => {
 
 // 아이템으로 처리 가능한 옵션들
 withPageItem.options = {
-  verticalAlign: 'verticalAlign',
   textAlign: 'textAlign',
-  color: 'color',
   fontFamily: 'fontFamily',
   fontSize: 'fontSize',
-  padding: 'padding',
+  color: 'color',
   backgroundColor: 'backgroundColor',
+  alignSelf: 'alignSelf',
+  padding: 'padding',
 };
 
 export default withPageItem;

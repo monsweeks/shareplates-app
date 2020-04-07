@@ -11,6 +11,7 @@ import ControllerTabs from '@/components/PageController/ControllerTabs/Controlle
 import SelectControl from '@/components/PageController/SelectControl/SelectControl';
 import { FONT_FAMILIES, FONT_SIZES } from './data';
 import ColorControl from '@/components/PageController/ColorControl/ColorControl';
+import PaddingControl from '@/components/PageController/PaddingControl/PaddingControl';
 
 const tabs = [
   {
@@ -151,6 +152,47 @@ class PageController extends React.Component {
                 >
                   <i className="fas fa-align-justify" />
                 </CheckControl>
+                <Separator />
+                <CheckControl
+                  optionKey="alignSelf"
+                  optionValue="baseline"
+                  active={!!itemOptions.alignSelf}
+                  value={itemOptions.alignSelf}
+                  onClick={onChangeOption}
+                >
+                  <span className="align-self-control baseline">
+                    <span className="line" />
+                    <span className="box-1" />
+                    <span className="box-2" />
+                  </span>
+                </CheckControl>
+                <CheckControl
+                  optionKey="alignSelf"
+                  optionValue="center"
+                  active={!!itemOptions.alignSelf}
+                  value={itemOptions.alignSelf}
+                  onClick={onChangeOption}
+                >
+                  <span className="align-self-control center">
+                    <span className="line" />
+                    <span className="box-1" />
+                    <span className="box-2" />
+                  </span>
+                </CheckControl>
+                <CheckControl
+                  optionKey="alignSelf"
+                  optionValue="flex-end"
+                  active={!!itemOptions.alignSelf}
+                  value={itemOptions.alignSelf}
+                  onClick={onChangeOption}
+                >
+                  <span className="align-self-control flex-end">
+                    <span className="line" />
+                    <span className="box-1" />
+                    <span className="box-2" />
+                  </span>
+                </CheckControl>
+                <Separator />
                 <SelectControl
                   minWidth="120px"
                   height="140px"
@@ -173,6 +215,7 @@ class PageController extends React.Component {
                 >
                   <span>{fontSize ? fontSize.name : itemOptions.fontSize}</span>
                 </SelectControl>
+                <Separator />
                 <ColorControl
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
@@ -192,6 +235,7 @@ class PageController extends React.Component {
                     />
                   </span>
                 </ColorControl>
+                <Separator />
                 <ColorControl
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
@@ -211,6 +255,13 @@ class PageController extends React.Component {
                     />
                   </span>
                 </ColorControl>
+                <Separator />
+                <PaddingControl
+                  optionKey="padding"
+                  active={!!itemOptions.padding}
+                  value={itemOptions.padding}
+                  onApply={onChangeOption}
+                />
               </>
             )}
             {selectedTab === 'insert' && (

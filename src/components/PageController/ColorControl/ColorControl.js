@@ -117,6 +117,17 @@ class ColorControl extends React.Component {
             />
             <div className="text-right p-2">
               <Button
+                className="mr-2 float-left"
+                size="sm"
+                color="white"
+                onClick={() => {
+                  onSelect(optionKey, 'transparent');
+                  this.setState({ open: false });
+                }}
+              >
+                색상 제거
+              </Button>
+              <Button
                 className="mr-2"
                 size="sm"
                 color="secondary"
