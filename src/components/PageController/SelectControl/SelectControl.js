@@ -39,7 +39,7 @@ class SelectControl extends React.Component {
   }
 
   onOutsideClick = (e) => {
-    if (!this.control.current.contains(e.target)) {
+    if (this.control.current && !this.control.current.contains(e.target)) {
       this.setState({
         open: false,
       });

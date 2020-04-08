@@ -12,6 +12,7 @@ class PageControlTab extends React.PureComponent {
         {tabs.map((item) => {
           return (
             <div
+              key={item.value}
               className={`tab-item ${item.value === tab ? 'selected' : ''}`}
               onClick={() => {
                 onChange(item.value);
@@ -32,10 +33,12 @@ PageControlTab.defaultProps = {
 
 PageControlTab.propTypes = {
   className: PropTypes.string,
-  tabs: PropTypes.arrayOf({
-    value: PropTypes.string,
-    name: PropTypes.string,
-  }),
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  ),
   tab: PropTypes.string,
   tabTitle: PropTypes.string,
   onChange: PropTypes.func,

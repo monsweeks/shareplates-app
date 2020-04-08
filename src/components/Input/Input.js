@@ -89,13 +89,15 @@ class Input extends React.Component {
           valid ? 'valid' : 'in-valid'
         } ${simple ? 'simple' : ''} ${border ? 'has-border' : ''}`}
         onClick={() => {
-          this.control.current.focus();
+          if (this.control.current) this.control.current.focus();
         }}
       >
         <div className="input-info">
           {label && <div className="label">{label}</div>}
           {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
-          {(externalValidationMessage || message) && <div className="invalid-message">{externalValidationMessage || message}</div>}
+          {(externalValidationMessage || message) && (
+            <div className="invalid-message">{externalValidationMessage || message}</div>
+          )}
         </div>
         <input
           ref={this.control}
@@ -132,8 +134,8 @@ Input.defaultProps = {
   value: '',
   required: false,
   type: 'text',
-  simple : false,
-  border : false,
+  simple: false,
+  border: false,
 };
 
 Input.propTypes = {
@@ -148,11 +150,11 @@ Input.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.string,
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
-  externalValidationMessage : PropTypes.string,
-  simple : PropTypes.bool,
-  border : PropTypes.bool,
-  onEnter : PropTypes.func,
-  onESC : PropTypes.func,
+  externalValidationMessage: PropTypes.string,
+  simple: PropTypes.bool,
+  border: PropTypes.bool,
+  onEnter: PropTypes.func,
+  onESC: PropTypes.func,
 };
 
 export default withTranslation()(Input);
