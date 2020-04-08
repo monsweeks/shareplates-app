@@ -55,6 +55,7 @@ withPageItem.options = {
   backgroundColor: 'backgroundColor',
   alignSelf: 'alignSelf',
   padding: 'padding',
+  border: 'border',
 };
 
 export default withPageItem;

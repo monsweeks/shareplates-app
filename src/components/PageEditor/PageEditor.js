@@ -38,6 +38,40 @@ class PageEditor extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown = (e) => {
+    const { content, selectedItemId } = this.state;
+    if ((e.key === 'Backspace' || e.key === 'Delete') && selectedItemId) {
+      const next = { ...content };
+
+      const itemInx = next.items.findIndex((item) => item.id === selectedItemId);
+      if (itemInx > -1) {
+        next.items.splice(itemInx, 1);
+      }
+
+      const layoutInx = next.layouts.lg.findIndex((layout) => layout.i === selectedItemId);
+      if (layoutInx > -1) {
+        next.layouts.lg.splice(layoutInx, 1);
+      }
+
+      this.setState(
+        {
+          content: next,
+        },
+        () => {
+          this.checkDirty();
+        },
+      );
+    }
+  };
+
   checkDirty = () => {
     const { pageId, setPageDirty } = this.props;
     const { content, originalContent } = this.state;

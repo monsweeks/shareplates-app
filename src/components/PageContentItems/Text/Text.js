@@ -44,6 +44,7 @@ pageItemProps[withPageItem.options.color] = '#000000';
 pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
+pageItemProps[withPageItem.options.border] = '1px solid red';
 
 Text.setting = {
   w: 120,
