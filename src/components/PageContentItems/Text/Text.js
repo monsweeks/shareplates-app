@@ -3,21 +3,129 @@ import PropTypes from 'prop-types';
 import './Text.scss';
 import withPageItem from '@/components/PageContentItems/withPageItem';
 
-class Text extends React.PureComponent {
+class Text extends React.Component {
+  control = React.createRef();
+
+  textarea = React.createRef();
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: '',
+      edit: false,
+      height: '',
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!state.edit && props.values && props.values.text) {
+      return {
+        text: props.values.text,
+        height: props.values.height,
+      };
+    }
+
+    return null;
+  }
+
+  onOutsideClick = (e) => {
+    const { onChangeValue, setEditing } = this.props;
+    const { text, height } = this.state;
+
+    onChangeValue({
+      text,
+      height,
+    });
+
+    if (this.control.current && !this.control.current.contains(e.target)) {
+      this.setState({
+        edit: false,
+      });
+      setEditing(false);
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { edit } = this.state;
+    if (!prevState.edit && edit) {
+      document.addEventListener('mousedown', this.onOutsideClick);
+    }
+
+    if (prevState.edit && !edit) {
+      document.removeEventListener('mousedown', this.onOutsideClick);
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onOutsideClick);
+  }
+
   render() {
-    const { className, item, style, editable } = this.props;
+    const { className, item, style, editable, setEditing } = this.props;
+    const { text, edit, height } = this.state;
     const { alignSelf, ...last } = style;
 
-    console.log(item);
-
     return (
-      <div className={`text-wrapper ${className} ${editable ? 'editable' : ''}`} {...item} style={last}>
+      <div
+        ref={this.control}
+        className={`text-wrapper ${className} ${editable ? 'editable' : ''}`}
+        {...item}
+        style={last}
+        onClick={() => {
+          if (editable && edit) {
+            this.setState({
+              edit: false,
+            });
+            setEditing(false);
+          }
+        }}
+      >
         <div
           style={{
             alignSelf,
           }}
         >
-          <div>텍스트를 입력해주세요.</div>
+          {edit && (
+            <textarea
+              ref={this.textarea}
+              style={{ height: `${height}px` }}
+              value={text}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onChange={(e) => {
+                if (height !== e.target.scrollHeight) {
+                  this.setState({
+                    text: e.target.value,
+                    height: e.target.scrollHeight,
+                  });
+                } else {
+                  this.setState({
+                    text: e.target.value,
+                  });
+                }
+              }}
+            />
+          )}
+          {!edit && (
+            <div
+              className="text-content"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (editable && !edit) {
+                  this.setState({
+                    edit: true,
+                  });
+                  setEditing(true);
+                  setTimeout(() => {
+                    if (this.textarea.current) this.textarea.current.focus();
+                  }, 100);
+                }
+              }}
+            >
+              {text}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -32,7 +140,10 @@ Text.propTypes = {
   className: PropTypes.string,
   item: PropTypes.objectOf(PropTypes.any),
   style: PropTypes.objectOf(PropTypes.any),
+  values: PropTypes.objectOf(PropTypes.any),
   editable: PropTypes.bool,
+  onChangeValue: PropTypes.func,
+  setEditing: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
@@ -44,12 +155,18 @@ pageItemProps[withPageItem.options.color] = '#000000';
 pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
-pageItemProps[withPageItem.options.border] = '1px solid red';
+pageItemProps[withPageItem.options.border] = 'none';
+
+// 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
+const pageItemValues = {};
+pageItemValues.text = '텍스트를 입력해주세요.';
+pageItemValues.height = '20px';
 
 Text.setting = {
   w: 120,
   h: 4,
   pageItemProps,
+  pageItemValues,
 };
 
 export default withPageItem()(Text);

@@ -26,6 +26,8 @@ class PageContent extends React.Component {
       selectedItemId,
       setSelectedItem,
       editable,
+      onChangeValue,
+      setEditing,
     } = this.props;
 
     const { dragging } = this.state;
@@ -84,6 +86,8 @@ class PageContent extends React.Component {
                     selected,
                     setSelectedItem,
                     showLayout: dragging,
+                    onChangeValue,
+                    setEditing,
                   })}
                 </div>
               );
@@ -105,7 +109,9 @@ PageContent.propTypes = {
   onLayoutChange: PropTypes.func,
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
+  onChangeValue : PropTypes.func,
   editable: PropTypes.bool,
+  setEditing : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

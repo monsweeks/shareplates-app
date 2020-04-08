@@ -38,7 +38,7 @@ const withPageItem = () => (WrappedComponent) => {
           <div className="grab grab-bottom" />
           <div className="grab grab-left" />
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
-            <WrappedComponent style={item.options} {...this.props} editable={editable} />
+            <WrappedComponent style={item.options} values={item.values} {...this.props} editable={editable} />
           </div>
         </div>
       );

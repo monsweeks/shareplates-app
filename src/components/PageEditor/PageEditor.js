@@ -15,9 +15,9 @@ class PageEditor extends React.Component {
       },
       originalContent: null,
       pageId: -1,
-
       selectedItemId: null,
       itemOptions: {},
+      editing: false,
     };
   }
 
@@ -47,8 +47,8 @@ class PageEditor extends React.Component {
   }
 
   onKeyDown = (e) => {
-    const { content, selectedItemId } = this.state;
-    if ((e.key === 'Backspace' || e.key === 'Delete') && selectedItemId) {
+    const { content, selectedItemId, editing } = this.state;
+    if (!editing && (e.key === 'Backspace' || e.key === 'Delete') && selectedItemId) {
       const next = { ...content };
 
       const itemInx = next.items.findIndex((item) => item.id === selectedItemId);
@@ -97,6 +97,7 @@ class PageEditor extends React.Component {
         id,
         name,
         options: { ...setting.pageItemProps },
+        values: { ...setting.pageItemValues },
       });
 
       if (!next.layouts.lg) {
@@ -170,9 +171,38 @@ class PageEditor extends React.Component {
     }
   };
 
+  onChangeValue = (obj) => {
+    const { selectedItemId, content } = this.state;
+    if (selectedItemId) {
+      const next = { ...content };
+      const item = next.items.find((i) => i.id === selectedItemId);
+      const values = { ...item.values };
+
+      Object.keys(obj).forEach((key) => {
+        values[key] = obj[key];
+      });
+
+      item.values = values;
+      this.setState(
+        {
+          content: next,
+        },
+        () => {
+          this.checkDirty();
+        },
+      );
+    }
+  };
+
+  setEditing = (editing) => {
+    this.setState({
+      editing,
+    });
+  };
+
   render() {
     const { className, setPageContent, ...last } = this.props;
-    const { content, selectedItemId, itemOptions } = this.state;
+    const { content, selectedItemId, itemOptions, editing } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
@@ -192,7 +222,10 @@ class PageEditor extends React.Component {
             onLayoutChange={this.onLayoutChange}
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
+            onChangeValue={this.onChangeValue}
             editable
+            editing={editing}
+            setEditing={this.setEditing}
           />
         </div>
       </div>
