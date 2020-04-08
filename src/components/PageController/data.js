@@ -51,4 +51,12 @@ for (let i = 26; i <= 60; i += 2) {
   });
 }
 
-export { FONT_FAMILIES, FONT_SIZES };
+const BORDER_WIDTHS = [];
+for (let i = 0; i <= 20; i += 1) {
+  BORDER_WIDTHS.push({
+    value: `${i}px`,
+    name: `${i}px`,
+  });
+}
+
+export { FONT_FAMILIES, FONT_SIZES, BORDER_WIDTHS };

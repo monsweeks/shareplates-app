@@ -12,6 +12,7 @@ import SelectControl from '@/components/PageController/SelectControl/SelectContr
 import { FONT_FAMILIES, FONT_SIZES } from './data';
 import ColorControl from '@/components/PageController/ColorControl/ColorControl';
 import PaddingControl from '@/components/PageController/PaddingControl/PaddingControl';
+import BorderControl from '@/components/BorderControl/BorderControl';
 
 const tabs = [
   {
@@ -30,7 +31,7 @@ class PageController extends React.Component {
     this.state = {
       selectedTab: 'insert',
       selectedItemId: null,
-      lastColors: {},
+      lastProperties: {},
     };
   }
 
@@ -51,15 +52,27 @@ class PageController extends React.Component {
     return null;
   }
 
-  onChangeColor = (optionKey, color) => {
+  onMemoryAndChangeOption = (optionKey, color) => {
     const { onChangeOption } = this.props;
-    const { lastColors } = this.state;
-    const next = { ...lastColors };
+    const { lastProperties } = this.state;
+    const next = { ...lastProperties };
     next[optionKey] = color;
     this.setState({
-      lastColors: next,
+      lastProperties: next,
     });
     onChangeOption(optionKey, color);
+  };
+
+  getBorderColor = (value, defaultColor) => {
+    if (!value || value === 'none') {
+      return defaultColor;
+    }
+
+    const items = value.split(' ');
+    if (items.length === 3) {
+      return items[2];
+    }
+    return defaultColor;
   };
 
   render() {
@@ -73,7 +86,7 @@ class PageController extends React.Component {
       itemOptions,
       onChangeOption,
     } = this.props;
-    const { selectedTab, lastColors } = this.state;
+    const { selectedTab, lastProperties } = this.state;
 
     console.log(itemOptions);
 
@@ -222,15 +235,15 @@ class PageController extends React.Component {
                   optionKey="color"
                   active={!!itemOptions.color}
                   value={itemOptions.color}
-                  onSelect={this.onChangeColor}
-                  lastColor={lastColors.color || itemOptions.color}
+                  onSelect={this.onMemoryAndChangeOption}
+                  lastColor={lastProperties.color || itemOptions.color}
                 >
                   <span className="color-border">
                     가
                     <span
                       className="color-bar"
                       style={{
-                        backgroundColor: lastColors.color || itemOptions.color,
+                        backgroundColor: lastProperties.color || itemOptions.color,
                       }}
                     />
                   </span>
@@ -242,15 +255,15 @@ class PageController extends React.Component {
                   optionKey="backgroundColor"
                   active={!!itemOptions.backgroundColor}
                   value={itemOptions.backgroundColor}
-                  onSelect={this.onChangeColor}
-                  lastColor={lastColors.backgroundColor || itemOptions.backgroundColor}
+                  onSelect={this.onMemoryAndChangeOption}
+                  lastColor={lastProperties.backgroundColor || itemOptions.backgroundColor}
                 >
                   <span className="color-border fill-color">
                     <i className="fal fa-fill" />
                     <span
                       className="color-bar"
                       style={{
-                        backgroundColor: lastColors.backgroundColor || itemOptions.backgroundColor,
+                        backgroundColor: lastProperties.backgroundColor || itemOptions.backgroundColor,
                       }}
                     />
                   </span>
@@ -262,6 +275,28 @@ class PageController extends React.Component {
                   value={itemOptions.padding}
                   onApply={onChangeOption}
                 />
+                <Separator />
+                <BorderControl
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="border"
+                  active={!!itemOptions.border}
+                  value={itemOptions.border}
+                  onSelect={this.onMemoryAndChangeOption}
+                  lastValue={lastProperties.border || itemOptions.border}
+                >
+                  <span className="current-border">
+                    <span
+                      className="rect"
+                      style={{
+                        borderColor: this.getBorderColor(
+                          lastProperties.border || itemOptions.border,
+                          'rgba(0,0,0,0.4)',
+                        ),
+                      }}
+                    />
+                  </span>
+                </BorderControl>
               </>
             )}
             {selectedTab === 'insert' && (

@@ -58,6 +58,18 @@
     }
   }
 
+  .current-border {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    .rect {
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(0,0,0,0.4);
+      display: inline-block;
+    }
+  }
+
   .align-self-control {
     position: relative;
     width: 11px;
@@ -79,7 +91,7 @@
       height: 9px;
       border: 1px solid #777;
       position: absolute;
-      background-color: rgba(0,0,0,0.3);
+      background-color: rgba(0, 0, 0, 0.3);
     }
 
     .box-2 {
@@ -88,7 +100,7 @@
       height: 7px;
       border: 1px solid #777;
       position: absolute;
-      background-color: rgba(0,0,0,0.3);
+      background-color: rgba(0, 0, 0, 0.3);
     }
 
     &.baseline {
