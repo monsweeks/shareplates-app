@@ -88,8 +88,6 @@ class PageController extends React.Component {
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
 
-    console.log(itemOptions);
-
     const fontFamily = itemOptions.fontFamily
       ? FONT_FAMILIES.find((info) => info.value === itemOptions.fontFamily)
       : {};

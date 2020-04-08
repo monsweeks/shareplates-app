@@ -111,8 +111,6 @@ class BorderControl extends React.Component {
     } = this.props;
     const { open, borderWidth, borderStyle, borderColor, tab } = this.state;
 
-    console.log(borderWidth, borderStyle, borderColor);
-
     return (
       <div
         ref={this.control}
