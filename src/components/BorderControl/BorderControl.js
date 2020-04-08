@@ -1,11 +1,22 @@
 import React from 'react';
+import { MaterialPicker, SwatchesPicker } from 'react-color';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { MaterialPicker, SwatchesPicker } from 'react-color';
 import SelectControl from '@/components/PageController/SelectControl/SelectControl';
 import { BORDER_WIDTHS } from '@/components/PageController/data';
-import { Button } from '@/components';
+import { Button, PageControlTab } from '@/components';
 import './BorderControl.scss';
+
+const tabs = [
+  {
+    value: 'list',
+    name: '리스트',
+  },
+  {
+    value: 'custom',
+    name: '입력',
+  },
+];
 
 class BorderControl extends React.Component {
   control = React.createRef();
@@ -255,29 +266,16 @@ class BorderControl extends React.Component {
               <div className="style-item style-double" />
             </Button>
           </div>
-          <div className="tabs">
-            <div className="sub-title">{t('색상')}</div>
-            <div
-              className={`tab-item ${tab === 'list' ? 'selected' : ''}`}
-              onClick={() => {
-                this.setState({
-                  tab: 'list',
-                });
-              }}
-            >
-              {t('리스트')}
-            </div>
-            <div
-              className={`tab-item ${tab === 'custom' ? 'selected' : ''}`}
-              onClick={() => {
-                this.setState({
-                  tab: 'custom',
-                });
-              }}
-            >
-              {t('입력')}
-            </div>
-          </div>
+          <PageControlTab
+            tabTitle={t('색상')}
+            tabs={tabs}
+            tab={tab}
+            onChange={(v) => {
+              this.setState({
+                tab: v,
+              });
+            }}
+          />
           <div className="color-picker-content">
             {tab === 'list' && (
               <SwatchesPicker
