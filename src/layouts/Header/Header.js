@@ -60,7 +60,7 @@ class Header extends React.Component {
           icon: 'fal fa-building',
           text: 'label.org',
           to: '/groups',
-          side: 'right',
+          side: 'left',
           alias: '/groups',
         },
       ],
