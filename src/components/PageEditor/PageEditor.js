@@ -10,7 +10,9 @@ class PageEditor extends React.Component {
     super(props);
     this.state = {
       content: {
-        layouts: {},
+        layouts: {
+          lg: [],
+        },
         items: [],
       },
       originalContent: null,
@@ -23,15 +25,19 @@ class PageEditor extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.pageId && props.pageId !== state.pageId) {
+      const content = props.page.content
+        ? JSON.parse(props.page.content)
+        : {
+            layouts: {
+              lg: [],
+            },
+            items: [],
+          };
+
       return {
         pageId: props.pageId,
-        content: props.page.content
-          ? JSON.parse(props.page.content)
-          : {
-              layouts: {},
-              items: [],
-            },
-        originalContent: props.page.content,
+        content,
+        originalContent: JSON.stringify(content),
       };
     }
 

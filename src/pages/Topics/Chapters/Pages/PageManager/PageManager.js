@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage, PageEditor, PageManagerTopControlBar } from '@/components';
 import request from '@/utils/request';
 import './PageManager.scss';
 import PageCardLayoutList from '@/pages/Topics/Chapters/Pages/PageManager/PageCardLayoutList';
+import { setConfirm } from '@/actions';
 
 class PageManager extends React.Component {
   constructor(props) {
@@ -95,9 +97,28 @@ class PageManager extends React.Component {
   };
 
   setSelectedPageId = (selectedPageId) => {
-    this.setState({
-      selectedPageId,
-    });
+    const { setConfirm: setConfirmReducer } = this.props;
+    const { selectedPageId: currentSelectedPageId, pages } = this.state;
+
+    if (currentSelectedPageId === selectedPageId) {
+      return;
+    }
+
+    const next = pages.slice(0);
+    const page = next.find((p) => p.id === currentSelectedPageId);
+    if (page && page.dirty) {
+      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지로 이동하시겠습니까?', () => {
+        page.dirty = false;
+        this.setState({
+          selectedPageId,
+          pages: next,
+        });
+      });
+    } else {
+      this.setState({
+        selectedPageId,
+      });
+    }
   };
 
   updatePageTitle = (pageId, title) => {
@@ -290,6 +311,12 @@ class PageManager extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
+  };
+};
+
 PageManager.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -301,6 +328,7 @@ PageManager.propTypes = {
       chapterId: PropTypes.string,
     }),
   }),
+  setConfirm: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(PageManager));
+export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(PageManager)));
