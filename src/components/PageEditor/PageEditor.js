@@ -52,6 +52,13 @@ class PageEditor extends React.Component {
     document.removeEventListener('keydown', this.onKeyDown);
   }
 
+  componentDidUpdate(prevProps) {
+    const { showPageList } = this.props;
+    if (showPageList !== prevProps.showPageList) {
+      window.dispatchEvent(new Event('resize'));
+    }
+  }
+
   onKeyDown = (e) => {
     const { content, selectedItemId, editing } = this.state;
     if (!editing && (e.key === 'Backspace' || e.key === 'Delete') && selectedItemId) {
@@ -253,6 +260,7 @@ PageEditor.propTypes = {
   }),
   setPageDirty: PropTypes.func,
   updatePage: PropTypes.func,
+  showPageList : PropTypes.bool,
 };
 
 export default withRouter(PageEditor);
