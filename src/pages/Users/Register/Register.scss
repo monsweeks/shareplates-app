@@ -1,0 +1,21 @@
+.join-wrapper {
+  @media (max-width: 576px) {
+    margin: 20px !important;
+    margin: 0px !important;
+    width: calc(100% - 40px) !important;
+    width: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    @media (max-height: 740px) {
+      margin: 20px !important;
+      margin: 0px !important;
+      width: calc(100% - 40px) !important;
+      width: 100% !important;
+      position: static;
+    }
+  }
+}

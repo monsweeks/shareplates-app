@@ -79,6 +79,7 @@ class Input extends React.Component {
       simple,
       onEnter,
       onESC,
+      disabled,
       ...last
     } = this.props;
     const { focus, valid, message } = this.state;
@@ -87,7 +88,7 @@ class Input extends React.Component {
       <div
         className={`input-wrapper text-${color} ${className} ${focus ? 'focus' : ''} ${value ? 'has-value' : ''} ${
           valid ? 'valid' : 'in-valid'
-        } ${simple ? 'simple' : ''} ${border ? 'has-border' : ''}`}
+        } ${simple ? 'simple' : ''} ${border ? 'has-border' : ''} ${disabled ? 'disabled' : ''}`}
         onClick={() => {
           if (this.control.current) this.control.current.focus();
         }}
@@ -103,6 +104,7 @@ class Input extends React.Component {
           ref={this.control}
           type={type}
           className={componentClassName}
+          disabled={disabled}
           {...last}
           onFocus={() => {
             this.setFocus(true);
@@ -155,6 +157,7 @@ Input.propTypes = {
   border: PropTypes.bool,
   onEnter: PropTypes.func,
   onESC: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default withTranslation()(Input);

@@ -13,6 +13,7 @@ import './Common.scss';
 const UNAUTH_URLS = {
   '/': true,
   '/topics': true,
+  '/users/register': true,
   '/users/login': true,
   '/users/join': true,
   '/about/terms-and-conditions': true,
