@@ -15,6 +15,7 @@ module.exports = {
         'react/no-array-index-key': 0,
         'react/jsx-props-no-spreading': 0,
         'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
+        'react/sort-comp': 0,
         semi: ['error', 'always'],
         quotes: ['error', 'single'],
         'jsx-a11y/label-has-for': 'off',

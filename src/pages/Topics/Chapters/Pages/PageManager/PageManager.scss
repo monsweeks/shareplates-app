@@ -6,12 +6,14 @@
   .page-list-layout {
     width: 240px;
     flex-grow: 0;
-    background-color: red;
     display: flex;
     flex-direction: column;
+    background-color: $gray-200;
+
 
     .page-list{
       background-color: $white;
+      background-color: $gray-200;
       flex-grow: 1;
       position: relative;
 

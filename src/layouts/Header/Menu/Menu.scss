@@ -7,12 +7,15 @@
   }
   .menu-item {
     color: $white !important;
-    min-width: 65px;
+    min-width: 60px;
     height: 100%;
-    margin: 0 5px 0 0;
     position: relative;
     padding: 0;
     text-align: center;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
 
     .split-arrow {
       background: $white;
@@ -26,13 +29,13 @@
     }
 
     &.split {
-      margin-right: 1.5rem;
+      padding: 0 1.25rem;
     }
 
     .share-badge-count {
       position: absolute;
       top: 6px;
-      right: 4px;
+      right: 12px;
       width: 18px;
       height: 18px;
       background-color: $yellow;
@@ -45,15 +48,21 @@
 
     .icon {
       text-align: center;
-      font-size: 13px;
+      font-size: 10px;
       position: absolute;
-      top: 11px;
+      top: 8px;
       left: 0;
       width: 100%;
       color: $white !important;
 
       > span {
         display: inline-block;
+        width: 18px;
+        height: 18px;
+        padding-top: 2px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        opacity: 1;
       }
     }
 
@@ -61,7 +70,7 @@
       width: 100%;
       text-align: center;
       position: relative;
-      margin-top: 25px;
+      margin-top: 21px;
       color: $white !important;
 
       > span {

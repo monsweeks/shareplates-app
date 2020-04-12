@@ -74,13 +74,15 @@ class TextArea extends React.Component {
           valid ? 'valid' : 'in-valid'
         } ${simple ? 'simple' : ''}`}
         onClick={() => {
-          this.control.current.focus();
+          if (this.control.current) this.control.current.focus();
         }}
       >
         <div className="input-info">
           {label && <div className="label">{label}</div>}
           {placeholderMessage && <div className="placeholder-message">{placeholderMessage}</div>}
-          {(externalValidationMessage || message) && <div className="invalid-message">{externalValidationMessage || message}</div>}
+          {(externalValidationMessage || message) && (
+            <div className="invalid-message">{externalValidationMessage || message}</div>
+          )}
         </div>
         <textarea
           ref={this.control}
@@ -98,8 +100,10 @@ class TextArea extends React.Component {
             this.setValid(this.control.current.validity);
           }}
           value={value}
-          required={required}>
-          {value}</textarea>
+          required={required}
+        >
+          {value}
+        </textarea>
         <div className="liner" />
       </div>
     );
@@ -116,7 +120,7 @@ TextArea.defaultProps = {
   value: '',
   required: false,
   type: 'text',
-  simple : false,
+  simple: false,
 };
 
 TextArea.propTypes = {
@@ -131,8 +135,8 @@ TextArea.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.string,
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
-  externalValidationMessage : PropTypes.string,
-  simple : PropTypes.bool,
+  externalValidationMessage: PropTypes.string,
+  simple: PropTypes.bool,
 };
 
 export default withTranslation()(TextArea);

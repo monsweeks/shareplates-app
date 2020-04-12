@@ -17,6 +17,7 @@ import GrpForm from './Grps/GrpForm/GrpForm';
 import EditGrp from './Grps/EditGrp/EditGrp';
 import Grp from './Grps/Grp/Grp';
 import UnderConstruction from './Etcs/UnderConstruction/UnderConstruction';
+import Register from './Users/Register/Register';
 
 export {
   Common,
@@ -38,4 +39,5 @@ export {
   EditGrp,
   Grp,
   UnderConstruction,
+  Register,
 };

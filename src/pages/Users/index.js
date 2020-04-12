@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Join, JoinSuccess, Login, EditMyInfo, NoMatch } from 'pages';
+import { Join, JoinSuccess, Login, EditMyInfo, Register, NoMatch } from 'pages';
 
 
 function Users() {
   return (
     <Switch>
+      <Route exact path="/users/register" component={Register} />
       <Route exact path="/users/join" component={Join} />
       <Route exact path="/users/join/success" component={JoinSuccess} />
       <Route exact path="/users/login" component={Login} />

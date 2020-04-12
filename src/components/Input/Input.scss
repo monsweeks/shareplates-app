@@ -138,6 +138,14 @@
         }
       }
     }
+
+    &.disabled {
+      &:hover {
+        .liner {
+          width: 0 !important;
+        }
+      }
+    }
   }
 
   &.simple {

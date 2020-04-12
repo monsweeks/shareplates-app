@@ -1,0 +1,200 @@
+.padding-control-wrapper {
+  height: 100%;
+  padding: 0;
+  margin: 0 1px;
+  border-radius: 2px;
+  position: relative;
+
+  input {
+    width: 50px;
+    font-size: 12px;
+    padding: 0.25rem;
+    font-family: LGSmHaL;
+    text-align: center;
+    line-height: 0;
+    outline: none;
+    border: 1px solid $primary;
+    border-radius: 2px;
+
+    &.direct-input {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      padding: 0;
+      line-height: 0;
+      font-size: 0.75rem;
+    }
+  }
+
+  &.open {
+    border-radius: 2px 2px 0 0;
+  }
+
+  .bg-clicker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+
+  .padding-control-content {
+    display: flex;
+    vertical-align: middle;
+    align-self: center;
+    flex-direction: row;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+
+    .padding-content {
+      flex: 1;
+      padding: 0;
+      align-self: center;
+      height: 100%;
+      display: flex;
+      text-align: center;
+
+      > span {
+        align-self: center;
+      }
+
+      &:hover {
+        background-color: $gray-300;
+      }
+    }
+
+    .bullet {
+      height: 100%;
+      flex-grow: 0;
+      padding: 0 0.25rem 0;
+      align-self: center;
+      position: relative;
+      display: flex;
+      line-height: 0;
+
+      > span {
+        align-self: center;
+      }
+    }
+  }
+
+  &.in-active {
+    opacity: 0.3;
+    transition: all 0.1s;
+  }
+
+  &.active {
+    opacity: 1;
+    transition: all 0.1s;
+
+    .direct-input {
+      &:hover {
+        border: 1px solid rgba(0, 0, 0, 0.7);
+      }
+
+      &:focus {
+        border: 1px solid rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .padding-control-content {
+      .bullet {
+        cursor: pointer;
+        &:hover {
+          background-color: $gray-300;
+        }
+      }
+    }
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  .padding-picker-div {
+    position: absolute;
+    width: 348px;
+    top: 21px;
+    left: -149px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
+    background-color: $white;
+    display: none;
+    padding: 1.5rem 1rem 1rem;
+    text-align: center;
+
+    &.open {
+      display: block;
+    }
+
+    .minus-btn,
+    .plus-btn {
+      display: inline-block;
+      height: 15px;
+      width: 15px;
+      font-size: 10px;
+      background-color: $primary;
+      border-radius: 50%;
+      color: $white;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .minus-btn {
+      margin-right: 4px;
+    }
+
+    .plus-btn {
+      margin-left: 4px;
+    }
+
+    .top {
+      margin-bottom: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .bottom {
+      margin-top: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .center {
+      display: flex;
+      flex-direction: row;
+
+      .left,
+      .right {
+        flex-grow: 0;
+        align-self: center;
+        white-space: nowrap;
+      }
+
+      .left {
+        padding-right: 0.75rem;
+      }
+
+      .right {
+        padding-left: 0.75rem;
+      }
+
+      .all {
+        white-space: nowrap;
+      }
+
+      .box {
+        background-color: $light;
+        align-self: center;
+        flex-grow: 1;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        padding: 0.75rem;
+        border-radius: 2px;
+
+        > div {
+          width: 100%;
+          height: 100%;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ class ChapterCard extends React.Component {
     }
   }
 
-  stopProgation = (e) => {
+  stopPropagation = (e) => {
     e.stopPropagation();
   };
 
@@ -59,8 +59,8 @@ class ChapterCard extends React.Component {
         {isWriter && (
           <div className="card-buttons">
             <Button
-              onTouchStart={this.stopProgation}
-              onMouseDown={this.stopProgation}
+              onTouchStart={this.stopPropagation}
+              onMouseDown={this.stopPropagation}
               onClick={(e) => {
                 e.stopPropagation();
                 this.setState({
@@ -76,8 +76,8 @@ class ChapterCard extends React.Component {
         <div className="chapter-card-content">
           <div
             className={`mover ${isWriter ? 'mover-on' : ''}`}
-            onTouchStart={isWriter ? null : this.stopProgation}
-            onMouseDown={isWriter ? null : this.stopProgation}
+            onTouchStart={isWriter ? null : this.stopPropagation}
+            onMouseDown={isWriter ? null : this.stopPropagation}
           >
             <span className="order-no">
               <span className="no-text">NO</span>
@@ -92,8 +92,8 @@ class ChapterCard extends React.Component {
 
           <div
             className="content"
-            onTouchStart={this.stopProgation}
-            onMouseDown={this.stopProgation}
+            onTouchStart={this.stopPropagation}
+            onMouseDown={this.stopPropagation}
             onClick={() => {
               if (onCardClick) {
                 onCardClick(chapter ? chapter.id : null);

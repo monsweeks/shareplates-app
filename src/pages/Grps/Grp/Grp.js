@@ -43,7 +43,6 @@ class Grp extends Component {
       `/api/groups/${grpId}`,
       null,
       (grp) => {
-        console.log(grp);
         this.setState({
           grp,
         });

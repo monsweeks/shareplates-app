@@ -41,7 +41,10 @@
     > div.right-menu-area,
     > div.left-menu-area {
       height: 100%;
-      margin-left: 13px;
+
+      @media (max-width: 768px) {
+        margin-left: 16px;
+      }
     }
 
     > div.shortcut-area {

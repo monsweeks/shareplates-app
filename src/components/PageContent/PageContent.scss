@@ -1,0 +1,22 @@
+.page-content-wrapper {
+  position: relative;
+  z-index: 0;
+  .react-resizable-handle {
+    opacity: 0;
+  }
+
+  .react-grid-item {
+    z-index: 0;
+
+    &.selected {
+      z-index: 1;
+    }
+
+    &:hover {
+      z-index: 1;
+      .react-resizable-handle {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -12,6 +12,7 @@ import siteImage from '@/images/sites';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { CenterBoxLayout } from '@/layouts';
 import './Join.scss';
+import socialLogin from '@/pages/Users/util';
 
 class Join extends Component {
   constructor(props) {
@@ -77,13 +78,15 @@ class Join extends Component {
     });
   };
 
-  onSocialLogin = () => {
+  onSocialLogin = (vendor) => {
     const { t, addMessage: addMessageReducer } = this.props;
-    addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+    socialLogin(vendor, () => {
+      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+    });
   };
 
   render() {
-    const { t, addMessage: addMessageReducer } = this.props;
+    const { t } = this.props;
     const { user, existEmail } = this.state;
 
     return (
@@ -157,7 +160,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={siteImage.kakao} alt="KAKAO" />
+                      <img src={siteImage.kakao} alt="kakao" />
                     </div>
                   </Button>
                   <Button
@@ -168,7 +171,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={siteImage.naver} alt="NAVER" />
+                      <img src={siteImage.naver} alt="naver" />
                     </div>
                   </Button>
                   <Button
@@ -179,7 +182,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={siteImage.google} alt="GOOGLE" />
+                      <img src={siteImage.google} alt="google" />
                     </div>
                   </Button>
                   <Button
@@ -190,7 +193,7 @@ class Join extends Component {
                     }}
                   >
                     <div>
-                      <img src={siteImage.facebook} alt="FACEBOOK" />
+                      <img src={siteImage.facebook} alt="facebook" />
                     </div>
                   </Button>
                 </div>
@@ -203,7 +206,7 @@ class Join extends Component {
                 color="facebook"
                 className="g-image-text-button mb-2 mb-lg-0 ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('facebook');
                 }}
               >
                 <div>
@@ -217,12 +220,12 @@ class Join extends Component {
                 color="google"
                 className="g-image-text-button ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('google');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.google} alt="GOOGLE" />
+                    <img src={siteImage.google} alt="google" />
                   </span>
                   <span>{t('label.googleLogin')}</span>
                 </div>
@@ -233,12 +236,12 @@ class Join extends Component {
                 color="naver"
                 className="mb-2 mb-lg-0 g-image-text-button ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('naver');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.naver} alt="NAVER" />
+                    <img src={siteImage.naver} alt="naver" />
                   </span>
                   <span>{t('label.naverLogin')}</span>
                 </div>
@@ -247,12 +250,12 @@ class Join extends Component {
                 color="kakao"
                 className="g-image-text-button ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('kakao');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.kakao} alt="KAKAO" />
+                    <img src={siteImage.kakao} alt="kakao" />
                   </span>
                   <span>{t('label.kakaoLogin')}</span>
                 </div>

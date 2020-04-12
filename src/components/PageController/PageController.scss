@@ -1,0 +1,158 @@
+.page-controller-wrapper {
+  flex: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  display: flex;
+  text-align: left;
+  font-size: 0.75rem;
+  background-color: $white;
+  padding: 2px 0.5rem 2px 2px;
+  z-index: 1;
+  position: relative;
+
+  .controller-menu {
+    flex-grow: 1;
+    align-self: center;
+    padding: 0;
+    text-align: right;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+
+    .sub-menu {
+      margin-top: 2px;
+      text-align: left;
+      display: flex;
+      height: 22px;
+      flex-direction: row;
+      vertical-align: middle;
+      align-self: center;
+      width: 100%;
+    }
+  }
+
+  .color-border {
+    font-size: 12px;
+    padding: 0.25rem;
+    display: inline-block;
+    position: relative;
+
+    .color-bar {
+      position: absolute;
+      bottom: 4px;
+      left: 2px;
+      right: 2px;
+      height: 3px;
+      background-color: $gray-300;
+      border-radius: 2px;
+    }
+  }
+
+  .fill-color {
+    font-size: 11px;
+
+    .color-bar {
+      bottom: 3px;
+    }
+  }
+
+  .current-border {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    .rect {
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(0,0,0,0.4);
+      display: inline-block;
+    }
+  }
+
+  .align-self-control {
+    position: relative;
+    width: 11px;
+    display: inline-block;
+    height: 13px;
+
+    .line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #777;
+      border-radius: 2px;
+    }
+
+    .box-1 {
+      display: inline-block;
+      width: 4px;
+      height: 9px;
+      border: 1px solid #777;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .box-2 {
+      display: inline-block;
+      width: 4px;
+      height: 7px;
+      border: 1px solid #777;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    &.baseline {
+      .line {
+        top: 1px;
+      }
+
+      .box-1 {
+        top: 3px;
+        left: 1px;
+      }
+
+      .box-2 {
+        top: 3px;
+        right: 1px;
+      }
+    }
+    &.center {
+      .line {
+        top: 6px;
+      }
+
+      .box-1 {
+        top: 2px;
+        left: 1px;
+      }
+
+      .box-2 {
+        top: 3px;
+        right: 1px;
+      }
+    }
+
+    &.flex-end {
+      .line {
+        bottom: 1px;
+      }
+
+      .box-1 {
+        bottom: 3px;
+        left: 1px;
+      }
+
+      .box-2 {
+        top: 3px;
+        right: 1px;
+      }
+    }
+  }
+
+  .always-menu {
+    flex-grow: 0;
+    align-self: center;
+  }
+}

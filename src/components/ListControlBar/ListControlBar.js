@@ -48,6 +48,10 @@ class ListControlBar extends React.PureComponent {
   }
 }
 
+ListControlBar.defaultProps = {
+  className: '',
+};
+
 ListControlBar.propTypes = {
   viewType: PropTypes.string,
   onChangeViewType: PropTypes.func,

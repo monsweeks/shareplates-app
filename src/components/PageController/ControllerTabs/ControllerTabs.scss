@@ -1,0 +1,29 @@
+.controller-tabs-wrapper {
+  display: flex;
+  height: 22px;
+  flex-direction: row;
+
+  > div {
+    height: 100%;
+    display: flex;
+    cursor: pointer;
+    line-height: 0;
+    padding: 0 0.75rem;
+    border-bottom: 2px solid transparent;
+    margin: 0 1px;
+    border-radius: 2px;
+    > div {
+      vertical-align: middle;
+      align-self: center;
+    }
+
+    &:hover {
+      background-color: $gray-300;
+    }
+
+    &.selected {
+      font-family: LGSmHaB;
+      border-bottom: 2px solid $primary;
+    }
+  }
+}
