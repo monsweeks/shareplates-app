@@ -195,6 +195,16 @@ class PageEditor extends React.Component {
         values[key] = obj[key];
       });
 
+      if (obj.height) {
+        const layouts = {...next.layouts};
+        const layout = layouts.lg.find((i) => i.i === String(selectedItemId));
+        if ( Math.ceil(obj.height / 20) > layout.h) {
+          layout.h = Math.ceil(obj.height / 20);
+          // TODO 성능 개선 필요
+          next.layouts = JSON.parse(JSON.stringify(layouts));
+        }
+      }
+
       item.values = values;
       this.setState(
         {

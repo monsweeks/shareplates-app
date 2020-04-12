@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ContentEditable from 'react-contenteditable';
 import './Text.scss';
 import withPageItem from '@/components/PageContentItems/withPageItem';
 
 class Text extends React.Component {
   control = React.createRef();
 
-  textarea = React.createRef();
+  contentEditable = React.createRef();
 
   constructor(props) {
     super(props);
@@ -85,47 +86,41 @@ class Text extends React.Component {
             alignSelf,
           }}
         >
-          {edit && (
-            <textarea
-              ref={this.textarea}
-              style={{ height: `${height}px` }}
-              value={text}
-              onClick={(e) => {
+          <ContentEditable
+            style={{
+              alignSelf,
+            }}
+            innerRef={this.contentEditable}
+            html={text} // innerHTML of the editable div
+            disabled={!edit} // use true to disable editing
+            onClick={(e) => {
+
+              if (editable && !edit) {
+                this.setState({
+                  edit: true,
+                });
+                setEditing(true);
+                setTimeout(() => {
+                  if (this.contentEditable.current) this.contentEditable.current.focus();
+                }, 100);
+              } else {
                 e.stopPropagation();
-              }}
-              onChange={(e) => {
-                if (height !== e.target.scrollHeight) {
-                  this.setState({
-                    text: e.target.value,
-                    height: e.target.scrollHeight,
-                  });
-                } else {
-                  this.setState({
-                    text: e.target.value,
-                  });
-                }
-              }}
-            />
-          )}
-          {!edit && (
-            <div
-              className="text-content"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (editable && !edit) {
-                  this.setState({
-                    edit: true,
-                  });
-                  setEditing(true);
-                  setTimeout(() => {
-                    if (this.textarea.current) this.textarea.current.focus();
-                  }, 100);
-                }
-              }}
-            >
-              {text}
-            </div>
-          )}
+              }
+            }}
+            onChange={(e) => {
+              if (height !== e.target.scrollHeight) {
+                this.setState({
+                  text: e.target.value,
+                  height: this.contentEditable.current.clientHeight,
+                });
+              } else {
+                this.setState({
+                  text: e.target.value,
+                });
+              }
+            }} // handle innerHTML change
+            tagName="article" // Use a custom HTML tag (uses a div by default)
+          />
         </div>
       </div>
     );
