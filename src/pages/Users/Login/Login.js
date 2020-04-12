@@ -5,13 +5,14 @@ import { withTranslation } from 'react-i18next';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import Kakao from '@/vendor/kakao.min.js';
-import { Button, Col, Form, FormGroup, Input, Link, Row, CheckBoxInput } from '@/components';
+import { Button, CheckBoxInput, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
 import { addMessage, setUserAndGrp } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
+import socialLogin from '../util';
 import './Login.scss';
 
 class Login extends React.PureComponent {
@@ -20,9 +21,8 @@ class Login extends React.PureComponent {
 
     const email = storage.getItem('login', 'email');
 
-    if(!Kakao.isInitialized())
-      Kakao.init('863525fbdd02a15ac03536bbfcf0151d');
-      
+    if (!Kakao.isInitialized()) Kakao.init('863525fbdd02a15ac03536bbfcf0151d');
+
     this.state = {
       email: email || '',
       password: '',
@@ -44,7 +44,6 @@ class Login extends React.PureComponent {
         url: params.url,
       });
     }
-   
   }
 
   onChange = (field) => (value) => {
@@ -102,41 +101,28 @@ class Login extends React.PureComponent {
 
   onSocialLogin = (vendor) => {
     const { t, addMessage: addMessageReducer } = this.props;
-    switch(vendor){
-      case 'KAKAO':  
-        if( Kakao.isInitialized()){
-          Kakao.Auth.login({
-            redirectUri: window.location.port === '3000' ? `http://${window.location.hostname}:8080/oauth/kakao/token` : 'http://mindplates.com/oauth/kakao/token',
-            scope: 'account_email'
-          });
-        }else{
-          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-        }
-
-        break;
-
-      default:          
-        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
-        break;
-
-
-    }  
-  }
+    socialLogin(vendor, () => {
+      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+    });
+  };
 
   render() {
-    const { t, addMessage: addMessageReducer } = this.props;
+    const { t } = this.props;
     const { email, password, saveEmail, loginResult, url } = this.state;
 
     return (
       <CenterBoxLayout className="login-wrapper">
-        <div className="line" />
         <h1 className="text-center">LOGIN</h1>
         <p className="text-center d-md-block mb-0">
           <Link color="blue" to="/users/join">
             {t('message.moveToJoinPage')}
           </Link>
         </p>
-        {url && <p className='need-login-message'><span>{t('로그인이 필요한 URL입니다')}</span></p>}
+        {url && (
+          <p className="need-login-message">
+            <span>{t('로그인이 필요한 URL입니다')}</span>
+          </p>
+        )}
         <Row>
           <Col>
             <p className="text-danger text-center mb-1">
@@ -196,11 +182,11 @@ class Login extends React.PureComponent {
                     color="kakao"
                     className="g-image-button ml-1"
                     onClick={() => {
-                      this.onSocialLogin('KAKAO');
+                      this.onSocialLogin('kakao');
                     }}
                   >
                     <div>
-                      <img src={siteImage.kakao} alt="KAKAO" />
+                      <img src={siteImage.kakao} alt="kakao" />
                     </div>
                   </Button>
                   <Button
@@ -211,7 +197,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={siteImage.naver} alt="NAVER" />
+                      <img src={siteImage.naver} alt="naver" />
                     </div>
                   </Button>
                   <Button
@@ -222,7 +208,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={siteImage.google} alt="GOOGLE" />
+                      <img src={siteImage.google} alt="google'" />
                     </div>
                   </Button>
                   <Button
@@ -233,7 +219,7 @@ class Login extends React.PureComponent {
                     }}
                   >
                     <div>
-                      <img src={siteImage.facebook} alt="FACEBOOK" />
+                      <img src={siteImage.facebook} alt="facebook" />
                     </div>
                   </Button>
                 </div>
@@ -246,12 +232,12 @@ class Login extends React.PureComponent {
                 color="facebook"
                 className="g-image-text-button mb-2 mb-lg-0 ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('facebook');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.facebook} alt="FACEBOOK" />
+                    <img src={siteImage.facebook} alt="facebook" />
                   </span>
                   <span>{t('label.facebookLogin')}</span>
                 </div>
@@ -260,12 +246,12 @@ class Login extends React.PureComponent {
                 color="google"
                 className="g-image-text-button ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('google');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.google} alt="GOOGLE" />
+                    <img src={siteImage.google} alt="google" />
                   </span>
                   <span>{t('label.googleLogin')}</span>
                 </div>
@@ -276,12 +262,12 @@ class Login extends React.PureComponent {
                 color="naver"
                 className="mb-2 mb-lg-0 g-image-text-button ml-3"
                 onClick={() => {
-                  addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                  this.onSocialLogin('naver');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.naver} alt="NAVER" />
+                    <img src={siteImage.naver} alt="naver" />
                   </span>
                   <span>{t('label.naverLogin')}</span>
                 </div>
@@ -290,12 +276,12 @@ class Login extends React.PureComponent {
                 color="kakao"
                 className="g-image-text-button ml-3"
                 onClick={() => {
-                  this.onSocialLogin('KAKAO');
+                  this.onSocialLogin('kakao');
                 }}
               >
                 <div>
                   <span>
-                    <img src={siteImage.kakao} alt="KAKAO" />
+                    <img src={siteImage.kakao} alt="kakao" />
                   </span>
                   <span>{t('label.kakaoLogin')}</span>
                 </div>

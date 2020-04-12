@@ -35,17 +35,4 @@
       padding: 1rem 0 0;
     }
   }
-
-  .line {
-    background-color: $primary;
-    width: 250px;
-    height: 30px;
-    position: absolute;
-    top: 30px;
-    right: -80px;
-    transform: rotate(45deg);
-    @media (max-width: 1200px) {
-      display: none;
-    }
-  }
 }
