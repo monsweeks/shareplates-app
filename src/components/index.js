@@ -48,7 +48,7 @@ import PageEditor from '@/components/PageEditor/PageEditor';
 import PageController from '@/components/PageController/PageController';
 import PageContent from '@/components/PageContent/PageContent';
 import PageControlTab from '@/components/PageControlTab/PageControlTab';
-
+import CopySpan from '@/components/CopySpan/CopySpan';
 
 export {
   Button,
@@ -101,4 +101,5 @@ export {
   PageController,
   PageContent,
   PageControlTab,
+  CopySpan,
 };

@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
+import { Col, Popup, Row, SearchBar, SocketClient, TopicCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import './TopicList.scss';
 import { setGrp } from '@/actions';
+import NewShare from '@/pages/Topics/TopicList/NewShare';
 
 class TopicList extends React.Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class TopicList extends React.Component {
       },
       topics: [],
       init: false,
+      openNewSharePopup: false,
+      selectedTopicId: null,
     };
 
     this.setOptionToUrl();
@@ -152,6 +155,24 @@ class TopicList extends React.Component {
     }
   };
 
+  createShareOrOpenPopup = (topicId) => {
+    request.get(`/api/topics/${topicId}/shares`, null, (data) => {
+      console.log(data);
+      // if (data.shares && data.shares.length < 1) {
+        this.setState({
+          openNewSharePopup: true,
+          selectedTopicId: topicId,
+        });
+      // }
+    });
+  };
+
+  setOpenNewSharePopup = (openNewSharePopup) => {
+    this.setState({
+      openNewSharePopup,
+    });
+  };
+
   render() {
     const { grps, history, t, setGrp: setGrpAction } = this.props;
 
@@ -159,6 +180,8 @@ class TopicList extends React.Component {
       options,
       options: { grpId, searchWord, order, direction },
       topics,
+      openNewSharePopup,
+      selectedTopicId,
     } = this.state;
 
     return (
@@ -248,8 +271,8 @@ class TopicList extends React.Component {
                       onContentClick={(topicId) => {
                         history.push(`/topics/${topicId}/chapters`);
                       }}
-                      onShareClick={() => {
-
+                      onShareClick={(topicId) => {
+                        this.createShareOrOpenPopup(topicId);
                       }}
                     />
                   </Col>
@@ -266,6 +289,11 @@ class TopicList extends React.Component {
             </Row>
           </div>
         </FullLayout>
+        {openNewSharePopup && selectedTopicId && (
+          <Popup title="토픽을 공유를 시작합니다" open setOpen={this.setOpenNewSharePopup}>
+            <NewShare topicId={selectedTopicId} setOpen={this.setOpenNewSharePopup} />
+          </Popup>
+        )}
       </div>
     );
   }
