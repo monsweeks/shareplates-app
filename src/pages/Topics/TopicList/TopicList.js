@@ -242,11 +242,14 @@ class TopicList extends React.Component {
                   <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
                     <TopicCard
                       topic={topic}
-                      onCardClick={(topicId) => {
+                      onInfoClick={(topicId) => {
+                        history.push(`/topics/${topicId}`);
+                      }}
+                      onContentClick={(topicId) => {
                         history.push(`/topics/${topicId}/chapters`);
                       }}
-                      onConfigClick={(topicId) => {
-                        history.push(`/topics/${topicId}`);
+                      onShareClick={() => {
+
                       }}
                     />
                   </Col>

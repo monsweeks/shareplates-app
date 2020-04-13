@@ -1,33 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTranslation } from 'react-i18next';
 import { Card, CardBody, ObjectImage } from '@/components';
 import './TopicCard.scss';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class TopicCard extends React.PureComponent {
   render() {
-    const { className, topic, onCardClick, onConfigClick, newCard } = this.props;
+    const { className, topic, onInfoClick, onContentClick, onShareClick, newCard, t } = this.props;
 
     return (
-      <Card
-        className={`topic-card-wrapper g-no-select ${className}`}
-        onClick={() => {
-          onCardClick(topic ? topic.id : null);
-        }}
-      >
+      <Card className={`topic-card-wrapper g-no-select ${className}`}>
         <CardBody>
-          {!newCard && (
-            <span className="config-button">
-              <CircleIcon
-                color='white'
-                icon={<i className="fal fa-info-circle" />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onConfigClick(topic ? topic.id : null);
-                }}
-              />
-            </span>
-          )}
           {topic && topic.privateYn && <span className="private">private</span>}
           <div className="topic-card-content">
             {newCard && (
@@ -43,7 +26,50 @@ class TopicCard extends React.PureComponent {
             {!newCard && (
               <>
                 <div className="topic-title">{topic.name}</div>
-                <div className="topic-summary">{topic.summary}</div>
+                <div className="topic-summary">
+                  <div>{topic.summary}</div>
+                </div>
+                <div className="topic-card-buttons">
+                  <div
+                    className="button"
+                    onClick={() => {
+                      onShareClick(topic ? topic.id : null);
+                    }}
+                  >
+                    <div className="icon">
+                      <i className="fal fa-broadcast-tower" />
+                    </div>
+                    <div className="text">{t('공유')}</div>
+                  </div>
+                  <div className="separator">
+                    <div />
+                  </div>
+                  <div
+                    className="button"
+                    onClick={() => {
+                      onContentClick(topic ? topic.id : null);
+                    }}
+                  >
+                    <div className="icon">
+                      <i className="fal fa-books" />
+                    </div>
+                    <div className="text">{t('컨텐츠')}</div>
+                  </div>
+                  <div className="separator">
+                    <div />
+                  </div>
+                  <div
+                    className="button"
+                    onClick={() => {
+                      onInfoClick(topic ? topic.id : null);
+                    }}
+                  >
+                    <div className="icon">
+                      <i className="fal fa-info-circle" />
+                    </div>
+                    <div className="text">{t('토픽 정보')}</div>
+                  </div>
+                </div>
                 <div className="topic-description">
                   <div className="icon">
                     <div>
@@ -78,7 +104,7 @@ class TopicCard extends React.PureComponent {
   }
 }
 
-export default TopicCard;
+export default withTranslation()(TopicCard);
 
 TopicCard.defaultProps = {
   className: '',
@@ -95,8 +121,10 @@ TopicCard.propTypes = {
     chapterCount: PropTypes.number,
     pageCount: PropTypes.number,
   }),
+  t: PropTypes.func,
   className: PropTypes.string,
-  onCardClick: PropTypes.func,
-  onConfigClick: PropTypes.func,
+  onInfoClick: PropTypes.func,
+  onContentClick: PropTypes.func,
+  onShareClick: PropTypes.func,
   newCard: PropTypes.bool,
 };
