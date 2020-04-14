@@ -14,7 +14,7 @@
 
     @media (max-width: 768px) {
       max-width: none;
-      margin: 0 20px;
+      margin: 0 1rem;
     }
 
     .popup-title {
@@ -39,9 +39,13 @@
     }
 
     .popup-buttons {
-      background-color: $light;
       border-top: 1px solid rgba(0, 0, 0, 0.2);
       text-align: right;
+      padding: 1rem;
+
+      @media (max-width: 768px) {
+        text-align: center;
+      }
 
       button {
         font-size: 0.8rem !important;

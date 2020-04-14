@@ -6,6 +6,7 @@ import {
   Button,
   Col,
   CopySpan,
+  DateTime,
   Description,
   Form,
   FormGroup,
@@ -18,7 +19,7 @@ import {
 } from '@/components';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import request from '@/utils/request';
-import './NewShare.scss';
+import './ShareEditor.scss';
 
 const privateYnValues = [
   {
@@ -31,11 +32,12 @@ const privateYnValues = [
   },
 ];
 
-class NewShare extends React.Component {
+class ShareEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       share: {
+        id: null,
         name: '',
         memo: '',
         privateYn: false,
@@ -53,8 +55,12 @@ class NewShare extends React.Component {
   }
 
   componentDidMount() {
-    const { topicId } = this.props;
-    this.getShareInfo(topicId);
+    const { topicId, shareId } = this.props;
+    if (shareId) {
+      this.getShareInfo(shareId);
+    } else {
+      this.getTopicShareInfo(topicId);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -78,32 +84,53 @@ class NewShare extends React.Component {
     });
   };
 
-  getShareInfo = (topicId) => {
+  setData = (data) => {
+    const { share } = this.state;
+    let next;
+
+    if (data.share) {
+      next = { ...data.share };
+    } else {
+      next = { ...share };
+      next.name = data.topic.name;
+      next.currentChapterId = data.chapters && data.chapters.length > 0 ? data.chapters[0].id : null;
+      next.accessCode = data.accessCode.code;
+      next.accessCodeId = data.accessCode.id;
+      next.topicId = data.topic.id;
+    }
+
+    if (data && data.chapters) {
+      data.chapters.sort((a, b) => {
+        return a.orderNo - b.order;
+      });
+    }
+
+    this.setState({
+      topic: data.topic,
+      chapters: data.chapters || [],
+      accessCode: data.accessCode,
+      share: next,
+    });
+  };
+
+  getShareInfo = (shareId) => {
+    request.get(
+      `/api/shares/${shareId}`,
+      null,
+      (data) => {
+        this.setData(data);
+      },
+      null,
+      true,
+    );
+  };
+
+  getTopicShareInfo = (topicId) => {
     request.get(
       `/api/shares/topics/${topicId}`,
       null,
       (data) => {
-        const { share } = this.state;
-        const next = { ...share };
-
-        next.name = data.topic.name;
-        next.currentChapterId = data.chapters && data.chapters.length > 0 ? data.chapters[0].id : null;
-        next.accessCode = data.accessCode.code;
-        next.accessCodeId = data.accessCode.id;
-        next.topicId = data.topic.id;
-
-        if (data && data.chapters) {
-          data.chapters.sort((a, b) => {
-            return a.orderNo - b.order;
-          });
-        }
-
-        this.setState({
-          topic: data.topic,
-          chapters: data.chapters || [],
-          accessCode: data.accessCode,
-          share: next,
-        });
+        this.setData(data);
       },
       null,
       true,
@@ -114,7 +141,10 @@ class NewShare extends React.Component {
     request.get(`/api/topics/${topicId}/chapters/${chapterId}/pages`, {}, (data) => {
       const { share } = this.state;
       const next = { ...share };
-      next.currentPageId = data.pages && data.pages.length > 0 ? data.pages[0].id : null;
+
+      if (!data.pages.some((info) => info.id === next.currentPageId)) {
+        next.currentPageId = data.pages && data.pages.length > 0 ? data.pages[0].id : null;
+      }
 
       this.setState({
         pages: data.pages || [],
@@ -141,9 +171,15 @@ class NewShare extends React.Component {
     const { setOpen } = this.props;
     const { share } = this.state;
 
-    request.post('/api/shares', share, () => {
-      setOpen(false);
-    });
+    if (share.id) {
+      request.put(`/api/shares/${share.id}/start`, share, () => {
+        setOpen(false);
+      });
+    } else {
+      request.post('/api/shares', share, () => {
+        setOpen(false);
+      });
+    }
   };
 
   render() {
@@ -153,17 +189,17 @@ class NewShare extends React.Component {
     return (
       <div className="new-share-wrapper">
         <Form onSubmit={this.onSubmit}>
-          <Row className="p-3">
-            <Col lg={5}>
+          <Row className="scrollbar">
+            <Col lg={5} className="share-col p-3">
               <SubLabel bold size="sm">
                 {t('label.topic')}
               </SubLabel>
-              <P>{topic.name}</P>
+              <P className="bg-white mb-2">{topic.name}</P>
               <hr className="g-dashed mb-3" />
               <SubLabel bold size="sm">
                 {t('공유 관리자')}
               </SubLabel>
-              <P>
+              <P className="bg-white mb-2">
                 <span>{user && user.name}</span>
                 <span className="ml-2">{user && user.email}</span>
               </P>
@@ -172,7 +208,7 @@ class NewShare extends React.Component {
                 {t('액세스 코드')}
               </SubLabel>
               <Description>{t('이 토픽이 공유되는 동안 아래 코드를 입력하여 빠르게 참여할 수 있습니다.')}</Description>
-              <P>
+              <P className="mb-2">
                 {share.accessCode}
                 <span
                   className="refresh-button"
@@ -185,16 +221,28 @@ class NewShare extends React.Component {
                 <CopySpan className="refresh-button" data={share.accessCode} />
               </P>
               <Description>{t('이 토픽이 공유되는 동안 URL을 통해 토픽에 참여할 수 있습니다.')}</Description>
-              <P>
+              <P className="mb-2">
                 {`http://www.mindplates.com/shares/codes/${share.accessCode}`}
                 <CopySpan
                   className="refresh-button"
                   data={`http://www.mindplates.com/shares/codes/${share.accessCode}`}
                 />
               </P>
-              <hr className="d-block d-lg-none g-dashed mb-3" />
+              {share.lastOpenDate && (
+                <>
+                  <hr className="g-dashed mb-3" />
+                  <SubLabel bold size="sm">
+                    {t('마지막 공유 일시')}
+                  </SubLabel>
+                  <P className="bg-white mb-2">
+                    <DateTime value={share.lastOpenDate} /> - <DateTime value={share.lastCloseDate} />
+                  </P>
+                  <hr className="d-block d-lg-none g-dashed mb-3" />
+                </>
+              )}
             </Col>
-            <Col lg={7}>
+            <Col lg={7} className="share-col px-3 pb-3 py-0 py-lg-3 pr-lg-3 pl-lg-0">
+              <hr className="d-block d-lg-none g-dashed mb-3" />
               <SubLabel bold size="sm">
                 {t('label.name')}
               </SubLabel>
@@ -210,8 +258,8 @@ class NewShare extends React.Component {
                   required
                   minLength={2}
                   maxLength={100}
-                  onChange={(e) => {
-                    this.onChange('name', e.target.value);
+                  onChange={(value) => {
+                    this.onChange('name', value);
                   }}
                   simple
                   border
@@ -290,7 +338,7 @@ class NewShare extends React.Component {
               </FormGroup>
             </Col>
           </Row>
-          <div className="popup-buttons p-3">
+          <div className="popup-buttons">
             <Button
               className="px-4 mr-2"
               color="secondary"
@@ -302,7 +350,7 @@ class NewShare extends React.Component {
               {t('취소')}
             </Button>
             <Button className="px-4" color="primary">
-              {t('선택')}
+              {t('공유 시작')}
             </Button>
           </div>
         </Form>
@@ -317,9 +365,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-NewShare.propTypes = {
+ShareEditor.propTypes = {
   t: PropTypes.func,
   topicId: PropTypes.number,
+  shareId: PropTypes.number,
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -329,4 +378,4 @@ NewShare.propTypes = {
   setOpen: PropTypes.func,
 };
 
-export default withTranslation()(connect(mapStateToProps, undefined)(NewShare));
+export default withTranslation()(connect(mapStateToProps, undefined)(ShareEditor));
