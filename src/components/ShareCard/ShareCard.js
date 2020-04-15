@@ -10,8 +10,6 @@ class ShareCard extends React.PureComponent {
   render() {
     const { className, share, onConfigClick, onCardClick, t } = this.props;
 
-    console.log(share);
-
     return (
       <Card
         className={`share-card-wrapper g-no-select ${className}`}
@@ -31,7 +29,7 @@ class ShareCard extends React.PureComponent {
                 className="config-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onConfigClick(share.id);
+                  onConfigClick(share.topicId, share.id);
                 }}
               >
                 <i className="fal fa-cog" />
@@ -91,6 +89,7 @@ ShareCard.propTypes = {
     currentChapterTitle: PropTypes.string,
     currentPageTitle: PropTypes.string,
     lastOpenDate: PropTypes.string,
+    topicId: PropTypes.number,
     topicName: PropTypes.string,
     adminUserEmail: PropTypes.string,
     adminUserName: PropTypes.string,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { setConfirm } from 'actions';
 import {
   Button,
   Col,
@@ -168,13 +169,21 @@ class ShareEditor extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { setOpen } = this.props;
+    const { setOpen, onChangeShare } = this.props;
     const { share } = this.state;
 
     if (share.id) {
-      request.put(`/api/shares/${share.id}/start`, share, () => {
-        setOpen(false);
-      });
+      if (onChangeShare) {
+        request.put(`/api/shares/${share.id}`, share, (data) => {
+          setOpen(false);
+          onChangeShare(data);
+        });
+      } else {
+        request.put(`/api/shares/${share.id}/start`, share, () => {
+          setOpen(false);
+        });
+      }
+
     } else {
       request.post('/api/shares', share, () => {
         setOpen(false);
@@ -184,7 +193,7 @@ class ShareEditor extends React.Component {
 
   render() {
     const { share, topic, chapters, pages } = this.state;
-    const { t, user, setOpen } = this.props;
+    const { t, user, setOpen, setStatusChange, shareId } = this.props;
 
     return (
       <div className="new-share-wrapper">
@@ -336,6 +345,24 @@ class ShareEditor extends React.Component {
                   }}
                 />
               </FormGroup>
+              {setStatusChange && (
+                <>
+                  <hr className="g-dashed mb-3" />
+                  <FormGroup className="mt-4 text-center">
+                    <Button
+                      color="danger"
+                      onClick={() => {
+                        const { setConfirm: setConfirmReducer } = this.props;
+                        setConfirmReducer('지금 공유중인 토픽을 중지하시겠습니까?', () => {
+                          setStatusChange(shareId);
+                        });
+                      }}
+                    >
+                      {t('공유를 중지합니다')}
+                    </Button>
+                  </FormGroup>
+                </>
+              )}
             </Col>
           </Row>
           <div className="popup-buttons">
@@ -350,7 +377,8 @@ class ShareEditor extends React.Component {
               {t('취소')}
             </Button>
             <Button className="px-4" color="primary">
-              {t('공유 시작')}
+              {setStatusChange && t('저장')}
+              {!setStatusChange && t('공유 시작')}
             </Button>
           </div>
         </Form>
@@ -365,6 +393,12 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
+  };
+};
+
 ShareEditor.propTypes = {
   t: PropTypes.func,
   topicId: PropTypes.number,
@@ -376,6 +410,9 @@ ShareEditor.propTypes = {
     info: PropTypes.string,
   }),
   setOpen: PropTypes.func,
+  setStatusChange: PropTypes.func,
+  setConfirm: PropTypes.func,
+  onChangeShare : PropTypes.func,
 };
 
-export default withTranslation()(connect(mapStateToProps, undefined)(ShareEditor));
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditor));

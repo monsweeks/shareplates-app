@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { FullLayout } from '@/layouts';
-import { Button, Col, Row, SearchBar, ShareCard } from '@/components';
+import { Button, Col, Popup, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import './OpenShareList.scss';
+import ShareEditor from '@/pages/Topics/TopicList/ShareEditor';
 
 class OpenShareList extends React.Component {
   constructor(props) {
@@ -30,6 +31,9 @@ class OpenShareList extends React.Component {
       init: false,
       shares: [],
       accessCode: '',
+      openShareEditorPopup: false,
+      selectedTopicId: null,
+      selectedShareId: null,
     };
 
     this.setOptionToUrl();
@@ -84,7 +88,54 @@ class OpenShareList extends React.Component {
     common.setOptions(history, pathname, options);
   };
 
-  onConfigClick = () => {};
+  onConfigClick = (topicId, shareId) => {
+    this.setState({
+      openShareEditorPopup: true,
+      selectedTopicId: topicId,
+      selectedShareId: shareId,
+    });
+  };
+
+  setOpenShareEditorPopup = (openShareEditorPopup) => {
+    this.setState({
+      openShareEditorPopup,
+    });
+  };
+
+  stopShare = (shareId) => {
+    request.put(`/api/shares/${shareId}/stop`, null, (share) => {
+      const { shares } = this.state;
+      const next = shares.slice(0);
+      const inx = next.findIndex((info) => info.id === share.id);
+      next.splice(inx, 1);
+      this.setState({
+        shares: next,
+        openShareEditorPopup: false,
+      });
+    });
+  };
+
+  onChangeShare = (share) => {
+    const { shares } = this.state;
+    const { user } = this.props;
+    const next = shares.slice(0);
+
+    if (share.privateYn && share.adminUserId !== user.id) {
+      const inx = next.findIndex((info) => info.id === share.id);
+      next.splice(inx, 1);
+    } else {
+      const inx = next.findIndex((info) => info.id === share.id);
+      if (inx < 0) {
+        next.push(share);
+      } else {
+        next[inx] = share;
+      }
+    }
+
+    this.setState({
+      shares: next,
+    });
+  };
 
   onCardClick = () => {};
 
@@ -96,6 +147,9 @@ class OpenShareList extends React.Component {
       options: { searchWord, order, direction },
       shares,
       accessCode,
+      selectedTopicId,
+      selectedShareId,
+      openShareEditorPopup,
     } = this.state;
 
     return (
@@ -180,8 +234,8 @@ class OpenShareList extends React.Component {
                       share={share}
                       onConfigClick={
                         user && share.adminUserId === user.id
-                          ? (shareId) => {
-                              this.onConfigClick(shareId);
+                          ? (topicId, shareId) => {
+                              this.onConfigClick(topicId, shareId);
                             }
                           : null
                       }
@@ -195,6 +249,19 @@ class OpenShareList extends React.Component {
             </Row>
           </div>
         </FullLayout>
+        {openShareEditorPopup && selectedShareId && (
+          <Popup title="토픽 공유 관리" open setOpen={this.setOpenShareEditorPopup}>
+            <ShareEditor
+              topicId={selectedTopicId}
+              shareId={selectedShareId}
+              setOpen={this.setOpenShareEditorPopup}
+              setStatusChange={(shareId) => {
+                this.stopShare(shareId);
+              }}
+              onChangeShare={this.onChangeShare}
+            />
+          </Popup>
+        )}
       </div>
     );
   }
