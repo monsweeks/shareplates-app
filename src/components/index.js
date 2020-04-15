@@ -49,6 +49,7 @@ import PageController from '@/components/PageController/PageController';
 import PageContent from '@/components/PageContent/PageContent';
 import PageControlTab from '@/components/PageControlTab/PageControlTab';
 import CopySpan from '@/components/CopySpan/CopySpan';
+import ShareCard from '@/components/ShareCard/ShareCard';
 
 export {
   Button,
@@ -102,4 +103,5 @@ export {
   PageContent,
   PageControlTab,
   CopySpan,
+  ShareCard,
 };

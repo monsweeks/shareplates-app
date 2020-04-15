@@ -14,6 +14,7 @@ const pageMainColors = {
   '/topics/[0-9]+/chapters': variables.seaBlueColor,
   '/groups': variables.seaBlueColor,
   '/topics/[0-9]+/chapters/[0-9]+/pages': variables.white,
+  '/shares': variables.seaBlueColor,
 };
 
 class Menu extends React.PureComponent {

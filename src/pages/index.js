@@ -18,6 +18,7 @@ import EditGrp from './Grps/EditGrp/EditGrp';
 import Grp from './Grps/Grp/Grp';
 import UnderConstruction from './Etcs/UnderConstruction/UnderConstruction';
 import Register from './Users/Register/Register';
+import OpenShareList from './Shares/OpenShareList/OpenShareList';
 
 export {
   Common,
@@ -40,4 +41,5 @@ export {
   Grp,
   UnderConstruction,
   Register,
+  OpenShareList,
 };

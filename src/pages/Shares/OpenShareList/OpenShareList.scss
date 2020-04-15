@@ -1,0 +1,59 @@
+.open-share-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .access-code {
+    padding: 2rem 1rem 3rem;
+    background-color: darken($sea-blue, 5%);
+    background-color: $sea-blue;
+    display: none;
+
+
+    h4 {
+      text-align: center;
+      color: $white;
+      margin-bottom: 1rem;
+    }
+
+    > div.access-code-input {
+      width: 300px;
+      margin: 0 auto;
+      vertical-align: top;
+      line-height: 0;
+      height: 37px;
+      border: 1px solid $secondary;
+      border-radius: 0;
+
+      > input {
+        border: none;
+        outline: none;
+        font-size: 18px;
+        font-family: LGSmHaB;
+        padding: 0.5rem;
+        height: 35px;
+        border-radius: 5px 0 0 5px;
+        border-radius: 2px 0 0 2px;
+        border-radius: 0;
+        vertical-align: top;
+        text-align: center;
+        width: calc(100% - 60px);
+        _background-color: $yellow;
+      }
+
+      .access-join-button {
+        padding: 0.5rem 0;
+        width: 60px;
+        text-align: center;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        border-radius: 0 2px 2px 0;
+        border-radius: 0;
+        margin: 0;
+        vertical-align: top;
+        height: 35px;
+      }
+    }
+  }
+}
