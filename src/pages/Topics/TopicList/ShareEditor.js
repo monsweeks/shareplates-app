@@ -116,7 +116,7 @@ class ShareEditor extends React.Component {
 
   getShareInfo = (shareId) => {
     request.get(
-      `/api/shares/${shareId}`,
+      `/api/shares/${shareId}/info`,
       null,
       (data) => {
         this.setData(data);
@@ -174,7 +174,7 @@ class ShareEditor extends React.Component {
 
     if (share.id) {
       if (onChangeShare) {
-        request.put(`/api/shares/${share.id}`, share, (data) => {
+        request.put(`/api/shares/${share.id}/info`, share, (data) => {
           setOpen(false);
           onChangeShare(data);
         });

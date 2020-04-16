@@ -1,0 +1,66 @@
+.content-viewer-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .viewer-top {
+    min-height: 60px;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: $secondary;
+
+    .logo-area {
+      flex: 0;
+    }
+
+    .menu {
+      flex: 1;
+      .chapters,
+      .pages {
+        min-height: 30px;
+
+        position: relative;
+
+        > div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+        }
+
+        ul {
+          color: $white;
+          list-style: none;
+          display: flex;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          li {
+            align-self: center;
+            cursor: pointer;
+            height: 100%;
+            &:hover {
+              background-color: $yellow;
+            }
+            &.selected {
+              background-color: $sea-blue;
+            }
+          }
+        }
+      }
+    }
+
+    .side-menu {
+      flex: 0;
+      min-width: 200px;
+      background-color: red;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+    background-color: $white;
+  }
+}

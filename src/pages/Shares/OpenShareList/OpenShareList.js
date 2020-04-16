@@ -137,7 +137,10 @@ class OpenShareList extends React.Component {
     });
   };
 
-  onCardClick = () => {};
+  onCardClick = (shareId) => {
+    const { history } = this.props;
+    history.push(`/shares/${shareId}`);
+  };
 
   render() {
     const { user, t } = this.props;
@@ -239,8 +242,8 @@ class OpenShareList extends React.Component {
                             }
                           : null
                       }
-                      onCardClick={(shareId) => {
-                        this.onCardClick(shareId);
+                      onCardClick={(shareId, code) => {
+                        this.onCardClick(shareId, code);
                       }}
                     />
                   </Col>

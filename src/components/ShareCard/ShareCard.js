@@ -14,7 +14,7 @@ class ShareCard extends React.PureComponent {
       <Card
         className={`share-card-wrapper g-no-select ${className}`}
         onClick={() => {
-          onCardClick(share.id);
+          onCardClick(share.id, share.accessCode);
         }}
       >
         <CardBody>
@@ -95,6 +95,7 @@ ShareCard.propTypes = {
     adminUserName: PropTypes.string,
     adminUserInfo: PropTypes.string,
     startedYn: PropTypes.bool,
+    accessCode : PropTypes.string,
   }),
   t: PropTypes.func,
   className: PropTypes.string,

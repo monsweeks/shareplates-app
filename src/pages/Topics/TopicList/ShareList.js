@@ -24,7 +24,7 @@ class ShareList extends React.Component {
     const { setConfirm: setConfirmReducer } = this.props;
 
     setConfirmReducer('공유 이력을 정말 삭제하시겠습니까?', () => {
-      request.del(`/api/shares/${shareId}`, {}, (data) => {
+      request.del(`/api/shares/${shareId}/info`, {}, (data) => {
         const { deleteShare } = this.props;
         deleteShare(data);
       });
