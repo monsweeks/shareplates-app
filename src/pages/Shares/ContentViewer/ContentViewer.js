@@ -160,6 +160,9 @@ class ContentViewer extends React.Component {
             <span className="d-none">
               <i className="fal fa-users-class" />
             </span>
+            <span className="d-none">
+              <i className="fal fa-cog" />
+            </span>
           </div>
         </div>
         <div className="content">
