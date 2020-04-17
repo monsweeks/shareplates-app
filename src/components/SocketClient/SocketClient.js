@@ -15,9 +15,10 @@ class SocketClient extends React.Component {
   // eslint-disable-next-line no-nested-ternary
     const base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
     const {topics} = this.props;
+    const {headers} = this.props;
 
     return (      
-              <SockJsClient url={`${base}/ws-stomp`} topics={topics}
+              <SockJsClient url={`${base}/ws-stomp`} topics={topics} headers={headers}
               onMessage={(msg) => { this.onRecieveMessage(msg); }}
               ref={ (client) => { this.clientRef = client; }} />
     );
@@ -30,5 +31,6 @@ SocketClient.defaultProps = {
 
 SocketClient.propTypes = {
   successRecieveMessage: PropTypes.func,
-  topics: PropTypes.arrayOf(PropTypes.string)
+  topics: PropTypes.arrayOf(PropTypes.string),
+  headers: PropTypes.objectOf(PropTypes.any)
 };
