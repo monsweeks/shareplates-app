@@ -133,6 +133,33 @@ class ContentViewer extends React.Component {
             <span>
               <i className="fal fa-wifi" />
             </span>
+            <span>
+              <i className="fal fa-id-badge" />
+            </span>
+            <span>
+              <i className="fal fa-level-up" />
+            </span>
+            <span>
+              <i className="fal fa-expand" />
+            </span>
+            <span>
+              <i className="fal fa-poll" />
+            </span>
+            <span>
+              <i className="fal fa-file-alt" />
+            </span>
+            <span>
+              <i className="fal fa-solar-panel" />
+            </span>
+            <span className="d-none">
+              <i className="fal fa-chart-line" />
+            </span>
+            <span className="d-none">
+              <i className="fal fa-clock" />
+            </span>
+            <span className="d-none">
+              <i className="fal fa-users-class" />
+            </span>
           </div>
         </div>
         <div className="content">
@@ -146,6 +173,16 @@ class ContentViewer extends React.Component {
               setEditing={this.setEditing}
             />
           )}
+        </div>
+        <div className="prev-page" onClick={() => {}}>
+          <div>
+            <i className="fal fa-chevron-left" />
+          </div>
+        </div>
+        <div className="next-page" onClick={() => {}}>
+          <div>
+            <i className="fal fa-chevron-right" />
+          </div>
         </div>
       </div>
     );

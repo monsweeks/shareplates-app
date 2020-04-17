@@ -78,6 +78,7 @@
         transition: 0.1s all;
         border-radius: 2px;
         margin-right: 4px;
+        opacity: 0.9;
 
         > div {
           align-self: center;
@@ -89,12 +90,14 @@
           background-color: $white;
           color: $black;
           transition: 0.1s all;
+          opacity: 1;
         }
 
         &.selected {
           background-color: $yellow;
           color: $black;
           font-family: LGSmHaB;
+          opacity: 1;
         }
       }
     }
