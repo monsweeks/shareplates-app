@@ -6,60 +6,61 @@
   .viewer-top {
     min-height: 60px;
     flex-grow: 0;
-    display: flex;
-    flex-direction: row;
+    display: block;
     background-color: $secondary;
+    vertical-align: top;
 
     .logo-area {
-      flex: 0;
+      display: inline-block;
+      padding: 5px 0;
+      width: 120px;
     }
 
-    .menu {
-      flex: 1;
-      .chapters,
-      .pages {
-        min-height: 30px;
+    .side-menu {
+      width: 180px;
+      display: inline-block;
+      height: 100%;
+      vertical-align: top;
+      color: $white;
+      padding: 18px 1rem;
 
-        position: relative;
+      > span {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: $white;
+        background-color: $gray-300;
+        display: inline-block;
+        color: $black;
+        text-align: center;
+        padding-top: 4px;
+        font-size: 12px;
 
-        > div {
-          position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-        }
-
-        ul {
-          color: $white;
-          list-style: none;
-          display: flex;
-          height: 100%;
-          margin: 0;
-          padding: 0;
-          li {
-            align-self: center;
-            cursor: pointer;
-            height: 100%;
-            &:hover {
-              background-color: $yellow;
-            }
-            &.selected {
-              background-color: $sea-blue;
-            }
-          }
+        &:hover {
+          background-color: $white;
+          cursor: pointer;
+          transition: 0.3s all;
         }
       }
     }
 
-    .side-menu {
-      flex: 0;
-      min-width: 200px;
-      background-color: red;
+    .menu {
+      display: inline-block;
+      width: calc(100% - 300px);
+      vertical-align: top;
+      padding: 4px 0;
+
+      .chapters-menu {
+        margin-bottom: 4px;
+      }
+
+      .chapters {
+        margin-bottom: 4px;
+      }
     }
   }
 
-  .content {
+  > .content {
     flex-grow: 1;
     background-color: $white;
   }

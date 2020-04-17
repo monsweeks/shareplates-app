@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { PageContent, TopLogo } from '@/components';
+import { ContentViewerMenu, PageContent, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -86,81 +86,66 @@ class ContentViewer extends React.Component {
     });
   };
 
+  setPage = (pageId) => {
+    const { pages } = this.state;
+    this.setState({
+      currentPageId: pageId,
+      currentPage: pages.find((p) => p.id === pageId),
+    });
+  };
+
+  setChapter = (chapterId) => {
+    const { shareId } = this.state;
+    this.getPages(shareId, chapterId);
+  };
+
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
     const { t, setConfirm } = this.props;
     // eslint-disable-next-line no-unused-vars,no-shadow
     const { topic, shareId, share, chapters, pages, currentChapterId, currentPageId, currentPage } = this.state;
 
-    console.log(pages);
-
-    console.log(chapters);
-
-    console.log(currentChapterId, currentPageId);
-
     return (
       <div className="content-viewer-wrapper">
-        <div className="viewer-top">
+        <div className="viewer-top g-no-select">
           <div className="logo-area">
             <TopLogo />
           </div>
           <div className="menu">
-            <div className="chapters">
-              <div>
-                <ul>
-                  {chapters.map((chapter) => {
-                    return (
-                      <li
-                        key={chapter.id}
-                        className={currentChapterId === chapter.id ? 'selected' : ''}
-                        onClick={() => {
-                          this.getPages(shareId, chapter.id);
-                        }}
-                      >
-                        {chapter.title}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-            <div className="pages">
-              <div>
-                <ul>
-                  {pages.map((page) => {
-                    return (
-                      <li
-                        key={page.id}
-                        className={currentPageId === page.id ? 'selected' : ''}
-                        onClick={() => {
-                          console.log(pages.find((p) => p.id === page.id));
-                          this.setState({
-                            currentPageId: page.id,
-                            currentPage: pages.find((p) => p.id === page.id),
-                          });
-                        }}
-                      >
-                        {page.title}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
+            <ContentViewerMenu
+              className="chapters-menu"
+              list={chapters}
+              selectedId={currentChapterId}
+              onClick={this.setChapter}
+              onPrevClick={this.setChapter}
+              onNextClick={this.setChapter}
+            />
+            <ContentViewerMenu
+              className="pages-menu"
+              list={pages}
+              selectedId={currentPageId}
+              onClick={this.setPage}
+              onPrevClick={this.setPage}
+              onNextClick={this.setPage}
+            />
           </div>
-          <div className="side-menu">1</div>
+          <div className="side-menu">
+            <span>
+              <i className="fal fa-wifi" />
+            </span>
+          </div>
         </div>
         <div className="content">
-          {currentPage &&
-          <PageContent
-            content={JSON.parse(currentPage.content)}
-            setPageContent={this.setPageContent}
-            onLayoutChange={this.onLayoutChange}
-            setSelectedItem={this.setSelectedItem}
-            onChangeValue={this.onChangeValue}
-            setEditing={this.setEditing}
-          />
-          }
+          {currentPage && (
+            <PageContent
+              content={JSON.parse(currentPage.content)}
+              setPageContent={this.setPageContent}
+              onLayoutChange={this.onLayoutChange}
+              setSelectedItem={this.setSelectedItem}
+              onChangeValue={this.onChangeValue}
+              setEditing={this.setEditing}
+            />
+          )}
         </div>
       </div>
     );

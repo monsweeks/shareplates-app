@@ -42,7 +42,7 @@ class PageContent extends React.Component {
 
     return (
       <div
-        className={`page-content-wrapper ${editable ? 'g-no-select' : ''} ${className}`}
+        className={`page-content-wrapper ${editable ? 'editable' : ''} ${editable ? 'g-no-select' : ''} ${className}`}
         onClick={() => {
           if (editable) {
             setSelectedItem(null, {});
