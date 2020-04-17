@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { ContentViewerMenu, PageContent, TopLogo } from '@/components';
+import { Button, ContentViewerMenu, PageContent, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -185,6 +185,14 @@ class ContentViewer extends React.Component {
         <div className="next-page" onClick={() => {}}>
           <div>
             <i className="fal fa-chevron-right" />
+          </div>
+        </div>
+        <div className="screen-type" onClick={() => {}}>
+          <div className='mb-2'>이 스크린의 타입을 선택해주세요</div>
+          <div>
+            <Button color='primary'>프리젠테이션 스크린</Button>
+            <Button color='primary'>웹 페이지</Button>
+            <Button color='primary'>컨트롤러</Button>
           </div>
         </div>
       </div>

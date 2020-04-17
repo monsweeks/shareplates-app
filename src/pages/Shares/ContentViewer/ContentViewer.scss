@@ -114,4 +114,22 @@
   .next-page {
     right: 0;
   }
+
+  .screen-type {
+    position: fixed;
+    top: 100px;
+    right: 40px;
+    background-color: $gray-300;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.2);
+
+    button {
+      margin-right: 5px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
 }
