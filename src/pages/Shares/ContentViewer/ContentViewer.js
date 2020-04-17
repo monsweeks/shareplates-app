@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { TopLogo } from '@/components';
+import { PageContent, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -150,7 +150,18 @@ class ContentViewer extends React.Component {
           </div>
           <div className="side-menu">1</div>
         </div>
-        <div className="content">{currentPage && <div>{currentPage.content}</div>}</div>
+        <div className="content">
+          {currentPage &&
+          <PageContent
+            content={JSON.parse(currentPage.content)}
+            setPageContent={this.setPageContent}
+            onLayoutChange={this.onLayoutChange}
+            setSelectedItem={this.setSelectedItem}
+            onChangeValue={this.onChangeValue}
+            setEditing={this.setEditing}
+          />
+          }
+        </div>
       </div>
     );
   }

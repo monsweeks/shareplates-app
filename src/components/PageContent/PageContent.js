@@ -21,7 +21,7 @@ class PageContent extends React.Component {
   render() {
     const {
       className,
-      content: { layouts, items },
+      content,
       onLayoutChange,
       selectedItemId,
       setSelectedItem,
@@ -30,13 +30,23 @@ class PageContent extends React.Component {
       setEditing,
     } = this.props;
 
+    let layouts = {};
+    let items = [];
+
+    if (content) {
+      layouts = content.layouts;
+      items = content.items;
+    }
+
     const { dragging } = this.state;
 
     return (
       <div
-        className={`page-content-wrapper g-no-select ${className}`}
+        className={`page-content-wrapper ${editable ? 'g-no-select' : ''} ${className}`}
         onClick={() => {
-          setSelectedItem(null, {});
+          if (editable) {
+            setSelectedItem(null, {});
+          }
         }}
       >
         <div>
@@ -46,7 +56,8 @@ class PageContent extends React.Component {
             breakpoints={{ lg: 1 }}
             cols={{ lg: 24 }}
             rowHeight={20}
-            isResizable
+            isResizable={!!editable}
+            isDraggable={!!editable}
             layouts={layouts}
             margin={[0, 0]}
             onBreakpointChange={(newBreakpoint) => {

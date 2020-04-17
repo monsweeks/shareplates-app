@@ -16,7 +16,10 @@ const withPageItem = () => (WrappedComponent) => {
     static setting = WrappedComponent.setting;
 
     stopPropagation = (e) => {
-      e.stopPropagation();
+      const { editable } = this.state;
+      if (editable) {
+        e.stopPropagation();
+      }
     };
 
     render() {
@@ -29,8 +32,10 @@ const withPageItem = () => (WrappedComponent) => {
             showLayout ? 'show-layout' : ''
           }`}
           onClick={(e) => {
-            e.stopPropagation();
-            setSelectedItem(item.id, item.options);
+            if (editable) {
+              e.stopPropagation();
+              setSelectedItem(item.id, item.options);
+            }
           }}
         >
           <div className="grab grab-top" />
