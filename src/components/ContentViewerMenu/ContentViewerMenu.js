@@ -44,6 +44,8 @@ class ContentViewerMenu extends React.Component {
       this.lastFirstItemId = null;
       this.listControl.current.style.left = '0px';
     }
+
+    this.checkSelectMenuShow();
   }
 
   onResize = () => {
@@ -55,6 +57,10 @@ class ContentViewerMenu extends React.Component {
   };
 
   checkMenuPosition = () => {
+    if (!this.listControl.current) {
+      return;
+    }
+
     const parentWidth = this.listControl.current.parentNode.offsetWidth;
     const listWidth = this.listControl.current.offsetWidth;
     if (parentWidth > listWidth) {
@@ -64,6 +70,10 @@ class ContentViewerMenu extends React.Component {
   };
 
   onMouseDown = (e) => {
+    if (!this.listControl.current) {
+      return;
+    }
+
     const parentWidth = this.listControl.current.parentNode.offsetWidth;
     const listWidth = this.listControl.current.offsetWidth;
     if (parentWidth < listWidth) {
@@ -74,6 +84,10 @@ class ContentViewerMenu extends React.Component {
   };
 
   onMouseMove = (e) => {
+    if (!this.listControl.current) {
+      return;
+    }
+
     if (this.startPageX === null) {
       return;
     }
@@ -92,6 +106,10 @@ class ContentViewerMenu extends React.Component {
   };
 
   onMouseUp = (e) => {
+    if (!this.listControl.current) {
+      return;
+    }
+
     if (this.startPageX === null) {
       return;
     }
@@ -121,6 +139,34 @@ class ContentViewerMenu extends React.Component {
         this.moved = false;
       }
     }, 100);
+  };
+
+  checkSelectMenuShow = () => {
+    if (!this.listControl.current) {
+      return;
+    }
+
+    if (this.selectedControl && this.selectedControl.current) {
+      const rect = this.selectedControl.current.getBoundingClientRect();
+      const parentRect = this.listControl.current.parentNode.getBoundingClientRect();
+
+      const selectedLastX = rect.x + rect.width;
+      const parentLastX = parentRect.x + parentRect.width;
+
+      const selectedFirstX = rect.x;
+      const parentFirstX = parentRect.x;
+
+      // 현재 선택된 메뉴가 오른쪽으로 넘어간 경우
+      if (parentLastX < selectedLastX) {
+        const nextLeft = this.currentLeft + -(selectedLastX - parentLastX);
+        this.listControl.current.style.left = `${nextLeft}px`;
+        this.currentLeft = nextLeft;
+      } else if (selectedFirstX < parentFirstX) {
+        const nextLeft = this.currentLeft + (parentFirstX - selectedFirstX);
+        this.listControl.current.style.left = `${nextLeft}px`;
+        this.currentLeft = nextLeft;
+      }
+    }
   };
 
   render() {
