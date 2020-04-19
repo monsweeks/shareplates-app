@@ -78,7 +78,9 @@ class ContentViewerMenu extends React.Component {
     const listWidth = this.listControl.current.offsetWidth;
     if (parentWidth < listWidth) {
       this.startPageX = e.pageX;
+      this.listControl.current.style.transition = 'NONE';
     } else {
+      this.listControl.current.style.transition = '0.3s all';
       this.startPageX = null;
     }
   };
@@ -133,6 +135,8 @@ class ContentViewerMenu extends React.Component {
         this.listControl.current.style.left = `${this.currentLeft}px`;
       }
     }
+
+    this.listControl.current.style.transition = '0.3s all';
     this.startPageX = null;
     setTimeout(() => {
       if (this.moved) {

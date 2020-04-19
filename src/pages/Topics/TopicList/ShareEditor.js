@@ -179,7 +179,7 @@ class ShareEditor extends React.Component {
           onChangeShare(data);
         });
       } else {
-        request.put(`/api/shares/${share.id}/start`, share, () => {
+        request.put(`/api/shares/${share.id}/open`, share, () => {
           setOpen(false);
         });
       }

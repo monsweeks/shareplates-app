@@ -103,7 +103,7 @@ class OpenShareList extends React.Component {
   };
 
   stopShare = (shareId) => {
-    request.put(`/api/shares/${shareId}/stop`, null, (share) => {
+    request.put(`/api/shares/${shareId}/close`, null, (share) => {
       const { shares } = this.state;
       const next = shares.slice(0);
       const inx = next.findIndex((info) => info.id === share.id);

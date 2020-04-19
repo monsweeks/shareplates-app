@@ -14,7 +14,7 @@ class ShareList extends React.Component {
   }
 
   stopShare = (shareId) => {
-    request.put(`/api/shares/${shareId}/stop`, {}, (data) => {
+    request.put(`/api/shares/${shareId}/close`, {}, (data) => {
       const { changeShare } = this.props;
       changeShare(data);
     });
@@ -24,7 +24,7 @@ class ShareList extends React.Component {
     const { setConfirm: setConfirmReducer } = this.props;
 
     setConfirmReducer('공유 이력을 정말 삭제하시겠습니까?', () => {
-      request.del(`/api/shares/${shareId}/info`, {}, (data) => {
+      request.del(`/api/shares/${shareId}`, {}, (data) => {
         const { deleteShare } = this.props;
         deleteShare(data);
       });
