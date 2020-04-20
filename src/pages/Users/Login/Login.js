@@ -10,7 +10,7 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setUserAndGrp } from '@/actions';
+import { addMessage, setUserAndGrp, setUserUUID } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
 import socialLogin from '../util';
 import './Login.scss';
@@ -66,7 +66,7 @@ class Login extends React.PureComponent {
     e.preventDefault();
 
     const { email, password, saveEmail, url } = this.state;
-    const { history, setUserAndGrp: setUserAndGrpReducer } = this.props;
+    const { history, setUserAndGrp: setUserAndGrpReducer, setUserUUID: setUUIDReducer } = this.props;
 
     if (saveEmail) {
       storage.setItem('login', 'email', email);
@@ -83,7 +83,9 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
+            console.log(data);
             setUserAndGrpReducer(data.user || {}, data.grps);
+            setUUIDReducer(data.uuid);
             if (url) {
               history.push(url);
             } else {
@@ -298,6 +300,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
+    setUserUUID: (uuid) => dispatch(setUserUUID(uuid)),
   };
 };
 
@@ -307,6 +310,7 @@ Login.propTypes = {
   t: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
   setUserAndGrp: PropTypes.func.isRequired,
+  setUserUUID: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

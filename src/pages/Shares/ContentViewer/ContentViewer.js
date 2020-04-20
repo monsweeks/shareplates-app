@@ -215,7 +215,7 @@ class ContentViewer extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, setConfirm, user, location } = this.props;
+    const { t, setConfirm, user, location, uuid } = this.props;
 
     const {
       // eslint-disable-next-line no-unused-vars,no-shadow
@@ -395,6 +395,7 @@ class ContentViewer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
+    uuid: state.user.uuid,
   };
 };
 
@@ -414,6 +415,7 @@ ContentViewer.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
+  uuid: PropTypes.string,
   t: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
