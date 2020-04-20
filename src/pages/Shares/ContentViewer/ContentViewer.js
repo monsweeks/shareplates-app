@@ -180,7 +180,7 @@ class ContentViewer extends React.Component {
   onMessage = (msg) => {
     console.log(msg);
     switch (msg.type) {
-      case 'share-started-status-change': {
+      case 'SHARE_STARTED_STATUS_CHANGE': {
         const { share } = this.state;
         const next = { ...share };
         next.startedYn = msg.data.startedYn;
@@ -190,7 +190,7 @@ class ContentViewer extends React.Component {
         break;
       }
 
-      case 'current-page-change': {
+      case 'CURRENT_PAGE_CHANGE': {
         const { pages, shareId, currentChapterId, currentPageId } = this.state;
         const { pageId, chapterId } = msg.data;
         if (currentChapterId !== chapterId || currentPageId !== pageId) {
@@ -215,7 +215,7 @@ class ContentViewer extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, setConfirm, user, location, uuid } = this.props;
+    const { t, setConfirm, user, location } = this.props;
 
     const {
       // eslint-disable-next-line no-unused-vars,no-shadow
@@ -395,7 +395,6 @@ class ContentViewer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user.user,
-    uuid: state.user.uuid,
   };
 };
 
@@ -414,8 +413,8 @@ ContentViewer.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     info: PropTypes.string,
+    uuid: PropTypes.string,
   }),
-  uuid: PropTypes.string,
   t: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({

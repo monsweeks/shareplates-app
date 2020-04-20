@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import './Header.scss';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { setUserAndGrp } from '@/actions';
+import { setUserInfo } from '@/actions';
 import Menu from '@/layouts/Header/Menu/Menu';
 import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
@@ -126,10 +126,10 @@ class Header extends React.Component {
   };
 
   logout = () => {
-    const { history, setUserAndGrp: setUserAndGrpReducer } = this.props;
+    const { history, setUserInfo: setUserInfoReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
-      setUserAndGrpReducer({}, []);
+      setUserInfoReducer({}, []);
       this.setOpenQuickMenu(false);
       history.push('/');
     });
@@ -222,7 +222,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
+    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
   };
 };
 
@@ -247,7 +247,7 @@ Header.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  setUserAndGrp: PropTypes.func,
+  setUserInfo: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));

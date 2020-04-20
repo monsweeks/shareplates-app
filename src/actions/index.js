@@ -6,7 +6,6 @@ export const SET_LOADING = 'SET_LOADING';
 export const SET_CONFIRM = 'SET_CONFIRM';
 export const SET_JOIN_EMAIL = 'SET_JOIN_EMAIL';
 export const SET_GRP_ID = 'SET_GRP_ID';
-export const SET_USER_UUID = 'SET_USER_UUID';
 
 export function setJoinEmail(email) {
   return {
@@ -15,7 +14,7 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUserAndGrp(user, grps) {
+export function setUserInfo(user, grps) {
   return {
     type: SET_USER_AND_GRP,
     user,
@@ -30,12 +29,6 @@ export function setGrp(grpId) {
   };
 }
 
-export function setUserUUID(uuid){
-	return {
-		type: SET_USER_UUID,
-		uuid
-	};
-}
 
 export function addMessage(code, category, title, content) {
   return {
