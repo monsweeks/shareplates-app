@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setConfirm, setUserAndGrp } from 'actions';
+import { addMessage, clearMessage, setConfirm, setUserAndGrp, setUserUUID } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
@@ -74,12 +74,13 @@ class Common extends React.Component {
   };
 
   getMyInfo = () => {
-    const { location, setUserAndGrp: setUserAndGrpReducer } = this.props;
+    const { location, setUserAndGrp: setUserAndGrpReducer, setUserUUID: setUUIDReducer } = this.props;
     request.get(
       '/api/users/my-info',
       null,
       (data) => {
         setUserAndGrpReducer(data.user || {}, data.grps);
+        setUUIDReducer(data.uuid);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
@@ -209,6 +210,7 @@ const mapDispatchToProps = (dispatch) => {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
     setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
+    setUserUUID: (uuid) => dispatch(setUserUUID(uuid)),
   };
 };
 
@@ -229,6 +231,7 @@ Common.propTypes = {
   t: PropTypes.func,
   clearMessage: PropTypes.func,
   setUserAndGrp: PropTypes.func,
+  setUserUUID: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),

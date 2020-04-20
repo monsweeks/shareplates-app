@@ -8,11 +8,13 @@ import {
   SET_SUPPORTED,
   SET_USER_AND_GRP,
   SET_CONFIRM,
+  SET_USER_UUID,
 } from '../actions';
 
 const userState = {
   user: null,
   grpId: null,
+  uuid: null,
   grps: [],
   join: {
     email: null,
@@ -29,6 +31,9 @@ const user = (state = userState, action) => {
     case SET_GRP_ID:
       return { ...state, grpId: action.grpId };
 
+  case SET_USER_UUID:
+	  return { ...state, uuid: action.uuid };
+	  
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });
 
