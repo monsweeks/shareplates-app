@@ -3,6 +3,7 @@ import DetailLayout from './DetailLayout/DetailLayout';
 import CenterBoxLayout from './CenterBoxLayout/CenterBoxLayout';
 import FullLayout from './FullLayout/FullLayout';
 import Header from './Header/Header';
+import EmptyHeader from './Header/EmptyHeader';
 import Footer from './Footer/Footer';
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import PageTitle from './PageTitle/PageTitle';
@@ -18,4 +19,5 @@ export {
   PageTitle,
   CenterBoxLayout,
   SubContentBox,
+  EmptyHeader,
 };

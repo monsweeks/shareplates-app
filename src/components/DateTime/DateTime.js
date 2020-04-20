@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { DATETIME_FORMATS_MAP, DATETIME_FORMATS } from '@/constants/constants';
+import { DATETIME_FORMATS, DATETIME_FORMATS_MAP } from '@/constants/constants';
 
 class DateTime extends React.PureComponent {
   getDateTimeFormat = (format) => {
@@ -18,7 +18,7 @@ class DateTime extends React.PureComponent {
     const { value, className, formatType } = this.props;
     return (
       <span className={`date-time-wrapper ${className}`}>
-        {moment(value).format(this.getDateTimeFormat(formatType))}
+        {value && moment(value).format(this.getDateTimeFormat(formatType))}
       </span>
     );
   }

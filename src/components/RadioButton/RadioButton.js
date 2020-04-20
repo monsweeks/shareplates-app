@@ -45,14 +45,14 @@ RadioButton.defaultProps = {
 RadioButton.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      key: PropTypes.string,
+      key: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       tooltip: PropTypes.string,
     }),
   ),
   onClick: PropTypes.func,
   className: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   circle: PropTypes.bool,
   size : PropTypes.string,
   outline : PropTypes.bool,

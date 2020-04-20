@@ -1,9 +1,11 @@
 $grap-size: 8px;
 
 .page-item {
-  &:hover {
-    .with-page-item-wrapper {
-      outline: 1px dashed rgba(0, 0, 0, 0.4);
+  &.editable {
+    &:hover {
+      .with-page-item-wrapper {
+        outline: 1px dashed rgba(0, 0, 0, 0.4);
+      }
     }
   }
 }
@@ -13,22 +15,31 @@ $grap-size: 8px;
   height: 100%;
   position: relative;
 
-  &:hover {
-    outline: 1px dashed rgba(0, 0, 0, 0.4);
-  }
+  &.editable {
+    &:hover {
+      outline: 1px dashed rgba(0, 0, 0, 0.4);
+    }
 
-  &.show-layout {
-    outline: 1px dashed rgba(0, 0, 0, 0.4);
-  }
+    &.show-layout {
+      outline: 1px dashed rgba(0, 0, 0, 0.4);
+    }
 
-  &.selected {
-    outline: 1px solid rgba(0, 0, 0, 0.4) !important;
+    &.selected {
+      outline: 1px solid rgba(0, 0, 0, 0.4) !important;
+    }
   }
 
   .grab {
     position: absolute;
+    display: none;
     &:hover {
       cursor: move;
+    }
+  }
+
+  &.editable {
+    .grab {
+      display: block;
     }
   }
 

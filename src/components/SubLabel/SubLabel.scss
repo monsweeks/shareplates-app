@@ -10,4 +10,34 @@
       margin-right: 0.25rem;
     }
   }
+
+  &.md {
+    > span {
+      font-size: 0.9rem;
+    }
+  }
+
+  &.sm {
+    > span {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.xs {
+    > span {
+      font-size: 0.75rem;
+    }
+  }
+
+  &.bold {
+    font-family: LGSmHaB;
+  }
+
+  &.outline {
+    > span {
+      display: inline-block;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      border-radius: 2px;
+    }
+  }
 }

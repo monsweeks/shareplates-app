@@ -1,16 +1,17 @@
 import React from 'react';
-
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, Row, SearchBar, SocketClient, TopicCard } from '@/components';
+import { Col, Popup, Row, SearchBar, SocketClient, TopicCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import './TopicList.scss';
 import { setGrp } from '@/actions';
+import ShareEditor from '@/pages/Topics/TopicList/ShareEditor';
+import ShareList from '@/pages/Topics/TopicList/ShareList';
+import './TopicList.scss';
 
 class TopicList extends React.Component {
   constructor(props) {
@@ -34,6 +35,11 @@ class TopicList extends React.Component {
       },
       topics: [],
       init: false,
+      openShareEditorPopup: false,
+      openShareListPopup: false,
+      selectedTopicId: null,
+      selectedShareId: null,
+      shares: [],
     };
 
     this.setOptionToUrl();
@@ -152,6 +158,64 @@ class TopicList extends React.Component {
     }
   };
 
+  createShareOrOpenPopup = (topicId) => {
+    request.get(`/api/topics/${topicId}/shares`, null, (data) => {
+      if (data.shares && data.shares.length < 1) {
+        this.setState({
+          openShareEditorPopup: true,
+          selectedTopicId: topicId,
+        });
+      } else {
+        this.setState({
+          shares: data.shares,
+          openShareListPopup: true,
+          selectedTopicId: topicId,
+        });
+      }
+    });
+  };
+
+  setOpenShareEditorPopup = (openShareEditorPopup) => {
+    this.setState({
+      openShareEditorPopup,
+    });
+  };
+
+  setOpenShareListPopup = (openShareListPopup) => {
+    this.setState({
+      openShareListPopup,
+    });
+  };
+
+  changeShare = (share) => {
+    const { shares } = this.state;
+    const next = shares.slice(0);
+    const inx = next.findIndex((info) => info.id === share.id);
+    next[inx] = share;
+    this.setState({
+      shares: next,
+    });
+  };
+
+  deleteShare = (share) => {
+    const { shares } = this.state;
+    const next = shares.slice(0);
+    const inx = next.findIndex((info) => info.id === share.id);
+    next.splice(inx, 1);
+    this.setState({
+      shares: next,
+    });
+  };
+
+  openShare = (topicId, shareId) => {
+    this.setState({
+      openShareEditorPopup: true,
+      openShareListPopup: false,
+      selectedTopicId: topicId,
+      selectedShareId: shareId,
+    });
+  };
+
   render() {
     const { grps, history, t, setGrp: setGrpAction } = this.props;
 
@@ -159,6 +223,11 @@ class TopicList extends React.Component {
       options,
       options: { grpId, searchWord, order, direction },
       topics,
+      openShareEditorPopup,
+      selectedTopicId,
+      shares,
+      openShareListPopup,
+      selectedShareId,
     } = this.state;
 
     return (
@@ -242,11 +311,14 @@ class TopicList extends React.Component {
                   <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
                     <TopicCard
                       topic={topic}
-                      onCardClick={(topicId) => {
+                      onInfoClick={(topicId) => {
+                        history.push(`/topics/${topicId}`);
+                      }}
+                      onContentClick={(topicId) => {
                         history.push(`/topics/${topicId}/chapters`);
                       }}
-                      onConfigClick={(topicId) => {
-                        history.push(`/topics/${topicId}`);
+                      onShareClick={(topicId) => {
+                        this.createShareOrOpenPopup(topicId);
                       }}
                     />
                   </Col>
@@ -263,6 +335,23 @@ class TopicList extends React.Component {
             </Row>
           </div>
         </FullLayout>
+        {openShareEditorPopup && selectedTopicId && (
+          <Popup title="토픽을 공유를 시작합니다" open setOpen={this.setOpenShareEditorPopup}>
+            <ShareEditor topicId={selectedTopicId} shareId={selectedShareId} setOpen={this.setOpenShareEditorPopup} />
+          </Popup>
+        )}
+        {openShareListPopup && (
+          <Popup title="토픽 공유 정보" open setOpen={this.setOpenShareListPopup}>
+            <ShareList
+              shares={shares}
+              changeShare={this.changeShare}
+              setOpen={this.setOpenShareListPopup}
+              openShare={this.openShare}
+              deleteShare={this.deleteShare}
+              topicId={selectedTopicId}
+            />
+          </Popup>
+        )}
       </div>
     );
   }

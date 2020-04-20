@@ -141,7 +141,7 @@ class PageManager extends React.Component {
   };
 
   deletePage = (pageId) => {
-    const { topicId, chapterId } = this.state;
+    const { topicId, chapterId, selectedPageId } = this.state;
 
     request.del(
       `/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}`,
@@ -156,6 +156,7 @@ class PageManager extends React.Component {
 
           this.setState({
             pages: next,
+            selectedPageId : selectedPageId === pageId ? null : selectedPageId
           });
         }
       },

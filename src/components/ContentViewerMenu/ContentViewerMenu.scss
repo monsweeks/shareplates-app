@@ -1,0 +1,107 @@
+.content-viewer-menu-wrapper {
+  height: 24px;
+  position: relative;
+  display: block;
+  width: 100%;
+  vertical-align: top;
+
+  .move-arrow {
+    width: 30px;
+    display: inline-block;
+    height: 100%;
+    line-height: 0;
+    padding: 0 4px;
+    text-align: center;
+    opacity: 0;
+    transition: 0.3s all;
+    vertical-align: top;
+
+    > span {
+      display: inline-block;
+      width: 22px;
+      height: 100%;
+      padding-top: 6px;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      vertical-align: top;
+      color: $white;
+      border-radius: 2px;
+      &.enabled {
+        &:hover {
+          background-color: $yellow;
+          color: $black;
+          transition: 0.3s all;
+        }
+      }
+
+      &.disabled {
+        display: none;
+      }
+
+    }
+  }
+
+  &:hover {
+    .move-arrow {
+      opacity: 1;
+    }
+  }
+
+  .content {
+    width: calc(100% - 60px);
+    display: inline-block;
+    overflow: hidden;
+    height: 100%;
+    vertical-align: top;
+
+    ul {
+      color: $white;
+      list-style: none;
+      display: inline-block;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      white-space: nowrap;
+      vertical-align: top;
+      line-height: 0;
+      position: relative;
+
+
+      li {
+        align-self: center;
+        cursor: pointer;
+        height: 100%;
+        white-space: nowrap;
+        font-size: 12px;
+        display: inline-block;
+        line-height: 100%;
+        padding: 7px 0.5rem 0;
+        transition: 0.1s all;
+        border-radius: 2px;
+        margin-right: 4px;
+        opacity: 0.9;
+
+        > div {
+          align-self: center;
+        }
+
+        &:hover {
+          background-color: $sea-blue;
+          color: $white;
+          background-color: $white;
+          color: $black;
+          transition: 0.1s all;
+          opacity: 1;
+        }
+
+        &.selected {
+          background-color: $yellow;
+          color: $black;
+          font-family: LGSmHaB;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

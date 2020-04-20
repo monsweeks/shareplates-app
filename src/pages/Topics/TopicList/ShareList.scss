@@ -1,0 +1,186 @@
+.share-list-wrapper {
+  text-align: left;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+
+  .share-list-content {
+    flex-grow: 1;
+    position: relative;
+
+    .share-list {
+      height: 100%;
+      width: 100%;
+      background-color: $light;
+
+      @media (max-width: 768px) {
+        background-color: $white;
+      }
+
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      > div {
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+
+        ul {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+          display: table;
+          background-color: $white;
+          font-size: 14px;
+          width: 100%;
+          table-layout: fixed;
+
+          @media (max-width: 768px) {
+            display: block;
+          }
+
+          li {
+            display: table-row;
+            @media (max-width: 768px) {
+              display: block;
+              vertical-align: top;
+              line-height: 0;
+              position: relative;
+            }
+
+            &.header {
+              > div {
+                position: sticky;
+                top: 0;
+                background-color: $white;
+                _background-color: $light;
+                border-bottom: 1px solid rgba(0,0,0,0.4);
+                z-index: 2;
+              }
+
+              @media (max-width: 768px) {
+                display: none;
+              }
+            }
+
+            > div {
+              display: table-cell;
+              padding: 0.5rem;
+              white-space: nowrap;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+              table-layout: fixed;
+              position: relative;
+              overflow-x: hidden;
+              text-overflow: ellipsis;
+              vertical-align: middle;
+
+              @media (max-width: 768px) {
+                display: inline-block;
+                line-height: 100%;
+              }
+
+              &:after {
+                content: '';
+                display: inline-block;
+                position: absolute;
+                top: 10px;
+                bottom: 10px;
+                right: 0;
+                width: 1px;
+                background-color: rgba(0, 0, 0, 0.1);
+
+                @media (max-width: 576px) {
+                  display: none;
+                }
+              }
+
+              &:last-child:after {
+                display: none;
+              }
+
+              &.name {
+                width: calc(100% - 800px);
+                overflow-x: hidden;
+
+                @media (max-width: 1200px) {
+                  width: calc(100% - 600px);
+                }
+
+                @media (max-width: 992px) {
+                  width: calc(100% - 450px);
+                }
+
+                @media (max-width: 768px) {
+                  width: 100%;
+                  border-bottom: none;
+                  font-family: LGSmHaB;
+                  padding: 0.75rem 110px 0.25rem 1rem;
+                }
+              }
+
+              &.private-yn {
+                width: 150px;
+                text-align: center;
+                @media (max-width: 768px) {
+                  width: 90px;
+                  text-align: left;
+                  padding-left: 1rem;
+                }
+              }
+
+              &.page-title {
+                width: 200px;
+                @media (max-width: 1200px) {
+                  display: none;
+                }
+              }
+
+              &.open-date {
+                width: 150px;
+                text-align: center;
+
+                @media (max-width: 768px) {
+                  width: calc(100% - 90px);
+                  text-align: left;
+                }
+              }
+
+              &.close-date {
+                width: 150px;
+                text-align: center;
+
+                @media (max-width: 992px) {
+                  display: none;
+                }
+              }
+
+              &.control {
+                width: 150px;
+                text-align: center;
+                padding: 0.125rem 0.5rem;
+                padding: 0;
+
+                @media (max-width: 768px) {
+                  width: 110px;
+                  text-align: right;
+                  position: absolute;
+                  top: 16px;
+                  right: 10px;
+                  border-bottom: none;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .popup-buttons {
+    flex-grow: 0;
+  }
+}

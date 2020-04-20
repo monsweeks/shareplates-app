@@ -5,16 +5,18 @@ import { PageContent, PageController } from '@/components';
 import './PageEditor.scss';
 import { getSetting } from '@/components/PageContentItems';
 
+const defaultContent = {
+  layouts: {
+    lg: [],
+  },
+  items: [],
+};
+
 class PageEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: {
-        layouts: {
-          lg: [],
-        },
-        items: [],
-      },
+      content: JSON.parse(JSON.stringify(defaultContent)),
       originalContent: null,
       pageId: -1,
       selectedItemId: null,
@@ -25,19 +27,23 @@ class PageEditor extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.pageId && props.pageId !== state.pageId) {
-      const content = props.page.content
-        ? JSON.parse(props.page.content)
-        : {
-            layouts: {
-              lg: [],
-            },
-            items: [],
-          };
+      const content = props.page.content ? JSON.parse(props.page.content) : JSON.parse(JSON.stringify(defaultContent));
 
       return {
         pageId: props.pageId,
         content,
         originalContent: JSON.stringify(content),
+      };
+    }
+
+    if (!props.pageId && state.pageId) {
+      return {
+        content: JSON.parse(JSON.stringify(defaultContent)),
+        originalContent: null,
+        pageId: -1,
+        selectedItemId: null,
+        itemOptions: {},
+        editing: false,
       };
     }
 
@@ -50,6 +56,13 @@ class PageEditor extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { showPageList } = this.props;
+    if (showPageList !== prevProps.showPageList) {
+      window.dispatchEvent(new Event('resize'));
+    }
   }
 
   onKeyDown = (e) => {
@@ -188,6 +201,16 @@ class PageEditor extends React.Component {
         values[key] = obj[key];
       });
 
+      if (obj.height) {
+        const layouts = { ...next.layouts };
+        const layout = layouts.lg.find((i) => i.i === String(selectedItemId));
+        if (Math.ceil(obj.height / 20) > layout.h) {
+          layout.h = Math.ceil(obj.height / 20);
+          // TODO 성능 개선 필요
+          next.layouts = JSON.parse(JSON.stringify(layouts));
+        }
+      }
+
       item.values = values;
       this.setState(
         {
@@ -253,6 +276,7 @@ PageEditor.propTypes = {
   }),
   setPageDirty: PropTypes.func,
   updatePage: PropTypes.func,
+  showPageList: PropTypes.bool,
 };
 
 export default withRouter(PageEditor);

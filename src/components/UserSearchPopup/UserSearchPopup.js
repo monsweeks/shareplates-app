@@ -183,7 +183,7 @@ class UserSearchPopup extends React.Component {
             </div>
           </Col>
         </Row>
-        <div className="popup-buttons p-3">
+        <div className="popup-buttons">
           <Button
             className="px-4 mr-2"
             color="secondary"
