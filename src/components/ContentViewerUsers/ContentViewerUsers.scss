@@ -1,0 +1,31 @@
+.user-list-wrapper {
+  background-color: $light;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  align-self: center;
+
+  .admin-user {
+    padding: 1rem 0;
+    text-align: center;
+  }
+
+  .user-card {
+    display: inline-block;
+    width: 300px;
+
+    .user-icon {
+      > div {
+        display: inline-block;
+        width: 80px;
+      }
+
+    }
+
+    .user-name {
+
+    }
+
+  }
+}

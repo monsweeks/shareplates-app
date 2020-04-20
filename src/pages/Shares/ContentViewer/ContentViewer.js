@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { Button, ContentViewerMenu, EmptyMessage, PageContent, SocketClient, TopLogo } from '@/components';
+import { Button, ContentViewerMenu, ContentViewerUsers, PageContent, SocketClient, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -36,6 +36,7 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user) {
       this.getShare(shareId);
+      this.joinShare(shareId);
     }
   }
 
@@ -44,8 +45,13 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user && share.id !== shareId) {
       this.getShare(shareId);
+      this.joinShare(shareId);
     }
   }
+
+  joinShare = (shareId) => {
+    request.put(`/api/shares/${shareId}/contents/join`, null);
+  };
 
   getShare = (shareId) => {
     request.get(`/api/shares/${shareId}/contents`, null, (data) => {
@@ -64,6 +70,7 @@ class ContentViewer extends React.Component {
         currentChapterId: data.share.currentChapterId,
         currentPageId: data.share.currentPageId,
         isAdmin: data.share.adminUserId === user.id,
+        users: data.users,
       });
 
       this.getPages(shareId, data.share.currentChapterId);
@@ -85,16 +92,19 @@ class ContentViewer extends React.Component {
           nextPageId = data.pages.length > 0 ? data.pages[data.pages.length - 1].id : null;
         }
 
-        this.setState({
-          currentChapterId: chapterId,
-          currentPageId: nextPageId,
-          pages: data.pages || [],
-          currentPage: data.pages.find((p) => p.id === nextPageId),
-        }, () => {
-          if (setFirstPage || setLastPage) {
-            this.setPage(nextPageId);
-          }
-        });
+        this.setState(
+          {
+            currentChapterId: chapterId,
+            currentPageId: nextPageId,
+            pages: data.pages || [],
+            currentPage: data.pages.find((p) => p.id === nextPageId),
+          },
+          () => {
+            if (setFirstPage || setLastPage) {
+              this.setPage(nextPageId);
+            }
+          },
+        );
       },
       null,
       true,
@@ -178,12 +188,15 @@ class ContentViewer extends React.Component {
   };
 
   onMessage = (msg) => {
-    console.log(msg);
-    switch (msg.type) {
+    const { type, data } = msg;
+
+    console.log(type, data);
+
+    switch (type) {
       case 'SHARE_STARTED_STATUS_CHANGE': {
         const { share } = this.state;
         const next = { ...share };
-        next.startedYn = msg.data.startedYn;
+        next.startedYn = data.startedYn;
         this.setState({
           share: next,
         });
@@ -192,7 +205,7 @@ class ContentViewer extends React.Component {
 
       case 'CURRENT_PAGE_CHANGE': {
         const { pages, shareId, currentChapterId, currentPageId } = this.state;
-        const { pageId, chapterId } = msg.data;
+        const { pageId, chapterId } = data;
         if (currentChapterId !== chapterId || currentPageId !== pageId) {
           if (currentChapterId !== chapterId) {
             this.getPages(shareId, chapterId, pageId);
@@ -202,6 +215,23 @@ class ContentViewer extends React.Component {
               currentPage: pages.find((p) => p.id === pageId),
             });
           }
+        }
+
+        break;
+      }
+
+      case 'USER_JOINED': {
+        const { users } = this.state;
+        const next = users.slice(0);
+
+        console.log(data.user);
+
+        const userIndex = next.findIndex((user) => user.id === data.user.id);
+        if (userIndex < 0) {
+          next.push(data.user);
+          this.setState({
+            users: next,
+          });
         }
 
         break;
@@ -323,25 +353,7 @@ class ContentViewer extends React.Component {
                   <div className="user-message">아직 관리자가 토픽 공유를 시작하지 않았습니다. 잠시 기다려주세요.</div>
                 )}
               </div>
-              <div className="user-list">
-                {users && users.length > 0 && (
-                  <ul>
-                    {users.map((u) => {
-                      return <li>{u.name}</li>;
-                    })}
-                  </ul>
-                )}
-                {!(users && users.length > 0) && (
-                  <EmptyMessage
-                    className="h5"
-                    message={
-                      <div>
-                        <div>{t('현재 참여 중인 사용자가 없습니다')}</div>
-                      </div>
-                    }
-                  />
-                )}
-              </div>
+              <ContentViewerUsers users={users} />
             </div>
           )}
           {share.startedYn && currentPage && (
