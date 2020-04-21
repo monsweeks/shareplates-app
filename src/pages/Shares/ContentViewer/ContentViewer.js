@@ -283,7 +283,7 @@ class ContentViewer extends React.Component {
 
     return (
       <div className="content-viewer-wrapper">
-        <SocketClient topics={[`/sub/share-room/${shareId}`]} successRecieveMessage={(msg) => this.onMessage(msg)} />
+        <SocketClient topics={[`/sub/share-room/${shareId}/${user != null ? user.uuid : ''}`]} successRecieveMessage={(msg) => this.onMessage(msg)} />
         <div className="viewer-top g-no-select">
           <div className="logo-area">
             <TopLogo />
