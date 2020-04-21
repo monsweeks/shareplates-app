@@ -190,7 +190,7 @@ class ContentViewer extends React.Component {
 
   sendReadyChat = (message) => {
     const { shareId } = this.state;
-    request.put(`/api/shares/${shareId}/contents/chats/ready`, {message}, () => {}, null, true);
+    request.post(`/api/shares/${shareId}/contents/chats/ready`, {message}, () => {}, null, true);
   };
 
   onMessage = (msg) => {
@@ -241,7 +241,7 @@ class ContentViewer extends React.Component {
         break;
       }
 
-      case 'READY_CHAT': {
+      case 'CHAT_MESSAGE': {
         const { users } = this.state;
         const next = users.slice(0);
         const userIndex = next.findIndex((user) => user.id === data.senderId);
