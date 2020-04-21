@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, Popup, Row, SearchBar, SocketClient, TopicCard } from '@/components';
+import { Col, Popup, Row, SearchBar, TopicCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
@@ -127,35 +127,6 @@ class TopicList extends React.Component {
     const { options } = this.state;
 
     common.setOptions(history, pathname, options);
-  };
-
-  createNewTopic = (topic) => {
-    const { topics } = this.state;
-    switch (topic.statusCode) {
-      case 'CREATE':
-        this.setState((prevState) => ({
-          topics: [...prevState.topics, topic],
-        }));
-        break;
-
-      case 'UPDATE':
-        topics.forEach((t, idx) => {
-          if (t.id === topic.id) {
-            topics[idx] = topic;
-          }
-        });
-        this.setState({
-          topics,
-        });
-        break;
-
-      case 'DELETE':
-        this.setState((prevState) => ({
-          topics: [...prevState.topics, topic],
-        }));
-        break;
-      default:
-    }
   };
 
   createShareOrOpenPopup = (topicId) => {
@@ -302,7 +273,6 @@ class TopicList extends React.Component {
             );
           }}
         />
-        <SocketClient topics={['/sub/topic']} successRecieveMessage={(msg) => this.createNewTopic(msg)} />
         <FullLayout className="topic-list-content text-center align-self-center">
           <div className="topic-list">
             <Row>
