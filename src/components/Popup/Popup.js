@@ -5,7 +5,6 @@ import './Popup.scss';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class Popup extends React.PureComponent {
-
   overflow = null;
 
   componentDidMount() {
@@ -23,16 +22,18 @@ class Popup extends React.PureComponent {
     return (
       <div className={`popup-wrapper g-overlay ${className} ${open ? 'd-flex' : 'd-none'}`}>
         <div>
-          <div className="popup-title">{title}</div>
-          <CircleIcon
-            className="close-popup-button bg-transparent"
-            icon={<i className="fal fa-times" />}
-            onClick={() => {
-              if (setOpen) {
-                setOpen(false);
-              }
-            }}
-          />
+          {title && <div className="popup-title">{title}</div>}
+          {setOpen && (
+            <CircleIcon
+              className="close-popup-button bg-transparent"
+              icon={<i className="fal fa-times" />}
+              onClick={() => {
+                if (setOpen) {
+                  setOpen(false);
+                }
+              }}
+            />
+          )}
           <div className="popup-content">{children}</div>
         </div>
       </div>

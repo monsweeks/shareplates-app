@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setConfirm, setUserAndGrp } from 'actions';
+import { addMessage, clearMessage, setConfirm, setUserInfo } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
 import { Button, Logo } from '@/components';
@@ -74,17 +74,17 @@ class Common extends React.Component {
   };
 
   getMyInfo = () => {
-    const { location, setUserAndGrp: setUserAndGrpReducer } = this.props;
+    const { location, setUserInfo: setUserInfoReducer } = this.props;
     request.get(
       '/api/users/my-info',
       null,
       (data) => {
-        setUserAndGrpReducer(data.user || {}, data.grps);
+        setUserInfoReducer(data.user || {}, data.grps);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
       () => {
-        setUserAndGrpReducer({}, []);
+        setUserInfoReducer({}, []);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
@@ -207,7 +207,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
+    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
     setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
   };
 };
@@ -228,7 +228,7 @@ Common.propTypes = {
   loading: PropTypes.bool,
   t: PropTypes.func,
   clearMessage: PropTypes.func,
-  setUserAndGrp: PropTypes.func,
+  setUserInfo: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),

@@ -51,6 +51,7 @@ import PageControlTab from '@/components/PageControlTab/PageControlTab';
 import CopySpan from '@/components/CopySpan/CopySpan';
 import ShareCard from '@/components/ShareCard/ShareCard';
 import ContentViewerMenu from '@/components/ContentViewerMenu/ContentViewerMenu';
+import ContentViewerUsers from '@/components/ContentViewerUsers/ContentViewerUsers';
 
 export {
   Button,
@@ -106,4 +107,5 @@ export {
   CopySpan,
   ShareCard,
   ContentViewerMenu,
+  ContentViewerUsers,
 };

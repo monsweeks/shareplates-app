@@ -14,7 +14,7 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUserAndGrp(user, grps) {
+export function setUserInfo(user, grps) {
   return {
     type: SET_USER_AND_GRP,
     user,
@@ -28,6 +28,7 @@ export function setGrp(grpId) {
     grpId,
   };
 }
+
 
 export function addMessage(code, category, title, content) {
   return {

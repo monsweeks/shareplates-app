@@ -6,7 +6,8 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { Button, ContentViewerMenu, EmptyMessage, PageContent, SocketClient, TopLogo } from '@/components';
+import ShareReady from './ShareReady';
+import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user) {
       this.getShare(shareId);
+      this.joinShare(shareId);
     }
   }
 
@@ -44,8 +46,13 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user && share.id !== shareId) {
       this.getShare(shareId);
+      this.joinShare(shareId);
     }
   }
+
+  joinShare = (shareId) => {
+    request.put(`/api/shares/${shareId}/contents/join`, null);
+  };
 
   getShare = (shareId) => {
     request.get(`/api/shares/${shareId}/contents`, null, (data) => {
@@ -64,6 +71,7 @@ class ContentViewer extends React.Component {
         currentChapterId: data.share.currentChapterId,
         currentPageId: data.share.currentPageId,
         isAdmin: data.share.adminUserId === user.id,
+        users: data.users,
       });
 
       this.getPages(shareId, data.share.currentChapterId);
@@ -85,16 +93,19 @@ class ContentViewer extends React.Component {
           nextPageId = data.pages.length > 0 ? data.pages[data.pages.length - 1].id : null;
         }
 
-        this.setState({
-          currentChapterId: chapterId,
-          currentPageId: nextPageId,
-          pages: data.pages || [],
-          currentPage: data.pages.find((p) => p.id === nextPageId),
-        }, () => {
-          if (setFirstPage || setLastPage) {
-            this.setPage(nextPageId);
-          }
-        });
+        this.setState(
+          {
+            currentChapterId: chapterId,
+            currentPageId: nextPageId,
+            pages: data.pages || [],
+            currentPage: data.pages.find((p) => p.id === nextPageId),
+          },
+          () => {
+            if (setFirstPage || setLastPage) {
+              this.setPage(nextPageId);
+            }
+          },
+        );
       },
       null,
       true,
@@ -177,22 +188,30 @@ class ContentViewer extends React.Component {
     }
   };
 
+  sendReadyChat = (message) => {
+    const { shareId } = this.state;
+    request.put(`/api/shares/${shareId}/contents/chats/ready`, {message}, () => {}, null, true);
+  };
+
   onMessage = (msg) => {
-    console.log(msg);
-    switch (msg.type) {
-      case 'share-started-status-change': {
+    const { type, data } = msg;
+
+    console.log(type, data);
+
+    switch (type) {
+      case 'SHARE_STARTED_STATUS_CHANGE': {
         const { share } = this.state;
         const next = { ...share };
-        next.startedYn = msg.data.startedYn;
+        next.startedYn = data.startedYn;
         this.setState({
           share: next,
         });
         break;
       }
 
-      case 'current-page-change': {
+      case 'CURRENT_PAGE_CHANGE': {
         const { pages, shareId, currentChapterId, currentPageId } = this.state;
-        const { pageId, chapterId } = msg.data;
+        const { pageId, chapterId } = data;
         if (currentChapterId !== chapterId || currentPageId !== pageId) {
           if (currentChapterId !== chapterId) {
             this.getPages(shareId, chapterId, pageId);
@@ -202,6 +221,35 @@ class ContentViewer extends React.Component {
               currentPage: pages.find((p) => p.id === pageId),
             });
           }
+        }
+
+        break;
+      }
+
+      case 'USER_JOINED': {
+        const { users } = this.state;
+        const next = users.slice(0);
+
+        const userIndex = next.findIndex((user) => user.id === data.user.id);
+        if (userIndex < 0) {
+          next.push(data.user);
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'READY_CHAT': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((user) => user.id === data.senderId);
+        if (userIndex > -1) {
+          next[userIndex].message = data.message;
+          this.setState({
+            users: next,
+          });
         }
 
         break;
@@ -297,53 +345,6 @@ class ContentViewer extends React.Component {
           </div>
         </div>
         <div className="content">
-          {!share.startedYn && (
-            <div className="share-prepare-content">
-              <div className="share-info">
-                <div className="share-name">
-                  <span>{share.name}</span>
-                </div>
-                <div className="prepare-message">아래 URL을 통해 이 토픽에 참여할 수 있습니다.</div>
-                <div className="connect-url">
-                  <span>{window.location.href}</span>
-                </div>
-                {isAdmin && (
-                  <div className="admin-controller">
-                    <div>
-                      <Button color="white" onClick={this.startShare}>
-                        <i className="fal fa-play-circle" />
-                      </Button>
-                      <div className="msg">
-                        <span>공유를 시작합니다</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {!isAdmin && (
-                  <div className="user-message">아직 관리자가 토픽 공유를 시작하지 않았습니다. 잠시 기다려주세요.</div>
-                )}
-              </div>
-              <div className="user-list">
-                {users && users.length > 0 && (
-                  <ul>
-                    {users.map((u) => {
-                      return <li>{u.name}</li>;
-                    })}
-                  </ul>
-                )}
-                {!(users && users.length > 0) && (
-                  <EmptyMessage
-                    className="h5"
-                    message={
-                      <div>
-                        <div>{t('현재 참여 중인 사용자가 없습니다')}</div>
-                      </div>
-                    }
-                  />
-                )}
-              </div>
-            </div>
-          )}
           {share.startedYn && currentPage && (
             <PageContent
               content={JSON.parse(currentPage.content)}
@@ -387,6 +388,11 @@ class ContentViewer extends React.Component {
             <Button color="primary">컨트롤러</Button>
           </div>
         </div>
+        {!share.startedYn && (
+          <Popup open>
+            <ShareReady startShare={this.startShare} users={users} share={share} isAdmin={isAdmin} user={user} sendReadyChat={this.sendReadyChat} />
+          </Popup>
+        )}
       </div>
     );
   }
@@ -413,6 +419,7 @@ ContentViewer.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     info: PropTypes.string,
+    uuid: PropTypes.string,
   }),
   t: PropTypes.func,
   match: PropTypes.shape({

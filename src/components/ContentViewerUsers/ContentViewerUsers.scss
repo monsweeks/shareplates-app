@@ -1,0 +1,171 @@
+$icon-size: 60px;
+$icon-sm-size: 50px;
+
+.user-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  align-self: center;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  .admin-user {
+    padding: 0;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .member-user {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: $light;
+    border-radius: 20px;
+    max-height: 300px;
+    min-height: 200px;
+    overflow-y: auto;
+  }
+
+  .user-card {
+    display: inline-block;
+    width: 140px;
+    position: relative;
+
+    .mic-icon {
+      position: absolute;
+      bottom: 18px;
+      right: 59px;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      background-color: $primary;
+      color: $white;
+      border-radius: 50%;
+      padding-top: 0px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .user-icon {
+      text-align: center;
+
+      > div {
+        display: inline-block;
+        width: $icon-size;
+
+        @media (max-width: 768px) {
+          width: $icon-sm-size;
+        }
+      }
+
+      .default-icon {
+        width: $icon-size;
+        height: $icon-size;
+        display: inline-block;
+        font-size: 40px;
+        border-radius: 50%;
+        background-color: $secondary;
+        color: $white;
+        padding-top: 3px;
+
+        @media (max-width: 768px) {
+          width: $icon-sm-size;
+          height: $icon-sm-size;
+        }
+      }
+    }
+
+    .user-name {
+      margin-top: 0.25rem;
+      text-align: center;
+      > span {
+        display: inline-block;
+        padding: 2px 8px;
+        line-height: 100%;
+        border-radius: 2px;
+        position: relative;
+
+        @media (max-width: 768px) {
+          font-size: 12px;
+        }
+
+        .crown-icon {
+          position: absolute;
+          top: -2px;
+          right: -17px;
+          display: inline-block;
+          width: 22px;
+          height: 22px;
+          background-color: $white;
+          color: $black;
+          border-radius: 50%;
+          padding-top: 4px;
+          text-align: center;
+          font-size: 12px;
+          _border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    .last-chat-input,
+    .last-chat {
+      position: absolute;
+      top: -25px;
+      left: 0;
+      width: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+      background-color: $white;
+      z-index: 2;
+
+      .message {
+        position: relative;
+        z-index: 2;
+        background-color: $white;
+      }
+
+      .arrow {
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 0;
+        z-index: 1;
+        height: 10px;
+
+        > span {
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          transform: rotate(45deg);
+          background-color: $white;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      > div {
+        padding: 0.5rem;
+        font-size: 12px;
+      }
+    }
+
+    .last-chat-input {
+      width: auto;
+      line-height: 0;
+
+      textarea {
+        resize: none;
+        line-height: 100%;
+        padding: 0;
+        outline: none;
+        border: none;
+        width: 120px;
+      }
+    }
+  }
+}

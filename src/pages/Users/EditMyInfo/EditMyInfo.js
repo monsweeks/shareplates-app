@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { addMessage, setUserAndGrp } from '@/actions';
+import { addMessage, setUserInfo } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
 import { BottomButton, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
@@ -70,10 +70,10 @@ class EditMyInfo extends React.PureComponent {
   onSubmit = (e) => {
     e.preventDefault();
     const { user } = this.state;
-    const { setUserAndGrp: setUserAndGrpReducer } = this.props;
+    const { setUserInfo: setUserInfoReducer } = this.props;
 
     request.put('/api/users/my-info', user, (data) => {
-      setUserAndGrpReducer(data.user || {}, data.grps);
+      setUserInfoReducer(data.user || {}, data.grps);
     });
   };
 
@@ -153,7 +153,7 @@ class EditMyInfo extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserAndGrp: (user, grps) => dispatch(setUserAndGrp(user, grps)),
+    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
   };
 };
 
@@ -161,7 +161,7 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 
 EditMyInfo.propTypes = {
   t: PropTypes.func.isRequired,
-  setUserAndGrp: PropTypes.func.isRequired,
+  setUserInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
