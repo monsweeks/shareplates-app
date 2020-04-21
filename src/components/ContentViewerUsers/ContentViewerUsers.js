@@ -6,57 +6,52 @@ import './ContentViewerUsers.scss';
 import { Avatar, EmptyMessage } from '@/components';
 
 class ContentViewerUsers extends React.PureComponent {
-  render() {
-    const { users, t } = this.props;
+  getUserCard = (user, isAdmin) => {
+    return (
+      <div key={user.id} className="user-card">
+        {isAdmin && (
+          <div className="crown-icon">
+            <i className="fas fa-crown" />
+          </div>
+        )}
 
-    console.log(users);
+        <div className="user-icon">
+          <div>
+            {user.info && <Avatar data={JSON.parse(user.info)} />}
+            {!user.info && (
+              <span className="default-icon">
+                <i className="fal fa-smile" />
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="user-name">
+          <span>{user.name}</span>
+        </div>
+      </div>
+    );
+  };
+
+  render() {
+    const { users, t, className } = this.props;
 
     return (
-      <div className="user-list-wrapper">
+      <div className={`${className} user-list-wrapper`}>
         <div className="admin-user">
           {users
             .filter((user) => user.shareRoleCode === 'ADMIN')
             .map((user) => {
-              return (
-                <div className="user-card">
-                  <div className='crown-icon'>
-                    <i className="fas fa-crown"/>
-                  </div>
-                  <div className="user-icon">
-                    <div>
-                      {user.info && <Avatar data={JSON.parse(user.info)} />}
-                      {!user.info && (
-                        <span>
-                          <i className="fal fa-smile" />
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="user-name">{user.name}</div>
-                </div>
-              );
+              return this.getUserCard(user, true);
             })}
         </div>
         {users && users.length > 0 && (
-          <ul>
+          <div className="member-user scrollbar">
             {users
               .filter((user) => user.shareRoleCode === 'MEMBER')
               .map((user) => {
-                return (
-                  <li key={user.id}>
-                    <div className="user-icon">
-                      {user.info && <Avatar data={JSON.parse(user.info)} />}
-                      {!user.info && (
-                        <span>
-                          <i className="fal fa-smile" />
-                        </span>
-                      )}
-                    </div>
-                    <div>{user.name}</div>
-                  </li>
-                );
+                return this.getUserCard(user, false);
               })}
-          </ul>
+          </div>
         )}
         {!(users && users.length > 0) && (
           <EmptyMessage
@@ -73,6 +68,10 @@ class ContentViewerUsers extends React.PureComponent {
   }
 }
 
+ContentViewerUsers.defaultProps = {
+  className: '',
+};
+
 ContentViewerUsers.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
@@ -84,6 +83,7 @@ ContentViewerUsers.propTypes = {
     }),
   ),
   t: PropTypes.func,
+  className: PropTypes.string,
 };
 
 export default withRouter(withTranslation()(ContentViewerUsers));

@@ -6,7 +6,8 @@ import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
-import { Button, ContentViewerMenu, ContentViewerUsers, PageContent, SocketClient, TopLogo } from '@/components';
+import ShareReady from './ShareReady';
+import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -327,35 +328,6 @@ class ContentViewer extends React.Component {
           </div>
         </div>
         <div className="content">
-          {!share.startedYn && (
-            <div className="share-prepare-content">
-              <div className="share-info">
-                <div className="share-name">
-                  <span>{share.name}</span>
-                </div>
-                <div className="prepare-message">아래 URL을 통해 이 토픽에 참여할 수 있습니다.</div>
-                <div className="connect-url">
-                  <span>{window.location.href}</span>
-                </div>
-                {isAdmin && (
-                  <div className="admin-controller">
-                    <div>
-                      <Button color="white" onClick={this.startShare}>
-                        <i className="fal fa-play-circle" />
-                      </Button>
-                      <div className="msg">
-                        <span>공유를 시작합니다</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {!isAdmin && (
-                  <div className="user-message">아직 관리자가 토픽 공유를 시작하지 않았습니다. 잠시 기다려주세요.</div>
-                )}
-              </div>
-              <ContentViewerUsers users={users} />
-            </div>
-          )}
           {share.startedYn && currentPage && (
             <PageContent
               content={JSON.parse(currentPage.content)}
@@ -399,6 +371,11 @@ class ContentViewer extends React.Component {
             <Button color="primary">컨트롤러</Button>
           </div>
         </div>
+        {!share.startedYn && (
+          <Popup open>
+            <ShareReady startShare={this.startShare} users={users} share={share} isAdmin={isAdmin} />
+          </Popup>
+        )}
       </div>
     );
   }

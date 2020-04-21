@@ -1,31 +1,96 @@
+$icon-size : 60px;
+$icon-sm-size : 50px;
+
 .user-list-wrapper {
-  background-color: $light;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   width: 100%;
   align-self: center;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 
   .admin-user {
-    padding: 1rem 0;
+    padding: 0;
     text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .member-user {
+    text-align: center;
+    padding: 1rem;
+    background-color: $light;
+    border-radius: 20px;
+    max-height: 300px;
+    min-height: 200px;
+    overflow-y: auto;
   }
 
   .user-card {
     display: inline-block;
-    width: 300px;
+    width: 120px;
+    position: relative;
+
+    .crown-icon {
+      position: absolute;
+      top: 0;
+      right: 26px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: $yellow;
+      color: $black;
+      border-radius: 50%;
+      padding-top: 2px;
+      text-align: center;
+      font-size: 12px;
+    }
 
     .user-icon {
+      text-align: center;
+
       > div {
         display: inline-block;
-        width: 80px;
+        width: $icon-size;
+
+        @media (max-width: 768px) {
+          width: $icon-sm-size;
+        }
       }
 
+      .default-icon {
+        width: $icon-size;
+        height: $icon-size;
+        display: inline-block;
+        font-size: 40px;
+        border-radius: 50%;
+        background-color: $secondary;
+        color: $white;
+        padding-top: 3px;
+
+        @media (max-width: 768px) {
+          width: $icon-sm-size;
+          height: $icon-sm-size;
+        }
+      }
     }
 
     .user-name {
+      margin-top: 0.25rem;
+      text-align: center;
+      > span {
+        display: inline-block;
+        padding: 2px 8px;
+        line-height: 100%;
+        border-radius: 2px;
 
+        @media (max-width: 768px) {
+          font-size: 12px;
+        }
+      }
     }
-
   }
 }
