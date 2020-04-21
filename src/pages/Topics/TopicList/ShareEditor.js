@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { setConfirm } from 'actions';
@@ -169,7 +170,7 @@ class ShareEditor extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { setOpen, onChangeShare } = this.props;
+    const { setOpen, onChangeShare, history } = this.props;
     const { share } = this.state;
 
     if (share.id) {
@@ -187,6 +188,7 @@ class ShareEditor extends React.Component {
     } else {
       request.post('/api/shares', share, () => {
         setOpen(false);
+        history.push('/shares');
       });
     }
   };
@@ -413,6 +415,9 @@ ShareEditor.propTypes = {
   setStatusChange: PropTypes.func,
   setConfirm: PropTypes.func,
   onChangeShare : PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
 };
 
-export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditor));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditor)));

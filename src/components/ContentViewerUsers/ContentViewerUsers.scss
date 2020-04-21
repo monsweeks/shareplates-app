@@ -34,6 +34,20 @@ $icon-sm-size: 50px;
     width: 140px;
     position: relative;
 
+    .status {
+      position: absolute;
+      top : 19px;
+      left : 0;
+      text-align: center;
+      width: 100%;
+      > span {
+        font-size: 11px;
+        padding: 2px 4px;
+        background-color: $white;
+      }
+
+    }
+
     .mic-icon {
       position: absolute;
       bottom: 18px;
@@ -79,9 +93,12 @@ $icon-sm-size: 50px;
       }
     }
 
+
+
     .user-name {
       margin-top: 0.25rem;
       text-align: center;
+
       > span {
         display: inline-block;
         padding: 2px 8px;
@@ -126,6 +143,8 @@ $icon-sm-size: 50px;
         position: relative;
         z-index: 2;
         background-color: $white;
+        max-height: 42px;
+        overflow-y: auto;
       }
 
       .arrow {
@@ -149,7 +168,7 @@ $icon-sm-size: 50px;
       }
 
       > div {
-        padding: 0.5rem;
+        padding: 0.25rem;
         font-size: 12px;
       }
     }

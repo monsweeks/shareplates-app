@@ -22,6 +22,8 @@ class ContentViewerUsers extends React.Component {
     const { user: currentUser, sendReadyChat } = this.props;
     const isMe = info.id === currentUser.id;
 
+    console.log(info);
+
     return (
       <div key={info.id} className="user-card">
         {isMe && (
@@ -55,6 +57,7 @@ class ContentViewerUsers extends React.Component {
             )}
           </div>
         </div>
+        {info.status !== 'ONLINE' && <span className='status'><span>OFFLINE</span></span>}
         <div className="user-name">
           <span>
             {info.name}
@@ -67,7 +70,7 @@ class ContentViewerUsers extends React.Component {
         </div>
         {((isMe && !micOn && info.message) || (!isMe && info.message)) && (
           <div className="last-chat">
-            <div className="message">{info.message}</div>
+            <div className="message scrollbar">{info.message}</div>
             <div className="arrow">
               <span />
             </div>
