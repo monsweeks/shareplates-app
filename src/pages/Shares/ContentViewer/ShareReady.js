@@ -9,8 +9,7 @@ import { Button, ContentViewerUsers } from '@/components';
 
 class ShareReady extends React.PureComponent {
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { share, isAdmin, users, startShare, closeShare } = this.props;
+    const { isAdmin, users, startShare, closeShare, user, sendReadyChat } = this.props;
 
     return (
       <div className="share-prepare-content-wrapper">
@@ -19,9 +18,11 @@ class ShareReady extends React.PureComponent {
             <div className="connect-url">
               <span>{window.location.href}</span>
             </div>
-            <div className='connect-message'>브라우저에 위 주소를 입력하여 토픽에 참여할 수 있습니다.</div>
+            <div className="connect-message">브라우저에 위 주소를 입력하여 토픽에 참여할 수 있습니다.</div>
             {!isAdmin && (
-              <div className="user-message"><span>아직 관리자가 토픽을 시작하지 않았습니다</span></div>
+              <div className="user-message">
+                <span>아직 관리자가 토픽을 시작하지 않았습니다</span>
+              </div>
             )}
           </div>
           {isAdmin && (
@@ -46,10 +47,10 @@ class ShareReady extends React.PureComponent {
           )}
         </div>
         <div className="user-count">
-          <div className='line' />
-          <span className='label'>{users.length}명 접속중</span>
+          <div className="line" />
+          <span className="label">{users.length}명 접속중</span>
         </div>
-        <ContentViewerUsers users={users} />
+        <ContentViewerUsers users={users} user={user} sendReadyChat={sendReadyChat} />
       </div>
     );
   }
@@ -77,10 +78,17 @@ ShareReady.propTypes = {
       shareRoleCode: PropTypes.string,
     }),
   ),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    info: PropTypes.string,
+    uuid: PropTypes.string,
+  }),
   isAdmin: PropTypes.bool,
-  share: PropTypes.objectOf(PropTypes.any),
   startShare: PropTypes.func,
   closeShare: PropTypes.func,
+  sendReadyChat: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareReady)));

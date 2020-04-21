@@ -188,6 +188,11 @@ class ContentViewer extends React.Component {
     }
   };
 
+  sendReadyChat = (message) => {
+    const { shareId } = this.state;
+    request.put(`/api/shares/${shareId}/contents/chats/ready`, {message}, () => {}, null, true);
+  };
+
   onMessage = (msg) => {
     const { type, data } = msg;
 
@@ -225,11 +230,23 @@ class ContentViewer extends React.Component {
         const { users } = this.state;
         const next = users.slice(0);
 
-        console.log(data.user);
-
         const userIndex = next.findIndex((user) => user.id === data.user.id);
         if (userIndex < 0) {
           next.push(data.user);
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'READY_CHAT': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((user) => user.id === data.senderId);
+        if (userIndex > -1) {
+          next[userIndex].message = data.message;
           this.setState({
             users: next,
           });
@@ -373,7 +390,7 @@ class ContentViewer extends React.Component {
         </div>
         {!share.startedYn && (
           <Popup open>
-            <ShareReady startShare={this.startShare} users={users} share={share} isAdmin={isAdmin} />
+            <ShareReady startShare={this.startShare} users={users} share={share} isAdmin={isAdmin} user={user} sendReadyChat={this.sendReadyChat} />
           </Popup>
         )}
       </div>

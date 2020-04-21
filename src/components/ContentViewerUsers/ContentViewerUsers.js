@@ -5,20 +5,50 @@ import { withTranslation } from 'react-i18next';
 import './ContentViewerUsers.scss';
 import { Avatar, EmptyMessage } from '@/components';
 
-class ContentViewerUsers extends React.PureComponent {
-  getUserCard = (user, isAdmin) => {
+class ContentViewerUsers extends React.Component {
+  textarea = null;
+
+  constructor(props) {
+    super(props);
+    this.textarea = React.createRef();
+    this.state = {
+      micOn: false,
+      message: '',
+    };
+  }
+
+  getUserCard = (info, isAdmin) => {
+    const { micOn, message } = this.state;
+    const { user: currentUser, sendReadyChat } = this.props;
+    const isMe = info.id === currentUser.id;
+
     return (
-      <div key={user.id} className="user-card">
-        {isAdmin && (
-          <div className="crown-icon">
-            <i className="fas fa-crown" />
+      <div key={info.id} className="user-card">
+        {isMe && (
+          <div
+            className="mic-icon"
+            onClick={() => {
+              this.setState(
+                {
+                  micOn: !micOn,
+                },
+                () => {
+                  if (!micOn) {
+                    setTimeout(() => {
+                      this.textarea.current.focus();
+                    }, 100);
+                  }
+                },
+              );
+            }}
+          >
+            <i className="fal fa-microphone-alt" />
           </div>
         )}
-
         <div className="user-icon">
           <div>
-            {user.info && <Avatar data={JSON.parse(user.info)} />}
-            {!user.info && (
+            {info.info && <Avatar data={JSON.parse(info.info)} />}
+            {!info.info && (
               <span className="default-icon">
                 <i className="fal fa-smile" />
               </span>
@@ -26,8 +56,49 @@ class ContentViewerUsers extends React.PureComponent {
           </div>
         </div>
         <div className="user-name">
-          <span>{user.name}</span>
+          <span>
+            {info.name}
+            {isAdmin && (
+              <div className="crown-icon">
+                <i className="fas fa-crown" />
+              </div>
+            )}
+          </span>
         </div>
+        {((isMe && !micOn && info.message) || (!isMe && info.message)) && (
+          <div className="last-chat">
+            <div className="message">{info.message}</div>
+            <div className="arrow">
+              <span />
+            </div>
+          </div>
+        )}
+        {micOn && isMe && (
+          <div className="last-chat-input">
+            <div className="message">
+              <textarea
+                ref={this.textarea}
+                cols={3}
+                onChange={(e) => {
+                  this.setState({ message: e.target.value });
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    sendReadyChat(message);
+                    this.setState({
+                      micOn: false,
+                      message: '',
+                    });
+                  }
+                }}
+                value={message}
+              />
+            </div>
+            <div className="arrow">
+              <span />
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -80,10 +151,19 @@ ContentViewerUsers.propTypes = {
       name: PropTypes.string,
       info: PropTypes.string,
       shareRoleCode: PropTypes.string,
+      message: PropTypes.string,
     }),
   ),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    info: PropTypes.string,
+    uuid: PropTypes.string,
+  }),
   t: PropTypes.func,
   className: PropTypes.string,
+  sendReadyChat: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(ContentViewerUsers));
