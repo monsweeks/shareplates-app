@@ -83,7 +83,6 @@ ShareReady.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     info: PropTypes.string,
-    uuid: PropTypes.string,
   }),
   isAdmin: PropTypes.bool,
   startShare: PropTypes.func,
