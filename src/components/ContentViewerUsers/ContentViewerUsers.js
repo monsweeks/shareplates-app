@@ -55,7 +55,11 @@ class ContentViewerUsers extends React.Component {
             )}
           </div>
         </div>
-        {info.status !== 'ONLINE' && <span className='status'><span>OFFLINE</span></span>}
+        {info.status !== 'ONLINE' && (
+          <span className="status">
+            <span>OFFLINE</span>
+          </span>
+        )}
         <div className="user-name">
           <span>
             {info.name}
@@ -106,6 +110,7 @@ class ContentViewerUsers extends React.Component {
 
   render() {
     const { users, t, className } = this.props;
+    const members = users.filter((user) => user.shareRoleCode === 'MEMBER');
 
     return (
       <div className={`${className} user-list-wrapper`}>
@@ -116,7 +121,7 @@ class ContentViewerUsers extends React.Component {
               return this.getUserCard(user, true);
             })}
         </div>
-        {users && users.length > 0 && (
+        {members.length > 0 && (
           <div className="member-user scrollbar">
             {users
               .filter((user) => user.shareRoleCode === 'MEMBER')
@@ -125,16 +130,18 @@ class ContentViewerUsers extends React.Component {
               })}
           </div>
         )}
-        {!(users && users.length > 0) && (
+        <div className="member-empty">
+        {members.length < 1 && (
           <EmptyMessage
             className="h5"
             message={
               <div>
-                <div>{t('현재 참여 중인 사용자가 없습니다')}</div>
+                <div>{t('접속 중인 사용자가 없습니다.')}</div>
               </div>
             }
           />
         )}
+        </div>
       </div>
     );
   }

@@ -29,6 +29,12 @@ $icon-sm-size: 50px;
     overflow-y: auto;
   }
 
+  .member-empty {
+    display: flex;
+    min-height: 200px;
+    background-color: $light;
+  }
+
   .user-card {
     display: inline-block;
     width: 140px;
