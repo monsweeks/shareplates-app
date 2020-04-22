@@ -82,13 +82,16 @@ $icon-sm-size: 50px;
         display: inline-block;
         font-size: 40px;
         border-radius: 50%;
-        background-color: $secondary;
-        color: $white;
-        padding-top: 3px;
+        padding-top: 1px;
+        border: 2px solid #333;
+        color: $black;
+        background-color: $white;
 
         @media (max-width: 768px) {
           width: $icon-sm-size;
           height: $icon-sm-size;
+          font-size: 30px;
+          padding-top: 2px;
         }
       }
     }

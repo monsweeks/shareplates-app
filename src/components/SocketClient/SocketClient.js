@@ -13,7 +13,7 @@ class SocketClient extends React.PureComponent {
       : '';
     const { topics } = this.props;
     const { headers } = this.props;
-    const { onConnect, onMessage, onDisconnect } = this.props;
+    const { onConnect, onMessage, onDisconnect, setRef } = this.props;
 
     return (
       <SockJsClient
@@ -23,13 +23,18 @@ class SocketClient extends React.PureComponent {
         onMessage={onMessage}
         onConnect={onConnect}
         onDisconnect={onDisconnect}
+        // autoReconnect={false}
+        onConnectFailure={(e) => {
+          console.log(e);
+        }}
         ref={(client) => {
-          this.clientRef = client;
+          setRef(client);
         }}
       />
     );
   }
 }
+
 export default SocketClient;
 
 SocketClient.defaultProps = {};
@@ -40,4 +45,5 @@ SocketClient.propTypes = {
   onDisconnect: PropTypes.func,
   topics: PropTypes.arrayOf(PropTypes.string),
   headers: PropTypes.objectOf(PropTypes.any),
+  setRef: PropTypes.func,
 };

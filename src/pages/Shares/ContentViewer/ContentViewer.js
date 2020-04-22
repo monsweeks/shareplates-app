@@ -51,8 +51,9 @@ class ContentViewer extends React.Component {
   }
 
   joinShare = (shareId) => {
-    console.log('joinShare');
-    request.put(`/api/shares/${shareId}/contents/join`, null);
+    if (this.clientRef) {
+      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
+    }
   };
 
   getShare = (shareId) => {
@@ -240,14 +241,12 @@ class ContentViewer extends React.Component {
 
         break;
       }
-
+      case 'USER_STATUS_CHANGE' :
       case 'USER_JOINED': {
         const { users } = this.state;
         const next = users.slice(0);
-
-        console.log(data.user);
-
         const userIndex = next.findIndex((user) => user.id === data.user.id);
+
         if (userIndex < 0) {
           next.push(data.user);
           this.setState({
@@ -306,12 +305,15 @@ class ContentViewer extends React.Component {
     return (
       <div className="content-viewer-wrapper">
         <SocketClient
-          topics={[`/sub/share-room/${shareId}/${user != null ? user.uuid : ''}`]}
+          topics={[`/sub/share-room/${shareId}`]}
           onMessage={this.onMessage}
           onConnect={() => {
             this.joinShare(shareId);
           }}
           onDisconnect={() => {}}
+          setRef={(client) => {
+            this.clientRef = client;
+          }}
         />
         <div className="viewer-top g-no-select">
           <div className="logo-area">

@@ -22,8 +22,6 @@ class ContentViewerUsers extends React.Component {
     const { user: currentUser, sendReadyChat } = this.props;
     const isMe = info.id === currentUser.id;
 
-    console.log(info);
-
     return (
       <div key={info.id} className="user-card">
         {isMe && (
