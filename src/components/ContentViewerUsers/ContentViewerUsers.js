@@ -130,8 +130,8 @@ class ContentViewerUsers extends React.Component {
               })}
           </div>
         )}
-        <div className="member-empty">
         {members.length < 1 && (
+        <div className="member-empty">
           <EmptyMessage
             className="h5"
             message={
@@ -140,8 +140,8 @@ class ContentViewerUsers extends React.Component {
               </div>
             }
           />
-        )}
         </div>
+        )}
       </div>
     );
   }
