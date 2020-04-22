@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { addMessage } from 'actions';
 import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
 import ShareReady from './ShareReady';
 import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -37,7 +39,6 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user) {
       this.getShare(shareId);
-      this.joinShare(shareId);
     }
   }
 
@@ -46,12 +47,13 @@ class ContentViewer extends React.Component {
     const { user } = this.props;
     if (user && share.id !== shareId) {
       this.getShare(shareId);
-      this.joinShare(shareId);
     }
   }
 
   joinShare = (shareId) => {
-    request.put(`/api/shares/${shareId}/contents/join`, null);
+    if (this.clientRef) {
+      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
+    }
   };
 
   getShare = (shareId) => {
@@ -161,6 +163,13 @@ class ContentViewer extends React.Component {
     }
   };
 
+  closeShare = () => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/close`, null, () => {});
+    }
+  };
+
   movePage = (isNext) => {
     const { pages, chapters, currentChapterId, currentPageId } = this.state;
     const currentPageIndex = pages.findIndex((page) => page.id === currentPageId);
@@ -190,15 +199,22 @@ class ContentViewer extends React.Component {
 
   sendReadyChat = (message) => {
     const { shareId } = this.state;
-    request.post(`/api/shares/${shareId}/contents/chats/ready`, {message}, () => {}, null, true);
+    request.post(`/api/shares/${shareId}/contents/chats/ready`, { message }, () => {}, null, true);
   };
 
   onMessage = (msg) => {
     const { type, data } = msg;
+    const { t, history, addMessage: addMessageReducer } = this.props;
 
     console.log(type, data);
 
     switch (type) {
+      case 'SHARE_CLOSED': {
+        history.push('/shares');
+        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('공유가 종료되어 화면이 이동되었습니다.'));
+        break;
+      }
+
       case 'SHARE_STARTED_STATUS_CHANGE': {
         const { share } = this.state;
         const next = { ...share };
@@ -225,14 +241,19 @@ class ContentViewer extends React.Component {
 
         break;
       }
-
+      case 'USER_STATUS_CHANGE' :
       case 'USER_JOINED': {
         const { users } = this.state;
         const next = users.slice(0);
-
         const userIndex = next.findIndex((user) => user.id === data.user.id);
+
         if (userIndex < 0) {
           next.push(data.user);
+          this.setState({
+            users: next,
+          });
+        } else {
+          next[userIndex] = data.user;
           this.setState({
             users: next,
           });
@@ -283,7 +304,17 @@ class ContentViewer extends React.Component {
 
     return (
       <div className="content-viewer-wrapper">
-        <SocketClient topics={[`/sub/share-room/${shareId}`]} successRecieveMessage={(msg) => this.onMessage(msg)} />
+        <SocketClient
+          topics={[`/sub/share-room/${shareId}`]}
+          onMessage={this.onMessage}
+          onConnect={() => {
+            this.joinShare(shareId);
+          }}
+          onDisconnect={() => {}}
+          setRef={(client) => {
+            this.clientRef = client;
+          }}
+        />
         <div className="viewer-top g-no-select">
           <div className="logo-area">
             <TopLogo />
@@ -390,7 +421,15 @@ class ContentViewer extends React.Component {
         </div>
         {!share.startedYn && (
           <Popup open>
-            <ShareReady startShare={this.startShare} users={users} share={share} isAdmin={isAdmin} user={user} sendReadyChat={this.sendReadyChat} />
+            <ShareReady
+              users={users}
+              share={share}
+              isAdmin={isAdmin}
+              user={user}
+              sendReadyChat={this.sendReadyChat}
+              startShare={this.startShare}
+              closeShare={this.closeShare}
+            />
           </Popup>
         )}
       </div>
@@ -407,6 +446,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
+    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
   };
 };
 
@@ -434,6 +474,7 @@ ContentViewer.propTypes = {
     search: PropTypes.string,
   }),
   setConfirm: PropTypes.func,
+  addMessage: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ContentViewer)));
