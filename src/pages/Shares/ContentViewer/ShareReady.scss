@@ -1,12 +1,31 @@
-.share-prepare-content-wrapper {
+.share-ready-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
+  height: 600px;
+
+
+  @media (max-height: 740px) {
+    height: 600px;
+  }
+
+  @media (max-height: 650px) {
+    height: 500px;
+  }
+
+  @media (max-height: 550px) {
+    height: 400px;
+  }
+
+  @media (max-height: 450px) {
+    height: 100%;
+  }
 
   .top {
     display: flex;
     position: relative;
+    flex-grow: 0;
 
     @media (max-width: 992px) {
       flex-direction: column;
@@ -14,8 +33,17 @@
 
     .share-info {
       flex-grow: 1;
-      padding: 2rem 0 1rem;
+      padding: 2rem 0;
       text-align: center;
+      border-bottom: 1px dashed rgba(0,0,0,0.3);
+
+      @media (max-width: 992px) {
+        padding: 1rem 0;
+      }
+
+      @media (max-width: 768px) {
+        padding: 1rem 0 1rem;
+      }
 
       .connect-url {
         font-family: Righteous;
@@ -46,7 +74,7 @@
       }
 
       .user-message {
-        padding: 1rem 0;
+        margin-top: 0.5rem;
         > span {
           display: inline-block;
           background-color: $primary;
@@ -71,10 +99,11 @@
         position: static;
         width: 100%;
         text-align: center;
+        margin-top: 1rem;
       }
 
       @media (max-width: 768px) {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0;
       }
 
       > div {
@@ -104,6 +133,13 @@
               left: 2px;
             }
           }
+
+          &.stop {
+            > i {
+              position: relative;
+              left: -1px;
+            }
+          }
         }
 
         > div {
@@ -114,28 +150,29 @@
   }
 
   .user-count {
-    text-align: center;
-    padding: 0 0 0.5rem;
-    position: relative;
-    _background-color: $light;
+    display: inline-block;
+    line-height: 100%;
+    font-size: 12px;
+    position: absolute;
+    top : 10px;
+    left : 10px;
 
-    .line {
-      position: absolute;
-      top : 11px;
-      left : 0;
-      width: 100%;
-      border-bottom: 1px dashed rgba(0,0,0,0.3);
-    }
-
-    .label {
-      background-color: $white;
-      border: 1px solid rgba(0, 0, 0, 0.2);
+    > span {
       display: inline-block;
       border-radius: 3px;
       padding: 3px 5px 2px;
-      line-height: 100%;
-      font-size: 12px;
-      position: relative;
+      background-color: $white;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      top : -27px;
+      left : 0;
+      width: 100%;
+
+      > span {
+
+      }
     }
   }
 }

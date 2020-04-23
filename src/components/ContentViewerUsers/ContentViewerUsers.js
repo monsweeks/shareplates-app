@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import './ContentViewerUsers.scss';
-import { Avatar, EmptyMessage } from '@/components';
+import { Avatar, Button, Card, CardBody, Col, EmptyMessage, Row } from '@/components';
 
 class ContentViewerUsers extends React.Component {
   textarea = null;
@@ -23,117 +23,184 @@ class ContentViewerUsers extends React.Component {
     const isMe = info.id === currentUser.id;
 
     return (
-      <div key={info.id} className="user-card">
-        {isMe && (
-          <div
-            className="mic-icon"
-            onClick={() => {
-              this.setState(
-                {
-                  micOn: !micOn,
-                },
-                () => {
-                  if (!micOn) {
-                    setTimeout(() => {
-                      this.textarea.current.focus();
-                    }, 100);
-                  }
-                },
-              );
-            }}
-          >
-            <i className="fal fa-microphone-alt" />
+      <div className={`user-card ${info.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
+        {isAdmin && (
+          <div className="crown-icon">
+            <span>
+              <i className="fas fa-crown" />
+            </span>
           </div>
         )}
-        <div className="user-icon">
-          <div>
-            {info.info && <Avatar data={JSON.parse(info.info)} />}
-            {!info.info && (
-              <span className="default-icon">
-                <i className="fal fa-smile" />
-              </span>
-            )}
-          </div>
-        </div>
-        {info.status !== 'ONLINE' && <span className='status'><span>OFFLINE</span></span>}
-        <div className="user-name">
-          <span>
-            {info.name}
-            {isAdmin && (
-              <div className="crown-icon">
-                <i className="fas fa-crown" />
-              </div>
-            )}
-          </span>
-        </div>
-        {((isMe && !micOn && info.message) || (!isMe && info.message)) && (
-          <div className="last-chat">
-            <div className="message scrollbar">{info.message}</div>
-            <div className="arrow">
-              <span />
+        <div className="user-info">
+          <div className="user-icon">
+            <div>
+              {info.info && <Avatar data={JSON.parse(info.info)} />}
+              {!info.info && <span className="default-icon" />}
             </div>
           </div>
-        )}
-        {micOn && isMe && (
-          <div className="last-chat-input">
-            <div className="message">
-              <textarea
-                ref={this.textarea}
-                cols={3}
-                onChange={(e) => {
-                  this.setState({ message: e.target.value });
-                }}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
+          <div className="user-name">
+            <span>{info.name}</span>
+          </div>
+        </div>
+        <div className="chat">
+          {((!micOn && isMe) || !isMe) && (
+            <div
+              className="last-chat"
+              onDoubleClick={() => {
+                if (isMe) {
+                  this.setState(
+                    {
+                      micOn: !micOn,
+                    },
+                    () => {
+                      if (!micOn) {
+                        setTimeout(() => {
+                          this.textarea.current.focus();
+                        }, 100);
+                      }
+                    },
+                  );
+                }
+              }}
+            >
+              <div className="message scrollbar">{info.message}</div>
+            </div>
+          )}
+          {micOn && isMe && (
+            <div className="last-chat">
+              <div className="last-chat-input">
+                <textarea
+                  className="scrollbar"
+                  ref={this.textarea}
+                  cols={3}
+                  onChange={(e) => {
+                    this.setState({ message: e.target.value });
+                  }}
+                  value={message}
+                />
+              </div>
+            </div>
+          )}
+          {info.status !== 'ONLINE' && (
+            <span className="status">
+              <span>OFFLINE</span>
+            </span>
+          )}
+          {isMe && (
+            <div className="chat-button">
+              {!micOn && (
+                <Button
+                  className="mic-icon"
+                  size="xs"
+                  onClick={() => {
+                    this.setState(
+                      {
+                        micOn: !micOn,
+                      },
+                      () => {
+                        if (!micOn) {
+                          setTimeout(() => {
+                            this.textarea.current.focus();
+                          }, 100);
+                        }
+                      },
+                    );
+                  }}
+                >
+                  메세지
+                </Button>
+              )}
+              {micOn && (
+                <Button
+                  size="xs"
+                  onClick={() => {
+                    this.setState(
+                      {
+                        micOn: !micOn,
+                      },
+                      () => {
+                        if (!micOn) {
+                          setTimeout(() => {
+                            this.textarea.current.focus();
+                          }, 100);
+                        }
+                      },
+                    );
+                  }}
+                >
+                  취소
+                </Button>
+              )}
+              {micOn && (
+                <Button
+                  className="ml-1"
+                  size="xs"
+                  color="primary"
+                  onClick={() => {
                     sendReadyChat(message);
                     this.setState({
                       micOn: false,
                       message: '',
                     });
-                  }
-                }}
-                value={message}
-              />
+                  }}
+                >
+                  전송
+                </Button>
+              )}
             </div>
-            <div className="arrow">
-              <span />
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   };
 
   render() {
     const { users, t, className } = this.props;
+    const members = users.filter((user) => user.shareRoleCode === 'MEMBER');
 
     return (
-      <div className={`${className} user-list-wrapper`}>
+      <div className={`${className} content-viewer-user-wrapper`}>
         <div className="admin-user">
           {users
             .filter((user) => user.shareRoleCode === 'ADMIN')
             .map((user) => {
-              return this.getUserCard(user, true);
+              return (
+                <Card key={user.id} className="border-0">
+                  <CardBody className="p-0">{this.getUserCard(user, true)}</CardBody>
+                </Card>
+              );
             })}
         </div>
-        {users && users.length > 0 && (
+        {members.length > 0 && (
           <div className="member-user scrollbar">
-            {users
-              .filter((user) => user.shareRoleCode === 'MEMBER')
-              .map((user) => {
-                return this.getUserCard(user, false);
-              })}
+            <div>
+              <Row>
+                {users
+                  .filter((user) => user.shareRoleCode === 'MEMBER')
+                  .map((user) => {
+                    return (
+                      <Col className="col" xl={3} lg={4} md={6} sm={6} xs={12} key={user.id}>
+                        <Card className="border-0">
+                          <CardBody className="p-0">{this.getUserCard(user, false)}</CardBody>
+                        </Card>
+                      </Col>
+                    );
+                  })}
+              </Row>
+            </div>
           </div>
         )}
-        {!(users && users.length > 0) && (
-          <EmptyMessage
-            className="h5"
-            message={
-              <div>
-                <div>{t('현재 참여 중인 사용자가 없습니다')}</div>
-              </div>
-            }
-          />
+        {members.length < 1 && (
+          <div className="member-empty">
+            <EmptyMessage
+              className="h5"
+              message={
+                <div>
+                  <div>{t('참여 중인 사용자가 없습니다.')}</div>
+                </div>
+              }
+            />
+          </div>
         )}
       </div>
     );
@@ -160,7 +227,6 @@ ContentViewerUsers.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     info: PropTypes.string,
-    uuid: PropTypes.string,
   }),
   t: PropTypes.func,
   className: PropTypes.string,
