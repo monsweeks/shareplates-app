@@ -284,7 +284,7 @@ class ContentViewer extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, setConfirm, user, location } = this.props;
+    const { t, setConfirm, user, location, history } = this.props;
 
     const {
       // eslint-disable-next-line no-unused-vars,no-shadow
@@ -429,6 +429,9 @@ class ContentViewer extends React.Component {
               sendReadyChat={this.sendReadyChat}
               startShare={this.startShare}
               closeShare={this.closeShare}
+              exitShare={() => {
+                history.push('/shares');
+              }}
             />
           </Popup>
         )}

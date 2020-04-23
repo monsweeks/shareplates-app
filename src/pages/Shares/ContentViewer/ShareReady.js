@@ -9,10 +9,10 @@ import { Button, ContentViewerUsers } from '@/components';
 
 class ShareReady extends React.PureComponent {
   render() {
-    const { isAdmin, users, startShare, closeShare, user, sendReadyChat } = this.props;
+    const { isAdmin, users, startShare, closeShare, user, sendReadyChat, exitShare } = this.props;
 
     return (
-      <div className="share-prepare-content-wrapper">
+      <div className="share-ready-wrapper">
         <div className="top">
           <div className="share-info">
             <div className="connect-url">
@@ -25,30 +25,40 @@ class ShareReady extends React.PureComponent {
               </div>
             )}
           </div>
-          {isAdmin && (
-            <div className="admin-control">
+
+          <div className="admin-control">
+            <div>
+              <Button onClick={exitShare}>
+                <i className="fal fa-sign-out-alt" />
+              </Button>
               <div>
-                <Button onClick={closeShare}>
-                  <i className="fas fa-stop" />
-                </Button>
-                <div>
-                  <span>종료</span>
-                </div>
-              </div>
-              <div>
-                <Button className="start" onClick={startShare}>
-                  <i className="fas fa-play" />
-                </Button>
-                <div>
-                  <span>시작</span>
-                </div>
+                <span>나가기</span>
               </div>
             </div>
-          )}
+            {isAdmin && (
+              <>
+                <div>
+                  <Button className="stop" onClick={closeShare}>
+                    <i className="fas fa-stop" />
+                  </Button>
+                  <div>
+                    <span>종료</span>
+                  </div>
+                </div>
+                <div>
+                  <Button className="start" onClick={startShare}>
+                    <i className="fas fa-play" />
+                  </Button>
+                  <div>
+                    <span>시작</span>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
         <div className="user-count">
-          <div className="line" />
-          <span className="label">{users.length}명 접속중</span>
+          <span>{users.length}명 접속중</span>
         </div>
         <ContentViewerUsers users={users} user={user} sendReadyChat={sendReadyChat} />
       </div>
@@ -88,6 +98,7 @@ ShareReady.propTypes = {
   startShare: PropTypes.func,
   closeShare: PropTypes.func,
   sendReadyChat: PropTypes.func,
+  exitShare: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareReady)));
