@@ -10,6 +10,8 @@ import { setConfirm } from '@/actions';
 import ShareReady from './ShareReady';
 import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
+import UserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -31,6 +33,9 @@ class ContentViewer extends React.Component {
       currentPage: null,
       isAdmin: false,
       users: [],
+      hideContentViewerMenu: false,
+      fullScreen: false,
+      openUserPopup: true,
     };
   }
 
@@ -241,7 +246,7 @@ class ContentViewer extends React.Component {
 
         break;
       }
-      case 'USER_STATUS_CHANGE' :
+      case 'USER_STATUS_CHANGE':
       case 'USER_JOINED': {
         const { users } = this.state;
         const next = users.slice(0);
@@ -282,6 +287,51 @@ class ContentViewer extends React.Component {
     }
   };
 
+  setHideContentViewerMenu = (value) => {
+    this.setState({
+      hideContentViewerMenu: value,
+    });
+  };
+
+  setFullScreen = (value) => {
+    const elem = document.documentElement;
+    if (value) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    if (!value) {
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+    }
+
+    this.setState({
+      fullScreen: value,
+    });
+  };
+
+  setOpenUserPopup = (value) => {
+    this.setState({
+      openUserPopup: value,
+    });
+  };
+
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
     const { t, setConfirm, user, location, history } = this.props;
@@ -300,6 +350,9 @@ class ContentViewer extends React.Component {
       currentPage,
       isAdmin,
       users,
+      hideContentViewerMenu,
+      fullScreen,
+      openUserPopup,
     } = this.state;
 
     return (
@@ -315,102 +368,84 @@ class ContentViewer extends React.Component {
             this.clientRef = client;
           }}
         />
-        <div className="viewer-top g-no-select">
-          <div className="logo-area">
-            <TopLogo />
-          </div>
-          <div className="menu">
-            <ContentViewerMenu
-              className="chapters-menu"
-              list={chapters}
-              selectedId={currentChapterId}
-              onClick={this.setChapter}
-              onPrevClick={this.setChapter}
-              onNextClick={this.setChapter}
-            />
-            <ContentViewerMenu
-              className="pages-menu"
-              list={pages}
-              selectedId={currentPageId}
-              onClick={this.setPage}
-              onPrevClick={this.setPage}
-              onNextClick={this.setPage}
-            />
-          </div>
-          <div className="side-menu">
-            <span onClick={this.stopShare}>
-              <i className="fal fa-wifi" />
-            </span>
-            <span>
-              <i className="fal fa-id-badge" />
-            </span>
-            <span>
-              <i className="fal fa-level-up" />
-            </span>
-            <span>
-              <i className="fal fa-expand" />
-            </span>
-            {isAdmin && (
-              <span>
-                <i className="fal fa-poll" />
-              </span>
-            )}
-            <span>
-              <i className="fal fa-file-alt" />
-            </span>
-            <span>
-              <i className="fal fa-solar-panel" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-chart-line" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-clock" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-users-class" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-cog" />
-            </span>
+        <div className={`viewer-top g-no-select ${hideContentViewerMenu ? 'hide' : ''}`}>
+          <div>
+            <div className="logo-area">
+              <TopLogo />
+            </div>
+            <div className="menu">
+              <ContentViewerMenu
+                className="chapters-menu"
+                list={chapters}
+                selectedId={currentChapterId}
+                onClick={this.setChapter}
+                onPrevClick={this.setChapter}
+                onNextClick={this.setChapter}
+              />
+              <ContentViewerMenu
+                className="pages-menu"
+                list={pages}
+                selectedId={currentPageId}
+                onClick={this.setPage}
+                onPrevClick={this.setPage}
+                onNextClick={this.setPage}
+              />
+            </div>
+            <div className="side-menu">
+              <SideMenu
+                share={share}
+                isAdmin={isAdmin}
+                stopShare={this.stopShare}
+                hideContentViewerMenu={hideContentViewerMenu}
+                setHideContentViewerMenu={this.setHideContentViewerMenu}
+                fullScreen={fullScreen}
+                setFullScreen={this.setFullScreen}
+                openUserPopup={openUserPopup}
+                setOpenUserPopup={this.setOpenUserPopup}
+              />
+            </div>
           </div>
         </div>
         <div className="content">
           {share.startedYn && currentPage && (
-            <PageContent
-              content={JSON.parse(currentPage.content)}
-              setPageContent={this.setPageContent}
-              onLayoutChange={this.onLayoutChange}
-              setSelectedItem={this.setSelectedItem}
-              onChangeValue={this.onChangeValue}
-              setEditing={this.setEditing}
-            />
+            <>
+              <PageContent
+                content={JSON.parse(currentPage.content)}
+                setPageContent={this.setPageContent}
+                onLayoutChange={this.onLayoutChange}
+                setSelectedItem={this.setSelectedItem}
+                onChangeValue={this.onChangeValue}
+                setEditing={this.setEditing}
+              />
+              <div className="prev-page">
+                <div
+                  onClick={() => {
+                    this.movePage(false);
+                  }}
+                >
+                  <i className="fal fa-chevron-left" />
+                </div>
+              </div>
+              <div className="next-page">
+                <div
+                  onClick={() => {
+                    this.movePage(true);
+                  }}
+                >
+                  <i className="fal fa-chevron-right" />
+                </div>
+              </div>
+            </>
+          )}
+          {openUserPopup && (
+            <div className="open-user-popup">
+              <div className="arrow">
+                <div/>
+              </div>
+              <UserPopup user={user} users={users} sendReadyChat={this.sendReadyChat} />
+            </div>
           )}
         </div>
-        {share.startedYn && (
-          <>
-            <div
-              className="prev-page"
-              onClick={() => {
-                this.movePage(false);
-              }}
-            >
-              <div>
-                <i className="fal fa-chevron-left" />
-              </div>
-            </div>
-            <div
-              className="next-page"
-              onClick={() => {
-                this.movePage(true);
-              }}
-            >
-              <div>
-                <i className="fal fa-chevron-right" />
-              </div>
-            </div>
-          </>
-        )}
         <div className="screen-type d-none" onClick={() => {}}>
           <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
           <div>
@@ -435,6 +470,7 @@ class ContentViewer extends React.Component {
             />
           </Popup>
         )}
+
       </div>
     );
   }
