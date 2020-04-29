@@ -11,7 +11,8 @@ import ShareReady from './ShareReady';
 import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
-import UserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup';
+import UserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
+import ContentViewerPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerPopup/ContentViewerPopup';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -438,12 +439,14 @@ class ContentViewer extends React.Component {
             </>
           )}
           {openUserPopup && (
-            <div className="open-user-popup">
-              <div className="arrow">
-                <div/>
-              </div>
+            <ContentViewerPopup
+              className="open-user-popup"
+              title={`참여중인 사용자 (${users.filter((u) => u.status === 'ONLINE').length}/${users.length})`}
+              arrowRight={isAdmin ? '126px' : '110px'}
+              setOpen={this.setOpenUserPopup}
+            >
               <UserPopup user={user} users={users} sendReadyChat={this.sendReadyChat} />
-            </div>
+            </ContentViewerPopup>
           )}
         </div>
         <div className="screen-type d-none" onClick={() => {}}>
@@ -470,7 +473,6 @@ class ContentViewer extends React.Component {
             />
           </Popup>
         )}
-
       </div>
     );
   }
