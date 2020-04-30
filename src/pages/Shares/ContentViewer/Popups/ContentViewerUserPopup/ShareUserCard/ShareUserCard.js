@@ -7,13 +7,11 @@ import { Avatar, Button, Card, CardBody } from '@/components';
 
 class ShareUserCard extends React.PureComponent {
   render() {
-    const { currentUser, user, className, adminCard, userControl } = this.props;
+    const { currentUser, user, className, adminCard, userControl, border } = this.props;
     const isMe = user.id === currentUser.id;
 
-    console.log(currentUser);
-
     return (
-      <Card key={user.id} className={`share-user-card-wrapper ${className} border-0`}>
+      <Card key={user.id} className={`share-user-card-wrapper ${className} ${border ? 'border mb-2' : 'border-top-0 border-left-0 border-right-0 border-bottom'}`}>
         <CardBody className="p-0">
           <div className={`user-card-content ${user.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
             {adminCard && (
@@ -79,6 +77,7 @@ ShareUserCard.propTypes = {
   adminCard: PropTypes.bool,
   className: PropTypes.string,
   userControl : PropTypes.bool,
+  border : PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(ShareUserCard));

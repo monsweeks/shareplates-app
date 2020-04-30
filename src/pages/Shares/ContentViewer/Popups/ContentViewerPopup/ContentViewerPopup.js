@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import './ContentViewerPopup.scss';
 import { Button } from '@/components';
+import storage from '@/utils/storage';
 
 class ContentViewerPopup extends React.Component {
   constructor(props) {
@@ -13,6 +14,32 @@ class ContentViewerPopup extends React.Component {
       position: 'popup',
     };
   }
+
+  componentDidMount() {
+    const { name } = this.props;
+    const position = storage.getItem('shares', name);
+    if (position) {
+      this.setState({
+        position,
+      });
+    }
+
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  setPosition = (position) => {
+    this.setState(
+      {
+        position,
+      },
+      () => {
+        window.dispatchEvent(new Event('resize'));
+      },
+    );
+
+    const { name } = this.props;
+    storage.setItem('shares', name, position);
+  };
 
   render() {
     const { className, setOpen, children, arrowRight, title } = this.props;
@@ -37,31 +64,28 @@ class ContentViewerPopup extends React.Component {
               {title}
               <div className="position-buttons">
                 <Button
+                  className={position === 'pin' ? 'selected' : ''}
                   color="white"
                   onClick={() => {
-                    this.setState({
-                      position: 'pin',
-                    });
+                    this.setPosition('pin');
                   }}
                 >
                   <i className="fal fa-thumbtack" />
                 </Button>
                 <Button
+                  className={position === 'popup' ? 'selected' : ''}
                   color="white"
                   onClick={() => {
-                    this.setState({
-                      position: 'popup',
-                    });
+                    this.setPosition('popup');
                   }}
                 >
-                  <i className="fal fa-window-minimize" />
+                  <i className="fal fa-window-alt" />
                 </Button>
                 <Button
+                  className={position === 'max' ? 'selected' : ''}
                   color="white"
                   onClick={() => {
-                    this.setState({
-                      position: 'max',
-                    });
+                    this.setPosition('max');
                   }}
                 >
                   <i className="fal fa-window-maximize" />
@@ -91,6 +115,7 @@ ContentViewerPopup.defaultProps = {
 };
 
 ContentViewerPopup.propTypes = {
+  name: PropTypes.string.isRequired,
   className: PropTypes.string,
   children: PropTypes.node,
   setOpen: PropTypes.func,

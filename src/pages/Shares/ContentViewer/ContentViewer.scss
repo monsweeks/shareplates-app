@@ -68,49 +68,11 @@
     flex-grow: 1;
     background-color: $white;
     position: relative;
-  }
-
-  .prev-page,
-  .next-page {
-    position: fixed;
-    top: 60px;
-    bottom: 0;
-    width: 40px;
-    z-index: 4;
-    height: 100%;
     display: flex;
-    align-self: center;
 
-    > div {
-      width: 100px;
-      height: 100px;
-      text-align: center;
-      font-size: 60px;
-      align-self: center;
-      display: none;
-      margin-bottom: 90px;
-      padding-top: 10px;
-      &:hover {
-        color: $yellow;
-      }
+    > .page-content-wrapper {
+      flex-grow: 1;
     }
-
-    &:hover {
-      width: 100px;
-
-      > div {
-        display: inline-block;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .prev-page {
-    left: 0;
-  }
-
-  .next-page {
-    right: 0;
   }
 
   .screen-type {
@@ -130,6 +92,4 @@
       }
     }
   }
-
-
 }

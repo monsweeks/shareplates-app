@@ -328,9 +328,14 @@ class ContentViewer extends React.Component {
   };
 
   setOpenUserPopup = (value) => {
-    this.setState({
-      openUserPopup: value,
-    });
+    this.setState(
+      {
+        openUserPopup: value,
+      },
+      () => {
+        window.dispatchEvent(new Event('resize'));
+      },
+    );
   };
 
   render() {
@@ -409,37 +414,19 @@ class ContentViewer extends React.Component {
         </div>
         <div className="content">
           {share.startedYn && currentPage && (
-            <>
-              <PageContent
-                content={JSON.parse(currentPage.content)}
-                setPageContent={this.setPageContent}
-                onLayoutChange={this.onLayoutChange}
-                setSelectedItem={this.setSelectedItem}
-                onChangeValue={this.onChangeValue}
-                setEditing={this.setEditing}
-              />
-              <div className="prev-page">
-                <div
-                  onClick={() => {
-                    this.movePage(false);
-                  }}
-                >
-                  <i className="fal fa-chevron-left" />
-                </div>
-              </div>
-              <div className="next-page">
-                <div
-                  onClick={() => {
-                    this.movePage(true);
-                  }}
-                >
-                  <i className="fal fa-chevron-right" />
-                </div>
-              </div>
-            </>
+            <PageContent
+              content={JSON.parse(currentPage.content)}
+              setPageContent={this.setPageContent}
+              onLayoutChange={this.onLayoutChange}
+              setSelectedItem={this.setSelectedItem}
+              onChangeValue={this.onChangeValue}
+              setEditing={this.setEditing}
+              movePage={this.movePage}
+            />
           )}
           {openUserPopup && (
             <ContentViewerPopup
+              name="user-popup"
               className="open-user-popup"
               title={`참여중인 사용자 (${users.filter((u) => u.status === 'ONLINE').length}/${users.length})`}
               arrowRight={isAdmin ? '126px' : '110px'}

@@ -38,6 +38,7 @@ class ContentViewerUserPopup extends React.PureComponent {
                   user={user}
                   sendReadyChat={sendReadyChat}
                   adminCard
+                  border={!singleRow}
                 />
               </Col>
             );
@@ -63,6 +64,7 @@ class ContentViewerUserPopup extends React.PureComponent {
                     user={user}
                     sendReadyChat={sendReadyChat}
                     userControl={currentUserIsAdmin}
+                    border={!singleRow}
                   />
                 </Col>
               );
@@ -88,6 +90,7 @@ class ContentViewerUserPopup extends React.PureComponent {
                     user={user}
                     sendReadyChat={sendReadyChat}
                     userControl={currentUserIsAdmin}
+                    border={!singleRow}
                   />
                 </Col>
               );
