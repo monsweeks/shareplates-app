@@ -73,6 +73,7 @@
         height: calc(100% - 43px);
         overflow-y: auto;
         overflow-x: hidden;
+        background-color: $light;
       }
     }
   }
@@ -100,7 +101,6 @@
 
         .popup-content {
           padding: 1rem;
-          background-color: $light;
         }
       }
     }
@@ -123,10 +123,6 @@
       > div {
         .arrow {
           display: none;
-        }
-
-        .popup-content {
-          background-color: $light;
         }
       }
     }

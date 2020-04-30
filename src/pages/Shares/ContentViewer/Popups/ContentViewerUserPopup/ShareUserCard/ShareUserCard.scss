@@ -1,6 +1,14 @@
 $icon-size: 40px;
 
 .share-user-card-wrapper {
+  border: none !important;
+  border-bottom: 1px solid rgba(0,0,0,0.3) !important;
+
+  &.has-border {
+    border: 1px solid rgba(0,0,0,0.3) !important;
+    margin-bottom: 0.5rem;
+  }
+
   .user-card-content {
     position: relative;
     display: flex;
@@ -12,6 +20,8 @@ $icon-size: 40px;
       _background-color: $light;
     }
   }
+
+
 
   .crown-icon {
     position: absolute;

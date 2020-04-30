@@ -11,7 +11,7 @@ import ShareReady from './ShareReady';
 import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
-import UserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
+import ContentViewerUserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
 import ContentViewerPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerPopup/ContentViewerPopup';
 
 class ContentViewer extends React.Component {
@@ -36,7 +36,7 @@ class ContentViewer extends React.Component {
       users: [],
       hideContentViewerMenu: false,
       fullScreen: false,
-      openUserPopup: true,
+      openUserPopup: false,
     };
   }
 
@@ -63,27 +63,40 @@ class ContentViewer extends React.Component {
   };
 
   getShare = (shareId) => {
-    request.get(`/api/shares/${shareId}/contents`, null, (data) => {
-      const { user } = this.props;
+    request.get(
+      `/api/shares/${shareId}/contents`,
+      null,
+      (data) => {
+        const { user } = this.props;
 
-      if (data && data.chapters) {
-        data.chapters.sort((a, b) => {
-          return a.orderNo - b.order;
+        if (data && data.chapters) {
+          data.chapters.sort((a, b) => {
+            return a.orderNo - b.order;
+          });
+        }
+
+        this.setState({
+          topic: data.topic,
+          chapters: data.chapters || [],
+          share: data.share,
+          currentChapterId: data.share.currentChapterId,
+          currentPageId: data.share.currentPageId,
+          isAdmin: data.share.adminUserId === user.id,
+          users: data.users,
         });
-      }
 
-      this.setState({
-        topic: data.topic,
-        chapters: data.chapters || [],
-        share: data.share,
-        currentChapterId: data.share.currentChapterId,
-        currentPageId: data.share.currentPageId,
-        isAdmin: data.share.adminUserId === user.id,
-        users: data.users,
-      });
-
-      this.getPages(shareId, data.share.currentChapterId);
-    });
+        this.getPages(shareId, data.share.currentChapterId);
+      },
+      (error, response) => {
+        const { t, history, addMessage: addMessageReducer } = this.props;
+        if (response.data.code === 'SHARE_BANNED_USER') {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('접속 오류'), response.data.message);
+        } else {
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('요청이 올바르지 않습니다.'), response.data.message);
+        }
+      },
+    );
   };
 
   getPages = (shareId, chapterId, pageId, setFirstPage, setLastPage) => {
@@ -176,6 +189,27 @@ class ContentViewer extends React.Component {
     }
   };
 
+  banUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/ban`, null, () => {});
+    }
+  };
+
+  allowUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/allow`, null, () => {});
+    }
+  };
+
+  kickOutUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/kickOut`, null, () => {});
+    }
+  };
+
   movePage = (isNext) => {
     const { pages, chapters, currentChapterId, currentPageId } = this.state;
     const currentPageIndex = pages.findIndex((page) => page.id === currentPageId);
@@ -263,6 +297,64 @@ class ContentViewer extends React.Component {
           this.setState({
             users: next,
           });
+        }
+
+        break;
+      }
+
+      case 'USER_BAN': {
+        const { users } = this.state;
+        const { user } = this.props;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].banYn = true;
+          next[userIndex].status = 'OFFLINE';
+          this.setState({
+            users: next,
+          });
+        }
+
+        if (data.userId === user.id) {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
+        }
+
+        break;
+      }
+
+      case 'USER_ALLOWED': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].banYn = false;
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'USER_KICK_OUT': {
+        const { users } = this.state;
+        const { user } = this.props;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next.splice(userIndex, 1);
+          this.setState({
+            users: next,
+          });
+        }
+
+        if (data.userId === user.id) {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
         }
 
         break;
@@ -363,17 +455,19 @@ class ContentViewer extends React.Component {
 
     return (
       <div className="content-viewer-wrapper">
-        <SocketClient
-          topics={[`/sub/share-room/${shareId}`]}
-          onMessage={this.onMessage}
-          onConnect={() => {
-            this.joinShare(shareId);
-          }}
-          onDisconnect={() => {}}
-          setRef={(client) => {
-            this.clientRef = client;
-          }}
-        />
+        {share && share.id && (
+          <SocketClient
+            topics={[`/sub/share-room/${shareId}`]}
+            onMessage={this.onMessage}
+            onConnect={() => {
+              this.joinShare(shareId);
+            }}
+            onDisconnect={() => {}}
+            setRef={(client) => {
+              this.clientRef = client;
+            }}
+          />
+        )}
         <div className={`viewer-top g-no-select ${hideContentViewerMenu ? 'hide' : ''}`}>
           <div>
             <div className="logo-area">
@@ -428,11 +522,19 @@ class ContentViewer extends React.Component {
             <ContentViewerPopup
               name="user-popup"
               className="open-user-popup"
-              title={`참여중인 사용자 (${users.filter((u) => u.status === 'ONLINE').length}/${users.length})`}
+              title={`참여중인 사용자 (${users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length}/${
+                users.filter((u) => !u.banYn).length
+              })`}
               arrowRight={isAdmin ? '126px' : '110px'}
               setOpen={this.setOpenUserPopup}
             >
-              <UserPopup user={user} users={users} sendReadyChat={this.sendReadyChat} />
+              <ContentViewerUserPopup
+                user={user}
+                users={users}
+                banUser={this.banUser}
+                kickOutUser={this.kickOutUser}
+                allowUser={this.allowUser}
+              />
             </ContentViewerPopup>
           )}
         </div>

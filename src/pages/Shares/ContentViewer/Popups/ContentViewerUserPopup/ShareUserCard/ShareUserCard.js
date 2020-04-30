@@ -8,10 +8,17 @@ import { Avatar, Button, Card, CardBody } from '@/components';
 class ShareUserCard extends React.PureComponent {
   render() {
     const { currentUser, user, className, adminCard, userControl, border } = this.props;
+    const { banUser, kickOutUser, allowUser } = this.props;
+
     const isMe = user.id === currentUser.id;
 
     return (
-      <Card key={user.id} className={`share-user-card-wrapper ${className} ${border ? 'border mb-2' : 'border-top-0 border-left-0 border-right-0 border-bottom'}`}>
+      <Card
+        key={user.id}
+        className={`share-user-card-wrapper ${className} ${
+          border ? 'has-border' : ''
+        }`}
+      >
         <CardBody className="p-0">
           <div className={`user-card-content ${user.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
             {adminCard && (
@@ -37,14 +44,41 @@ class ShareUserCard extends React.PureComponent {
             </div>
             {userControl && (
               <div className="user-control-buttons">
-                <Button color='danger'>
-                  <i className="fal fa-sign-out"/>
-                </Button>
-                <Button color='danger'>
-                  <i className="fal fa-times"/>
-                </Button>
+                {!user.banYn && (
+                  <>
+                    <Button
+                      color="danger"
+                      onClick={() => {
+                        kickOutUser(user.id);
+                      }}
+                    >
+                      <i className="fal fa-sign-out" />
+                    </Button>
+                    <Button
+                      color="danger"
+                      onClick={() => {
+                        banUser(user.id);
+                      }}
+                    >
+                      <i className="fal fa-times" />
+                    </Button>
+                  </>
+                )}
+                {user.banYn && (
+                  <>
+                    <Button
+                      color="danger"
+                      onClick={() => {
+                        allowUser(user.id);
+                      }}
+                    >
+                      <i className="fal fa-redo" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
+
             <div className={`user-status ${user.status}`}>
               <span>{user.status}</span>
             </div>
@@ -67,6 +101,7 @@ ShareUserCard.propTypes = {
     info: PropTypes.string,
     status: PropTypes.string,
     message: PropTypes.string,
+    banYn: PropTypes.bool,
   }),
   currentUser: PropTypes.shape({
     id: PropTypes.number,
@@ -76,8 +111,11 @@ ShareUserCard.propTypes = {
   }),
   adminCard: PropTypes.bool,
   className: PropTypes.string,
-  userControl : PropTypes.bool,
-  border : PropTypes.bool,
+  userControl: PropTypes.bool,
+  border: PropTypes.bool,
+  banUser: PropTypes.func,
+  kickOutUser: PropTypes.func,
+  allowUser: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(ShareUserCard));
