@@ -28,6 +28,7 @@ class PageContent extends React.Component {
       editable,
       onChangeValue,
       setEditing,
+      movePage,
     } = this.props;
 
     let layouts = {};
@@ -49,6 +50,24 @@ class PageContent extends React.Component {
           }
         }}
       >
+        <div className="prev-page">
+          <div
+            onClick={() => {
+              movePage(false);
+            }}
+          >
+            <i className="fal fa-chevron-left" />
+          </div>
+        </div>
+        <div className="next-page">
+          <div
+            onClick={() => {
+              movePage(true);
+            }}
+          >
+            <i className="fal fa-chevron-right" />
+          </div>
+        </div>
         <div>
           <ResponsiveReactGridLayout
             onLayoutChange={onLayoutChange}
@@ -123,6 +142,7 @@ PageContent.propTypes = {
   onChangeValue : PropTypes.func,
   editable: PropTypes.bool,
   setEditing : PropTypes.func,
+  movePage : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

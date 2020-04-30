@@ -5,6 +5,49 @@
     opacity: 0;
   }
 
+  .prev-page,
+  .next-page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 4;
+    height: 100%;
+    display: flex;
+    align-self: center;
+
+    > div {
+      width: 100px;
+      height: 100px;
+      text-align: center;
+      font-size: 60px;
+      align-self: center;
+      display: none;
+      margin-bottom: 25px;
+      padding-top: 10px;
+      &:hover {
+        color: $yellow;
+      }
+    }
+
+    &:hover {
+      width: 100px;
+
+      > div {
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .prev-page {
+    left: 0;
+  }
+
+  .next-page {
+    right: 0;
+  }
+
 
 
   &.editable {

@@ -10,6 +10,9 @@ import { setConfirm } from '@/actions';
 import ShareReady from './ShareReady';
 import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
+import ContentViewerUserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
+import ContentViewerPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerPopup/ContentViewerPopup';
 
 class ContentViewer extends React.Component {
   constructor(props) {
@@ -31,6 +34,9 @@ class ContentViewer extends React.Component {
       currentPage: null,
       isAdmin: false,
       users: [],
+      hideContentViewerMenu: false,
+      fullScreen: false,
+      openUserPopup: false,
     };
   }
 
@@ -57,27 +63,40 @@ class ContentViewer extends React.Component {
   };
 
   getShare = (shareId) => {
-    request.get(`/api/shares/${shareId}/contents`, null, (data) => {
-      const { user } = this.props;
+    request.get(
+      `/api/shares/${shareId}/contents`,
+      null,
+      (data) => {
+        const { user } = this.props;
 
-      if (data && data.chapters) {
-        data.chapters.sort((a, b) => {
-          return a.orderNo - b.order;
+        if (data && data.chapters) {
+          data.chapters.sort((a, b) => {
+            return a.orderNo - b.order;
+          });
+        }
+
+        this.setState({
+          topic: data.topic,
+          chapters: data.chapters || [],
+          share: data.share,
+          currentChapterId: data.share.currentChapterId,
+          currentPageId: data.share.currentPageId,
+          isAdmin: data.share.adminUserId === user.id,
+          users: data.users,
         });
-      }
 
-      this.setState({
-        topic: data.topic,
-        chapters: data.chapters || [],
-        share: data.share,
-        currentChapterId: data.share.currentChapterId,
-        currentPageId: data.share.currentPageId,
-        isAdmin: data.share.adminUserId === user.id,
-        users: data.users,
-      });
-
-      this.getPages(shareId, data.share.currentChapterId);
-    });
+        this.getPages(shareId, data.share.currentChapterId);
+      },
+      (error, response) => {
+        const { t, history, addMessage: addMessageReducer } = this.props;
+        if (response.data.code === 'SHARE_BANNED_USER') {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('접속 오류'), response.data.message);
+        } else {
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('요청이 올바르지 않습니다.'), response.data.message);
+        }
+      },
+    );
   };
 
   getPages = (shareId, chapterId, pageId, setFirstPage, setLastPage) => {
@@ -170,6 +189,27 @@ class ContentViewer extends React.Component {
     }
   };
 
+  banUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/ban`, null, () => {});
+    }
+  };
+
+  allowUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/allow`, null, () => {});
+    }
+  };
+
+  kickOutUser = (userId) => {
+    const { shareId, isAdmin } = this.state;
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/users/${userId}/kickOut`, null, () => {});
+    }
+  };
+
   movePage = (isNext) => {
     const { pages, chapters, currentChapterId, currentPageId } = this.state;
     const currentPageIndex = pages.findIndex((page) => page.id === currentPageId);
@@ -241,7 +281,7 @@ class ContentViewer extends React.Component {
 
         break;
       }
-      case 'USER_STATUS_CHANGE' :
+      case 'USER_STATUS_CHANGE':
       case 'USER_JOINED': {
         const { users } = this.state;
         const next = users.slice(0);
@@ -257,6 +297,64 @@ class ContentViewer extends React.Component {
           this.setState({
             users: next,
           });
+        }
+
+        break;
+      }
+
+      case 'USER_BAN': {
+        const { users } = this.state;
+        const { user } = this.props;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].banYn = true;
+          next[userIndex].status = 'OFFLINE';
+          this.setState({
+            users: next,
+          });
+        }
+
+        if (data.userId === user.id) {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
+        }
+
+        break;
+      }
+
+      case 'USER_ALLOWED': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].banYn = false;
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'USER_KICK_OUT': {
+        const { users } = this.state;
+        const { user } = this.props;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((u) => u.id === data.userId);
+
+        if (userIndex > -1) {
+          next.splice(userIndex, 1);
+          this.setState({
+            users: next,
+          });
+        }
+
+        if (data.userId === user.id) {
+          history.push('/shares');
+          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
         }
 
         break;
@@ -282,6 +380,56 @@ class ContentViewer extends React.Component {
     }
   };
 
+  setHideContentViewerMenu = (value) => {
+    this.setState({
+      hideContentViewerMenu: value,
+    });
+  };
+
+  setFullScreen = (value) => {
+    const elem = document.documentElement;
+    if (value) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    if (!value) {
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+    }
+
+    this.setState({
+      fullScreen: value,
+    });
+  };
+
+  setOpenUserPopup = (value) => {
+    this.setState(
+      {
+        openUserPopup: value,
+      },
+      () => {
+        window.dispatchEvent(new Event('resize'));
+      },
+    );
+  };
+
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
     const { t, setConfirm, user, location, history } = this.props;
@@ -300,79 +448,62 @@ class ContentViewer extends React.Component {
       currentPage,
       isAdmin,
       users,
+      hideContentViewerMenu,
+      fullScreen,
+      openUserPopup,
     } = this.state;
 
     return (
       <div className="content-viewer-wrapper">
-        <SocketClient
-          topics={[`/sub/share-room/${shareId}`]}
-          onMessage={this.onMessage}
-          onConnect={() => {
-            this.joinShare(shareId);
-          }}
-          onDisconnect={() => {}}
-          setRef={(client) => {
-            this.clientRef = client;
-          }}
-        />
-        <div className="viewer-top g-no-select">
-          <div className="logo-area">
-            <TopLogo />
-          </div>
-          <div className="menu">
-            <ContentViewerMenu
-              className="chapters-menu"
-              list={chapters}
-              selectedId={currentChapterId}
-              onClick={this.setChapter}
-              onPrevClick={this.setChapter}
-              onNextClick={this.setChapter}
-            />
-            <ContentViewerMenu
-              className="pages-menu"
-              list={pages}
-              selectedId={currentPageId}
-              onClick={this.setPage}
-              onPrevClick={this.setPage}
-              onNextClick={this.setPage}
-            />
-          </div>
-          <div className="side-menu">
-            <span onClick={this.stopShare}>
-              <i className="fal fa-wifi" />
-            </span>
-            <span>
-              <i className="fal fa-id-badge" />
-            </span>
-            <span>
-              <i className="fal fa-level-up" />
-            </span>
-            <span>
-              <i className="fal fa-expand" />
-            </span>
-            {isAdmin && (
-              <span>
-                <i className="fal fa-poll" />
-              </span>
-            )}
-            <span>
-              <i className="fal fa-file-alt" />
-            </span>
-            <span>
-              <i className="fal fa-solar-panel" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-chart-line" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-clock" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-users-class" />
-            </span>
-            <span className="d-none">
-              <i className="fal fa-cog" />
-            </span>
+        {share && share.id && (
+          <SocketClient
+            topics={[`/sub/share-room/${shareId}`]}
+            onMessage={this.onMessage}
+            onConnect={() => {
+              this.joinShare(shareId);
+            }}
+            onDisconnect={() => {}}
+            setRef={(client) => {
+              this.clientRef = client;
+            }}
+          />
+        )}
+        <div className={`viewer-top g-no-select ${hideContentViewerMenu ? 'hide' : ''}`}>
+          <div>
+            <div className="logo-area">
+              <TopLogo />
+            </div>
+            <div className="menu">
+              <ContentViewerMenu
+                className="chapters-menu"
+                list={chapters}
+                selectedId={currentChapterId}
+                onClick={this.setChapter}
+                onPrevClick={this.setChapter}
+                onNextClick={this.setChapter}
+              />
+              <ContentViewerMenu
+                className="pages-menu"
+                list={pages}
+                selectedId={currentPageId}
+                onClick={this.setPage}
+                onPrevClick={this.setPage}
+                onNextClick={this.setPage}
+              />
+            </div>
+            <div className="side-menu">
+              <SideMenu
+                share={share}
+                isAdmin={isAdmin}
+                stopShare={this.stopShare}
+                hideContentViewerMenu={hideContentViewerMenu}
+                setHideContentViewerMenu={this.setHideContentViewerMenu}
+                fullScreen={fullScreen}
+                setFullScreen={this.setFullScreen}
+                openUserPopup={openUserPopup}
+                setOpenUserPopup={this.setOpenUserPopup}
+              />
+            </div>
           </div>
         </div>
         <div className="content">
@@ -384,33 +515,29 @@ class ContentViewer extends React.Component {
               setSelectedItem={this.setSelectedItem}
               onChangeValue={this.onChangeValue}
               setEditing={this.setEditing}
+              movePage={this.movePage}
             />
           )}
+          {openUserPopup && (
+            <ContentViewerPopup
+              name="user-popup"
+              className="open-user-popup"
+              title={`참여중인 사용자 (${users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length}/${
+                users.filter((u) => !u.banYn).length
+              })`}
+              arrowRight={isAdmin ? '126px' : '110px'}
+              setOpen={this.setOpenUserPopup}
+            >
+              <ContentViewerUserPopup
+                user={user}
+                users={users}
+                banUser={this.banUser}
+                kickOutUser={this.kickOutUser}
+                allowUser={this.allowUser}
+              />
+            </ContentViewerPopup>
+          )}
         </div>
-        {share.startedYn && (
-          <>
-            <div
-              className="prev-page"
-              onClick={() => {
-                this.movePage(false);
-              }}
-            >
-              <div>
-                <i className="fal fa-chevron-left" />
-              </div>
-            </div>
-            <div
-              className="next-page"
-              onClick={() => {
-                this.movePage(true);
-              }}
-            >
-              <div>
-                <i className="fal fa-chevron-right" />
-              </div>
-            </div>
-          </>
-        )}
         <div className="screen-type d-none" onClick={() => {}}>
           <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
           <div>

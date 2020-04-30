@@ -4,11 +4,33 @@
   width: 100%;
 
   .viewer-top {
-    min-height: 60px;
     flex-grow: 0;
     display: block;
-    background-color: $secondary;
     vertical-align: top;
+    height: 60px;
+    transition: 0.3s all;
+
+    > div {
+      height: 60px;
+      background-color: $secondary;
+    }
+
+    &.hide {
+      position: fixed;
+      top: -60px;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      height: 70px;
+      transition: 0.3s all;
+      transition-delay: 0.2s;
+
+      &:hover {
+        top: 0;
+        height: 60px;
+        transition: 0.3s all;
+      }
+    }
 
     .logo-area {
       display: inline-block;
@@ -24,30 +46,6 @@
       color: $white;
       padding: 16px 1rem;
       text-align: center;
-
-      > span {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background-color: $white;
-        background-color: $gray-300;
-        display: inline-block;
-        color: $black;
-        text-align: center;
-        padding-top: 2px;
-        font-size: 18px;
-        margin-right: 5px;
-
-        &:last-child {
-          margin-right: 0;
-        }
-
-        &:hover {
-          background-color: $white;
-          cursor: pointer;
-          transition: 0.3s all;
-        }
-      }
     }
 
     .menu {
@@ -70,49 +68,11 @@
     flex-grow: 1;
     background-color: $white;
     position: relative;
-  }
-
-  .prev-page,
-  .next-page {
-    position: fixed;
-    top: 60px;
-    bottom: 0;
-    width: 40px;
-    z-index: 4;
-    height: 100%;
     display: flex;
-    align-self: center;
 
-    > div {
-      width: 100px;
-      height: 100px;
-      text-align: center;
-      font-size: 60px;
-      align-self: center;
-      display: none;
-      margin-bottom: 90px;
-      padding-top: 10px;
-      &:hover {
-        color: $yellow;
-      }
+    > .page-content-wrapper {
+      flex-grow: 1;
     }
-
-    &:hover {
-      width: 100px;
-
-      > div {
-        display: inline-block;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .prev-page {
-    left: 0;
-  }
-
-  .next-page {
-    right: 0;
   }
 
   .screen-type {
