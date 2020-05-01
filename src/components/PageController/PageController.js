@@ -204,6 +204,34 @@ class PageController extends React.Component {
                   </span>
                 </CheckControl>
                 <Separator />
+                <CheckControl
+                  optionKey="backgroundSize"
+                  optionValue="contain"
+                  active={!!itemOptions.backgroundSize}
+                  value={itemOptions.backgroundSize}
+                  onClick={onChangeOption}
+                >
+                  <i className="fal fa-expand"/>
+                </CheckControl>
+                <CheckControl
+                  optionKey="backgroundSize"
+                  optionValue="cover"
+                  active={!!itemOptions.backgroundSize}
+                  value={itemOptions.backgroundSize}
+                  onClick={onChangeOption}
+                >
+                  <i className="fal fa-expand-wide" />
+                </CheckControl>
+                <CheckControl
+                  optionKey="backgroundSize"
+                  optionValue="100% 100%"
+                  active={!!itemOptions.backgroundSize}
+                  value={itemOptions.backgroundSize}
+                  onClick={onChangeOption}
+                >
+                  <i className="fal fa-arrows"/>
+                </CheckControl>
+                <Separator />
                 <SelectControl
                   minWidth="120px"
                   height="140px"
@@ -313,6 +341,13 @@ class PageController extends React.Component {
                   }}
                 >
                   {t('텍스트 상자')}
+                </ButtonControl>
+                <ButtonControl
+                  onClick={() => {
+                    addItem('Image');
+                  }}
+                >
+                  {t('그림')}
                 </ButtonControl>
               </>
             )}

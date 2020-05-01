@@ -43,7 +43,7 @@ const withPageItem = () => (WrappedComponent) => {
           <div className="grab grab-bottom" />
           <div className="grab grab-left" />
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
-            <WrappedComponent style={item.options} values={item.values} {...this.props} editable={editable} />
+            <WrappedComponent style={item.options} values={item.values} {...this.props} editable={editable} setSelectedItem={setSelectedItem} />
           </div>
         </div>
       );
@@ -61,6 +61,7 @@ withPageItem.options = {
   alignSelf: 'alignSelf',
   padding: 'padding',
   border: 'border',
+  backgroundSize : 'backgroundSize',
 };
 
 export default withPageItem;
