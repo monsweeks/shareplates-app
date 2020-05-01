@@ -300,6 +300,8 @@ class PageManager extends React.Component {
             createPage={this.createPage}
             showPageList={showPageList}
             setShowPageList={this.setShowPageList}
+            topicId={topicId}
+            chapterId={chapterId}
             pageId={selectedPageId}
             page={pages ? pages.find((d) => d.id === selectedPageId) : {}}
             setPageContent={this.setPageContent}

@@ -27,6 +27,7 @@ class PageContent extends React.Component {
       setSelectedItem,
       editable,
       onChangeValue,
+      onChangeFile,
       setEditing,
       movePage,
     } = this.props;
@@ -50,24 +51,28 @@ class PageContent extends React.Component {
           }
         }}
       >
-        <div className="prev-page">
-          <div
-            onClick={() => {
-              movePage(false);
-            }}
-          >
-            <i className="fal fa-chevron-left" />
-          </div>
-        </div>
-        <div className="next-page">
-          <div
-            onClick={() => {
-              movePage(true);
-            }}
-          >
-            <i className="fal fa-chevron-right" />
-          </div>
-        </div>
+        {!editable && (
+          <>
+            <div className="prev-page">
+              <div
+                onClick={() => {
+                  movePage(false);
+                }}
+              >
+                <i className="fal fa-chevron-left" />
+              </div>
+            </div>
+            <div className="next-page">
+              <div
+                onClick={() => {
+                  movePage(true);
+                }}
+              >
+                <i className="fal fa-chevron-right" />
+              </div>
+            </div>
+          </>
+        )}
         <div>
           <ResponsiveReactGridLayout
             onLayoutChange={onLayoutChange}
@@ -117,6 +122,7 @@ class PageContent extends React.Component {
                     setSelectedItem,
                     showLayout: dragging,
                     onChangeValue,
+                    onChangeFile,
                     setEditing,
                   })}
                 </div>
@@ -139,10 +145,11 @@ PageContent.propTypes = {
   onLayoutChange: PropTypes.func,
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
-  onChangeValue : PropTypes.func,
+  onChangeValue: PropTypes.func,
+  onChangeFile: PropTypes.func,
   editable: PropTypes.bool,
-  setEditing : PropTypes.func,
-  movePage : PropTypes.func,
+  setEditing: PropTypes.func,
+  movePage: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

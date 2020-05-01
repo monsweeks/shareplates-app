@@ -12,8 +12,6 @@ class ContentViewerUsers extends React.PureComponent {
     const members = users.filter((u) => u.shareRoleCode === 'MEMBER');
     const { sendReadyChat } = this.props;
 
-    console.log(sendReadyChat);
-
     return (
       <div className={`${className} content-viewer-user-wrapper`}>
         <div className="admin-user">

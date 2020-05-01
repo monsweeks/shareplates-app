@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { PageContent, PageController } from '@/components';
 import './PageEditor.scss';
 import { getSetting } from '@/components/PageContentItems';
+import request from '@/utils/request';
 
 const defaultContent = {
   layouts: {
@@ -223,6 +224,48 @@ class PageEditor extends React.Component {
     }
   };
 
+  getFileType = (file) => {
+    if (!/^image\//.test(file.type)) {
+      return 'image';
+    }
+    if (!/^video\//.test(file.type)) {
+      return 'video';
+    }
+    return 'file';
+  };
+
+  onChangeFile = (file, itemId) => {
+    const { topicId, chapterId, pageId } = this.props;
+    const { selectedItemId, content } = this.state;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', file.name);
+    formData.append('size', file.size);
+    formData.append('type', this.getFileType(file));
+
+    request.post(`/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}/file`, formData, (data) => {
+      if (itemId || selectedItemId) {
+        const next = { ...content };
+        const item = next.items.find((i) => i.id === (itemId || selectedItemId));
+
+        const values = { ...item.values };
+        values.id = data.id;
+        values.uuid = data.uuid;
+        item.values = values;
+
+        this.setState(
+          {
+            content: next,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
+    });
+  };
+
   setEditing = (editing) => {
     this.setState({
       editing,
@@ -252,6 +295,7 @@ class PageEditor extends React.Component {
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
             onChangeValue={this.onChangeValue}
+            onChangeFile={this.onChangeFile}
             editable
             editing={editing}
             setEditing={this.setEditing}
@@ -269,6 +313,8 @@ PageEditor.defaultProps = {
 PageEditor.propTypes = {
   className: PropTypes.string,
   setPageContent: PropTypes.func,
+  topicId: PropTypes.number,
+  chapterId: PropTypes.number,
   pageId: PropTypes.number,
   page: PropTypes.shape({
     title: PropTypes.string,

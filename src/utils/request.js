@@ -11,6 +11,10 @@ const logging = true;
 let base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
 base = window.location.port === '3000' ? `http://${window.location.hostname}:8080` : '';
 
+function getBase () {
+  return base;
+}
+
 function beforeRequest(quiet) {
   if (!quiet) {
     store.dispatch(setLoading(true));
@@ -212,6 +216,7 @@ const request = {
   post,
   put,
   del,
+  getBase,
 };
 
 export default request;
