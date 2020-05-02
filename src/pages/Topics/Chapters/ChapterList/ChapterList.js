@@ -11,7 +11,6 @@ import '@/styles/lib/react-grid-layout.scss';
 import storage from '@/utils/storage';
 
 class ChapterList extends React.PureComponent {
-  breakpoint = 'lg';
 
   constructor(props) {
     super(props);
@@ -89,16 +88,23 @@ class ChapterList extends React.PureComponent {
     request.del(
       `/api/topics/${topicId}/chapters/${chapterId}`,
       null,
-      () => {
+      (data) => {
+
+        console.log(data);
+
         const { chapters } = this.state;
         const next = chapters.slice(0);
         const index = next.findIndex((chapter) => chapter.id === chapterId);
 
         if (index > -1) {
           next.splice(index, 1);
-
           this.setState({
+            topic: data || {},
             chapters: next,
+          });
+        } else {
+          this.setState({
+            topic: data || {},
           });
         }
       },
@@ -167,7 +173,7 @@ class ChapterList extends React.PureComponent {
               <div className="summary">
                 <span className="chapter-count mr-1">{chapters.length}</span>
                 <span className="summary-label">CHAPTERS</span>
-                <span className="page-count ml-2 mr-1">0</span>
+                <span className="page-count ml-2 mr-1">{topic.pageCount}</span>
                 <span className="summary-label">PAGES</span>
               </div>
             </>

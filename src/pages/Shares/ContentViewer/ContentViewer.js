@@ -8,7 +8,7 @@ import request from '@/utils/request';
 import './ContentViewer.scss';
 import { setConfirm } from '@/actions';
 import ShareReady from './ShareReady';
-import { Button, ContentViewerMenu, PageContent, Popup, SocketClient, TopLogo } from '@/components';
+import { Button, ContentViewerMenu, EmptyMessage, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
 import ContentViewerUserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
@@ -100,6 +100,10 @@ class ContentViewer extends React.Component {
   };
 
   getPages = (shareId, chapterId, pageId, setFirstPage, setLastPage) => {
+    if (!chapterId) {
+      return;
+    }
+
     request.get(
       `/api/shares/${shareId}/contents/chapters/${chapterId}/pages`,
       {},
@@ -474,22 +478,31 @@ class ContentViewer extends React.Component {
               <TopLogo />
             </div>
             <div className="menu">
-              <ContentViewerMenu
-                className="chapters-menu"
-                list={chapters}
-                selectedId={currentChapterId}
-                onClick={this.setChapter}
-                onPrevClick={this.setChapter}
-                onNextClick={this.setChapter}
-              />
-              <ContentViewerMenu
-                className="pages-menu"
-                list={pages}
-                selectedId={currentPageId}
-                onClick={this.setPage}
-                onPrevClick={this.setPage}
-                onNextClick={this.setPage}
-              />
+              {chapters.length > 0 && (
+                <>
+                  <ContentViewerMenu
+                    className="chapters-menu"
+                    list={chapters}
+                    selectedId={currentChapterId}
+                    onClick={this.setChapter}
+                    onPrevClick={this.setChapter}
+                    onNextClick={this.setChapter}
+                  />
+                  <ContentViewerMenu
+                    className="pages-menu"
+                    list={pages}
+                    selectedId={currentPageId}
+                    onClick={this.setPage}
+                    onPrevClick={this.setPage}
+                    onNextClick={this.setPage}
+                  />
+                </>
+              )}
+              {chapters.length < 1 && (
+                <div className="no-menu">
+                  <div>작성된 컨텐츠가 없습니다</div>
+                </div>
+              )}
             </div>
             <div className="side-menu">
               <SideMenu
@@ -517,6 +530,18 @@ class ContentViewer extends React.Component {
               setEditing={this.setEditing}
               movePage={this.movePage}
             />
+          )}
+          {share.startedYn && !currentPage && (
+            <div className='empty-page'>
+              <EmptyMessage
+                className="h5"
+                message={
+                  <div>
+                    <div>{t('선택된 컨텐츠가 없습니다')}</div>
+                  </div>
+                }
+              />
+            </div>
           )}
           {openUserPopup && (
             <ContentViewerPopup

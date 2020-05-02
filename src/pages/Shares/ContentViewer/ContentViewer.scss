@@ -61,6 +61,18 @@
       .chapters {
         margin-bottom: 4px;
       }
+
+      .no-menu {
+        color: $white;
+        height: 52px;
+        display: flex;
+
+        > div {
+          flex-grow: 1;
+          align-self: center;
+          padding: 0 1rem;
+        }
+      }
     }
   }
 
@@ -72,6 +84,12 @@
 
     > .page-content-wrapper {
       flex-grow: 1;
+    }
+
+    > .empty-page {
+      width: 100%;
+      display: flex;
+
     }
   }
 
