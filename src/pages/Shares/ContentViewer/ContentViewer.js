@@ -534,6 +534,7 @@ class ContentViewer extends React.Component {
                 banUser={this.banUser}
                 kickOutUser={this.kickOutUser}
                 allowUser={this.allowUser}
+                isAdmin={isAdmin}
               />
             </ContentViewerPopup>
           )}
