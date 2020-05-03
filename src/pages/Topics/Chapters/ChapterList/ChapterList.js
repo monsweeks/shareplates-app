@@ -7,11 +7,9 @@ import request from '@/utils/request';
 import { Button, EmptyMessage, ListControlBar } from '@/components';
 import ChapterCardLayoutList from './ChapterCardLayoutList';
 import './ChapterList.scss';
-import '@/styles/lib/react-grid-layout.scss';
 import storage from '@/utils/storage';
 
 class ChapterList extends React.PureComponent {
-
   constructor(props) {
     super(props);
     const viewType = storage.getItem('chapters', 'viewType');
@@ -89,7 +87,6 @@ class ChapterList extends React.PureComponent {
       `/api/topics/${topicId}/chapters/${chapterId}`,
       null,
       (data) => {
-
         console.log(data);
 
         const { chapters } = this.state;
@@ -132,8 +129,38 @@ class ChapterList extends React.PureComponent {
     );
   };
 
-  updateChapterOrders = (topicId, chapters) => {
+  updateChapterOrders = () => {
+    const { topicId, chapters } = this.state;
     request.put(`/api/topics/${topicId}/chapters/orders`, { topicId, chapters }, null, null, true);
+  };
+
+  moveChapter = (targetChapterId, destChapterId, right) => {
+    if (targetChapterId === destChapterId) {
+      return;
+    }
+
+    const { chapters } = this.state;
+    const next = chapters.slice(0);
+
+    const targetIndex = next.findIndex((chapter) => chapter.id === targetChapterId);
+    const target = next[targetIndex];
+    next.splice(targetIndex, 1);
+
+    const destIndex = next.findIndex((chapter) => chapter.id === destChapterId);
+    if (right) {
+      next.splice(destIndex + 1, 0, target);
+    } else {
+      next.splice(destIndex, 0, target);
+    }
+
+    next.forEach((d, i) => {
+      // eslint-disable-next-line no-param-reassign
+      d.orderNo = i + 1;
+    });
+
+    this.setState({
+      chapters: next,
+    });
   };
 
   onChangeViewType = (viewType) => {
@@ -218,68 +245,18 @@ class ChapterList extends React.PureComponent {
                 }
               />
             )}
-            {viewType === 'card' && (
-              <ChapterCardLayoutList
-                topicId={topic.id}
-                chapters={chapters}
-                updateChapterOrders={this.updateChapterOrders}
-                updateChapterTitle={this.updateChapterTitle}
-                deleteChapter={this.deleteChapter}
-                setChapters={this.setChapters}
-                onChapterClick={this.moveToPages}
-                viewType={viewType}
-                rowHeight={120}
-                margin={[12, 12]}
-                gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
-                  cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
-                  defaultBox: {
-                    w: 1,
-                    h: 1,
-                    minW: 1,
-                    maxW: 1,
-                    minH: 1,
-                    maxH: 1,
-                    moved: false,
-                    static: false,
-                    isDraggable: true,
-                    isResizable: false,
-                  },
-                }}
-                isWriter={isWriter}
-              />
-            )}
-            {viewType === 'list' && (
-              <ChapterCardLayoutList
-                topicId={topic.id}
-                chapters={chapters}
-                updateChapterOrders={this.updateChapterOrders}
-                updateChapterTitle={this.updateChapterTitle}
-                deleteChapter={this.deleteChapter}
-                setChapters={this.setChapters}
-                onChapterClick={this.moveToPages}
-                viewType={viewType}
-                rowHeight={40}
-                margin={[12, 4]}
-                gridSetting={{
-                  breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
-                  cols: { lg: 1, md: 1, sm: 1, xs: 1, xxs: 1 },
-                  defaultBox: {
-                    w: 1,
-                    h: 1,
-                    minW: 1,
-                    maxW: 1,
-                    minH: 1,
-                    maxH: 1,
-                    moved: false,
-                    static: false,
-                    isDraggable: true,
-                    isResizable: false,
-                  },
-                }}
-                isWriter={isWriter}
-              />
-            )}
+            <ChapterCardLayoutList
+              topicId={topic.id}
+              chapters={chapters}
+              moveChapter={this.moveChapter}
+              updateChapterOrders={this.updateChapterOrders}
+              updateChapterTitle={this.updateChapterTitle}
+              deleteChapter={this.deleteChapter}
+              setChapters={this.setChapters}
+              onChapterClick={this.moveToPages}
+              viewType={viewType}
+              isWriter={isWriter}
+            />
           </FullLayout>
         )}
       </div>

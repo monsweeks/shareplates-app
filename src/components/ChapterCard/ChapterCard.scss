@@ -107,14 +107,16 @@ $mover-height: 24px;
         justify-content: center;
         vertical-align: middle;
         display: flex;
-        padding-bottom: 12px;
-        position: relative;
+        _padding: 0.5rem 0 1rem;
+        _position: relative;
+        padding: 1.5rem 0 2rem;
+
 
         .chapter-title {
           font-family: LGSmHaB;
           font-size: 0.8rem;
           position: relative;
-          width: calc(100% - 24px);
+          width: 100%;
           padding: 0 1rem;
 
           > div {
@@ -125,7 +127,7 @@ $mover-height: 24px;
               display: inline-block;
               margin-left: 5px;
               position: absolute;
-              top: -1px;
+              top: -2px;
               right: -24px;
               color: $primary;
               background-color: $light;
