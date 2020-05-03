@@ -103,6 +103,9 @@ class ChapterRow extends React.Component {
             >
               <div>{chapter.title}</div>
             </div>
+            <div className="page-count">
+              <span className="number">{chapter.pageCount}</span> <span className="text">PAGES</span>
+            </div>
             {isWriter && (
               <div className="buttons">
                 <div>
@@ -247,6 +250,7 @@ ChapterRow.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     orderNo: PropTypes.number,
+    pageCount : PropTypes.number,
   }),
   className: PropTypes.string,
   onCardClick: PropTypes.func,

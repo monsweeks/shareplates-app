@@ -86,6 +86,10 @@ $mover-height: 24px;
           align-self: center;
           padding-top: 5px;
           margin-left: 0.5rem;
+
+          @media (max-width: 576px) {
+            margin-left: 0rem;
+          }
         }
       }
 
@@ -94,9 +98,36 @@ $mover-height: 24px;
         flex-grow: 1;
         padding: 0.5rem;
         font-family: LGSmHaB;
+        max-width: calc(100% - 30px - 32px - 40px - 84px);
+
+        @media (max-width: 576px) {
+          max-width: calc(100% - 30px - 24px - 84px);
+        }
+
+        > div {
+          overflow-x: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 100%;
+        }
 
         &:hover {
           text-decoration: underline;
+        }
+      }
+
+      &.page-count {
+        white-space: nowrap;
+        font-size: 10px;
+        display: block;
+        min-width: 40px;
+
+        .number {
+          font-family: Righteous;
+        }
+
+        @media (max-width: 576px) {
+          display: none;
         }
       }
 
@@ -105,6 +136,7 @@ $mover-height: 24px;
         white-space: nowrap;
         padding: 0 0.5rem;
         text-align: center;
+        min-width: 84px;
 
         button {
           padding: 0;

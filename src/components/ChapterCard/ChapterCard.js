@@ -110,6 +110,9 @@ class ChapterCard extends React.Component {
                   }
                 }}
               >
+                <div className="page-count">
+                  <span className="number">{chapter.pageCount}</span> <span className="text">PAGES</span>
+                </div>
                 <div
                   className="chapter-title"
                   onDoubleClick={(e) => {
@@ -253,6 +256,7 @@ ChapterCard.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     orderNo: PropTypes.number,
+    pageCount: PropTypes.number,
   }),
   className: PropTypes.string,
   onCardClick: PropTypes.func,

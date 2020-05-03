@@ -6,6 +6,8 @@ import './ChapterCardLayoutList.scss';
 class ChapterCardLayoutList extends React.Component {
   draggingChapterOrder = null;
 
+  somethingMoved = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +17,7 @@ class ChapterCardLayoutList extends React.Component {
 
   onDragStart = (id, orderNo) => {
     this.draggingChapterOrder = orderNo;
+    this.somethingMoved = false;
     this.setState({
       draggingChapterId: id,
     });
@@ -22,22 +25,17 @@ class ChapterCardLayoutList extends React.Component {
 
   onDragEnd = () => {
     this.draggingChapterOrder = null;
+
     this.setState({
       draggingChapterId: null,
     });
 
     const { updateChapterOrders } = this.props;
-    updateChapterOrders();
-  };
+    if (this.somethingMoved) {
+      updateChapterOrders();
+    }
 
-  onDrop = (id, orderNo, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    const { moveChapter } = this.props;
-    const { draggingChapterId } = this.state;
-
-    moveChapter(draggingChapterId, id, this.draggingChapterOrder < orderNo);
+    this.somethingMoved = false;
   };
 
   onDragOver = (id, orderNo, e) => {
@@ -48,6 +46,7 @@ class ChapterCardLayoutList extends React.Component {
     const { draggingChapterId } = this.state;
 
     if (draggingChapterId !== id) {
+      this.somethingMoved = true;
       moveChapter(draggingChapterId, id, this.draggingChapterOrder < orderNo);
       this.draggingChapterOrder = orderNo;
     }
@@ -116,9 +115,6 @@ class ChapterCardLayoutList extends React.Component {
                   onDragEnd={(e) => {
                     this.onDragEnd(chapter.id, e);
                   }}
-                  onDrop={(e) => {
-                    this.onDrop(chapter.id, chapter.orderNo, e);
-                  }}
                   onDragOver={(e) => {
                     this.onDragOver(chapter.id, chapter.orderNo, e);
                   }}
@@ -145,7 +141,7 @@ ChapterCardLayoutList.propTypes = {
   isWriter: PropTypes.bool,
   onChapterClick: PropTypes.func,
   moveChapter: PropTypes.func,
-  createChapter : PropTypes.func,
+  createChapter: PropTypes.func,
 };
 
 export default ChapterCardLayoutList;

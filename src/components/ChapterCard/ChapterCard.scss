@@ -132,6 +132,18 @@ $mover-height: 24px;
         display: flex;
         padding: 1.5rem 0 2rem;
 
+
+        .page-count {
+          position: absolute;
+          bottom: 3px;
+          right: 5px;
+          font-size: 10px;
+
+          .number {
+            font-family: Righteous;
+          }
+        }
+
         .chapter-title {
           font-family: LGSmHaB;
           font-size: 0.8rem;
