@@ -65,7 +65,7 @@ class ChapterCardLayoutList extends React.Component {
               return (
                 <div
                   key={chapter.id}
-                  draggable={!isWriter}
+                  draggable={isWriter}
                   onDragStart={(e) => {
                     this.onDragStart(chapter.id, chapter.orderNo, e);
                   }}
