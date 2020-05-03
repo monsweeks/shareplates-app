@@ -10,6 +10,29 @@ $mover-height: 24px;
   vertical-align: top;
   height: 100%;
 
+  .new-card-content {
+    height: 99px;
+    text-align: center;
+    font-family: LGSmHaB;
+    font-size: 0.8rem;
+    display: flex;
+
+    &:hover {
+      .new-text {
+        text-decoration: underline;
+      }
+    }
+
+    > div {
+      width: 100%;
+      align-self: center;
+
+      i {
+        font-size: 24px;
+      }
+    }
+  }
+
   .card-buttons {
     position: absolute;
     top: 3px;
@@ -107,10 +130,7 @@ $mover-height: 24px;
         justify-content: center;
         vertical-align: middle;
         display: flex;
-        _padding: 0.5rem 0 1rem;
-        _position: relative;
         padding: 1.5rem 0 2rem;
-
 
         .chapter-title {
           font-family: LGSmHaB;
@@ -156,6 +176,14 @@ $mover-height: 24px;
 
             input {
               width: 100%;
+            }
+          }
+        }
+
+        &:hover {
+          .chapter-title {
+            .title-text {
+              text-decoration: underline;
             }
           }
         }

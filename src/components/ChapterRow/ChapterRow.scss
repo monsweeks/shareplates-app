@@ -10,6 +10,27 @@ $mover-height: 24px;
   vertical-align: top;
   height: 100%;
 
+  .new-card-content {
+    height: 35px;
+    display: flex;
+    > div {
+      width: 100%;
+      align-self: center;
+      padding: 0 1rem;
+
+      .new-text {
+        font-size: 0.8rem;
+        font-family: LGSmHaB;
+      }
+    }
+
+    &:hover {
+      .new-text {
+        text-decoration: underline;
+      }
+    }
+  }
+
   > div {
     width: 100%;
     height: 100%;
@@ -29,6 +50,7 @@ $mover-height: 24px;
         min-width: 30px;
         text-align: center;
         height: 100%;
+        height: 35px;
         color: $gray-500;
         transition: all 0.3s;
         cursor: grab;
@@ -72,6 +94,10 @@ $mover-height: 24px;
         flex-grow: 1;
         padding: 0.5rem;
         font-family: LGSmHaB;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       &.buttons {

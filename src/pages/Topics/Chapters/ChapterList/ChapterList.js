@@ -209,7 +209,7 @@ class ChapterList extends React.PureComponent {
             isWriter
               ? [
                   <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
-                    <i className="fal fa-plus" /> 챕터 추가
+                    <i className="fal fa-plus" /> 새로운 챕터
                   </Button>,
                 ]
               : []
@@ -223,7 +223,7 @@ class ChapterList extends React.PureComponent {
             <span className="summary-label">PAGES</span>
           </div>
           <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
-            <i className="fal fa-plus" /> 챕터 추가
+            <i className="fal fa-plus" /> 새로운 챕터
           </Button>
         </div>
         {chapters !== false && (
@@ -238,7 +238,7 @@ class ChapterList extends React.PureComponent {
                     {isWriter && (
                       <Button onClick={this.createChapter} color="white">
                         <i className="fal fa-plus mr-2" />
-                        챕터 추가
+                        새로운 챕터
                       </Button>
                     )}
                   </div>
@@ -254,6 +254,7 @@ class ChapterList extends React.PureComponent {
               deleteChapter={this.deleteChapter}
               setChapters={this.setChapters}
               onChapterClick={this.moveToPages}
+              createChapter={this.createChapter}
               viewType={viewType}
               isWriter={isWriter}
             />

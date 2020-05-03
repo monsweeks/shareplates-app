@@ -53,8 +53,52 @@ class ChapterCardLayoutList extends React.Component {
     }
   };
 
+  getChapterItem = (chapter, viewType, newCard) => {
+    const { updateChapterTitle, deleteChapter, isWriter, onChapterClick, createChapter } = this.props;
+
+    if (viewType === 'card') {
+      return (
+        <ChapterCard
+          newCard={newCard}
+          chapter={chapter}
+          onCardClick={(chapterId) => {
+            if (newCard) {
+              createChapter();
+            } else {
+              onChapterClick(chapterId);
+            }
+          }}
+          onRemoveClick={(chapterId) => {
+            deleteChapter(chapterId);
+          }}
+          onChangeTitle={updateChapterTitle}
+          isWriter={isWriter}
+        />
+      );
+    }
+
+    return (
+      <ChapterRow
+        newCard={newCard}
+        chapter={chapter}
+        onCardClick={(chapterId) => {
+          if (newCard) {
+            createChapter();
+          } else {
+            onChapterClick(chapterId);
+          }
+        }}
+        onRemoveClick={(chapterId) => {
+          deleteChapter(chapterId);
+        }}
+        onChangeTitle={updateChapterTitle}
+        isWriter={isWriter}
+      />
+    );
+  };
+
   render() {
-    const { updateChapterTitle, deleteChapter, chapters, viewType, isWriter, onChapterClick } = this.props;
+    const { chapters, viewType, isWriter } = this.props;
     const { draggingChapterId } = this.state;
 
     return (
@@ -80,35 +124,11 @@ class ChapterCardLayoutList extends React.Component {
                   }}
                   className={chapter.id === draggingChapterId ? 'dragging' : ''}
                 >
-                  {viewType === 'card' && (
-                    <ChapterCard
-                      chapter={chapter}
-                      onCardClick={(chapterId) => {
-                        onChapterClick(chapterId);
-                      }}
-                      onRemoveClick={(chapterId) => {
-                        deleteChapter(chapterId);
-                      }}
-                      onChangeTitle={updateChapterTitle}
-                      isWriter={isWriter}
-                    />
-                  )}
-                  {viewType === 'list' && (
-                    <ChapterRow
-                      chapter={chapter}
-                      onCardClick={(chapterId) => {
-                        onChapterClick(chapterId);
-                      }}
-                      onRemoveClick={(chapterId) => {
-                        deleteChapter(chapterId);
-                      }}
-                      onChangeTitle={updateChapterTitle}
-                      isWriter={isWriter}
-                    />
-                  )}
+                  {this.getChapterItem(chapter, viewType)}
                 </div>
               );
             })}
+            <div>{this.getChapterItem(null, viewType, true)}</div>
           </div>
         )}
       </div>
@@ -125,6 +145,7 @@ ChapterCardLayoutList.propTypes = {
   isWriter: PropTypes.bool,
   onChapterClick: PropTypes.func,
   moveChapter: PropTypes.func,
+  createChapter : PropTypes.func,
 };
 
 export default ChapterCardLayoutList;
