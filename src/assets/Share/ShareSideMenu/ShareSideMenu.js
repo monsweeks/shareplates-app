@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './SideMenu.scss';
+import './ShareSideMenu.scss';
 
-class SideMenu extends React.PureComponent {
+class ShareSideMenu extends React.PureComponent {
   componentDidMount() {
     ReactTooltip.rebuild();
   }
@@ -14,7 +14,7 @@ class SideMenu extends React.PureComponent {
     // eslint-disable-next-line no-unused-vars,no-shadow
     const { t, isAdmin, share } = this.props;
     const { stopShare } = this.props;
-    const { hideContentViewerMenu, setHideContentViewerMenu } = this.props;
+    const { hideShareNavigator, setHideShareNavigator } = this.props;
     const { fullScreen, setFullScreen } = this.props;
     const { openUserPopup, setOpenUserPopup } = this.props;
 
@@ -26,9 +26,9 @@ class SideMenu extends React.PureComponent {
           {!share.startedYn && <i className="fal fa-broadcast-tower" />}
         </span>
         <span
-          className={`on-off-button ${hideContentViewerMenu ? 'on' : 'off'}`}
+          className={`on-off-button ${hideShareNavigator ? 'on' : 'off'}`}
           onClick={() => {
-            setHideContentViewerMenu(!hideContentViewerMenu);
+            setHideShareNavigator(!hideShareNavigator);
           }}
         >
           <span className="on-off" />
@@ -80,7 +80,7 @@ class SideMenu extends React.PureComponent {
   }
 }
 
-SideMenu.propTypes = {
+ShareSideMenu.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -90,12 +90,12 @@ SideMenu.propTypes = {
   share: PropTypes.shape({
     startedYn: PropTypes.bool,
   }),
-  hideContentViewerMenu: PropTypes.bool,
-  setHideContentViewerMenu: PropTypes.func,
+  hideShareNavigator: PropTypes.bool,
+  setHideShareNavigator: PropTypes.func,
   fullScreen: PropTypes.bool,
   setFullScreen: PropTypes.func,
   openUserPopup: PropTypes.bool,
   setOpenUserPopup: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(SideMenu));
+export default withRouter(withTranslation()(ShareSideMenu));

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import './ShareReady.scss';
+import './ShareStandByPopup.scss';
 import { setConfirm } from '@/actions';
 import { Button } from '@/components';
-import { ContentViewerUsers } from '@/assets';
+import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
 
-class ShareReady extends React.PureComponent {
+class ShareStandByPopup extends React.PureComponent {
   render() {
     const { isAdmin, users, startShare, closeShare, user, sendReadyChat, exitShare } = this.props;
 
@@ -61,7 +61,7 @@ class ShareReady extends React.PureComponent {
         <div className="user-count">
           <span>{users.length}명 접속중</span>
         </div>
-        <ContentViewerUsers users={users} user={user} sendReadyChat={sendReadyChat} />
+        <ShareStandByUserList users={users} user={user} sendReadyChat={sendReadyChat} />
       </div>
     );
   }
@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-ShareReady.propTypes = {
+ShareStandByPopup.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -102,4 +102,4 @@ ShareReady.propTypes = {
   exitShare: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareReady)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareStandByPopup)));

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
-import { TopicForm } from '@/pages';
+import { TopicForm } from '@/assets';
 import { EmptyMessage } from '@/components';
 
 class EditTopic extends React.PureComponent {

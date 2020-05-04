@@ -9,7 +9,13 @@ import './Share.scss';
 import { setConfirm } from '@/actions';
 import { Button, EmptyMessage, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
-import { ShareReady, ContentViewerMenu, ContentViewerPopup, ContentViewerUserPopup, SideMenu } from '@/assets';
+import {
+  ShareNavigator,
+  ShareSidePopup,
+  ShareSideUserPopup,
+  ShareSideMenu,
+  ShareStandByPopup,
+} from '@/assets';
 
 class Share extends React.Component {
   constructor(props) {
@@ -31,7 +37,7 @@ class Share extends React.Component {
       currentPage: null,
       isAdmin: false,
       users: [],
-      hideContentViewerMenu: false,
+      hideShareNavigator: false,
       fullScreen: false,
       openUserPopup: false,
     };
@@ -381,9 +387,9 @@ class Share extends React.Component {
     }
   };
 
-  setHideContentViewerMenu = (value) => {
+  setHideShareNavigator = (value) => {
     this.setState({
-      hideContentViewerMenu: value,
+      hideShareNavigator: value,
     });
   };
 
@@ -449,7 +455,7 @@ class Share extends React.Component {
       currentPage,
       isAdmin,
       users,
-      hideContentViewerMenu,
+      hideShareNavigator,
       fullScreen,
       openUserPopup,
     } = this.state;
@@ -469,7 +475,7 @@ class Share extends React.Component {
             }}
           />
         )}
-        <div className={`viewer-top g-no-select ${hideContentViewerMenu ? 'hide' : ''}`}>
+        <div className={`viewer-top g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
           <div>
             <div className="logo-area">
               <TopLogo />
@@ -477,7 +483,7 @@ class Share extends React.Component {
             <div className="menu">
               {chapters.length > 0 && (
                 <>
-                  <ContentViewerMenu
+                  <ShareNavigator
                     className="chapters-menu"
                     list={chapters}
                     selectedId={currentChapterId}
@@ -485,7 +491,7 @@ class Share extends React.Component {
                     onPrevClick={this.setChapter}
                     onNextClick={this.setChapter}
                   />
-                  <ContentViewerMenu
+                  <ShareNavigator
                     className="pages-menu"
                     list={pages}
                     selectedId={currentPageId}
@@ -502,12 +508,12 @@ class Share extends React.Component {
               )}
             </div>
             <div className="side-menu">
-              <SideMenu
+              <ShareSideMenu
                 share={share}
                 isAdmin={isAdmin}
                 stopShare={this.stopShare}
-                hideContentViewerMenu={hideContentViewerMenu}
-                setHideContentViewerMenu={this.setHideContentViewerMenu}
+                hideShareNavigator={hideShareNavigator}
+                setHideShareNavigator={this.setHideShareNavigator}
                 fullScreen={fullScreen}
                 setFullScreen={this.setFullScreen}
                 openUserPopup={openUserPopup}
@@ -541,7 +547,7 @@ class Share extends React.Component {
             </div>
           )}
           {openUserPopup && (
-            <ContentViewerPopup
+            <ShareSidePopup
               name="user-popup"
               className="open-user-popup"
               title={`참여중인 사용자 (${users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length}/${
@@ -550,7 +556,7 @@ class Share extends React.Component {
               arrowRight={isAdmin ? '126px' : '110px'}
               setOpen={this.setOpenUserPopup}
             >
-              <ContentViewerUserPopup
+              <ShareSideUserPopup
                 user={user}
                 users={users}
                 banUser={this.banUser}
@@ -558,7 +564,7 @@ class Share extends React.Component {
                 allowUser={this.allowUser}
                 isAdmin={isAdmin}
               />
-            </ContentViewerPopup>
+            </ShareSidePopup>
           )}
         </div>
         <div className="screen-type d-none" onClick={() => {}}>
@@ -571,7 +577,7 @@ class Share extends React.Component {
         </div>
         {!share.startedYn && (
           <Popup open>
-            <ShareReady
+            <ShareStandByPopup
               users={users}
               share={share}
               isAdmin={isAdmin}

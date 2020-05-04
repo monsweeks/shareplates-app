@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './ContentViewerMenu.scss';
+import './ShareNavigator.scss';
 
-class ContentViewerMenu extends React.Component {
+class ShareNavigator extends React.Component {
   listControl = null;
 
   selectedControl = null;
@@ -244,11 +244,11 @@ class ContentViewerMenu extends React.Component {
   }
 }
 
-ContentViewerMenu.defaultProps = {
+ShareNavigator.defaultProps = {
   className: '',
 };
 
-ContentViewerMenu.propTypes = {
+ShareNavigator.propTypes = {
   className: PropTypes.string,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -265,4 +265,4 @@ ContentViewerMenu.propTypes = {
   onNextClick: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(ContentViewerMenu));
+export default withRouter(withTranslation()(ShareNavigator));

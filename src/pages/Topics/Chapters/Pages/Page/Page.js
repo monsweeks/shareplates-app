@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, EmptyMessage, PageEditor, PageManagerTopControlBar } from '@/components';
+import { Button, EmptyMessage, PageEditor } from '@/components';
 import request from '@/utils/request';
-import './PageManager.scss';
-import PageCardLayoutList from '@/pages/Topics/Chapters/Pages/PageManager/PageCardLayoutList';
+import './Page.scss';
+import { PageCardLayoutList, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
 
-class PageManager extends React.Component {
+class Page extends React.Component {
   constructor(props) {
     super(props);
     const {
@@ -254,7 +254,7 @@ class PageManager extends React.Component {
       <div className="page-manager-wrapper">
         {showPageList && (
           <div className="page-list-layout">
-            <PageManagerTopControlBar
+            <PageListTopMenu
               title={chapter && chapter.title}
               t={t}
               buttons={[
@@ -325,7 +325,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-PageManager.propTypes = {
+Page.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -339,4 +339,4 @@ PageManager.propTypes = {
   setConfirm: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(PageManager)));
+export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(Page)));

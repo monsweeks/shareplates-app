@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './ContentUserCard.scss';
+import './ShareStandByUserCard.scss';
 import { Avatar, Button, Card, CardBody } from '@/components';
 
-class ContentUserCard extends React.Component {
+class ShareStandByUserCard extends React.Component {
   textarea = null;
 
   constructor(props) {
@@ -159,11 +159,11 @@ class ContentUserCard extends React.Component {
   }
 }
 
-ContentUserCard.defaultProps = {
+ShareStandByUserCard.defaultProps = {
   className: '',
 };
 
-ContentUserCard.propTypes = {
+ShareStandByUserCard.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -183,4 +183,4 @@ ContentUserCard.propTypes = {
   sendReadyChat: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(ContentUserCard));
+export default withRouter(withTranslation()(ShareStandByUserCard));

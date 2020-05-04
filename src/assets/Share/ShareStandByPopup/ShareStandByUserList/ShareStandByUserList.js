@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './ContentViewerUsers.scss';
+import './ShareStandByUserList.scss';
 import { Col, EmptyMessage, Row } from '@/components';
-import { ContentUserCard } from '@/assets';
+import ShareStandByUserCard from './ShareStandByUserCard/ShareStandByUserCard';
 
-class ContentViewerUsers extends React.PureComponent {
+class ShareStandByUserList extends React.PureComponent {
   render() {
     const { user: currentUser, t, className, users } = this.props;
     const members = users.filter((u) => u.shareRoleCode === 'MEMBER');
@@ -19,7 +19,7 @@ class ContentViewerUsers extends React.PureComponent {
             .filter((u) => u.shareRoleCode === 'ADMIN')
             .map((user) => {
               return (
-                <ContentUserCard
+                <ShareStandByUserCard
                   key={user.id}
                   currentUser={currentUser}
                   user={user}
@@ -36,7 +36,7 @@ class ContentViewerUsers extends React.PureComponent {
                 {members.map((user) => {
                   return (
                     <Col className="col" xl={3} lg={4} md={6} sm={6} xs={12} key={user.id}>
-                      <ContentUserCard
+                      <ShareStandByUserCard
                         key={user.id}
                         currentUser={currentUser}
                         user={user}
@@ -66,11 +66,11 @@ class ContentViewerUsers extends React.PureComponent {
   }
 }
 
-ContentViewerUsers.defaultProps = {
+ShareStandByUserList.defaultProps = {
   className: '',
 };
 
-ContentViewerUsers.propTypes = {
+ShareStandByUserList.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -92,4 +92,4 @@ ContentViewerUsers.propTypes = {
   sendReadyChat: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(ContentViewerUsers));
+export default withRouter(withTranslation()(ShareStandByUserList));

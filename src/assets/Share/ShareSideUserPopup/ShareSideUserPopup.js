@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './ContentViewerUserPopup.scss';
+import './ShareSideUserPopup.scss';
 import { Button, Col, EmptyMessage, Row } from '@/components';
 import { ShareUserCard } from '@/assets';
 
-class ContentViewerUserPopup extends React.Component {
+class ShareSideUserPopup extends React.Component {
   constructor(props) {
     super(props);
 
@@ -157,7 +157,7 @@ class ContentViewerUserPopup extends React.Component {
   }
 }
 
-ContentViewerUserPopup.propTypes = {
+ShareSideUserPopup.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -173,4 +173,4 @@ ContentViewerUserPopup.propTypes = {
   isAdmin: PropTypes.bool,
 };
 
-export default withRouter(withTranslation()(ContentViewerUserPopup));
+export default withRouter(withTranslation()(ShareSideUserPopup));

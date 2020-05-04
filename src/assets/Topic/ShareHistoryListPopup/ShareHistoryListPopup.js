@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { setConfirm } from 'actions';
 import { connect } from 'react-redux';
-import './ShareList.scss';
+import { setConfirm } from '@/actions';
+import './ShareHistoryListPopup.scss';
 import { Button, DateTime, EmptyMessage } from '@/components';
 import request from '@/utils/request';
 
-class ShareList extends React.Component {
+class ShareHistoryListPopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -149,7 +149,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-ShareList.propTypes = {
+ShareHistoryListPopup.propTypes = {
   t: PropTypes.func,
   shares: PropTypes.arrayOf(
     PropTypes.shape({
@@ -171,4 +171,4 @@ ShareList.propTypes = {
   setConfirm: PropTypes.func,
 };
 
-export default withTranslation()(connect(undefined, mapDispatchToProps)(ShareList));
+export default withTranslation()(connect(undefined, mapDispatchToProps)(ShareHistoryListPopup));

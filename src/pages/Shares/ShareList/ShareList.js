@@ -9,7 +9,7 @@ import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import './ShareList.scss';
-import ShareEditor from '@/pages/Topics/TopicList/ShareEditor';
+import { ShareEditorPopup } from '@/assets';
 
 class ShareList extends React.Component {
   constructor(props) {
@@ -254,7 +254,7 @@ class ShareList extends React.Component {
         </FullLayout>
         {openShareEditorPopup && selectedShareId && (
           <Popup title="토픽 공유 관리" open setOpen={this.setOpenShareEditorPopup}>
-            <ShareEditor
+            <ShareEditorPopup
               topicId={selectedTopicId}
               shareId={selectedShareId}
               setOpen={this.setOpenShareEditorPopup}

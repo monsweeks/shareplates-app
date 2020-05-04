@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './PageManagerTopControlBar.scss';
+import './PageListTopMenu.scss';
 
-class PageManagerTopControlBar extends React.PureComponent {
+class PageListTopMenu extends React.PureComponent {
   render() {
     const { buttons, className } = this.props;
 
@@ -20,13 +20,13 @@ class PageManagerTopControlBar extends React.PureComponent {
   }
 }
 
-PageManagerTopControlBar.defaultProps = {
+PageListTopMenu.defaultProps = {
   className: '',
 };
 
-PageManagerTopControlBar.propTypes = {
+PageListTopMenu.propTypes = {
   buttons: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,
 };
 
-export default PageManagerTopControlBar;
+export default PageListTopMenu;

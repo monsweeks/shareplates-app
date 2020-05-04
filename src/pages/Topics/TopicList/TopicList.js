@@ -9,8 +9,8 @@ import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { setGrp } from '@/actions';
-import ShareEditor from '@/pages/Topics/TopicList/ShareEditor';
-import ShareList from '@/pages/Topics/TopicList/ShareList';
+import ShareEditor from '@/assets/Topic/ShareEditorPopup/ShareEditorPopup';
+import ShareHistoryListPopup from '@/assets/Topic/ShareHistoryListPopup/ShareHistoryListPopup';
 import './TopicList.scss';
 
 class TopicList extends React.Component {
@@ -312,7 +312,7 @@ class TopicList extends React.Component {
         )}
         {openShareListPopup && (
           <Popup title="토픽 공유 정보" open setOpen={this.setOpenShareListPopup}>
-            <ShareList
+            <ShareHistoryListPopup
               shares={shares}
               changeShare={this.changeShare}
               setOpen={this.setOpenShareListPopup}

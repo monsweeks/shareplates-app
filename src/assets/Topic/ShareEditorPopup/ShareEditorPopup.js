@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { setConfirm } from 'actions';
+import { setConfirm } from '@/actions';
 import {
   Button,
   Col,
@@ -21,7 +21,7 @@ import {
 } from '@/components';
 import RadioButton from '@/components/RadioButton/RadioButton';
 import request from '@/utils/request';
-import './ShareEditor.scss';
+import './ShareEditorPopup.scss';
 
 const privateYnValues = [
   {
@@ -34,7 +34,7 @@ const privateYnValues = [
   },
 ];
 
-class ShareEditor extends React.Component {
+class ShareEditorPopup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -401,7 +401,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-ShareEditor.propTypes = {
+ShareEditorPopup.propTypes = {
   t: PropTypes.func,
   topicId: PropTypes.number,
   shareId: PropTypes.number,
@@ -420,4 +420,4 @@ ShareEditor.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditor)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditorPopup)));

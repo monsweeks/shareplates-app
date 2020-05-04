@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import './ContentViewerPopup.scss';
+import './ShareSidePopup.scss';
 import { Button } from '@/components';
 import storage from '@/utils/storage';
 
-class ContentViewerPopup extends React.Component {
+class ShareSidePopup extends React.Component {
   constructor(props) {
     super(props);
 
@@ -108,13 +108,13 @@ class ContentViewerPopup extends React.Component {
   }
 }
 
-ContentViewerPopup.defaultProps = {
+ShareSidePopup.defaultProps = {
   className: '',
   arrowRight: '',
   title: '',
 };
 
-ContentViewerPopup.propTypes = {
+ShareSidePopup.propTypes = {
   name: PropTypes.string.isRequired,
   className: PropTypes.string,
   children: PropTypes.node,
@@ -123,4 +123,4 @@ ContentViewerPopup.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 
-export default withRouter(withTranslation()(ContentViewerPopup));
+export default withRouter(withTranslation()(ShareSidePopup));
