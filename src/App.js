@@ -1,7 +1,7 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Common, NoMatch, Sample } from 'pages';
+import { Common, NoMatch } from 'pages';
 import { Footer, Header, EmptyHeader } from '@/layouts';
 import About from '@/pages/About';
 import Users from '@/pages/Users';
@@ -23,7 +23,6 @@ function App() {
           <Route exact path="/" component={Topics} />
           <Route path="/users" component={Users} />
           <Route path="/about" component={About} />
-          <Route path="/samples" component={Sample} />
           <Route path="/topics" component={Topics} />
           <Route path="/groups" component={Grps} />
           <Route path="/shares" component={Shares} />

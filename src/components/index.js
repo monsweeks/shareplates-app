@@ -10,6 +10,7 @@ import Row from 'reactstrap/es/Row';
 import Col from 'reactstrap/es/Col';
 import Nav from 'reactstrap/es/Nav';
 import NavItem from 'reactstrap/es/NavItem';
+
 import TopLogo from '@/components/TopLogo/TopLogo';
 import Logo from '@/components/Logo/Logo';
 import Link from '@/components/Link/Link';
@@ -34,7 +35,6 @@ import TopicCard from '@/components/TopicCard/TopicCard';
 import BottomButton from '@/components/BottomButton/BottomButton';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 import DateTime from '@/components/DateTime/DateTime';
-import GrpCard from '@/components/GrpCard/GrpCard';
 import SubTitle from '@/components/SubTitle/SubTitle';
 import SocketClient from '@/components/SocketClient/SocketClient';
 import ObjectImage from '@/components/ObjectImage/ObjectImage';
@@ -90,7 +90,6 @@ export {
   BottomButton,
   EmptyMessage,
   DateTime,
-  GrpCard,
   SocketClient,
   SubTitle,
   ObjectImage,

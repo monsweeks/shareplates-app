@@ -8,10 +8,10 @@ import { Button, Col, Popup, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import './OpenShareList.scss';
+import './ShareList.scss';
 import ShareEditor from '@/pages/Topics/TopicList/ShareEditor';
 
-class OpenShareList extends React.Component {
+class ShareList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -276,7 +276,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-OpenShareList.propTypes = {
+ShareList.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,
@@ -293,4 +293,4 @@ OpenShareList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(OpenShareList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareList)));
