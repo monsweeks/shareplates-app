@@ -60,12 +60,6 @@ class PageManager extends React.Component {
     });
   };
 
-  setPages = (pages) => {
-    this.setState({
-      pages,
-    });
-  };
-
   createPage = () => {
     const { topicId, chapterId, pages } = this.state;
     const orderNo = pages.length + 1;
@@ -86,7 +80,9 @@ class PageManager extends React.Component {
     );
   };
 
-  updatePageOrders = (topicId, chapterId, pages) => {
+  updatePageOrders = () => {
+    const { topicId, chapterId, pages } = this.state;
+
     request.put(
       `/api/topics/${topicId}/chapters/${chapterId}/pages/orders`,
       { topicId, chapterId, pages },
@@ -156,7 +152,7 @@ class PageManager extends React.Component {
 
           this.setState({
             pages: next,
-            selectedPageId : selectedPageId === pageId ? null : selectedPageId
+            selectedPageId: selectedPageId === pageId ? null : selectedPageId,
           });
         }
       },
@@ -220,6 +216,35 @@ class PageManager extends React.Component {
     });
   };
 
+  movePage = (targetPageId, destPageId, right) => {
+    if (targetPageId === destPageId) {
+      return;
+    }
+
+    const { pages } = this.state;
+    const next = pages.slice(0);
+
+    const targetIndex = next.findIndex((page) => page.id === targetPageId);
+    const target = next[targetIndex];
+    next.splice(targetIndex, 1);
+
+    const destIndex = next.findIndex((page) => page.id === destPageId);
+    if (right) {
+      next.splice(destIndex + 1, 0, target);
+    } else {
+      next.splice(destIndex, 0, target);
+    }
+
+    next.forEach((d, i) => {
+      // eslint-disable-next-line no-param-reassign
+      d.orderNo = i + 1;
+    });
+
+    this.setState({
+      pages: next,
+    });
+  };
+
   render() {
     const { t } = this.props;
     const { topicId, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
@@ -261,33 +286,13 @@ class PageManager extends React.Component {
               <div className="page-list">
                 <div className="scrollbar">
                   <PageCardLayoutList
-                    topicId={topicId}
-                    chapterId={chapterId}
                     pages={pages}
+                    movePage={this.movePage}
                     updatePageOrders={this.updatePageOrders}
                     updatePageTitle={this.updatePageTitle}
                     deletePage={this.deletePage}
-                    setPages={this.setPages}
                     onPageClick={this.setSelectedPageId}
-                    rowHeight={120}
                     selectedId={selectedPageId}
-                    margin={[12, 12]}
-                    gridSetting={{
-                      breakpoints: { lg: 1201, md: 992, sm: 768, xs: 576, xxs: 0 },
-                      cols: { lg: 5, md: 4, sm: 3, xs: 2, xxs: 1 },
-                      defaultBox: {
-                        w: 1,
-                        h: 1,
-                        minW: 1,
-                        maxW: 1,
-                        minH: 1,
-                        maxH: 1,
-                        moved: false,
-                        static: false,
-                        isDraggable: true,
-                        isResizable: false,
-                      },
-                    }}
                     isWriter
                   />
                 </div>
