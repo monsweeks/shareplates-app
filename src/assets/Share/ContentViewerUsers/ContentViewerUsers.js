@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import './ContentViewerUsers.scss';
 import { Col, EmptyMessage, Row } from '@/components';
-import ContentUserCard from '@/pages/Shares/ContentViewer/ContentUserCard/ContentUserCard';
+import { ContentUserCard } from '@/assets';
 
 class ContentViewerUsers extends React.PureComponent {
   render() {

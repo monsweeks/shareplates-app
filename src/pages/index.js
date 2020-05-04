@@ -12,6 +12,7 @@ import Grp from './Grps/Grp/Grp';
 import GrpList from './Grps/GrpList/GrpList';
 import NewGrp from './Grps/NewGrp/NewGrp';
 // Shares
+import Share from './Shares/Share/Share';
 import ShareList from './Shares/ShareList/ShareList';
 
 import Join from './Users/Join/Join';
@@ -45,6 +46,7 @@ export {
   NewGrp,
   // Share
   ShareList,
+  Share,
 
   Join,
   JoinSuccess,

@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import './ShareReady.scss';
 import { setConfirm } from '@/actions';
-import { Button, ContentViewerUsers } from '@/components';
+import { Button } from '@/components';
+import { ContentViewerUsers } from '@/assets';
 
 class ShareReady extends React.PureComponent {
   render() {

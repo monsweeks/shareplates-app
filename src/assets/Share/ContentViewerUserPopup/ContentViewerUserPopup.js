@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import './ContentViewerUserPopup.scss';
 import { Button, Col, EmptyMessage, Row } from '@/components';
-import ShareUserCard from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ShareUserCard/ShareUserCard';
+import { ShareUserCard } from '@/assets';
 
 class ContentViewerUserPopup extends React.Component {
   constructor(props) {

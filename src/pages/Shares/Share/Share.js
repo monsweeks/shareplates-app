@@ -5,16 +5,13 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { addMessage } from 'actions';
 import request from '@/utils/request';
-import './ContentViewer.scss';
+import './Share.scss';
 import { setConfirm } from '@/actions';
-import ShareReady from './ShareReady';
-import { Button, ContentViewerMenu, EmptyMessage, PageContent, Popup, SocketClient, TopLogo } from '@/components';
+import { Button, EmptyMessage, PageContent, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
-import SideMenu from '@/pages/Shares/ContentViewer/SideMenu/SideMenu';
-import ContentViewerUserPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerUserPopup/ContentViewerUserPopup';
-import ContentViewerPopup from '@/pages/Shares/ContentViewer/Popups/ContentViewerPopup/ContentViewerPopup';
+import { ShareReady, ContentViewerMenu, ContentViewerPopup, ContentViewerUserPopup, SideMenu } from '@/assets';
 
-class ContentViewer extends React.Component {
+class Share extends React.Component {
   constructor(props) {
     super(props);
     const {
@@ -532,7 +529,7 @@ class ContentViewer extends React.Component {
             />
           )}
           {share.startedYn && !currentPage && (
-            <div className='empty-page'>
+            <div className="empty-page">
               <EmptyMessage
                 className="h5"
                 message={
@@ -606,7 +603,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-ContentViewer.propTypes = {
+Share.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -632,4 +629,4 @@ ContentViewer.propTypes = {
   addMessage: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ContentViewer)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Share)));
