@@ -193,7 +193,7 @@ class GrpForm extends Component {
               sm={6}
               xl={12}
               users={grp.admins}
-              className='bg-light'
+              className="bg-light"
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
@@ -225,7 +225,7 @@ class GrpForm extends Component {
               sm={6}
               xl={12}
               users={grp.members}
-              className='bg-light'
+              className="bg-light"
             />
           </FormGroup>
           <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />

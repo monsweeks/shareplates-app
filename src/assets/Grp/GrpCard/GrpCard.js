@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardBody } from '@/components';
+import { withTranslation } from 'react-i18next';
+import { Card, CardBody, CircleIcon } from '@/components';
 import './GrpCard.scss';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class GrpCard extends React.PureComponent {
   render() {
-    const { className, grp, onCardClick, onConfigClick, newCard } = this.props;
+    const { t, className } = this.props;
+    const { grp, onCardClick, onConfigClick, newCard } = this.props;
 
     return (
       <Card
@@ -34,7 +35,7 @@ class GrpCard extends React.PureComponent {
                   <div className="new-grp-icon">
                     <i className="fal fa-plus" />
                   </div>
-                  <div className="text">새로운 그룹</div>
+                  <div className="text">{t('label.newGrp')}</div>
                 </div>
               </>
             )}
@@ -65,7 +66,7 @@ class GrpCard extends React.PureComponent {
   }
 }
 
-export default GrpCard;
+export default withTranslation()(GrpCard);
 
 GrpCard.defaultProps = {
   className: '',
@@ -73,6 +74,7 @@ GrpCard.defaultProps = {
 };
 
 GrpCard.propTypes = {
+  t: PropTypes.func,
   grp: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,

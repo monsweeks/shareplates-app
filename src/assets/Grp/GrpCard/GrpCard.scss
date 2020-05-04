@@ -71,8 +71,6 @@
 
       > span {
         padding: 2px 4px;
-        _background-color: $green;
-        _color: $white;
         border-radius: 3px;
         border: 1px solid $border-color;
       }
@@ -81,7 +79,6 @@
     .grp-stats {
       position: relative;
       .user-count {
-        display: inline-block;
         background-color: $primary;
         color: $white;
         width: 60px;

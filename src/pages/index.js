@@ -3,8 +3,7 @@ import PrivacyPolicy from './About/PrivacyPolicy/PrivacyPolicy';
 import TermsAndConditions from './About/TermsAndConditions/TermsAndConditions';
 // Common
 import Common from './Common/Common';
-// Etcs
-import NoMatch from './Etcs/NoMatch/NoMatch';
+import NoMatch from './Common/NoMatch/NoMatch';
 // Grps
 import EditGrp from './Grps/EditGrp/EditGrp';
 import Grp from './Grps/Grp/Grp';
@@ -33,7 +32,6 @@ export {
   TermsAndConditions,
   // Common
   Common,
-  // Etcs
   NoMatch,
   // Grp
   EditGrp,
@@ -50,9 +48,10 @@ export {
   NewTopic,
   Topic,
   TopicList,
+  // Users
+  EditMyInfo,
   Join,
   JoinSuccess,
   Login,
-  EditMyInfo,
   Register,
 };
