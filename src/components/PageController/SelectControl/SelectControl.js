@@ -53,7 +53,7 @@ class SelectControl extends React.Component {
   };
 
   render() {
-    const { className, optionKey, minWidth, height, active, value, onSelect, children, list } = this.props;
+    const { className, optionKey, minWidth, height, active, value, onSelect, children, list, dataTip } = this.props;
     const { open } = this.state;
 
     return (
@@ -62,9 +62,7 @@ class SelectControl extends React.Component {
         style={{
           minWidth,
         }}
-        className={`select-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${
-          open ? 'open' : ''
-        }`}
+        className={`select-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
         onClick={() => {
           if (active) {
             this.setState({
@@ -72,6 +70,7 @@ class SelectControl extends React.Component {
             });
           }
         }}
+        data-tip={dataTip}
       >
         <div className="select-control-content">
           <div className="select-content">{children}</div>
@@ -119,6 +118,7 @@ SelectControl.propTypes = {
   optionKey: PropTypes.string,
   minWidth: PropTypes.string,
   height: PropTypes.string,
+  dataTip: PropTypes.string,
 };
 
 export default SelectControl;

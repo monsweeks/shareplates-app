@@ -80,11 +80,14 @@ class SizeControl extends React.Component {
   };
 
   render() {
-    const { className, active, setEditing, icon } = this.props;
+    const { className, active, setEditing, icon, dataTip } = this.props;
     const { optionValue, unitValue, focus } = this.state;
 
     return (
-      <div className={`size-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${focus ? 'focus' : ''}`}>
+      <div
+        className={`size-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${focus ? 'focus' : ''}`}
+        data-tip={dataTip}
+      >
         {icon && <span className="icon">{icon}</span>}
         <div>
           <input
@@ -147,6 +150,7 @@ SizeControl.propTypes = {
   onApply: PropTypes.func,
   setEditing: PropTypes.func,
   icon: PropTypes.node,
+  dataTip: PropTypes.string,
 };
 
 export default SizeControl;

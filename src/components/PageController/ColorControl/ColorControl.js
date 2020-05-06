@@ -61,6 +61,7 @@ class ColorControl extends React.Component {
       onSelect,
       children,
       lastColor,
+      dataTip,
     } = this.props;
     const { open, color } = this.state;
 
@@ -68,6 +69,7 @@ class ColorControl extends React.Component {
       <div
         ref={this.control}
         className={`color-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
+        data-tip={dataTip}
       >
         <div className="color-control-content">
           <div
@@ -180,6 +182,7 @@ ColorControl.propTypes = {
   colorPickerWidth: PropTypes.string,
   colorPickerHeight: PropTypes.string,
   lastColor: PropTypes.string,
+  dataTip : PropTypes.string,
 };
 
 export default ColorControl;

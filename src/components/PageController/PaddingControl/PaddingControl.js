@@ -206,7 +206,7 @@ class PaddingControl extends React.Component {
   };
 
   render() {
-    const { className, active } = this.props;
+    const { className, active, dataTip } = this.props;
     const { open, paddingTop, paddingRight, paddingBottom, paddingLeft, paddingAll } = this.state;
 
     return (
@@ -214,7 +214,7 @@ class PaddingControl extends React.Component {
         ref={this.control}
         className={`padding-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
       >
-        <div className="padding-control-content">
+        <div className="padding-control-content" data-tip={dataTip}>
           <div className="padding-content">
             <input
               className="direct-input"
@@ -447,6 +447,7 @@ PaddingControl.propTypes = {
   value: PropTypes.string,
   onApply: PropTypes.func,
   optionKey: PropTypes.string,
+  dataTip: PropTypes.string,
 };
 
 export default PaddingControl;

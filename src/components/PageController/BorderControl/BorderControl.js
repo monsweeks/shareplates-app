@@ -108,6 +108,7 @@ class BorderControl extends React.Component {
       children,
       lastValue,
       t,
+      dataTip,
     } = this.props;
     const { open, borderWidth, borderStyle, borderColor, tab } = this.state;
 
@@ -116,7 +117,7 @@ class BorderControl extends React.Component {
         ref={this.control}
         className={`border-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
       >
-        <div className="border-control-content">
+        <div className="border-control-content" data-tip={dataTip}>
           <div
             className="border-content"
             onClick={() => {
@@ -342,6 +343,7 @@ BorderControl.propTypes = {
   colorPickerHeight: PropTypes.string,
   lastValue: PropTypes.string,
   t: PropTypes.func,
+  dataTip: PropTypes.string,
 };
 
 export default withTranslation()(BorderControl);

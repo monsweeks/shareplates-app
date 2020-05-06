@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import './PageController.scss';
+import ReactTooltip from 'react-tooltip';
 import { Button } from '@/components';
 import CheckControl from '@/components/PageController/CheckControl/CheckControl';
 import ButtonControl from '@/components/PageController/ButtonControl/ButtonControl';
@@ -14,6 +14,7 @@ import ColorControl from '@/components/PageController/ColorControl/ColorControl'
 import PaddingControl from '@/components/PageController/PaddingControl/PaddingControl';
 import BorderControl from '@/components/PageController/BorderControl/BorderControl';
 import SizeControl from '@/components/PageController/SizeControl/SizeControl';
+import './PageController.scss';
 
 const tabs = [
   {
@@ -51,6 +52,14 @@ class PageController extends React.Component {
     }
 
     return null;
+  }
+
+  componentDidMount() {
+    ReactTooltip.rebuild();
+  }
+
+  componentDidUpdate() {
+    ReactTooltip.rebuild();
   }
 
   onMemoryAndChangeOption = (optionKey, color) => {
@@ -115,6 +124,7 @@ class PageController extends React.Component {
             {selectedTab === 'home' && (
               <>
                 <ButtonControl
+                  dataTip={t('새로운 페이지 추가')}
                   onClick={() => {
                     createPage();
                   }}
@@ -123,6 +133,7 @@ class PageController extends React.Component {
                 </ButtonControl>
                 <Separator />
                 <ButtonControl
+                  dataTip={t('페이지 목록 보임/숨김')}
                   icon
                   onClick={() => {
                     setShowPageList(!showPageList);
@@ -132,6 +143,7 @@ class PageController extends React.Component {
                 </ButtonControl>
                 <Separator />
                 <CheckControl
+                  dataTip={t('왼쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="left"
                   active={!!itemOptions.textAlign}
@@ -141,6 +153,7 @@ class PageController extends React.Component {
                   <i className="fas fa-align-left" />
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('가운데 정렬')}
                   optionKey="textAlign"
                   optionValue="center"
                   active={!!itemOptions.textAlign}
@@ -150,6 +163,7 @@ class PageController extends React.Component {
                   <i className="fas fa-align-center" />
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('오른쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="right"
                   active={!!itemOptions.textAlign}
@@ -159,6 +173,7 @@ class PageController extends React.Component {
                   <i className="fas fa-align-right" />
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('양쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="justify"
                   active={!!itemOptions.textAlign}
@@ -169,6 +184,7 @@ class PageController extends React.Component {
                 </CheckControl>
                 <Separator />
                 <CheckControl
+                  dataTip={t('위쪽 맞춤')}
                   optionKey="alignSelf"
                   optionValue="baseline"
                   active={!!itemOptions.alignSelf}
@@ -182,6 +198,7 @@ class PageController extends React.Component {
                   </span>
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('가운데 맞춤')}
                   optionKey="alignSelf"
                   optionValue="center"
                   active={!!itemOptions.alignSelf}
@@ -195,6 +212,7 @@ class PageController extends React.Component {
                   </span>
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('아래쪽 맞춤')}
                   optionKey="alignSelf"
                   optionValue="flex-end"
                   active={!!itemOptions.alignSelf}
@@ -209,15 +227,17 @@ class PageController extends React.Component {
                 </CheckControl>
                 <Separator />
                 <CheckControl
+                  dataTip={t('이미지의 작은 부분을 상자에 맞춤')}
                   optionKey="backgroundSize"
                   optionValue="contain"
                   active={!!itemOptions.backgroundSize}
                   value={itemOptions.backgroundSize}
                   onClick={onChangeOption}
                 >
-                  <i className="fal fa-expand"/>
+                  <i className="fal fa-expand" />
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('이미지의 큰 부분을 상자에 맞춤')}
                   optionKey="backgroundSize"
                   optionValue="cover"
                   active={!!itemOptions.backgroundSize}
@@ -227,16 +247,18 @@ class PageController extends React.Component {
                   <i className="fal fa-expand-wide" />
                 </CheckControl>
                 <CheckControl
+                  dataTip={t('이미지를 상자에 맞춤')}
                   optionKey="backgroundSize"
                   optionValue="100% 100%"
                   active={!!itemOptions.backgroundSize}
                   value={itemOptions.backgroundSize}
                   onClick={onChangeOption}
                 >
-                  <i className="fal fa-arrows"/>
+                  <i className="fal fa-arrows" />
                 </CheckControl>
                 <Separator />
                 <SelectControl
+                  dataTip={t('폰트')}
                   minWidth="120px"
                   height="140px"
                   optionKey="fontFamily"
@@ -248,6 +270,7 @@ class PageController extends React.Component {
                   <span>{fontFamily ? fontFamily.name : itemOptions.fontFamily}</span>
                 </SelectControl>
                 <SelectControl
+                  dataTip={t('폰트 크기')}
                   minWidth="64px"
                   height="140px"
                   optionKey="fontSize"
@@ -260,6 +283,7 @@ class PageController extends React.Component {
                 </SelectControl>
                 <Separator />
                 <ColorControl
+                  dataTip={t('폰트 색상')}
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
                   optionKey="color"
@@ -280,6 +304,7 @@ class PageController extends React.Component {
                 </ColorControl>
                 <Separator />
                 <ColorControl
+                  dataTip={t('상자 배경 색상')}
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
                   optionKey="backgroundColor"
@@ -300,6 +325,7 @@ class PageController extends React.Component {
                 </ColorControl>
                 <Separator />
                 <PaddingControl
+                  dataTip={t('내부 간격')}
                   optionKey="padding"
                   active={!!itemOptions.padding}
                   value={itemOptions.padding}
@@ -307,6 +333,7 @@ class PageController extends React.Component {
                 />
                 <Separator />
                 <BorderControl
+                  dataTip={t('경계선')}
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
                   optionKey="border"
@@ -329,20 +356,22 @@ class PageController extends React.Component {
                 </BorderControl>
                 <Separator />
                 <SizeControl
-                  icon={<i className="fal fa-arrows-h"/>}
+                  dataTip={t('상자 너비')}
+                  icon={<i className="fal fa-arrows-h" />}
                   optionKey="wrapperWidth"
                   optionValue={itemOptions.wrapperWidth}
-                  unitKey='wrapperWidthUnit'
+                  unitKey="wrapperWidthUnit"
                   unitValue={itemOptions.wrapperWidthUnit}
                   active={!!itemOptions.wrapperWidth}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />
                 <SizeControl
-                  icon={<i className="fal fa-arrows-v"/>}
+                  dataTip={t('상자 높이')}
+                  icon={<i className="fal fa-arrows-v" />}
                   optionKey="wrapperHeight"
                   optionValue={itemOptions.wrapperHeight}
-                  unitKey='wrapperHeightUnit'
+                  unitKey="wrapperHeightUnit"
                   unitValue={itemOptions.wrapperHeightUnit}
                   active={!!itemOptions.wrapperHeight}
                   onApply={onChangeOption}
@@ -353,6 +382,7 @@ class PageController extends React.Component {
             {selectedTab === 'insert' && (
               <>
                 <ButtonControl
+                  dataTip={t('새로운 페이지 추가')}
                   onClick={() => {
                     createPage();
                   }}
@@ -361,6 +391,7 @@ class PageController extends React.Component {
                 </ButtonControl>
                 <Separator />
                 <ButtonControl
+                  dataTip={t('텍스트 상자 추가')}
                   onClick={() => {
                     addItem('Text');
                   }}
@@ -368,11 +399,12 @@ class PageController extends React.Component {
                   {t('텍스트 상자')}
                 </ButtonControl>
                 <ButtonControl
+                  dataTip={t('이미지 상자 추가')}
                   onClick={() => {
                     addItem('Image');
                   }}
                 >
-                  {t('그림')}
+                  {t('이미지')}
                 </ButtonControl>
               </>
             )}
@@ -409,7 +441,7 @@ PageController.propTypes = {
   itemOptions: PropTypes.objectOf(PropTypes.any),
   onChangeOption: PropTypes.func,
   selectedItemId: PropTypes.string,
-  setEditing : PropTypes.func,
+  setEditing: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageController));
