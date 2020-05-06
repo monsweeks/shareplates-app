@@ -65,7 +65,7 @@ class PageContent extends React.PureComponent {
             </div>
           </>
         )}
-        <div className="h-100">
+        <div className="page-content-viewer scrollbar">
           {editable && !pageId && (
             <div className="h-100 d-flex">
               <EmptyMessage
