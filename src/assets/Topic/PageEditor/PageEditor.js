@@ -172,20 +172,41 @@ class PageEditor extends React.Component {
   onChangeOption = (optionKey, optionValue) => {
     const { selectedItemId, content } = this.state;
     if (selectedItemId) {
-      const next = { ...content };
-      const item = next.items.find((i) => i.id === selectedItemId);
-      const options = { ...item.options };
-      options[optionKey] = optionValue;
-      item.options = options;
-      this.setState(
-        {
-          content: next,
-          itemOptions: options,
-        },
-        () => {
-          this.checkDirty();
-        },
-      );
+      if (typeof optionKey === 'object') {
+        const next = { ...content };
+        const item = next.items.find((i) => i.id === selectedItemId);
+        const options = { ...item.options };
+
+        Object.keys(optionKey).forEach((key) => {
+          options[key] = optionKey[key];
+        });
+
+        item.options = options;
+        this.setState(
+          {
+            content: next,
+            itemOptions: options,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      } else {
+        const next = { ...content };
+        const item = next.items.find((i) => i.id === selectedItemId);
+        const options = { ...item.options };
+        options[optionKey] = optionValue;
+        item.options = options;
+        this.setState(
+          {
+            content: next,
+            itemOptions: options,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
     }
   };
 
@@ -283,6 +304,7 @@ class PageEditor extends React.Component {
             setPageContent={this.setPageContent}
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
+            onChangeOption={this.onChangeOption}
             onChangeValue={this.onChangeValue}
             onChangeFile={this.onChangeFile}
             editable

@@ -143,7 +143,7 @@ SizeControl.defaultProps = {
 SizeControl.propTypes = {
   className: PropTypes.string,
   active: PropTypes.bool,
-  optionValue: PropTypes.string,
+  optionValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   optionKey: PropTypes.string,
   unitKey: PropTypes.string,
   unitValue: PropTypes.string,
