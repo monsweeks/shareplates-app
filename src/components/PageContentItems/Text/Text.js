@@ -154,7 +154,7 @@ pageItemProps[withPageItem.options.border] = 'none';
 pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
 pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
-pageItemProps[withPageItem.options.wrapperHeightUnit] = '%';
+pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
 const pageItemValues = {};

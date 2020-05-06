@@ -53,27 +53,11 @@ class PageEditor extends React.Component {
     return null;
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.onKeyDown);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { showPageList } = this.props;
-    if (showPageList !== prevProps.showPageList) {
-      window.dispatchEvent(new Event('resize'));
-    }
-  }
-
-  onKeyDown = (e) => {
-    const { content, selectedItemId, editing } = this.state;
-    if (!editing && (e.key === 'Backspace' || e.key === 'Delete') && selectedItemId) {
+  removeItem = (itemId) => {
+    const { content } = this.state;
+    if (itemId) {
       const next = { ...content };
-
-      const itemInx = next.items.findIndex((item) => item.id === selectedItemId);
+      const itemInx = next.items.findIndex((item) => item.id === itemId);
       if (itemInx > -1) {
         next.items.splice(itemInx, 1);
       }
@@ -236,7 +220,6 @@ class PageEditor extends React.Component {
   };
 
   onChangePageProperties = (key, value) => {
-    console.log(key, value);
     const { pageId } = this.props;
     const { content } = this.state;
     if (pageId) {
@@ -244,10 +227,7 @@ class PageEditor extends React.Component {
       const pageProperties = { ...next.pageProperties };
 
       pageProperties[key] = value;
-
       next.pageProperties = pageProperties;
-
-      console.log(next);
 
       this.setState(
         {
@@ -346,6 +326,7 @@ class PageEditor extends React.Component {
             draggingItemId={draggingItemId}
             draggingItemIndex={draggingItemIndex}
             setDragging={this.setDragging}
+            removeItem={this.removeItem}
           />
         </div>
       </div>

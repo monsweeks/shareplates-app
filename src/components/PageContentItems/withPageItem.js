@@ -235,7 +235,7 @@ const withPageItem = () => (WrappedComponent) => {
     render() {
       const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
-      const { draggingItemId } = this.props;
+      const { draggingItemId, removeItem } = this.props;
 
       const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit } = item.options;
 
@@ -265,6 +265,16 @@ const withPageItem = () => (WrappedComponent) => {
             this.onDragOver(item.id, e);
           }}
         >
+          <div
+            className="remove-item-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedItem(null, {});
+              removeItem(item.id);
+            }}
+          >
+            <i className="fal fa-times" />
+          </div>
           <div className="grab grab-top" onMouseDown={this.onGrabMouseDown} onMouseUp={this.onGrabMouseUp} />
           <div className="grab grab-right" onMouseDown={this.onGrabMouseDown} onMouseUp={this.onGrabMouseUp} />
           <div className="grab grab-bottom" onMouseDown={this.onGrabMouseDown} onMouseUp={this.onGrabMouseUp} />

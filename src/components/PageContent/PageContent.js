@@ -19,6 +19,7 @@ class PageContent extends React.PureComponent {
       onChangeFile,
       setEditing,
       movePage,
+      removeItem,
       t,
     } = this.props;
 
@@ -96,6 +97,7 @@ class PageContent extends React.PureComponent {
                   draggingItemId,
                   draggingItemIndex,
                   moveItem,
+                  removeItem,
                 })}
               </React.Fragment>
             );
@@ -128,6 +130,7 @@ PageContent.propTypes = {
   setDragging: PropTypes.func,
   pageId: PropTypes.number,
   t: PropTypes.func,
+  removeItem : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));
