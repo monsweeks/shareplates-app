@@ -4,16 +4,25 @@ import './PageListTopMenu.scss';
 
 class PageListTopMenu extends React.PureComponent {
   render() {
-    const { buttons, className } = this.props;
+    const { leftButtons, rightButtons, className } = this.props;
 
     return (
       <div className={`page-manager-top-control-bar-wrapper g-no-select ${className}`}>
         <div>
-          {buttons &&
-            buttons.map((button) => {
-              return button;
-            })}
-          {buttons && buttons.length > 0 && <div className="separator" />}
+          <div className='left'>
+            {leftButtons &&
+              leftButtons.map((button) => {
+                return button;
+              })}
+            {leftButtons && leftButtons.length > 0 && <div className="separator" />}
+          </div>
+          <div className='right'>
+            {rightButtons &&
+              rightButtons.map((button) => {
+                return button;
+              })}
+            {rightButtons && rightButtons.length > 0 && <div className="separator" />}
+          </div>
         </div>
       </div>
     );
@@ -25,7 +34,8 @@ PageListTopMenu.defaultProps = {
 };
 
 PageListTopMenu.propTypes = {
-  buttons: PropTypes.arrayOf(PropTypes.node),
+  rightButtons: PropTypes.arrayOf(PropTypes.node),
+  leftButtons: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,
 };
 

@@ -11,6 +11,8 @@ import { setConfirm } from '@/actions';
 import { FONT_FAMILIES } from '@/components/PageController/data';
 
 class Page extends React.Component {
+  pageEditorRef = React.createRef();
+
   constructor(props) {
     super(props);
     const {
@@ -68,11 +70,11 @@ class Page extends React.Component {
     const content = {
       items: [],
       pageProperties: {
-        fontFamily : FONT_FAMILIES[1].value,
+        fontFamily: FONT_FAMILIES[1].value,
         fontSize: '16px',
         backgroundColor: '#FFFFFF',
-        color : '#333',
-        padding : '0px 0px 0px 0px',
+        color: '#333',
+        padding: '0px 0px 0px 0px',
       },
     };
 
@@ -268,8 +270,48 @@ class Page extends React.Component {
             <PageListTopMenu
               title={chapter && chapter.title}
               t={t}
-              buttons={[
-                <Button key="add" onClick={this.createPage} className="g-icon-button" color="white" size="sm">
+              leftButtons={[
+                <Button
+                  data-tip={t('페이지 목록 숨김')}
+                  key="save"
+                  onClick={() => {
+                    this.setShowPageList(false);
+                  }}
+                  className="g-icon-button"
+                  color="white"
+                  size="sm"
+                >
+                  <div>
+                    <i className="fal fa-chevron-double-left" />
+                  </div>
+                </Button>,
+              ]}
+              rightButtons={[
+                <Button
+                  data-tip={t('현재 페이지 저장')}
+                  key="save"
+                  onClick={() => {
+                    if (this.pageEditorRef) {
+                      this.pageEditorRef.updateContent();
+                    }
+                  }}
+                  className="g-icon-button"
+                  color="white"
+                  size="sm"
+                  disabled={!selectedPageId}
+                >
+                  <div>
+                    <i className="fas fa-save" />
+                  </div>
+                </Button>,
+                <Button
+                  data-tip={t('페이지 추가')}
+                  key="add"
+                  onClick={this.createPage}
+                  className="g-icon-button"
+                  color="white"
+                  size="sm"
+                >
                   <div>
                     <i className="fal fa-plus" />
                   </div>
@@ -318,6 +360,10 @@ class Page extends React.Component {
         )}
         <div className="page-editor">
           <PageEditor
+            onRef={
+              /* eslint-disable-next-line no-return-assign */
+              (ref) => (this.pageEditorRef = ref)
+            }
             createPage={this.createPage}
             showPageList={showPageList}
             setShowPageList={this.setShowPageList}

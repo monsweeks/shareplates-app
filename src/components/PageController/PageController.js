@@ -512,6 +512,7 @@ class PageController extends React.Component {
             onClick={() => {
               updateContent();
             }}
+            disabled={!pageId}
           >
             <i className="fas fa-save" /> 저장
           </Button>

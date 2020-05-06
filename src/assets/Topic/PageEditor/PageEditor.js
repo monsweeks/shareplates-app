@@ -53,6 +53,16 @@ class PageEditor extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    const { onRef } = this.props;
+    onRef(this);
+  }
+
+  componentWillUnmount() {
+    const { onRef } = this.props;
+    onRef(undefined);
+  }
+
   removeItem = (itemId) => {
     const { content } = this.state;
     if (itemId) {
@@ -289,7 +299,7 @@ class PageEditor extends React.Component {
   };
 
   render() {
-    const { className, setPageContent, pageId, ...last } = this.props;
+    const { className, updatePage, setPageContent, pageId, ...last } = this.props;
     const { content, selectedItemId, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex } = this.state;
 
@@ -352,6 +362,7 @@ PageEditor.propTypes = {
   updatePage: PropTypes.func,
   showPageList: PropTypes.bool,
   moveItem: PropTypes.func,
+  onRef : PropTypes.func,
 };
 
 export default withRouter(PageEditor);

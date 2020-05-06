@@ -13,5 +13,18 @@
     align-self: center;
     padding: 0 0.5rem;
     text-align: right;
+    display: flex;
+
+    > div {
+      &.left {
+        text-align: left;
+        flex-grow: 0;
+      }
+
+      &.right {
+        text-align: right;
+        flex-grow: 1;
+      }
+    }
   }
 }
