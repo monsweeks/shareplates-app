@@ -8,6 +8,7 @@ import request from '@/utils/request';
 
 const defaultContent = {
   items: [],
+  pageProperties: {},
 };
 
 class PageEditor extends React.Component {
@@ -44,6 +45,7 @@ class PageEditor extends React.Component {
         pageId: -1,
         selectedItemId: null,
         itemOptions: {},
+        pageProperties: {},
         editing: false,
       };
     }
@@ -233,6 +235,31 @@ class PageEditor extends React.Component {
     }
   };
 
+  onChangePageProperties = (key, value) => {
+    console.log(key, value);
+    const { pageId } = this.props;
+    const { content } = this.state;
+    if (pageId) {
+      const next = { ...content };
+      const pageProperties = { ...next.pageProperties };
+
+      pageProperties[key] = value;
+
+      next.pageProperties = pageProperties;
+
+      console.log(next);
+
+      this.setState(
+        {
+          content: next,
+        },
+        () => {
+          this.checkDirty();
+        },
+      );
+    }
+  };
+
   getFileType = (file) => {
     if (!/^image\//.test(file.type)) {
       return 'image';
@@ -289,12 +316,15 @@ class PageEditor extends React.Component {
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
         <PageController
+          pageId={pageId}
           className="property-manager"
           addItem={this.addItem}
           {...last}
           updateContent={this.updateContent}
           itemOptions={itemOptions}
+          pageProperties={content.pageProperties}
           onChangeOption={this.onChangeOption}
+          onChangePageProperties={this.onChangePageProperties}
           selectedItemId={selectedItemId}
           setEditing={this.setEditing}
         />

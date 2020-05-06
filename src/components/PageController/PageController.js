@@ -25,9 +25,13 @@ const tabs = [
     key: 'insert',
     name: '삽입',
   },
+  {
+    key: 'page-property',
+    name: '페이지 속성',
+  },
 ];
 
-class PageController extends React.PureComponent {
+class PageController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,9 +89,28 @@ class PageController extends React.PureComponent {
     return defaultColor;
   };
 
+  getFontFamilyName = (fontFamily) => {
+    const font = FONT_FAMILIES.find((info) => info.value === fontFamily);
+    if (font) {
+      return font.name;
+    }
+
+    return fontFamily;
+  };
+
+  getFontSizeName = (fontSize) => {
+    const font = FONT_SIZES.find((info) => info.value === fontSize);
+    if (font) {
+      return font.name;
+    }
+
+    return fontSize;
+  };
+
   render() {
     const { t, className } = this.props;
     const {
+      pageId,
       showPageList,
       setShowPageList,
       createPage,
@@ -96,13 +119,10 @@ class PageController extends React.PureComponent {
       itemOptions,
       onChangeOption,
       setEditing,
+      onChangePageProperties,
+      pageProperties,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
-
-    const fontFamily = itemOptions.fontFamily
-      ? FONT_FAMILIES.find((info) => info.value === itemOptions.fontFamily)
-      : {};
-    const fontSize = itemOptions.fontSize ? FONT_SIZES.find((info) => info.value === itemOptions.fontSize) : {};
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -265,7 +285,7 @@ class PageController extends React.PureComponent {
                   value={itemOptions.fontFamily}
                   onSelect={onChangeOption}
                 >
-                  <span>{fontFamily ? fontFamily.name : itemOptions.fontFamily}</span>
+                  <span>{this.getFontFamilyName(itemOptions.fontFamily)}</span>
                 </SelectControl>
                 <SelectControl
                   dataTip={t('폰트 크기')}
@@ -277,7 +297,7 @@ class PageController extends React.PureComponent {
                   value={itemOptions.fontSize}
                   onSelect={onChangeOption}
                 >
-                  <span>{fontSize ? fontSize.name : itemOptions.fontSize}</span>
+                  <span>{this.getFontSizeName(itemOptions.fontSize)}</span>
                 </SelectControl>
                 <Separator />
                 <ColorControl
@@ -289,6 +309,7 @@ class PageController extends React.PureComponent {
                   value={itemOptions.color}
                   onSelect={this.onMemoryAndChangeOption}
                   lastColor={lastProperties.color || itemOptions.color}
+                  clearColor="inherit"
                 >
                   <span className="color-border">
                     가
@@ -406,6 +427,82 @@ class PageController extends React.PureComponent {
                 </ButtonControl>
               </>
             )}
+            {selectedTab === 'page-property' && (
+              <>
+                <SelectControl
+                  dataTip={t('페이지 폰트')}
+                  minWidth="120px"
+                  height="140px"
+                  optionKey="fontFamily"
+                  list={FONT_FAMILIES}
+                  active={!!pageId}
+                  value={pageProperties.fontFamily}
+                  onSelect={onChangePageProperties}
+                >
+                  <span>{this.getFontFamilyName(pageProperties.fontFamily)}</span>
+                </SelectControl>
+                <SelectControl
+                  dataTip={t('페이지 기본 폰트 크기')}
+                  minWidth="64px"
+                  height="140px"
+                  optionKey="fontSize"
+                  list={FONT_SIZES}
+                  active={!!pageId}
+                  value={pageProperties.fontSize}
+                  onSelect={onChangePageProperties}
+                >
+                  <span>{this.getFontSizeName(pageProperties.fontSize)}</span>
+                </SelectControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('페이지 기본 폰트 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="color"
+                  active={!!pageId}
+                  value={pageProperties.color}
+                  onSelect={onChangePageProperties}
+                >
+                  <span className="color-border">
+                    가
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: pageProperties.color,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('페이지 배경 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="backgroundColor"
+                  active={!!pageId}
+                  value={pageProperties.backgroundColor}
+                  onSelect={onChangePageProperties}
+                >
+                  <span className="color-border fill-color">
+                    <i className="fal fa-fill" />
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: pageProperties.backgroundColor,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <PaddingControl
+                  dataTip={t('페이지 내부 간격')}
+                  optionKey="padding"
+                  active={!!pageId}
+                  value={pageProperties.padding}
+                  onApply={onChangePageProperties}
+                />
+              </>
+            )}
           </div>
         </div>
         <div className="always-menu">
@@ -429,6 +526,7 @@ PageController.defaultProps = {
 };
 
 PageController.propTypes = {
+  pageId: PropTypes.number,
   t: PropTypes.func,
   className: PropTypes.string,
   showPageList: PropTypes.bool,
@@ -440,6 +538,8 @@ PageController.propTypes = {
   onChangeOption: PropTypes.func,
   selectedItemId: PropTypes.string,
   setEditing: PropTypes.func,
+  onChangePageProperties: PropTypes.func,
+  pageProperties: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(PageController));

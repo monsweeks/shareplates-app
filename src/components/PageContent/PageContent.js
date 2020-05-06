@@ -25,9 +25,11 @@ class PageContent extends React.PureComponent {
     const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem, pageId } = this.props;
 
     let items = [];
+    let pageProperties = {};
 
     if (content) {
       items = content.items;
+      pageProperties = content.pageProperties;
     }
 
     return (
@@ -38,6 +40,7 @@ class PageContent extends React.PureComponent {
             setSelectedItem(null, {});
           }
         }}
+        style={{ ...pageProperties }}
       >
         {!editable && (
           <>
@@ -63,7 +66,7 @@ class PageContent extends React.PureComponent {
         )}
         <div className="h-100">
           {editable && !pageId && (
-            <div className='h-100 d-flex'>
+            <div className="h-100 d-flex">
               <EmptyMessage
                 className="h5"
                 message={

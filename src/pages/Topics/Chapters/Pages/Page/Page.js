@@ -8,6 +8,7 @@ import request from '@/utils/request';
 import './Page.scss';
 import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
+import { FONT_FAMILIES } from '@/components/PageController/data';
 
 class Page extends React.Component {
   constructor(props) {
@@ -64,10 +65,20 @@ class Page extends React.Component {
     const { topicId, chapterId, pages } = this.state;
     const orderNo = pages.length + 1;
     const title = `PAGE-${orderNo}`;
+    const content = {
+      items: [],
+      pageProperties: {
+        fontFamily : FONT_FAMILIES[1].value,
+        fontSize: '16px',
+        backgroundColor: '#FFFFFF',
+        color : '#333',
+        padding : '0px 0px 0px 0px',
+      },
+    };
 
     request.post(
       `/api/topics/${topicId}/chapters/${chapterId}/pages`,
-      { topicId, chapterId, title, orderNo },
+      { topicId, chapterId, title, orderNo, content: JSON.stringify(content) },
       (data) => {
         const next = pages.slice(0);
         next.push(data.page);
@@ -283,9 +294,12 @@ class Page extends React.Component {
               />
             )}
             {pages !== false && pages.length > 0 && (
-              <div className="page-list" onClick={() => {
-                this.setSelectedPageId(null);
-              }}>
+              <div
+                className="page-list"
+                onClick={() => {
+                  this.setSelectedPageId(null);
+                }}
+              >
                 <div className="scrollbar">
                   <PageCardLayoutList
                     pages={pages}

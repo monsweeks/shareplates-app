@@ -143,9 +143,9 @@ Text.propTypes = {
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
 pageItemProps[withPageItem.options.textAlign] = 'left';
-pageItemProps[withPageItem.options.fontFamily] = 'LGSmHaL';
-pageItemProps[withPageItem.options.fontSize] = '16px';
-pageItemProps[withPageItem.options.color] = '#000000';
+pageItemProps[withPageItem.options.fontFamily] = 'inherit'; // 'LGSmHaL';
+pageItemProps[withPageItem.options.fontSize] = 'inherit'; // '16px';
+pageItemProps[withPageItem.options.color] = 'inherit'; // '#000000';
 pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
