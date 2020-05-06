@@ -15,7 +15,11 @@ function getBase () {
   return base;
 }
 
-function beforeRequest(quiet) {
+function beforeRequest(quiet, uri) {
+  if (logging) {
+    // eslint-disable-next-line no-console
+    console.log(uri);
+  }
   if (!quiet) {
     store.dispatch(setLoading(true));
   }
@@ -149,7 +153,7 @@ const axiosConfig = {
 };
 
 function get(uri, params, successHandler, failHandler, quiet) {
-  beforeRequest(quiet);
+  beforeRequest(quiet, uri);
   axios
     .get(`${base}${uri}`, {
       params,
@@ -167,7 +171,7 @@ function get(uri, params, successHandler, failHandler, quiet) {
 }
 
 function post(uri, params, successHandler, failHandler, quiet) {
-  beforeRequest(quiet);
+  beforeRequest(quiet, uri);
   axios
     .post(`${base}${uri}`, params, axiosConfig)
     .then((response) => {
@@ -182,7 +186,7 @@ function post(uri, params, successHandler, failHandler, quiet) {
 }
 
 function put(uri, params, successHandler, failHandler, quiet) {
-  beforeRequest(quiet);
+  beforeRequest(quiet, uri);
   axios
     .put(`${base}${uri}`, params, axiosConfig)
     .then((response) => {
@@ -197,7 +201,7 @@ function put(uri, params, successHandler, failHandler, quiet) {
 }
 
 function del(uri, params, successHandler, failHandler, quiet) {
-  beforeRequest(quiet);
+  beforeRequest(quiet, uri);
   axios
     .delete(`${base}${uri}`, { ...axiosConfig, ...params })
     .then((response) => {

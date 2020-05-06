@@ -6,10 +6,18 @@ import './TopicCard.scss';
 
 class TopicCard extends React.PureComponent {
   render() {
-    const { className, topic, onInfoClick, onContentClick, onShareClick, newCard, t } = this.props;
+    const { className, topic, newCard, t } = this.props;
+    const { onCardClick, onInfoClick, onContentClick, onShareClick } = this.props;
 
     return (
-      <Card className={`topic-card-wrapper g-no-select ${className}`}>
+      <Card
+        className={`topic-card-wrapper g-no-select ${className} ${onCardClick ? 'pointer-cursor' : ''}`}
+        onClick={() => {
+          if (onCardClick) {
+            onCardClick();
+          }
+        }}
+      >
         <CardBody>
           {topic && topic.privateYn && <span className="private">private</span>}
           <div className="topic-card-content">
@@ -126,5 +134,6 @@ TopicCard.propTypes = {
   onInfoClick: PropTypes.func,
   onContentClick: PropTypes.func,
   onShareClick: PropTypes.func,
+  onCardClick: PropTypes.func,
   newCard: PropTypes.bool,
 };

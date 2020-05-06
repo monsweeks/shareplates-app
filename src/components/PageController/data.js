@@ -1,5 +1,9 @@
 const FONT_FAMILIES = [
   {
+    value: 'inherit',
+    name: '페이지 폰트',
+  },
+  {
     value: 'LGSmHaL',
     name: 'LG스마트체(L)',
   },
@@ -37,7 +41,12 @@ const FONT_FAMILIES = [
   },
 ];
 
-const FONT_SIZES = [];
+const FONT_SIZES = [
+  {
+    value: 'inherit',
+    name: '페이지 폰트 크기',
+  },
+];
 for (let i = 8; i <= 24; i += 1) {
   FONT_SIZES.push({
     value: `${i}px`,

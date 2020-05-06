@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
-import { GrpForm } from '@/pages';
+import { GrpForm } from '@/assets';
 
 class EditGrp extends React.PureComponent {
   constructor(props) {

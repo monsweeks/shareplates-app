@@ -13,7 +13,7 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value, addAll, outline, color } = this.props;
+    const { className, onChange, items, value, addAll, outline, color, size, separator } = this.props;
     let selcetedItem = items.find((item) => String(item.key) === String(value));
     if (addAll && value === '') {
       selcetedItem = {
@@ -23,12 +23,17 @@ class Selector extends React.Component {
     }
 
     return (
-      <div className={`selector-wrapper g-no-select ${className}`}>
-        {open && <div className='selector-overlay g-overlay' onClick={() => {
-          this.setState({
-            open: false,
-          });
-        }}/>}
+      <div className={`selector-wrapper g-no-select ${className} ${size}`}>
+        {open && (
+          <div
+            className="selector-overlay g-overlay"
+            onClick={() => {
+              this.setState({
+                open: false,
+              });
+            }}
+          />
+        )}
         <div
           className={`${open ? 'open' : ''} selector-current ${outline ? 'outline' : ''} color-${color}`}
           onClick={() => {
@@ -38,11 +43,14 @@ class Selector extends React.Component {
           }}
         >
           <span className="text">{selcetedItem ? selcetedItem.value : ' '}</span>
-          <span className="liner">
-            <span />
-          </span>
+          {separator && (
+            <span className="liner">
+              <span />
+            </span>
+          )}
           <span className="icon">
-            <i className={`fal fa-chevron-${open ? 'up' : 'down'}`} />
+            {size === 'sm' && <i className={`far fa-angle-${open ? 'up' : 'down'}`} />}
+            {size !== 'sm' && <i className={`fal fa-chevron-${open ? 'up' : 'down'}`} />}
           </span>
         </div>
         <div className={`${open ? 'd-block' : 'd-none'} selector-list scrollbar-sm`}>
@@ -90,8 +98,10 @@ export default withTranslation()(Selector);
 Selector.defaultProps = {
   className: '',
   addAll: false,
-  outline : false,
-  color : '',
+  outline: false,
+  color: '',
+  size: 'md',
+  separator: true,
 };
 
 Selector.propTypes = {
@@ -106,5 +116,7 @@ Selector.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   addAll: PropTypes.bool,
   outline: PropTypes.bool,
-  color : PropTypes.string,
+  color: PropTypes.string,
+  size: PropTypes.string,
+  separator: PropTypes.bool,
 };

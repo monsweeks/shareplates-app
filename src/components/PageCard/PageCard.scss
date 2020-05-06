@@ -45,8 +45,6 @@ $mover-height: 24px;
     }
   }
 
-
-
   .card-buttons {
     position: absolute;
     top: 3px;
@@ -135,7 +133,7 @@ $mover-height: 24px;
         justify-content: center;
         vertical-align: middle;
         display: flex;
-        padding-bottom: 12px;
+        padding: 1.5rem 0 2rem;
 
         .page-title {
           font-family: LGSmHaB;

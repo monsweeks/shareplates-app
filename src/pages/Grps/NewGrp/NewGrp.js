@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
-import { GrpForm } from '@/pages';
 import { PageIntro } from '@/components';
+import { GrpForm } from '@/assets';
 
 class NewGrp extends React.PureComponent {
   onSubmit = (grp) => {

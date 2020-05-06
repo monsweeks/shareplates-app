@@ -1,0 +1,11 @@
+.page-card-layout-list-wrapper {
+  .page-list {
+    > div {
+      margin-bottom: 0.5rem;
+
+      &.dragging {
+        opacity: 0.5;
+      }
+    }
+  }
+}

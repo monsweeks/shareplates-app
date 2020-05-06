@@ -91,7 +91,8 @@ class PageCard extends React.Component {
             className="content"
             onTouchStart={this.stopPropagation}
             onMouseDown={this.stopPropagation}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (onCardClick) {
                 onCardClick(page ? page.id : null);
               }

@@ -1,0 +1,131 @@
+.grp-card-wrapper {
+  border: none !important;
+  height: 200px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  position: relative;
+  vertical-align: top;
+
+  .config-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .card-body {
+    display: flex;
+    text-align: center;
+
+    > div {
+      align-self: center;
+      vertical-align: middle;
+      width: 100%;
+    }
+
+    .grp-card-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .new-grp-content {
+        align-self: center;
+        justify-content: center;
+        vertical-align: middle;
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .new-grp-icon {
+          font-size: 40px;
+        }
+      }
+
+      .grp-title {
+        flex: 0;
+        padding: 0.25rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+
+      .grp-description {
+        flex: 0;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        min-height: 38px;
+        width: 100%;
+        text-align: justify;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 0.5rem;
+      }
+    }
+
+    .org-role {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0.5rem;
+      font-size: 0.6rem;
+
+      > span {
+        padding: 2px 4px;
+        border-radius: 3px;
+        border: 1px solid $border-color;
+      }
+    }
+
+    .grp-stats {
+      position: relative;
+      .user-count {
+        background-color: $primary;
+        color: $white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        align-self: center;
+        justify-content: center;
+        z-index: 1;
+        position: relative;
+
+        .number {
+          font-family: 'Baloo Bhai', cursive;
+          font-size: 1.5rem;
+          line-height: 1rem;
+        }
+
+        .tag {
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    .topic-count {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      text-align: right;
+      .number {
+        font-family: 'Baloo Bhai', cursive;
+        font-size: 1rem;
+        line-height: 1rem;
+      }
+
+      .tag {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .grp-card-wrapper:hover {
+    box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.3);
+  }
+}

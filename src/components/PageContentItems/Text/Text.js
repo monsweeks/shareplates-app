@@ -94,7 +94,6 @@ class Text extends React.Component {
             html={text} // innerHTML of the editable div
             disabled={!edit} // use true to disable editing
             onClick={(e) => {
-
               if (editable && !edit) {
                 this.setState({
                   edit: true,
@@ -144,22 +143,24 @@ Text.propTypes = {
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
 pageItemProps[withPageItem.options.textAlign] = 'left';
-pageItemProps[withPageItem.options.fontFamily] = 'LGSmHaL';
-pageItemProps[withPageItem.options.fontSize] = '1rem';
-pageItemProps[withPageItem.options.color] = '#000000';
+pageItemProps[withPageItem.options.fontFamily] = 'inherit'; // 'LGSmHaL';
+pageItemProps[withPageItem.options.fontSize] = 'inherit'; // '16px';
+pageItemProps[withPageItem.options.color] = 'inherit'; // '#000000';
 pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
 pageItemProps[withPageItem.options.border] = 'none';
 
+pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
+pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
+pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
+pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
+
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
 const pageItemValues = {};
 pageItemValues.text = '텍스트를 입력해주세요.';
-pageItemValues.height = '20px';
 
 Text.setting = {
-  w: 120,
-  h: 4,
   pageItemProps,
   pageItemValues,
 };

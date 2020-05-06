@@ -61,6 +61,8 @@ class ColorControl extends React.Component {
       onSelect,
       children,
       lastColor,
+      dataTip,
+      clearColor,
     } = this.props;
     const { open, color } = this.state;
 
@@ -68,6 +70,7 @@ class ColorControl extends React.Component {
       <div
         ref={this.control}
         className={`color-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
+        data-tip={dataTip}
       >
         <div className="color-control-content">
           <div
@@ -132,7 +135,7 @@ class ColorControl extends React.Component {
               size="sm"
               color="white"
               onClick={() => {
-                onSelect(optionKey, 'transparent');
+                onSelect(optionKey, clearColor || 'transparent');
                 this.setState({ open: false });
               }}
             >
@@ -180,6 +183,8 @@ ColorControl.propTypes = {
   colorPickerWidth: PropTypes.string,
   colorPickerHeight: PropTypes.string,
   lastColor: PropTypes.string,
+  dataTip: PropTypes.string,
+  clearColor: PropTypes.string,
 };
 
 export default ColorControl;

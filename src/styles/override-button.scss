@@ -2,6 +2,9 @@ button.btn {
   border-radius: 2px;
   white-space: nowrap;
 
+  &.disabled {
+    opacity: 0.4;
+  }
 
   &.btn-xs {
     padding: 1px 6px;
@@ -180,13 +183,17 @@ button.btn {
     &:hover {
       background-color: $yellow;
     }
+
+    &.disabled:hover {
+      background-color: $white;
+    }
   }
 
   &.btn-outline-white {
-    border: 1px solid rgba(0,0,0,0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: $white;
     &:hover {
-      border: 1px solid rgba(0,0,0,0.7);
+      border: 1px solid rgba(0, 0, 0, 0.7);
     }
   }
 }
