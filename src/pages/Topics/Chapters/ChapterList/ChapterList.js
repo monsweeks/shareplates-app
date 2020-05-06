@@ -87,8 +87,6 @@ class ChapterList extends React.PureComponent {
       `/api/topics/${topicId}/chapters/${chapterId}`,
       null,
       (data) => {
-        console.log(data);
-
         const { chapters } = this.state;
         const next = chapters.slice(0);
         const index = next.findIndex((chapter) => chapter.id === chapterId);

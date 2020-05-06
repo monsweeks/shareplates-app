@@ -18,11 +18,11 @@ const withPageItem = () => (WrappedComponent) => {
 
     startY = null;
 
-    sizerType = null;
+    sizerType = '';
 
     startWidth = null;
 
-    startheight = null;
+    startHeight = null;
 
     static itemName = WrappedComponent.name;
 
@@ -35,17 +35,23 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    getPercentSize = (val, total) => {
+      return Math.round((val / total) * 10000) / 100;
+    };
+
     onDragStart = (id) => {
       const { setDragging, itemIndex } = this.props;
       setDragging(true, id, itemIndex);
     };
 
     onDragEnd = () => {
-      const { setDragging } = this.props;
-      setDragging(false);
-      this.setState({
-        draggable: false,
-      });
+      const { draggingItemId, setDragging } = this.props;
+      if (draggingItemId) {
+        setDragging(false);
+        this.setState({
+          draggable: false,
+        });
+      }
     };
 
     onDragOver = (id, e) => {
@@ -54,7 +60,7 @@ const withPageItem = () => (WrappedComponent) => {
 
       const { itemIndex, draggingItemId, draggingItemIndex, moveItem } = this.props;
 
-      if (draggingItemId !== id) {
+      if (draggingItemId && draggingItemId !== id) {
         moveItem(draggingItemId, id, draggingItemIndex < itemIndex);
       }
     };
@@ -101,38 +107,127 @@ const withPageItem = () => (WrappedComponent) => {
       this.sizerType = sizerType;
     };
 
+    onSizerDoubleClick = (sizerType) => {
+      const {
+        onChangeOption,
+        item: { options },
+      } = this.props;
+
+      switch (sizerType) {
+        case 'bottom': {
+          if (options.wrapperHeight !== 100 || options.wrapperHeightUnit !== '%') {
+            onChangeOption({
+              wrapperHeight: 100,
+              wrapperHeightUnit: '%',
+            });
+          }
+          break;
+        }
+
+        case 'right': {
+          if (options.wrapperWidth !== 100 || options.wrapperWidthUnit !== '%') {
+            onChangeOption({
+              wrapperWidth: 100,
+              wrapperWidthUnit: '%',
+            });
+          }
+          break;
+        }
+
+        case 'right-bottom': {
+          if (
+            options.wrapperHeight !== 100 ||
+            options.wrapperHeightUnit !== '%' ||
+            options.wrapperWidth !== 100 ||
+            options.wrapperWidthUnit !== '%'
+          ) {
+            onChangeOption({
+              wrapperHeight: 100,
+              wrapperHeightUnit: '%',
+              wrapperWidth: 100,
+              wrapperWidthUnit: '%',
+              rapperHeightUnit: '%',
+            });
+          }
+
+          break;
+        }
+      }
+    };
+
     onSizerMouseUp = () => {
-      const { item, onChangeOption } = this.props;
+      const {
+        onChangeOption,
+        item: { options },
+      } = this.props;
 
+      const parentWidth = Number.parseFloat(this.control.current.parentNode.clientWidth);
+      const parentHeight = Number.parseFloat(this.control.current.parentNode.clientHeight);
 
+      const width = Number.parseFloat(this.control.current.clientWidth);
+      const height = Number.parseFloat(this.control.current.clientHeight);
 
-      if (this.sizerType === 'bottom') {
-        const parentHeight = Number.parseFloat(this.control.current.parentNode.clientHeight);
-        const height = Number.parseFloat(this.control.current.style.height);
-        onChangeOption({
-          wrapperHeight: item.options.wrapperHeightUnit === '%' ? Math.round((height / parentHeight) * 10000) / 100 : height,
-          wrapperHeightUnit: item.options.wrapperHeightUnit === '%' ? '%' : 'px',
-        });
-      } else if (this.sizerType === 'right') {
-        const parentWidth = Number.parseFloat(this.control.current.parentNode.clientWidth);
-        const width = Number.parseFloat(this.control.current.style.width);
-        onChangeOption({
-          wrapperWidth: item.options.wrapperWidthUnit === '%' ? Math.round((width / parentWidth) * 10000) / 100 : width,
-          wrapperWidthUnit: item.options.wrapperWidthUnit === '%' ? '%' : 'px',
-        });
+      const wrapperWidth = options.wrapperWidthUnit === '%' ? this.getPercentSize(width, parentWidth) : width;
+      const wrapperHeight = options.wrapperHeightUnit === '%' ? this.getPercentSize(height, parentHeight) : height;
+
+      const wrapperWidthUnit = options.wrapperWidthUnit === '%' ? '%' : 'px';
+      const wrapperHeightUnit = options.wrapperHeightUnit === '%' ? '%' : 'px';
+
+      switch (this.sizerType) {
+        case 'bottom': {
+          if (options.wrapperHeight !== wrapperHeight || options.wrapperHeightUnit !== wrapperHeightUnit) {
+            onChangeOption({
+              wrapperHeight,
+              wrapperHeightUnit,
+            });
+          }
+
+          break;
+        }
+
+        case 'right': {
+          onChangeOption({
+            wrapperWidth,
+            wrapperWidthUnit,
+          });
+          break;
+        }
+
+        case 'right-bottom': {
+          onChangeOption({
+            wrapperHeight,
+            wrapperHeightUnit,
+            wrapperWidth,
+            wrapperWidthUnit,
+          });
+          break;
+        }
       }
 
       document.removeEventListener('mousemove', this.onSizerMouseMove);
       document.removeEventListener('mouseup', this.onSizerMouseUp);
+
+      this.startX = null;
+      this.startY = null;
+      this.startWidth = null;
+      this.startHeight = null;
+      this.sizerType = '';
     };
 
     onSizerMouseMove = (e) => {
       switch (this.sizerType) {
         case 'bottom': {
           this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
+          break;
         }
         case 'right': {
           this.control.current.style.width = this.startWidth + (e.clientX - this.startX) + 'px';
+          break;
+        }
+        case 'right-bottom': {
+          this.control.current.style.width = this.startWidth + (e.clientX - this.startX) + 'px';
+          this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
+          break;
         }
       }
     };
@@ -179,6 +274,9 @@ const withPageItem = () => (WrappedComponent) => {
             onMouseDown={(e) => {
               this.onSizerMouseDown('bottom', e);
             }}
+            onDoubleClick={() => {
+              this.onSizerDoubleClick('bottom');
+            }}
           >
             <span />
           </div>
@@ -186,6 +284,20 @@ const withPageItem = () => (WrappedComponent) => {
             className="sizer right"
             onMouseDown={(e) => {
               this.onSizerMouseDown('right', e);
+            }}
+            onDoubleClick={() => {
+              this.onSizerDoubleClick('right');
+            }}
+          >
+            <span />
+          </div>
+          <div
+            className="sizer right-bottom"
+            onMouseDown={(e) => {
+              this.onSizerMouseDown('right-bottom', e);
+            }}
+            onDoubleClick={() => {
+              this.onSizerDoubleClick('right-bottom');
             }}
           >
             <span />

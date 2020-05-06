@@ -27,7 +27,7 @@ const tabs = [
   },
 ];
 
-class PageController extends React.Component {
+class PageController extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -103,8 +103,6 @@ class PageController extends React.Component {
       ? FONT_FAMILIES.find((info) => info.value === itemOptions.fontFamily)
       : {};
     const fontSize = itemOptions.fontSize ? FONT_SIZES.find((info) => info.value === itemOptions.fontSize) : {};
-
-    console.log(itemOptions);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>

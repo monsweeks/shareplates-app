@@ -117,7 +117,6 @@ $sizer-size: 11px;
     }
 
     &.right {
-      display: flex;
       height: 100%;
       width: 0;
       right: 5px;
@@ -126,8 +125,16 @@ $sizer-size: 11px;
 
       > span {
         position: absolute;
-        top : calc(50% - 5px);
+        top: calc(50% - 5px);
       }
+    }
+
+    &.right-bottom {
+      text-align: right;
+      height: 0;
+      bottom: 6px;
+      right: -5px;
+      cursor: nwse-resize;
     }
   }
 
@@ -136,6 +143,10 @@ $sizer-size: 11px;
     &.selected {
       .sizer {
         display: block;
+
+        &.right {
+          display: flex;
+        }
       }
     }
   }

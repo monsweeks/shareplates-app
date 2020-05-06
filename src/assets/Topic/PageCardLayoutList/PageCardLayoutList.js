@@ -24,18 +24,22 @@ class PageCardLayoutList extends React.Component {
   };
 
   onDragEnd = () => {
+    const { draggingPageId } = this.state;
+
     this.draggingCardOrder = null;
 
-    this.setState({
-      draggingPageId: null,
-    });
+    if (draggingPageId) {
+      this.setState({
+        draggingPageId: null,
+      });
 
-    const { updatePageOrders } = this.props;
-    if (this.somethingMoved) {
-      updatePageOrders();
+      const { updatePageOrders } = this.props;
+      if (this.somethingMoved) {
+        updatePageOrders();
+      }
+
+      this.somethingMoved = false;
     }
-
-    this.somethingMoved = false;
   };
 
   onDragOver = (id, orderNo, e) => {
@@ -45,7 +49,7 @@ class PageCardLayoutList extends React.Component {
     const { movePage } = this.props;
     const { draggingPageId } = this.state;
 
-    if (draggingPageId !== id) {
+    if (draggingPageId && draggingPageId !== id) {
       this.somethingMoved = true;
       movePage(draggingPageId, id, this.draggingCardOrder < orderNo);
       this.draggingCardOrder = orderNo;
