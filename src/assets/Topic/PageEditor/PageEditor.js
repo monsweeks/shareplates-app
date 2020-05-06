@@ -105,8 +105,6 @@ class PageEditor extends React.Component {
     const next = { ...content };
     const id = String(new Date().getTime());
 
-    console.log(pageId);
-
     if (pageId && pageId > -1) {
       next.items.push({
         id,
@@ -277,6 +275,7 @@ class PageEditor extends React.Component {
           itemOptions={itemOptions}
           onChangeOption={this.onChangeOption}
           selectedItemId={selectedItemId}
+          setEditing={this.setEditing}
         />
         <div className="editor-content">
           <PageContent

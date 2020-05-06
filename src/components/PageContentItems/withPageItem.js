@@ -8,6 +8,7 @@ const withPageItem = () => (WrappedComponent) => {
       super(props);
       this.state = {
         editable: props.editable,
+        draggable: false,
       };
     }
 
@@ -30,6 +31,9 @@ const withPageItem = () => (WrappedComponent) => {
     onDragEnd = () => {
       const { setDragging } = this.props;
       setDragging(false);
+      this.setState({
+        draggable: false,
+      });
     };
 
     onDragOver = (id, e) => {
@@ -43,24 +47,48 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    onMouseDown = () => {
+      const { draggable } = this.state;
+      if (!draggable) {
+        this.setState({
+          draggable: true,
+        });
+      }
+    };
+
+    onMouseUp = () => {
+      const { draggable } = this.state;
+      if (draggable) {
+        this.setState({
+          draggable: false,
+        });
+      }
+    };
+
     render() {
-      const { editable } = this.state;
+      const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
-      const { itemIndex, draggingItemId, setDragging } = this.props;
+      const { draggingItemId } = this.props;
+
+      const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit} = item.options;
 
       return (
         <div
-          className={`with-page-item-wrapper ${editable ? 'editable' : ''} 
+          className={`page-item with-page-item-wrapper ${editable ? 'editable' : ''} 
                                              ${selected ? 'selected' : ''} 
                                              ${showLayout ? 'show-layout' : ''}
                                              ${item && item.id === draggingItemId ? 'dragging' : ''}`}
+          style={{
+            width: wrapperWidth === 'auto' ? wrapperWidth : wrapperWidth + wrapperWidthUnit,
+            height: wrapperHeight === 'auto' ? wrapperHeight : wrapperHeight + wrapperHeightUnit,
+          }}
           onClick={(e) => {
             if (editable) {
               e.stopPropagation();
               setSelectedItem(item.id, item.options);
             }
           }}
-          draggable
+          draggable={draggable}
           onDragStart={(e) => {
             this.onDragStart(item.id, e);
           }}
@@ -69,10 +97,10 @@ const withPageItem = () => (WrappedComponent) => {
             this.onDragOver(item.id, e);
           }}
         >
-          <div className="grab grab-top" />
-          <div className="grab grab-right" />
-          <div className="grab grab-bottom" />
-          <div className="grab grab-left" />
+          <div className="grab grab-top" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} />
+          <div className="grab grab-right" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} />
+          <div className="grab grab-bottom" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} />
+          <div className="grab grab-left" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} />
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
             <WrappedComponent
               style={item.options}
@@ -99,6 +127,10 @@ withPageItem.options = {
   padding: 'padding',
   border: 'border',
   backgroundSize: 'backgroundSize',
+  wrapperWidth: 'wrapperWidth',
+  wrapperWidthUnit: 'wrapperWidthUnit',
+  wrapperHeight: 'wrapperHeight',
+  wrapperHeightUnit: 'wrapperHeightUnit',
 };
 
 export default withPageItem;

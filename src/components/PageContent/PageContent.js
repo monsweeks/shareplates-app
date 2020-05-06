@@ -6,8 +6,6 @@ import { getItem } from '@/components/PageContentItems';
 import './PageContent.scss';
 
 class PageContent extends React.PureComponent {
-
-
   render() {
     const {
       className,
@@ -21,7 +19,7 @@ class PageContent extends React.PureComponent {
       movePage,
     } = this.props;
 
-    const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem, } = this.props;
+    const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem } = this.props;
 
     let items = [];
 
@@ -60,11 +58,11 @@ class PageContent extends React.PureComponent {
             </div>
           </>
         )}
-        <div>
+        <div className="h-100">
           {items.map((item, inx) => {
             const selected = item.id === selectedItemId;
             return (
-              <div className={`page-item ${selected ? 'selected' : ''}`} key={item.id}>
+              <React.Fragment key={item.id}>
                 {React.createElement(getItem(item.name), {
                   item,
                   itemIndex: inx,
@@ -80,7 +78,7 @@ class PageContent extends React.PureComponent {
                   draggingItemIndex,
                   moveItem,
                 })}
-              </div>
+              </React.Fragment>
             );
           })}
         </div>
@@ -103,11 +101,11 @@ PageContent.propTypes = {
   editable: PropTypes.bool,
   setEditing: PropTypes.func,
   movePage: PropTypes.func,
-  moveItem : PropTypes.func,
-  dragging : PropTypes.bool,
-  draggingItemId : PropTypes.string,
-  draggingItemIndex : PropTypes.number,
-  setDragging : PropTypes.func,
+  moveItem: PropTypes.func,
+  dragging: PropTypes.bool,
+  draggingItemId: PropTypes.string,
+  draggingItemIndex: PropTypes.number,
+  setDragging: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

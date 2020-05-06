@@ -12,7 +12,8 @@ import SelectControl from '@/components/PageController/SelectControl/SelectContr
 import { FONT_FAMILIES, FONT_SIZES } from './data';
 import ColorControl from '@/components/PageController/ColorControl/ColorControl';
 import PaddingControl from '@/components/PageController/PaddingControl/PaddingControl';
-import BorderControl from '@/components/BorderControl/BorderControl';
+import BorderControl from '@/components/PageController/BorderControl/BorderControl';
+import SizeControl from '@/components/PageController/SizeControl/SizeControl';
 
 const tabs = [
   {
@@ -85,6 +86,7 @@ class PageController extends React.Component {
       updateContent,
       itemOptions,
       onChangeOption,
+      setEditing,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
 
@@ -92,6 +94,8 @@ class PageController extends React.Component {
       ? FONT_FAMILIES.find((info) => info.value === itemOptions.fontFamily)
       : {};
     const fontSize = itemOptions.fontSize ? FONT_SIZES.find((info) => info.value === itemOptions.fontSize) : {};
+
+    console.log(itemOptions);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -323,6 +327,27 @@ class PageController extends React.Component {
                     />
                   </span>
                 </BorderControl>
+                <Separator />
+                <SizeControl
+                  icon={<i className="fal fa-arrows-h"/>}
+                  optionKey="wrapperWidth"
+                  optionValue={itemOptions.wrapperWidth}
+                  unitKey='wrapperWidthUnit'
+                  unitValue={itemOptions.wrapperWidthUnit}
+                  active={!!itemOptions.wrapperWidth}
+                  onApply={onChangeOption}
+                  setEditing={setEditing}
+                />
+                <SizeControl
+                  icon={<i className="fal fa-arrows-v"/>}
+                  optionKey="wrapperHeight"
+                  optionValue={itemOptions.wrapperHeight}
+                  unitKey='wrapperHeightUnit'
+                  unitValue={itemOptions.wrapperHeightUnit}
+                  active={!!itemOptions.wrapperHeight}
+                  onApply={onChangeOption}
+                  setEditing={setEditing}
+                />
               </>
             )}
             {selectedTab === 'insert' && (
@@ -384,6 +409,7 @@ PageController.propTypes = {
   itemOptions: PropTypes.objectOf(PropTypes.any),
   onChangeOption: PropTypes.func,
   selectedItemId: PropTypes.string,
+  setEditing : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageController));

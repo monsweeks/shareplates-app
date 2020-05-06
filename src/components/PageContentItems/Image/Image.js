@@ -207,8 +207,6 @@ pageItemValues.id = null;
 pageItemValues.uuid = null;
 
 Image.setting = {
-  w: 120,
-  h: 4,
   pageItemProps,
   pageItemValues,
 };
