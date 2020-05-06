@@ -15,6 +15,7 @@ import PageCardLayoutList from '@/assets/Topic/PageCardLayoutList/PageCardLayout
 import PageListTopMenu from '@/assets/Topic/PageListTopMenu/PageListTopMenu';
 import ShareHistoryListPopup from '@/assets/Topic/ShareHistoryListPopup/ShareHistoryListPopup';
 import ShareEditorPopup from '@/assets/Topic/ShareEditorPopup/ShareEditorPopup';
+import PageEditor from '@/assets/Topic/PageEditor/PageEditor';
 
 export {
   // Grp
@@ -34,4 +35,5 @@ export {
   PageListTopMenu,
   ShareHistoryListPopup,
   ShareEditorPopup,
+  PageEditor,
 };

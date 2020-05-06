@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, EmptyMessage, PageEditor } from '@/components';
+import { Button, EmptyMessage } from '@/components';
 import request from '@/utils/request';
 import './Page.scss';
-import { PageCardLayoutList, PageListTopMenu } from '@/assets';
+import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
 
 class Page extends React.Component {

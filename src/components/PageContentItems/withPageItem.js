@@ -22,20 +22,51 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    onDragStart = (id) => {
+      const { setDragging, itemIndex } = this.props;
+      setDragging(true, id, itemIndex);
+    };
+
+    onDragEnd = () => {
+      const { setDragging } = this.props;
+      setDragging(false);
+    };
+
+    onDragOver = (id, e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const { itemIndex, draggingItemId, draggingItemIndex, moveItem } = this.props;
+
+      if (draggingItemId !== id) {
+        moveItem(draggingItemId, id, draggingItemIndex < itemIndex);
+      }
+    };
+
     render() {
       const { editable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
+      const { itemIndex, draggingItemId, setDragging } = this.props;
 
       return (
         <div
-          className={`with-page-item-wrapper ${editable ? 'editable' : ''} ${selected ? 'selected' : ''} ${
-            showLayout ? 'show-layout' : ''
-          }`}
+          className={`with-page-item-wrapper ${editable ? 'editable' : ''} 
+                                             ${selected ? 'selected' : ''} 
+                                             ${showLayout ? 'show-layout' : ''}
+                                             ${item && item.id === draggingItemId ? 'dragging' : ''}`}
           onClick={(e) => {
             if (editable) {
               e.stopPropagation();
               setSelectedItem(item.id, item.options);
             }
+          }}
+          draggable
+          onDragStart={(e) => {
+            this.onDragStart(item.id, e);
+          }}
+          onDragEnd={this.onDragEnd}
+          onDragOver={(e) => {
+            this.onDragOver(item.id, e);
           }}
         >
           <div className="grab grab-top" />
@@ -43,7 +74,13 @@ const withPageItem = () => (WrappedComponent) => {
           <div className="grab grab-bottom" />
           <div className="grab grab-left" />
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
-            <WrappedComponent style={item.options} values={item.values} {...this.props} editable={editable} setSelectedItem={setSelectedItem} />
+            <WrappedComponent
+              style={item.options}
+              values={item.values}
+              {...this.props}
+              editable={editable}
+              setSelectedItem={setSelectedItem}
+            />
           </div>
         </div>
       );
@@ -61,7 +98,7 @@ withPageItem.options = {
   alignSelf: 'alignSelf',
   padding: 'padding',
   border: 'border',
-  backgroundSize : 'backgroundSize',
+  backgroundSize: 'backgroundSize',
 };
 
 export default withPageItem;

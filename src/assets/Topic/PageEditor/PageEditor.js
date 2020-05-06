@@ -7,9 +7,6 @@ import { getSetting } from '@/components/PageContentItems';
 import request from '@/utils/request';
 
 const defaultContent = {
-  layouts: {
-    lg: [],
-  },
   items: [],
 };
 
@@ -23,6 +20,9 @@ class PageEditor extends React.Component {
       selectedItemId: null,
       itemOptions: {},
       editing: false,
+      dragging: false,
+      draggingItemId: null,
+      draggingItemIndex: null,
     };
   }
 
@@ -76,11 +76,6 @@ class PageEditor extends React.Component {
         next.items.splice(itemInx, 1);
       }
 
-      const layoutInx = next.layouts.lg.findIndex((layout) => layout.i === selectedItemId);
-      if (layoutInx > -1) {
-        next.layouts.lg.splice(layoutInx, 1);
-      }
-
       this.setState(
         {
           content: next,
@@ -106,11 +101,11 @@ class PageEditor extends React.Component {
 
   addItem = (name) => {
     const setting = getSetting(name);
-
     const { pageId, content } = this.state;
-
     const next = { ...content };
     const id = String(new Date().getTime());
+
+    console.log(pageId);
 
     if (pageId && pageId > -1) {
       next.items.push({
@@ -118,18 +113,6 @@ class PageEditor extends React.Component {
         name,
         options: { ...setting.pageItemProps },
         values: { ...setting.pageItemValues },
-      });
-
-      if (!next.layouts.lg) {
-        next.layouts.lg = [];
-      }
-
-      next.layouts.lg.push({
-        i: id,
-        w: setting.w,
-        h: setting.h,
-        x: 0,
-        y: 0,
       });
 
       this.setState(
@@ -143,25 +126,42 @@ class PageEditor extends React.Component {
     }
   };
 
+  setDragging = (dragging, draggingItemId, draggingItemIndex) => {
+    this.setState({
+      dragging,
+      draggingItemId,
+      draggingItemIndex,
+    });
+  };
+
+  moveItem = (targetItemId, destItemId, right) => {
+    if (targetItemId === destItemId) {
+      return;
+    }
+
+    const { content } = this.state;
+    const next = content.items.slice(0);
+
+    const targetIndex = next.findIndex((item) => item.id === targetItemId);
+    const target = next[targetIndex];
+    next.splice(targetIndex, 1);
+
+    const destIndex = next.findIndex((item) => item.id === destItemId);
+    const nextIndex = destIndex + (right ? 1 : 0);
+    next.splice(nextIndex, 0, target);
+
+    this.setState({
+      content: {
+        items: next,
+      },
+      draggingItemIndex: nextIndex,
+    });
+  };
+
   updateContent = () => {
     const { updatePage } = this.props;
     const { pageId, content } = this.state;
     updatePage(pageId, JSON.stringify(content));
-  };
-
-  onLayoutChange = (layout, layouts) => {
-    const { content } = this.state;
-    const next = { ...content };
-    next.layouts = layouts;
-
-    this.setState(
-      {
-        content: next,
-      },
-      () => {
-        this.checkDirty();
-      },
-    );
   };
 
   setSelectedItem = (selectedItemId, itemOptions) => {
@@ -201,16 +201,6 @@ class PageEditor extends React.Component {
       Object.keys(obj).forEach((key) => {
         values[key] = obj[key];
       });
-
-      if (obj.height) {
-        const layouts = { ...next.layouts };
-        const layout = layouts.lg.find((i) => i.i === String(selectedItemId));
-        if (Math.ceil(obj.height / 20) > layout.h) {
-          layout.h = Math.ceil(obj.height / 20);
-          // TODO 성능 개선 필요
-          next.layouts = JSON.parse(JSON.stringify(layouts));
-        }
-      }
 
       item.values = values;
       this.setState(
@@ -275,6 +265,7 @@ class PageEditor extends React.Component {
   render() {
     const { className, setPageContent, ...last } = this.props;
     const { content, selectedItemId, itemOptions, editing } = this.state;
+    const { dragging, draggingItemId, draggingItemIndex } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
@@ -291,7 +282,6 @@ class PageEditor extends React.Component {
           <PageContent
             content={content}
             setPageContent={this.setPageContent}
-            onLayoutChange={this.onLayoutChange}
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
             onChangeValue={this.onChangeValue}
@@ -299,6 +289,11 @@ class PageEditor extends React.Component {
             editable
             editing={editing}
             setEditing={this.setEditing}
+            moveItem={this.moveItem}
+            dragging={dragging}
+            draggingItemId={draggingItemId}
+            draggingItemIndex={draggingItemIndex}
+            setDragging={this.setDragging}
           />
         </div>
       </div>
@@ -323,6 +318,7 @@ PageEditor.propTypes = {
   setPageDirty: PropTypes.func,
   updatePage: PropTypes.func,
   showPageList: PropTypes.bool,
+  moveItem: PropTypes.func,
 };
 
 export default withRouter(PageEditor);

@@ -43,7 +43,6 @@ import ChapterCard from '@/components/ChapterCard/ChapterCard';
 import PageCard from '@/components/PageCard/PageCard';
 import ListControlBar from '@/components/ListControlBar/ListControlBar';
 import ChapterRow from '@/components/ChapterRow/ChapterRow';
-import PageEditor from '@/components/PageEditor/PageEditor';
 import PageController from '@/components/PageController/PageController';
 import PageContent from '@/components/PageContent/PageContent';
 import PageControlTab from '@/components/PageControlTab/PageControlTab';
@@ -96,7 +95,7 @@ export {
   ListControlBar,
   ChapterRow,
   PageCard,
-  PageEditor,
+
   PageController,
   PageContent,
   PageControlTab,
