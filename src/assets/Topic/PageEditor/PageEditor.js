@@ -282,7 +282,7 @@ class PageEditor extends React.Component {
   };
 
   render() {
-    const { className, setPageContent, ...last } = this.props;
+    const { className, setPageContent, pageId, ...last } = this.props;
     const { content, selectedItemId, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex } = this.state;
 
@@ -300,6 +300,7 @@ class PageEditor extends React.Component {
         />
         <div className="editor-content">
           <PageContent
+            pageId={pageId}
             content={content}
             setPageContent={this.setPageContent}
             selectedItemId={selectedItemId}

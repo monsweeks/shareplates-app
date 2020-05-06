@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { getItem } from '@/components/PageContentItems';
 import './PageContent.scss';
+import { EmptyMessage } from '@/components';
 
 class PageContent extends React.PureComponent {
   render() {
@@ -18,9 +19,10 @@ class PageContent extends React.PureComponent {
       onChangeFile,
       setEditing,
       movePage,
+      t,
     } = this.props;
 
-    const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem } = this.props;
+    const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem, pageId } = this.props;
 
     let items = [];
 
@@ -60,6 +62,18 @@ class PageContent extends React.PureComponent {
           </>
         )}
         <div className="h-100">
+          {editable && !pageId && (
+            <div className='h-100 d-flex'>
+              <EmptyMessage
+                className="h5"
+                message={
+                  <div>
+                    <div>{t('페이지를 선택해주세요')}</div>
+                  </div>
+                }
+              />
+            </div>
+          )}
           {items.map((item, inx) => {
             const selected = item.id === selectedItemId;
             return (
@@ -98,7 +112,7 @@ PageContent.propTypes = {
   content: PropTypes.objectOf(PropTypes.any),
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
-  onChangeOption : PropTypes.func,
+  onChangeOption: PropTypes.func,
   onChangeValue: PropTypes.func,
   onChangeFile: PropTypes.func,
   editable: PropTypes.bool,
@@ -109,6 +123,8 @@ PageContent.propTypes = {
   draggingItemId: PropTypes.string,
   draggingItemIndex: PropTypes.number,
   setDragging: PropTypes.func,
+  pageId: PropTypes.number,
+  t: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

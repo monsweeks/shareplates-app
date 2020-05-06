@@ -283,7 +283,9 @@ class Page extends React.Component {
               />
             )}
             {pages !== false && pages.length > 0 && (
-              <div className="page-list">
+              <div className="page-list" onClick={() => {
+                this.setSelectedPageId(null);
+              }}>
                 <div className="scrollbar">
                   <PageCardLayoutList
                     pages={pages}
