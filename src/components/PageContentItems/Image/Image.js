@@ -405,7 +405,7 @@ class Image extends React.Component {
   render() {
     const { className, item, style, editable, setEditing, onChangeFile } = this.props;
     const { id, uuid, edit, dragging, cursor } = this.state;
-    const { alignSelf, textAlign, width, height, widthUnit, heightUnit, keepingRatio, ...last } = style;
+    const { alignSelf, textAlign, width, height, widthUnit, heightUnit, keepingRatio, borderRadius, borderRadiusUnit, ...last } = style;
 
     return (
       <div
@@ -475,6 +475,7 @@ class Image extends React.Component {
                 alignSelf,
                 width: width === 'auto' ? width : width + widthUnit,
                 height: height === 'auto' ? height : height + heightUnit,
+                borderRadius: borderRadius + borderRadiusUnit,
               }}
               src={`${request.getBase()}/files/${id}?uuid=${uuid}`}
               alt=""
@@ -525,6 +526,8 @@ pageItemProps[withPageItem.options.keepingRatio] = 'Y';
 pageItemProps[withPageItem.options.naturalWidth] = '';
 pageItemProps[withPageItem.options.naturalHeight] = '';
 pageItemProps[withPageItem.options.ratio] = '';
+pageItemProps[withPageItem.options.borderRadius] = '0';
+pageItemProps[withPageItem.options.borderRadiusUnit] = 'px';
 
 pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
 pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';

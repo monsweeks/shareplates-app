@@ -462,7 +462,27 @@ class PageController extends React.Component {
                   unitKey="widthUnit"
                   unitValue={itemOptions.widthUnit}
                   active={!!itemOptions.width}
-                  onApply={onChangeOption}
+                  onApply={(unitKey, unitValue) => {
+                    if (unitKey === 'width') {
+                      if (itemOptions.keepingRatio) {
+                        const obj = {};
+                        obj[unitKey] = unitValue;
+                        obj.height = Math.round(unitValue * itemOptions.ratio * 100) / 100;
+                        obj.heightUnit = itemOptions.widthUnit;
+                        onChangeOption(obj);
+                      } else {
+                        onChangeOption(unitKey, unitValue);
+                      }
+                    } else if (itemOptions.keepingRatio) {
+                      const obj = {};
+                      obj[unitKey] = unitValue;
+                      obj.height = Math.round(itemOptions.width * itemOptions.ratio * 100) / 100;
+                      obj.heightUnit = unitValue;
+                      onChangeOption(obj);
+                    } else {
+                      onChangeOption(unitKey, unitValue);
+                    }
+                  }}
                   setEditing={setEditing}
                 />
                 <SizeControl
@@ -473,6 +493,38 @@ class PageController extends React.Component {
                   unitKey="heightUnit"
                   unitValue={itemOptions.heightUnit}
                   active={!!itemOptions.height}
+                  onApply={(unitKey, unitValue) => {
+                    if (unitKey === 'height') {
+                      if (itemOptions.keepingRatio) {
+                        const obj = {};
+                        obj[unitKey] = unitValue;
+                        obj.width = Math.round(unitValue * (1 / itemOptions.ratio) * 100) / 100;
+                        obj.widthUnit = itemOptions.heightUnit;
+                        onChangeOption(obj);
+                      } else {
+                        onChangeOption(unitKey, unitValue);
+                      }
+                    } else if (itemOptions.keepingRatio) {
+                      const obj = {};
+                      obj[unitKey] = unitValue;
+                      obj.width = Math.round(itemOptions.height * (1 / itemOptions.ratio) * 100) / 100;
+                      obj.widthUnit = unitValue;
+                      onChangeOption(obj);
+                    } else {
+                      onChangeOption(unitKey, unitValue);
+                    }
+                  }}
+                  setEditing={setEditing}
+                />
+                <Separator />
+                <SizeControl
+                  dataTip={t('모서리 곡선')}
+                  icon={<i className="fal fa-arrows-h" />}
+                  optionKey="borderRadius"
+                  optionValue={itemOptions.borderRadius}
+                  unitKey="borderRadiusUnit"
+                  unitValue={itemOptions.borderRadiusUnit}
+                  active={!!itemOptions.borderRadius}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />

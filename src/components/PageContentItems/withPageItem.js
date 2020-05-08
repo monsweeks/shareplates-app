@@ -58,9 +58,9 @@ const withPageItem = () => (WrappedComponent) => {
       e.stopPropagation();
       e.preventDefault();
 
-      const { itemIndex, draggingItemId, draggingItemIndex, moveItem } = this.props;
+      const { itemIndex, draggingItemId, draggingItemIndex, moveItem, lastMovedItemId } = this.props;
 
-      if (draggingItemId && draggingItemId !== id) {
+      if (draggingItemId && draggingItemId !== id && lastMovedItemId !== id) {
         moveItem(draggingItemId, id, draggingItemIndex < itemIndex);
       }
     };
@@ -347,6 +347,9 @@ withPageItem.options = {
   wrapperWidthUnit: 'wrapperWidthUnit',
   wrapperHeight: 'wrapperHeight',
   wrapperHeightUnit: 'wrapperHeightUnit',
+  borderRadius : 'borderRadius',
+  borderRadiusUnit : 'borderRadiusUnit,'
+
 };
 
 export default withPageItem;

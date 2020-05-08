@@ -24,6 +24,7 @@ class PageEditor extends React.Component {
       dragging: false,
       draggingItemId: null,
       draggingItemIndex: null,
+      lastMovedItemId: null,
     };
   }
 
@@ -125,6 +126,7 @@ class PageEditor extends React.Component {
       dragging,
       draggingItemId,
       draggingItemIndex,
+      lastMovedItemId : null,
     });
   };
 
@@ -149,7 +151,10 @@ class PageEditor extends React.Component {
         items: next,
       },
       draggingItemIndex: nextIndex,
+      lastMovedItemId : destItemId,
     });
+
+    console.log(destItemId);
   };
 
   updateContent = () => {
@@ -303,7 +308,7 @@ class PageEditor extends React.Component {
   render() {
     const { className, updatePage, setPageContent, pageId, ...last } = this.props;
     const { content, selectedItemId, itemOptions, editing } = this.state;
-    const { dragging, draggingItemId, draggingItemIndex } = this.state;
+    const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
@@ -337,6 +342,7 @@ class PageEditor extends React.Component {
             dragging={dragging}
             draggingItemId={draggingItemId}
             draggingItemIndex={draggingItemIndex}
+            lastMovedItemId={lastMovedItemId}
             setDragging={this.setDragging}
             removeItem={this.removeItem}
           />

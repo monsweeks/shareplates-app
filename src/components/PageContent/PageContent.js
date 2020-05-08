@@ -23,7 +23,7 @@ class PageContent extends React.PureComponent {
       t,
     } = this.props;
 
-    const { dragging, draggingItemId, draggingItemIndex, setDragging, moveItem, pageId } = this.props;
+    const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId, setDragging, moveItem, pageId } = this.props;
 
     let items = [];
     let pageProperties = {};
@@ -96,6 +96,7 @@ class PageContent extends React.PureComponent {
                   setDragging,
                   draggingItemId,
                   draggingItemIndex,
+                  lastMovedItemId,
                   moveItem,
                   removeItem,
                 })}
@@ -131,6 +132,7 @@ PageContent.propTypes = {
   pageId: PropTypes.number,
   t: PropTypes.func,
   removeItem : PropTypes.func,
+  lastMovedItemId : PropTypes.string,
 };
 
 export default withRouter(withTranslation()(PageContent));
