@@ -26,6 +26,10 @@ const tabs = [
     name: '삽입',
   },
   {
+    key: 'image',
+    name: '이미지',
+  },
+  {
     key: 'page-property',
     name: '페이지 속성',
   },
@@ -424,6 +428,84 @@ class PageController extends React.Component {
                   }}
                 >
                   {t('이미지')}
+                </ButtonControl>
+              </>
+            )}
+            {selectedTab === 'image' && (
+              <>
+                <CheckControl
+                  dataTip={t('이미지 원본 비율 유지')}
+                  optionKey="keepingRatio"
+                  optionValue="Y"
+                  active={!!itemOptions.keepingRatio}
+                  value={itemOptions.keepingRatio}
+                  onClick={onChangeOption}
+                >
+                  <i className="fas fa-sliders-h-square" />
+                </CheckControl>
+                <CheckControl
+                  dataTip={t('이미지 비율 유지 안함')}
+                  optionKey="keepingRatio"
+                  optionValue="N"
+                  active={!!itemOptions.keepingRatio}
+                  value={itemOptions.keepingRatio}
+                  onClick={onChangeOption}
+                >
+                  <i className="fad fa-sliders-h-square" />
+                </CheckControl>
+                <Separator />
+                <SizeControl
+                  dataTip={t('이미지 너비')}
+                  icon={<i className="fal fa-arrows-h" />}
+                  optionKey="width"
+                  optionValue={itemOptions.width}
+                  unitKey="widthUnit"
+                  unitValue={itemOptions.widthUnit}
+                  active={!!itemOptions.width}
+                  onApply={onChangeOption}
+                  setEditing={setEditing}
+                />
+                <SizeControl
+                  dataTip={t('이미지 높이')}
+                  icon={<i className="fal fa-arrows-v" />}
+                  optionKey="height"
+                  optionValue={itemOptions.height}
+                  unitKey="heightUnit"
+                  unitValue={itemOptions.heightUnit}
+                  active={!!itemOptions.height}
+                  onApply={onChangeOption}
+                  setEditing={setEditing}
+                />
+                <Separator />
+                <ButtonControl
+                  enabled={!!itemOptions.naturalWidth}
+                  dataTip={t('이미지 원본 크기로')}
+                  icon
+                  onClick={() => {
+                    onChangeOption({
+                      width: itemOptions.naturalWidth,
+                      widthUnit: 'px',
+                      height: itemOptions.naturalHeight,
+                      heightUnit: 'px',
+                    });
+                  }}
+                >
+                  <i className="fal fa-window" />
+                </ButtonControl>
+                <ButtonControl
+                  enabled={!!itemOptions.naturalWidth}
+                  dataTip={t('박스 크기에 맞춤')}
+                  icon
+                  onClick={() => {
+                    onChangeOption({
+                      width: 'auto',
+                      widthUnit: '%',
+                      height: '100',
+                      heightUnit: '%',
+                    });
+                  }}
+                >
+                  <i className="fal fa-window" />
                 </ButtonControl>
               </>
             )}

@@ -169,6 +169,8 @@ class PageEditor extends React.Component {
     const { selectedItemId, content } = this.state;
     if (selectedItemId) {
       if (typeof optionKey === 'object') {
+
+
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
         const options = { ...item.options };

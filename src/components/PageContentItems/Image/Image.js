@@ -10,6 +10,20 @@ class Image extends React.Component {
 
   fileInput = React.createRef();
 
+  img = React.createRef();
+
+  grabPosition = false;
+
+  startX = null;
+
+  startY = null;
+
+  startWidth = null;
+
+  startHeight = null;
+
+  resizeType = '';
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,6 +31,8 @@ class Image extends React.Component {
       uuid: null,
       edit: false,
       dragging: false,
+      cursor: '',
+      resizing: false,
     };
   }
 
@@ -57,18 +73,18 @@ class Image extends React.Component {
     document.removeEventListener('mousedown', this.onOutsideClick);
   }
 
-  getVerticalAlign = (alignSelf) => {
-    switch (alignSelf) {
-      case 'baseline': {
-        return 'top';
+  getTextAlign = (textAlign) => {
+    switch (textAlign) {
+      case 'left': {
+        return 'flex-start';
       }
 
-      case 'flex-end': {
-        return 'bottom';
+      case 'right': {
+        return 'flex-end';
       }
 
       default: {
-        return alignSelf;
+        return textAlign;
       }
     }
   };
@@ -105,10 +121,291 @@ class Image extends React.Component {
     }
   };
 
+  setImgSize = () => {
+    const {
+      onChangeOption,
+      item: { options },
+    } = this.props;
+    if (
+      options.naturalWidth !== this.img.current.naturalWidth ||
+      options.naturalHeight !== this.img.current.naturalHeight
+    ) {
+      onChangeOption({
+        naturalWidth: this.img.current.naturalWidth,
+        naturalHeight: this.img.current.naturalHeight,
+        ratio: this.img.current.naturalHeight / this.img.current.naturalWidth,
+      });
+    }
+  };
+
+  onMouseSizeChange = (e) => {
+    const {
+      style: { keepingRatio },
+      item: { options },
+    } = this.props;
+
+    const ratio = options.ratio || 1;
+
+    switch (this.resizeType) {
+      case 'right-top': {
+        const width = this.startWidth + (e.clientX - this.startX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${this.startHeight + (this.startY - e.clientY)}px`;
+        }
+        break;
+      }
+
+      case 'right-bottom': {
+        const width = this.startWidth + (e.clientX - this.startX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${this.startHeight + (e.clientY - this.startY)}px`;
+        }
+        break;
+      }
+
+      case 'left-top': {
+        const width = this.startWidth + (this.startX - e.clientX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${this.startHeight + (this.startY - e.clientY)}px`;
+        }
+        break;
+      }
+
+      case 'left-bottom': {
+        const width = this.startWidth + (this.startX - e.clientX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${this.startHeight + (e.clientY - this.startY)}px`;
+        }
+        break;
+      }
+
+      case 'right': {
+        const width = this.startWidth + (e.clientX - this.startX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+        }
+        break;
+      }
+
+      case 'left': {
+        const width = this.startWidth + (this.startX - e.clientX);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${width}px`;
+          this.img.current.style.height = `${width * ratio}px`;
+        } else {
+          this.img.current.style.width = `${width}px`;
+        }
+        break;
+      }
+
+      case 'top': {
+        const height = this.startHeight + (this.startY - e.clientY);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${height * (1 / ratio)}px`;
+          this.img.current.style.height = `${height}px`;
+        } else {
+          this.img.current.style.height = `${height}px`;
+        }
+        break;
+      }
+
+      case 'bottom': {
+        const height = this.startHeight + (e.clientY - this.startY);
+        if (keepingRatio === 'Y') {
+          this.img.current.style.width = `${height * (1 / ratio)}px`;
+          this.img.current.style.height = `${height}px`;
+        } else {
+          this.img.current.style.height = `${height}px`;
+        }
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  };
+
+  onMouseMove = (e) => {
+    e.stopPropagation();
+    const { cursor, resizing } = this.state;
+    if (resizing) {
+      return;
+    }
+
+    const rect = e.target.getBoundingClientRect();
+    const { width, height } = rect;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const grabMargin = 10;
+
+    let nextCursor = '';
+
+    let left = false;
+    let right = false;
+    let top = false;
+    let bottom = false;
+    if (x > 0 && x < grabMargin) {
+      left = true;
+    }
+    if (x > width - grabMargin && x < width) {
+      right = true;
+    }
+    if (y > 0 && y < grabMargin) {
+      top = true;
+    }
+    if (y > height - grabMargin && y < height) {
+      bottom = true;
+    }
+
+    let vertical = false;
+    let horizontal = false;
+
+    if (left || right || top || bottom) {
+      this.grabPosition = true;
+
+      if (top || bottom) {
+        vertical = true;
+      }
+
+      if (left || right) {
+        horizontal = true;
+      }
+
+      if (vertical && horizontal) {
+        if (left && top) {
+          nextCursor = 'nw-resize';
+          this.resizeType = 'left-top';
+        } else if (right && top) {
+          nextCursor = 'ne-resize';
+          this.resizeType = 'right-top';
+        } else if (left && bottom) {
+          nextCursor = 'ne-resize';
+          this.resizeType = 'left-bottom';
+        } else if (right && bottom) {
+          nextCursor = 'nw-resize';
+          this.resizeType = 'right-bottom';
+        }
+      } else if (vertical) {
+        nextCursor = 'n-resize';
+        if (top) {
+          this.resizeType = 'top';
+        } else {
+          this.resizeType = 'bottom';
+        }
+      } else if (horizontal) {
+        nextCursor = 'e-resize';
+        if (left) {
+          this.resizeType = 'left';
+        } else {
+          this.resizeType = 'right';
+        }
+      }
+
+      if (cursor !== nextCursor) {
+        this.setState({
+          cursor: nextCursor,
+        });
+      }
+    } else if (cursor !== '') {
+      this.grabPosition = false;
+      this.setState({
+        cursor: '',
+      });
+    }
+  };
+
+  onMouseDown = (e) => {
+    e.stopPropagation();
+    if (this.grabPosition) {
+      const { item, setSelectedItem, selected } = this.props;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.startWidth = this.img.current.clientWidth;
+      this.startHeight = this.img.current.clientHeight;
+
+      document.addEventListener('mousemove', this.onMouseSizeChange);
+      document.addEventListener('mouseup', this.onMouseUp);
+
+      if (!selected) {
+        setSelectedItem(item.id, item.options);
+      }
+
+      this.setState({
+        resizing: true,
+      });
+    }
+  };
+
+  getPercentSize = (val, total) => {
+    return Math.round((val / total) * 10000) / 100;
+  };
+
+  onMouseUp = () => {
+    const { resizing } = this.state;
+    const {
+      onChangeOption,
+      item: { options },
+    } = this.props;
+
+    document.removeEventListener('mousemove', this.onMouseSizeChange);
+    document.removeEventListener('mouseup', this.onMouseUp);
+
+    if (resizing) {
+      this.startX = null;
+      this.startY = null;
+      this.startWidth = null;
+      this.startHeight = null;
+      this.resizeType = '';
+
+      const parentWidth = Number.parseFloat(this.img.current.parentNode.clientWidth);
+      const parentHeight = Number.parseFloat(this.img.current.parentNode.clientHeight);
+
+      const clientWidth = Number.parseFloat(this.img.current.clientWidth);
+      const clientHeight = Number.parseFloat(this.img.current.clientHeight);
+
+      const width = options.widthUnit === '%' ? this.getPercentSize(clientWidth, parentWidth) : clientWidth;
+      const height = options.heightUnit === '%' ? this.getPercentSize(clientHeight, parentHeight) : clientHeight;
+
+      const widthUnit = options.widthUnit === '%' ? '%' : 'px';
+      const heightUnit = options.heightUnit === '%' ? '%' : 'px';
+
+      onChangeOption({
+        height,
+        widthUnit,
+        width,
+        heightUnit,
+      });
+
+      this.setState({
+        resizing: false,
+      });
+    }
+  };
+
   render() {
     const { className, item, style, editable, setEditing, onChangeFile } = this.props;
-    const { id, uuid, edit, dragging } = this.state;
-    const { alignSelf, textAlign, backgroundSize, ...last } = style;
+    const { id, uuid, edit, dragging, cursor } = this.state;
+    const { alignSelf, textAlign, width, height, widthUnit, heightUnit, keepingRatio, ...last } = style;
 
     return (
       <div
@@ -125,8 +422,8 @@ class Image extends React.Component {
           }
         }}
       >
-        <div>
-          {!id && (
+        {!id && (
+          <div>
             <div
               className={`image-selector ${dragging ? 'dragging' : ''}`}
               onDragOver={this.onDragOver}
@@ -159,19 +456,37 @@ class Image extends React.Component {
                 </div>
               </div>
             </div>
-          )}
-          {id && <img src={`${request.getBase()}/files/${id}?uuid=${uuid}`} alt="" className="d-none" />}
-          {id && (
-            <div
-              className="img-div"
+          </div>
+        )}
+        {id && (
+          <div
+            style={{
+              justifyContent: this.getTextAlign(textAlign),
+            }}
+          >
+            <img
+              draggable={false}
+              onDragStart={(e) => e.stopPropagation()}
+              onDragOver={(e) => e.stopPropagation()}
+              className="img-control"
+              ref={this.img}
               style={{
-                backgroundImage: `url(${request.getBase()}/files/${id}?uuid=${uuid})`,
-                backgroundPosition: `${this.getVerticalAlign(alignSelf)} ${textAlign}`,
-                backgroundSize,
+                cursor,
+                alignSelf,
+                width: width === 'auto' ? width : width + widthUnit,
+                height: height === 'auto' ? height : height + heightUnit,
               }}
+              src={`${request.getBase()}/files/${id}?uuid=${uuid}`}
+              alt=""
+              onLoad={() => {
+                this.setImgSize();
+              }}
+              onMouseMove={this.onMouseMove}
+              onMouseDown={this.onMouseDown}
+              onMouseUp={this.onMouseUp}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -190,20 +505,30 @@ Image.propTypes = {
   onChangeFile: PropTypes.func,
   setEditing: PropTypes.func,
   setSelectedItem: PropTypes.func,
+  onChangeOption: PropTypes.func,
+  selected: PropTypes.bool,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
 pageItemProps[withPageItem.options.textAlign] = 'center';
-pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
+pageItemProps[withPageItem.options.backgroundColor] = 'inherit';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '0rem 0rem 0rem 0rem';
 pageItemProps[withPageItem.options.border] = 'none';
 pageItemProps[withPageItem.options.backgroundSize] = 'contain';
+pageItemProps[withPageItem.options.width] = 'auto';
+pageItemProps[withPageItem.options.widthUnit] = '%';
+pageItemProps[withPageItem.options.height] = '100';
+pageItemProps[withPageItem.options.heightUnit] = '%';
+pageItemProps[withPageItem.options.keepingRatio] = 'Y';
+pageItemProps[withPageItem.options.naturalWidth] = '';
+pageItemProps[withPageItem.options.naturalHeight] = '';
+pageItemProps[withPageItem.options.ratio] = '';
 
 pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
 pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
-pageItemProps[withPageItem.options.wrapperHeight] = '200';
+pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
