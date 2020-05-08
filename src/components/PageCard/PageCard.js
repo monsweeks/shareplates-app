@@ -88,6 +88,11 @@ class PageCard extends React.Component {
             )}
           </div>
           <div
+            draggable
+            onDragStart={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
             className="content"
             onTouchStart={this.stopPropagation}
             onMouseDown={this.stopPropagation}
@@ -125,7 +130,14 @@ class PageCard extends React.Component {
               </div>
             </div>
             {isDelete && (
-              <div className="inner-popup">
+              <div className="inner-popup"
+                   draggable
+                   onDragStart={(e) => {
+                     e.stopPropagation();
+                     e.preventDefault();
+                   }}
+                   onClick={(e) => e.stopPropagation()}
+              >
                 <div className="inner-popup-content scrollbar text-danger">
                   <div>페이지가 삭제됩니다.</div>
                 </div>
@@ -156,9 +168,16 @@ class PageCard extends React.Component {
               </div>
             )}
             {isEdit && (
-              <div className="inner-popup">
+              <div className="inner-popup"
+                   draggable
+                   onDragStart={(e) => {
+                     e.stopPropagation();
+                     e.preventDefault();
+                  }}
+                   onClick={(e) => e.stopPropagation()}
+              >
                 <div className="inner-popup-content scrollbar">
-                  <div className="page-name-text">{t('페이지 이름')}</div>
+                  <div className="page-name-text">{t('페이지 이름1')}</div>
                   <Input
                     className="page-name-input"
                     label={t('label.name')}
