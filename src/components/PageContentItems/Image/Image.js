@@ -482,9 +482,9 @@ class Image extends React.Component {
               onLoad={() => {
                 this.setImgSize();
               }}
-              onMouseMove={this.onMouseMove}
-              onMouseDown={this.onMouseDown}
-              onMouseUp={this.onMouseUp}
+              onMouseMove={editable ? this.onMouseMove : null}
+              onMouseDown={editable ? this.onMouseDown : null}
+              onMouseUp={editable ? this.onMouseUp : null}
             />
           </div>
         )}
