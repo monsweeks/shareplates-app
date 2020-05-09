@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+import { setGrp, setUserInfo } from 'actions';
 import { FullLayout } from '@/layouts';
 import { Col, Popup, Row, SearchBar } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import { setGrp } from '@/actions';
 import { ShareEditorPopup, ShareHistoryListPopup, TopicCard } from '@/assets';
 import './TopicList.scss';
 
@@ -33,7 +33,7 @@ class TopicList extends React.Component {
         ...options,
       },
       topics: [],
-      init: false,
+      initGrp: false,
       openShareEditorPopup: false,
       openShareListPopup: false,
       selectedTopicId: null,
@@ -45,35 +45,24 @@ class TopicList extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.init && state.options.grpId) {
+    if (!state.initGrp && state.options.grpId) {
       props.setGrp(Number(state.options.grpId));
       return {
-        init: true,
+        initGrp: true,
       };
     }
 
-    if (!state.init && !state.options.grpId && props.grps && props.grps.length > 0) {
+    if (!state.initGrp && !state.options.grpId && props.grps && props.grps.length > 0) {
       return {
         options: {
           ...state.options,
           grpId: props.grps[0].id,
         },
-        init: true,
+        initGrp: true,
       };
     }
 
     return null;
-  }
-
-  componentDidMount() {
-    const {
-      options,
-      options: { grpId },
-    } = this.state;
-
-    if (grpId) {
-      this.getTopics(options);
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,10 +74,10 @@ class TopicList extends React.Component {
     const {
       options,
       options: { grpId },
-      init,
+      initGrp,
     } = this.state;
 
-    if (!init) {
+    if (!initGrp) {
       return;
     }
 
@@ -98,13 +87,28 @@ class TopicList extends React.Component {
       pathOptions.grpId = grpId;
     }
 
-    if ((!prevState.init && init) || location !== prevProps.location) {
+    if ((!prevState.initGrp && initGrp) || location !== prevProps.location) {
+      this.getMyInfo();
       this.getTopics({
         ...options,
         ...pathOptions,
       });
     }
   }
+
+  getMyInfo = () => {
+    const { setUserInfo: setUserInfoReducer } = this.props;
+    request.get(
+      '/api/users/my-info',
+      null,
+      (data) => {
+        setUserInfoReducer(data.user || {}, data.grps);
+      },
+      () => {
+        setUserInfoReducer({}, []);
+      },
+    );
+  };
 
   getTopics = (options) => {
     request.get('/api/topics', { ...options }, (data) => {
@@ -340,6 +344,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setGrp: (grpId) => dispatch(setGrp(grpId)),
+    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
   };
 };
 
@@ -351,6 +356,7 @@ TopicList.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
+  setUserInfo: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
