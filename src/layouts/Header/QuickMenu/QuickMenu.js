@@ -1,13 +1,12 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Avatar, Button, Card, CardBody, CardHeader, Col, FormGroup, Link, Row } from 'components';
+import { Avatar, Button, Card, CardBody, CardHeader, Col, FormGroup, Link, RadioButton, Row } from 'components';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import LANGUAGES from '@/languages/languages';
 import { addMessage } from '@/actions';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
-import RadioButton from '@/components/RadioButton/RadioButton';
 import './QuickMenu.scss';
 
 class QuickMenu extends React.Component {
@@ -41,7 +40,7 @@ class QuickMenu extends React.Component {
               <div className="user-info">
                 <div className="user-icon">
                   {!(user && user.info) && <i className="fal fa-robot" />}
-                  {(user && user.info) && <Avatar data={JSON.parse(user.info)} />}
+                  {user && user.info && <Avatar data={JSON.parse(user.info)} />}
                 </div>
                 <div className="user-text">
                   <div className="name">{user && user.name}</div>

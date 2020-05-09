@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { FullLayout } from '@/layouts';
-import { Col, Popup, Row, SearchBar, TopicCard } from '@/components';
+import { Col, Popup, Row, SearchBar } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { setGrp } from '@/actions';
-import ShareEditor from '@/assets/Topic/ShareEditorPopup/ShareEditorPopup';
-import ShareHistoryListPopup from '@/assets/Topic/ShareHistoryListPopup/ShareHistoryListPopup';
+import { ShareEditorPopup, ShareHistoryListPopup, TopicCard } from '@/assets';
 import './TopicList.scss';
 
 class TopicList extends React.Component {
@@ -307,7 +306,11 @@ class TopicList extends React.Component {
         </FullLayout>
         {openShareEditorPopup && selectedTopicId && (
           <Popup title="토픽을 공유를 시작합니다" open setOpen={this.setOpenShareEditorPopup}>
-            <ShareEditor topicId={selectedTopicId} shareId={selectedShareId} setOpen={this.setOpenShareEditorPopup} />
+            <ShareEditorPopup
+              topicId={selectedTopicId}
+              shareId={selectedShareId}
+              setOpen={this.setOpenShareEditorPopup}
+            />
           </Popup>
         )}
         {openShareListPopup && (

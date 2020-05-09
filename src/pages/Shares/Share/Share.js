@@ -5,17 +5,18 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { addMessage } from 'actions';
 import request from '@/utils/request';
-import './Share.scss';
 import { setConfirm } from '@/actions';
-import { Button, EmptyMessage, PageContent, Popup, SocketClient, TopLogo } from '@/components';
+import { Button, EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
+  PageContent,
   ShareNavigator,
+  ShareSideMenu,
   ShareSidePopup,
   ShareSideUserPopup,
-  ShareSideMenu,
   ShareStandByPopup,
 } from '@/assets';
+import './Share.scss';
 
 class Share extends React.Component {
   constructor(props) {

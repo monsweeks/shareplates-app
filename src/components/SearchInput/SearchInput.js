@@ -104,7 +104,7 @@ SearchInput.defaultProps = {
 SearchInput.propTypes = {
   className: PropTypes.string,
   onSearch: PropTypes.func,
-  onClear : PropTypes.func,
+  onClear: PropTypes.func,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   componentClassName: PropTypes.string,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { GrpList, NewGrp, EditGrp, Grp, NoMatch } from 'pages';
+import { EditGrp, Grp, GrpList, NewGrp, NoMatch } from 'pages';
 
 function Grps() {
   return (

@@ -1,13 +1,11 @@
 import React from 'react';
-import './DetailLayout.scss';
 import PropTypes from 'prop-types';
+import './DetailLayout.scss';
 
 class DetailLayout extends React.PureComponent {
   render() {
     const { children, className, fill } = this.props;
-    return (
-      <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}>{children}</div>
-    );
+    return <div className={`detail-layout-wrapper container ${className} ${fill ? 'fill' : ''}`}>{children}</div>;
   }
 }
 

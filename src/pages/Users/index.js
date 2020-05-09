@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { Join, JoinSuccess, Login, EditMyInfo, Register, NoMatch } from 'pages';
-
+import { EditMyInfo, Join, JoinSuccess, Login, NoMatch, Register } from 'pages';
 
 function Users() {
   return (

@@ -2,9 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
-import { Avatar, Link } from '@/components';
-import RadioButton from '@/components/RadioButton/RadioButton';
+import { Avatar, CircleIcon, Link, RadioButton } from '@/components';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
 

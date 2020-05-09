@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import RadioButton from '@/components/RadioButton/RadioButton';
+import { RadioButton } from '@/components';
 import './ListControlBar.scss';
 
 class ListControlBar extends React.PureComponent {

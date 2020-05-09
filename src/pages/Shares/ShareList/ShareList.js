@@ -8,8 +8,8 @@ import { Button, Col, Popup, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import './ShareList.scss';
 import { ShareEditorPopup } from '@/assets';
+import './ShareList.scss';
 
 class ShareList extends React.Component {
   constructor(props) {

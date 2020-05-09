@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TopLogo } from 'components';
 import { withTranslation } from 'react-i18next';
-import './Header.scss';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
 import { setUserInfo } from '@/actions';
@@ -11,6 +10,7 @@ import Menu from '@/layouts/Header/Menu/Menu';
 import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
 import QuickMenu from '@//layouts/Header/QuickMenu/QuickMenu';
+import './Header.scss';
 
 class Header extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class Header extends React.Component {
           to: '/shares',
           side: 'left',
           alias: '/shares',
-          split : true,
+          split: true,
         },
         {
           key: 'topics',

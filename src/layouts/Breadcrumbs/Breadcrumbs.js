@@ -1,21 +1,22 @@
 import React from 'react';
-import './Breadcrumbs.scss';
 import PropTypes from 'prop-types';
 import { Link } from '@/components';
+import './Breadcrumbs.scss';
 
 class Breadcrumbs extends React.PureComponent {
   render() {
     const { list, className } = this.props;
     return (
       <div className={`breadcrumbs-wrapper ${className}`}>
-
         <ul>
-          <li><i className="fal fa-bread-slice"/></li>
+          <li>
+            <i className="fal fa-bread-slice" />
+          </li>
           {list.map((item, inx) => {
             if (list.length - 1 === inx) {
               return (
                 <li key={inx}>
-                  <Link underline={false} effect={false}  to={item.to}>
+                  <Link underline={false} effect={false} to={item.to}>
                     {item.name}
                   </Link>
                 </li>

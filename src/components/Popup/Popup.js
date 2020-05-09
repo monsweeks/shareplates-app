@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+import { CircleIcon } from '@/components';
 import './Popup.scss';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
 
 class Popup extends React.PureComponent {
   overflow = null;

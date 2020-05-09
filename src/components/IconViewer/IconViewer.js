@@ -32,7 +32,7 @@ IconViewer.propTypes = {
   className: PropTypes.string,
   iconIndex: PropTypes.number,
   size: PropTypes.string,
-  circle : PropTypes.bool,
+  circle: PropTypes.bool,
 };
 
 export default IconViewer;

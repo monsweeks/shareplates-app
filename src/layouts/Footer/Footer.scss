@@ -2,7 +2,7 @@
   min-height: 60px;
   height: 60px;
   background-color: $secondary;
-  background-color: #42647F;
+  background-color: #42647f;
   background-color: $primary;
   background-color: #333;
   background-color: lighten($primary, 10%);
@@ -31,7 +31,7 @@
       text-align: center;
       .logo {
         position: relative;
-        top : 15px;
+        top: 15px;
         z-index: 1;
       }
 
@@ -39,32 +39,31 @@
         position: absolute;
         width: 20px;
         height: 200px;
-        background: linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0));
+        background: linear-gradient(to top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
       }
 
       .light1 {
         position: absolute;
-        top : 0;
-        left : 40px;
+        top: 0;
+        left: 40px;
         transform: rotate(-30deg);
       }
 
       .light2 {
         position: absolute;
-        top : 0;
-        right : 40px;
+        top: 0;
+        right: 40px;
         transform: rotate(30deg);
       }
 
       .light3 {
         position: absolute;
-        top : 0;
-        right : 50px;
+        top: 0;
+        right: 50px;
       }
     }
 
     &.copyright-col {
-
       padding: 0 1rem;
 
       .copyright {
@@ -99,7 +98,6 @@
               background-color: darken($primary, 5%);
             }
           }
-
         }
       }
     }

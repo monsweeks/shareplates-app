@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, ObjectImage, P, SubLabel, UserManager } from '@/components';
+import { EmptyMessage, ObjectImage, P, SubLabel } from '@/components';
+import { UserManager } from '@/assets';
 import './Topic.scss';
 
 class Topic extends Component {

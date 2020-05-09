@@ -1,6 +1,6 @@
 import React from 'react';
-import './Description.scss';
 import PropTypes from 'prop-types';
+import './Description.scss';
 
 class Description extends React.PureComponent {
   render() {

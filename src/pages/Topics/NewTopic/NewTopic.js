@@ -24,7 +24,12 @@ class NewTopic extends React.PureComponent {
   };
 
   render() {
-    const { t, grps, user, location: { search } } = this.props;
+    const {
+      t,
+      grps,
+      user,
+      location: { search },
+    } = this.props;
     const options = common.getOptions(search, ['grpId']);
 
     return (

@@ -1,0 +1,211 @@
+.topic-card-wrapper {
+  border: none !important;
+  height: 210px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+  position: relative;
+  vertical-align: top;
+
+  .private {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    background-color: $danger;
+    line-height: 100%;
+    padding: 3px 4px 2px;
+    color: $white;
+    border-radius: 3px;
+    font-family: 'Baloo Bhai', cursive;
+  }
+
+  .card-body {
+    display: flex;
+    text-align: center;
+
+    > div {
+      align-self: center;
+      vertical-align: middle;
+      width: 100%;
+    }
+
+    .topic-card-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .new-topic-content {
+        align-self: center;
+        justify-content: center;
+        vertical-align: middle;
+        flex: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .new-topic-icon {
+          font-size: 40px;
+        }
+      }
+
+      .topic-title {
+        flex: 0;
+        padding: 0.25rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+
+      .topic-summary {
+        flex: 0;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        min-height: 45px;
+        width: 100%;
+        text-align: justify;
+        overflow-y: hidden;
+        text-overflow: ellipsis;
+        background-color: $secondary;
+        background-color: $secondary;
+        background-color: $light;
+
+        border-radius: 5px;
+        border-radius: 2px;
+        align-items: center;
+        display: flex;
+        padding: 0.5rem;
+      }
+
+      .topic-card-buttons {
+        display: flex;
+        flex: 1;
+        width: 100%;
+        flex-direction: row;
+
+        > div {
+          align-self: center;
+
+          &.button {
+            flex: 1 1 0;
+            height: 100%;
+            display: flex;
+            align-self: center;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 5px;
+            cursor: pointer;
+            min-height: 75px;
+
+            &:hover {
+              @media (min-width: 768px) {
+                background-color: $yellow;
+              }
+            }
+          }
+
+          &.separator {
+            min-width: 9px;
+            flex-grow: 0;
+            > div {
+              height: 20px;
+              width: 1px;
+              margin: 0 4px;
+              background-color: $gray-300;
+            }
+          }
+
+          .icon {
+            font-size: 24px;
+          }
+
+          .text {
+          }
+        }
+      }
+
+      .topic-description {
+        display: flex;
+        flex: 1;
+        border-radius: 5px;
+        background-color: $light;
+        min-height: 82px;
+        display: none;
+
+        .icon {
+          align-self: center;
+          flex: 0;
+          color: white;
+          display: inline-block;
+          min-width: 120px;
+          width: 120px;
+          height: 60px;
+          font-size: 24px;
+          text-align: center;
+          padding: 0 30px;
+
+          > div {
+            width: 60px;
+            height: 60px;
+            background-color: $gray-400;
+            background-color: $primary;
+            background-color: $white;
+            border-radius: 50%;
+            padding: 6px;
+            box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        .counts {
+          flex: 1;
+          align-self: center;
+          > div {
+            display: flex;
+            align-self: center;
+            > div {
+              flex: 1;
+
+              .level-icon {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+
+                i {
+                  background-color: $white;
+                  display: inline-block;
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  justify-content: center;
+                  padding-top: 6px;
+                  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+                }
+              }
+
+              .level-count {
+                font-family: 'Baloo Bhai', cursive;
+                font-size: 1.1rem;
+                line-height: 0;
+                padding: 4px 0;
+              }
+
+              .tag {
+                display: inline-block;
+                font-size: 0.7rem;
+                line-height: 100%;
+                border-radius: 3px;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .topic-card-wrapper:hover {
+    box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.3);
+  }
+}

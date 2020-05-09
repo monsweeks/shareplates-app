@@ -1,11 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Button, Link, TopLogo } from 'components';
+import { Button, Link, RadioButton, TopLogo } from 'components';
 import { withTranslation } from 'react-i18next';
-import './MobileMenu.scss';
 import LANGUAGES from '@/languages/languages';
-import RadioButton from '@/components/RadioButton/RadioButton';
+import './MobileMenu.scss';
 
 class MobileMenu extends React.PureComponent {
   getMenuClass = (openMenu) => {
@@ -50,7 +49,10 @@ class MobileMenu extends React.PureComponent {
             <div className="menu-list">
               <ul>
                 {menus.map((menu) => {
-                  const enabled = !!(!menu.activePropsKey || (menu.activePropsKey && activePropsKeys[menu.activePropsKey]));
+                  const enabled = !!(
+                    !menu.activePropsKey ||
+                    (menu.activePropsKey && activePropsKeys[menu.activePropsKey])
+                  );
 
                   return (
                     <li key={menu.text}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import './AvatarBuilder.scss';
 import Color from 'color';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardHeader, CircleIcon, Nav, NavItem } from '@/components';
@@ -14,6 +13,7 @@ import {
   hairColors,
   hairs,
 } from './avatar.js';
+import './AvatarBuilder.scss';
 
 const tabs = [
   {

@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage } from '@/components';
 import request from '@/utils/request';
-import './Page.scss';
 import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
-import { FONT_FAMILIES } from '@/components/PageController/data';
+import { FONT_FAMILIES } from '@/assets/Topics/PageEditor/PageController/constants';
+import './Page.scss';
 
 class Page extends React.Component {
   pageEditorRef = React.createRef();

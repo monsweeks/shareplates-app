@@ -6,8 +6,8 @@ import { FullLayout } from '@/layouts';
 import request from '@/utils/request';
 import { Button, EmptyMessage, ListControlBar } from '@/components';
 import { ChapterCardLayoutList } from '@/assets';
-import './ChapterList.scss';
 import storage from '@/utils/storage';
+import './ChapterList.scss';
 
 class ChapterList extends React.PureComponent {
   constructor(props) {

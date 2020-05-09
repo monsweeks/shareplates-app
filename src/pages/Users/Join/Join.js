@@ -11,8 +11,8 @@ import request from '@/utils/request';
 import siteImage from '@/images/sites';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { CenterBoxLayout } from '@/layouts';
-import './Join.scss';
 import socialLogin from '@/pages/Users/util';
+import './Join.scss';
 
 class Join extends Component {
   constructor(props) {

@@ -1,0 +1,56 @@
+.new-share-wrapper {
+  text-align: left;
+
+  @media (max-width: 992px) {
+    height: 500px;
+  }
+
+  form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 992px) {
+      display: block;
+      height: 100%;
+    }
+
+    .row {
+      flex: 1;
+
+      @media (max-width: 992px) {
+        height: calc(100% - 66px);
+        overflow-y: auto;
+        margin: 0;
+      }
+
+      .share-col {
+        @media (max-width: 992px) {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .popup-buttons {
+      flex-grow: 0;
+    }
+  }
+
+  .refresh-button {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: $yellow;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 12px;
+    vertical-align: top;
+    padding-top: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($yellow, 2%);
+    }
+  }
+}

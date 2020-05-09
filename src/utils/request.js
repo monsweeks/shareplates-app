@@ -8,10 +8,14 @@ const local = ['localhost', '127.0.0.1', '192.168.39.3'].some((d) => d === windo
 
 const logging = true;
 // eslint-disable-next-line no-nested-ternary
-let base = local ? (window.location.hostname === '192.168.39.3' ? 'http://192.168.39.3:8080' : 'http://localhost:8080') : '';
+let base = local
+  ? window.location.hostname === '192.168.39.3'
+    ? 'http://192.168.39.3:8080'
+    : 'http://localhost:8080'
+  : '';
 base = window.location.port === '3000' ? `http://${window.location.hostname}:8080` : '';
 
-function getBase () {
+function getBase() {
   return base;
 }
 
@@ -86,7 +90,6 @@ function processError(error, failHandler) {
       }
 
       case 401: {
-
         // 로그인 정보 삭제 및 퍼블릭 그룹만 보이도록 변경
         const { user } = store.getState('user');
         const grps = user.grps ? user.grps.filter((org) => org.publicYn) : [];
@@ -129,7 +132,12 @@ function processError(error, failHandler) {
 
       default: {
         store.dispatch(
-          addMessage(error.response.status, MESSAGE_CATEGORY.ERROR, '오류', error.response && error.response.data && error.response.data.message),
+          addMessage(
+            error.response.status,
+            MESSAGE_CATEGORY.ERROR,
+            '오류',
+            error.response && error.response.data && error.response.data.message,
+          ),
         );
         break;
       }

@@ -18,11 +18,11 @@ export default SubContentBox;
 
 SubContentBox.defaultProps = {
   className: '',
-  arrow : true,
+  arrow: true,
 };
 
 SubContentBox.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  arrow : PropTypes.bool,
+  arrow: PropTypes.bool,
 };

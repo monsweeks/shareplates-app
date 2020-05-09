@@ -1,6 +1,6 @@
 import React from 'react';
-import './SubTitle.scss';
 import PropTypes from 'prop-types';
+import './SubTitle.scss';
 
 class SubTitle extends React.PureComponent {
   render() {

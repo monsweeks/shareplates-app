@@ -38,8 +38,8 @@ RadioButton.defaultProps = {
   className: '',
   items: [],
   circle: false,
-  size : 'md',
-  outline : false,
+  size: 'md',
+  outline: false,
 };
 
 RadioButton.propTypes = {
@@ -54,6 +54,6 @@ RadioButton.propTypes = {
   className: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   circle: PropTypes.bool,
-  size : PropTypes.string,
-  outline : PropTypes.bool,
+  size: PropTypes.string,
+  outline: PropTypes.bool,
 };

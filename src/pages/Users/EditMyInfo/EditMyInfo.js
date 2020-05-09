@@ -6,12 +6,21 @@ import { connect } from 'react-redux';
 import request from '@/utils/request';
 import { addMessage, setUserInfo } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
-import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
-import { BottomButton, Description, Form, FormGroup, Input, P, Selector, SubLabel } from '@/components';
-import './EditMyInfo.scss';
+import {
+  AvatarBuilder,
+  BottomButton,
+  Description,
+  Form,
+  FormGroup,
+  Input,
+  P,
+  RadioButton,
+  Selector,
+  SubLabel,
+} from '@/components';
 import { DATETIME_FORMATS } from '@/constants/constants';
 import LANGUAGES from '@/languages/languages';
-import RadioButton from '@/components/RadioButton/RadioButton';
+import './EditMyInfo.scss';
 
 const breadcrumbs = [
   {
@@ -99,16 +108,16 @@ class EditMyInfo extends React.PureComponent {
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
 
-            <Input
-              label={t('label.name')}
-              value={user.name}
-              required
-              minLength={2}
-              maxLength={100}
-              onChange={this.onChange('name')}
-              simple
-              border
-            />
+          <Input
+            label={t('label.name')}
+            value={user.name}
+            required
+            minLength={2}
+            maxLength={100}
+            onChange={this.onChange('name')}
+            simple
+            border
+          />
 
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('날짜 형식')}</SubLabel>
@@ -140,9 +149,7 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
-          <P className="bg-white">
-            {user.creationDate}
-          </P>
+          <P className="bg-white">{user.creationDate}</P>
           <BottomButton onList={() => {}} onEdit={() => {}} />
         </Form>
       </RegisterLayout>
