@@ -12,6 +12,7 @@ import './Common.scss';
 
 const UNAUTH_URLS = {
   '/': true,
+  '/shares': true,
   '/topics': true,
   '/users/register': true,
   '/users/login': true,
