@@ -7,7 +7,7 @@ class Tabs extends React.PureComponent {
     const { className, tabTitle, tabs, tab, onChange } = this.props;
 
     return (
-      <div className={`page-control-tabs-wrapper ${className}`}>
+      <div className={`tabs-wrapper ${className}`}>
         <div className="sub-title">{tabTitle}</div>
         {tabs.map((item) => {
           return (

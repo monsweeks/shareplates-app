@@ -7,7 +7,7 @@ class PageListTopMenu extends React.PureComponent {
     const { leftButtons, rightButtons, className } = this.props;
 
     return (
-      <div className={`page-manager-top-control-bar-wrapper g-no-select ${className}`}>
+      <div className={`page-list-top-menu-wrapper g-no-select ${className}`}>
         <div>
           <div className="left">
             {leftButtons &&

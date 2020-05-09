@@ -29,7 +29,7 @@ class ShareSideUserPopup extends React.Component {
     const currentUserIsAdmin = admins.findIndex((u) => u.id === currentUser.id) > -1;
 
     return (
-      <div className={`content-viewer-user-popup-wrapper ${singleRow ? 'single-row' : 'multi-row'}`}>
+      <div className={`share-side-user-popup-wrapper ${singleRow ? 'single-row' : 'multi-row'}`}>
         {isAdmin && (
           <div className="filter-buttons">
             <Button

@@ -54,7 +54,7 @@ class ShareSidePopup extends React.Component {
     );
 
     return (
-      <div className={`content-viewer-popup-wrapper ${className} ${position}`}>
+      <div className={`share-side-popup-wrapper ${className} ${position}`}>
         <div>
           <div>
             <div className="arrow">

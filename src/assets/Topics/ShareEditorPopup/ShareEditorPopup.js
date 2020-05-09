@@ -197,7 +197,7 @@ class ShareEditorPopup extends React.Component {
     const { t, user, setOpen, setStatusChange, shareId } = this.props;
 
     return (
-      <div className="new-share-wrapper">
+      <div className="share-editor-popup-wrapper">
         <Form onSubmit={this.onSubmit}>
           <Row className="scrollbar">
             <Col lg={5} className="share-col p-3">

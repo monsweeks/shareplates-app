@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { Card, CardBody, ObjectImage } from '@/components';
+import { Card, CardBody, IconViewer } from '@/components';
 import './TopicCard.scss';
 
 class TopicCard extends React.PureComponent {
@@ -81,7 +81,7 @@ class TopicCard extends React.PureComponent {
                 <div className="topic-description">
                   <div className="icon">
                     <div>
-                      <ObjectImage circle size="md" index={topic.iconIndex} />
+                      <IconViewer circle size="md" index={topic.iconIndex} />
                     </div>
                   </div>
                   <div className="counts">

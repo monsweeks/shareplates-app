@@ -9,7 +9,7 @@ class CheckControl extends React.PureComponent {
     return (
       <li
         data-tip={dataTip}
-        className={`icon-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${
+        className={`check-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${
           optionValue === value ? 'selected' : ''
         }`}
         onClick={() => {

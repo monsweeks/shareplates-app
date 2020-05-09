@@ -180,7 +180,7 @@ class ShareNavigator extends React.Component {
     const nextButtonEnabled = selectedIndex < list.length - 1;
 
     return (
-      <div className={`content-viewer-menu-wrapper ${className}`}>
+      <div className={`share-navigator-wrapper ${className}`}>
         <div className="move-arrow">
           <span
             className={prevButtonEnabled ? 'enabled' : 'disabled'}

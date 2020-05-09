@@ -13,7 +13,7 @@ class ShareStandByUserList extends React.PureComponent {
     const { sendReadyChat } = this.props;
 
     return (
-      <div className={`${className} content-viewer-user-wrapper`}>
+      <div className={`${className} share-stand-by-user-list-wrapper`}>
         <div className="admin-user">
           {users
             .filter((u) => u.shareRoleCode === 'ADMIN')

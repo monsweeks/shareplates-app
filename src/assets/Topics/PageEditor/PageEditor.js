@@ -154,8 +154,6 @@ class PageEditor extends React.Component {
       draggingItemIndex: nextIndex,
       lastMovedItemId: destItemId,
     });
-
-    console.log(destItemId);
   };
 
   updateContent = () => {

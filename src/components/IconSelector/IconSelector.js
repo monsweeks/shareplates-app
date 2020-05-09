@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { CircleIcon, ObjectImage } from '@/components';
+import { CircleIcon, IconViewer } from '@/components';
 import './IconSelector.scss';
 
 const objectImageCount = 36 * 30;
@@ -83,7 +83,7 @@ class IconSelector extends React.Component {
             {iconIndex === null && <div className="image-item no-image" />}
             {iconIndex !== null && (
               <div className="image-item">
-                <ObjectImage size="lg" index={iconIndex} />
+                <IconViewer size="lg" index={iconIndex} />
               </div>
             )}
             <div className="clear-image">
@@ -119,7 +119,7 @@ class IconSelector extends React.Component {
                     }
                   }}
                 >
-                  <ObjectImage size="md" index={no} />
+                  <IconViewer size="md" index={no} />
                 </div>
               );
             })}

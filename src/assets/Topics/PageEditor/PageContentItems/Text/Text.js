@@ -140,8 +140,6 @@ Text.propTypes = {
   setEditing: PropTypes.func,
 };
 
-console.log(withPageItem);
-
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
 pageItemProps[withPageItem.options.textAlign] = 'left';

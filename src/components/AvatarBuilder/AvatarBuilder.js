@@ -295,7 +295,7 @@ class AvatarBuilder extends React.Component {
     const { onChange, className } = this.props;
 
     return (
-      <article className={`avatar-builder g-no-select ${className}`}>
+      <article className={`avatar-builder-wrapper g-no-select ${className}`}>
         <div className="preview-box">
           <div className="preview-image">
             <svg viewBox="0 0 100 100">

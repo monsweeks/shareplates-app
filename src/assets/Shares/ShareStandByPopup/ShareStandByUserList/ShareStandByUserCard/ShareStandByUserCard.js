@@ -23,7 +23,7 @@ class ShareStandByUserCard extends React.Component {
     const isMe = user.id === currentUser.id;
 
     return (
-      <Card key={user.id} className={`user-card-wrapper ${className} border-0`}>
+      <Card key={user.id} className={`share-stand-by-user-card-wrapper ${className} border-0`}>
         <CardBody className="p-0">
           <div className={`user-card-content ${user.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
             {isAdmin && (

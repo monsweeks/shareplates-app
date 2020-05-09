@@ -19,7 +19,7 @@ class ShareSideMenu extends React.PureComponent {
     const { openUserPopup, setOpenUserPopup } = this.props;
 
     return (
-      <div className="side-menu-wrapper">
+      <div className="share-side-menu-wrapper">
         <span className={`on-off-button ${share.startedYn ? 'on' : 'off'}`} onClick={stopShare}>
           <span className="on-off" />
           {share.startedYn && <i className="far fa-broadcast-tower" />}

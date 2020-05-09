@@ -13,7 +13,7 @@ class ShareStandByPopup extends React.PureComponent {
     const { isAdmin, users, startShare, closeShare, user, sendReadyChat, exitShare } = this.props;
 
     return (
-      <div className="share-ready-wrapper">
+      <div className="share-stand-by-popup-wrapper">
         <div className="top">
           <div className="share-info">
             <div className="connect-url">

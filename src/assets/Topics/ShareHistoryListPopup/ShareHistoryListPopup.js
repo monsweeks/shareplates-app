@@ -35,7 +35,7 @@ class ShareHistoryListPopup extends React.Component {
     const { t, shares, setOpen, openShare, topicId } = this.props;
 
     return (
-      <div className="share-list-wrapper">
+      <div className="share-history-list-popup-wrapper">
         <div className="share-list-content">
           <div className="share-list">
             <div className="scrollbar d-flex">
