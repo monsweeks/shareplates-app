@@ -319,7 +319,7 @@ class PageEditor extends React.Component {
           {...last}
           updateContent={this.updateContent}
           itemOptions={itemOptions}
-          pageProperties={content.pageProperties}
+          pageProperties={content.pageProperties || {}}
           onChangeOption={this.onChangeOption}
           onChangePageProperties={this.onChangePageProperties}
           selectedItemId={selectedItemId}

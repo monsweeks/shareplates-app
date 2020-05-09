@@ -103,6 +103,11 @@ class ChapterCard extends React.Component {
                 )}
               </div>
               <div
+                draggable
+                onDragStart={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}
                 className="content"
                 onClick={() => {
                   if (onCardClick) {
@@ -144,6 +149,11 @@ class ChapterCard extends React.Component {
                 {isDelete && (
                   <div
                     className="inner-popup"
+                    draggable
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
@@ -179,6 +189,11 @@ class ChapterCard extends React.Component {
                 {isEdit && (
                   <div
                     className="inner-popup"
+                    draggable
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                     }}

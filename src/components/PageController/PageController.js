@@ -248,36 +248,6 @@ class PageController extends React.Component {
                   </span>
                 </CheckControl>
                 <Separator />
-                <CheckControl
-                  dataTip={t('이미지의 작은 부분을 상자에 맞춤')}
-                  optionKey="backgroundSize"
-                  optionValue="contain"
-                  active={!!itemOptions.backgroundSize}
-                  value={itemOptions.backgroundSize}
-                  onClick={onChangeOption}
-                >
-                  <i className="fal fa-expand" />
-                </CheckControl>
-                <CheckControl
-                  dataTip={t('이미지의 큰 부분을 상자에 맞춤')}
-                  optionKey="backgroundSize"
-                  optionValue="cover"
-                  active={!!itemOptions.backgroundSize}
-                  value={itemOptions.backgroundSize}
-                  onClick={onChangeOption}
-                >
-                  <i className="fal fa-expand-wide" />
-                </CheckControl>
-                <CheckControl
-                  dataTip={t('이미지를 상자에 맞춤')}
-                  optionKey="backgroundSize"
-                  optionValue="100% 100%"
-                  active={!!itemOptions.backgroundSize}
-                  value={itemOptions.backgroundSize}
-                  onClick={onChangeOption}
-                >
-                  <i className="fal fa-arrows" />
-                </CheckControl>
                 <Separator />
                 <SelectControl
                   dataTip={t('폰트')}
