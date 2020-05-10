@@ -24,6 +24,7 @@ import PaddingControl from '@/assets/Topics/PageEditor/PageController/PaddingCon
 import BorderControl from '@/assets/Topics/PageEditor/PageController/BorderControl/BorderControl';
 import SizeControl from '@/assets/Topics/PageEditor/PageController/SizeControl/SizeControl';
 import './PageController.scss';
+import LevelProperties from '@/assets/Topics/PageEditor/PageController/LevelProperties/LevelProperties';
 
 const tabs = [
   {
@@ -150,7 +151,6 @@ class PageController extends React.Component {
       chapterProperties,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
-
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -556,232 +556,34 @@ class PageController extends React.Component {
               </>
             )}
             {selectedTab === 'page-property' && (
-              <>
-                <SelectControl
-                  dataTip={t('페이지 폰트')}
-                  minWidth="120px"
-                  height="140px"
-                  optionKey="fontFamily"
-                  list={PAGE_FONT_FAMILIES}
-                  active={!!pageId}
-                  value={pageProperties.fontFamily}
-                  onSelect={onChangePageProperties}
-                >
-                  <span>{this.getFontFamilyName(PAGE_FONT_FAMILIES, pageProperties.fontFamily)}</span>
-                </SelectControl>
-                <SelectControl
-                  dataTip={t('페이지 기본 폰트 크기')}
-                  minWidth="64px"
-                  height="140px"
-                  optionKey="fontSize"
-                  list={PAGE_FONT_SIZES}
-                  active={!!pageId}
-                  value={pageProperties.fontSize}
-                  onSelect={onChangePageProperties}
-                >
-                  <span>{this.getFontSizeName(PAGE_FONT_SIZES, pageProperties.fontSize)}</span>
-                </SelectControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('페이지 기본 폰트 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="color"
-                  active={!!pageId}
-                  value={pageProperties.color}
-                  onSelect={onChangePageProperties}
-                >
-                  <span className="color-border">
-                    가
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: pageProperties.color,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('페이지 배경 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="backgroundColor"
-                  active={!!pageId}
-                  value={pageProperties.backgroundColor}
-                  onSelect={onChangePageProperties}
-                >
-                  <span className="color-border fill-color">
-                    <i className="fal fa-fill" />
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: pageProperties.backgroundColor,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <PaddingControl
-                  dataTip={t('페이지 내부 간격')}
-                  optionKey="padding"
-                  active={!!pageId}
-                  value={pageProperties.padding}
-                  onApply={onChangePageProperties}
-                />
-              </>
+              <LevelProperties
+                level="페이지"
+                fontSizes={PAGE_FONT_SIZES}
+                fontFamilies={PAGE_FONT_FAMILIES}
+                onChangeProperties={onChangePageProperties}
+                properties={pageProperties}
+                levelId={pageId}
+              />
             )}
             {selectedTab === 'chapter-property' && (
-              <>
-                <SelectControl
-                  dataTip={t('챕터 폰트')}
-                  minWidth="120px"
-                  height="140px"
-                  optionKey="fontFamily"
-                  list={CHAPTER_FONT_FAMILIES}
-                  active={!!chapterId}
-                  value={chapterProperties.fontFamily}
-                  onSelect={onChangeChapterProperties}
-                >
-                  <span>{this.getFontFamilyName(CHAPTER_FONT_FAMILIES, chapterProperties.fontFamily)}</span>
-                </SelectControl>
-                <SelectControl
-                  dataTip={t('챕터 기본 폰트 크기')}
-                  minWidth="64px"
-                  height="140px"
-                  optionKey="fontSize"
-                  list={CHAPTER_FONT_SIZES}
-                  active={!!chapterId}
-                  value={chapterProperties.fontSize}
-                  onSelect={onChangeChapterProperties}
-                >
-                  <span>{this.getFontSizeName(CHAPTER_FONT_SIZES, chapterProperties.fontSize)}</span>
-                </SelectControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('챕터 기본 폰트 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="color"
-                  active={!!chapterId}
-                  value={chapterProperties.color}
-                  onSelect={onChangeChapterProperties}
-                >
-                  <span className="color-border">
-                    가
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: chapterProperties.color,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('챕터 배경 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="backgroundColor"
-                  active={!!chapterId}
-                  value={chapterProperties.backgroundColor}
-                  onSelect={onChangeChapterProperties}
-                >
-                  <span className="color-border fill-color">
-                    <i className="fal fa-fill" />
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: chapterProperties.backgroundColor,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <PaddingControl
-                  dataTip={t('챕터 내부 간격')}
-                  optionKey="padding"
-                  active={!!chapterId}
-                  value={chapterProperties.padding}
-                  onApply={onChangeChapterProperties}
-                />
-              </>
+              <LevelProperties
+                level="챕터"
+                fontSizes={CHAPTER_FONT_SIZES}
+                fontFamilies={CHAPTER_FONT_FAMILIES}
+                onChangeProperties={onChangeChapterProperties}
+                properties={chapterProperties}
+                levelId={chapterId}
+              />
             )}
             {selectedTab === 'topic-property' && (
-              <>
-                <SelectControl
-                  dataTip={t('토픽 폰트')}
-                  minWidth="120px"
-                  height="140px"
-                  optionKey="fontFamily"
-                  list={TOPIC_FONT_FAMILIES}
-                  active={!!topicId}
-                  value={topicProperties.fontFamily}
-                  onSelect={onChangeTopicProperties}
-                >
-                  <span>{this.getFontFamilyName(TOPIC_FONT_FAMILIES, topicProperties.fontFamily)}</span>
-                </SelectControl>
-                <SelectControl
-                  dataTip={t('토픽 기본 폰트 크기')}
-                  minWidth="64px"
-                  height="140px"
-                  optionKey="fontSize"
-                  list={TOPIC_FONT_SIZES}
-                  active={!!topicId}
-                  value={topicProperties.fontSize}
-                  onSelect={onChangeTopicProperties}
-                >
-                  <span>{this.getFontSizeName(TOPIC_FONT_SIZES, topicProperties.fontSize)}</span>
-                </SelectControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('토픽 기본 폰트 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="color"
-                  active={!!topicId}
-                  value={topicProperties.color}
-                  onSelect={onChangeTopicProperties}
-                >
-                  <span className="color-border">
-                    가
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: topicProperties.color,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <ColorControl
-                  dataTip={t('토픽 배경 색상')}
-                  colorPickerWidth="257px"
-                  colorPickerHeight="200px"
-                  optionKey="backgroundColor"
-                  active={!!topicId}
-                  value={topicProperties.backgroundColor}
-                  onSelect={onChangeTopicProperties}
-                >
-                  <span className="color-border fill-color">
-                    <i className="fal fa-fill" />
-                    <span
-                      className="color-bar"
-                      style={{
-                        backgroundColor: topicProperties.backgroundColor,
-                      }}
-                    />
-                  </span>
-                </ColorControl>
-                <Separator />
-                <PaddingControl
-                  dataTip={t('토픽 내부 간격')}
-                  optionKey="padding"
-                  active={!!topicId}
-                  value={topicProperties.padding}
-                  onApply={onChangeTopicProperties}
-                />
-              </>
+              <LevelProperties
+                level="토픽"
+                fontSizes={TOPIC_FONT_SIZES}
+                fontFamilies={TOPIC_FONT_FAMILIES}
+                onChangeProperties={onChangeTopicProperties}
+                properties={topicProperties}
+                levelId={topicId}
+              />
             )}
           </div>
         </div>
