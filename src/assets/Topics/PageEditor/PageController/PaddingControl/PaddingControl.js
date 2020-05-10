@@ -73,15 +73,27 @@ class PaddingControl extends React.Component {
     }
 
     if (!prevState.open && open) {
-      const padding = value.split(' ');
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        paddingTop: padding[0],
-        paddingRight: padding[1],
-        paddingBottom: padding[2],
-        paddingLeft: padding[3],
-        paddingAll: this.getPaddingAll(value),
-      });
+      if (value) {
+        const padding = value.split(' ');
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          paddingTop: padding[0],
+          paddingRight: padding[1],
+          paddingBottom: padding[2],
+          paddingLeft: padding[3],
+          paddingAll: this.getPaddingAll(value),
+        });
+      } else {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          paddingTop: '',
+          paddingRight: '',
+          paddingBottom: '',
+          paddingLeft: '',
+          paddingAll: this.getPaddingAll(value),
+        });
+      }
+
       document.addEventListener('mousedown', this.onOutsideClick);
     }
 

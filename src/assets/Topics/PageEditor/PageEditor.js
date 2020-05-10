@@ -233,6 +233,40 @@ class PageEditor extends React.Component {
     }
   };
 
+  onChangeTopicProperties = (key, value) => {
+    const { topicId, updateTopicContent } = this.props;
+    const { topic } = this.props;
+    if (topicId) {
+      const next = { ...topic };
+      const topicProperties = (next.content && next.content.topicProperties) ? next.content.topicProperties : {};
+
+      topicProperties[key] = value;
+      if (!next.content) {
+        next.content = {};
+      }
+
+      next.content.topicProperties = topicProperties;
+      updateTopicContent(JSON.stringify(next.content));
+    }
+  };
+
+  onChangeChapterProperties = (key, value) => {
+    const { chapterId, updateChapterContent } = this.props;
+    const { chapter } = this.props;
+    if (chapterId) {
+      const next = { ...chapter };
+      const chapterProperties = (next.content && next.content.chapterProperties) ? next.content.chapterProperties : {};
+
+      chapterProperties[key] = value;
+      if (!next.content) {
+        next.content = {};
+      }
+      next.content.chapterProperties = chapterProperties;
+
+      updateChapterContent(JSON.stringify(next.content));
+    }
+  };
+
   onChangePageProperties = (key, value) => {
     const { pageId } = this.props;
     const { content } = this.state;
@@ -303,21 +337,28 @@ class PageEditor extends React.Component {
   };
 
   render() {
-    const { className, updatePage, setPageContent, pageId, ...last } = this.props;
+    const { className, updatePage, setPageContent, topicId, chapterId, pageId, ...last } = this.props;
+    const { topic, chapter } = this.props;
     const { content, selectedItemId, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
         <PageController
+          topicId={topicId}
+          chapterId={chapterId}
           pageId={pageId}
           className="property-manager"
           addItem={this.addItem}
           {...last}
           updateContent={this.updateContent}
           itemOptions={itemOptions}
+          topicProperties={topic.content ? topic.content.topicProperties : {}}
+          chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
           pageProperties={content.pageProperties || {}}
           onChangeOption={this.onChangeOption}
+          onChangeTopicProperties={this.onChangeTopicProperties}
+          onChangeChapterProperties={this.onChangeChapterProperties}
           onChangePageProperties={this.onChangePageProperties}
           selectedItemId={selectedItemId}
           setEditing={this.setEditing}
@@ -326,6 +367,8 @@ class PageEditor extends React.Component {
           <PageContent
             pageId={pageId}
             content={content}
+            topicProperties={topic.content ? topic.content.topicProperties : {}}
+            chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
             setPageContent={this.setPageContent}
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
@@ -357,7 +400,15 @@ PageEditor.propTypes = {
   className: PropTypes.string,
   setPageContent: PropTypes.func,
   topicId: PropTypes.number,
+  topic: PropTypes.shape({
+    id: PropTypes.number,
+    content: PropTypes.objectOf(PropTypes.any),
+  }),
   chapterId: PropTypes.number,
+  chapter: PropTypes.shape({
+    id: PropTypes.number,
+    content: PropTypes.objectOf(PropTypes.any),
+  }),
   pageId: PropTypes.number,
   page: PropTypes.shape({
     title: PropTypes.string,
@@ -368,6 +419,9 @@ PageEditor.propTypes = {
   showPageList: PropTypes.bool,
   moveItem: PropTypes.func,
   onRef: PropTypes.func,
+  updateTopicContent: PropTypes.func,
+  updateChapterContent : PropTypes.func,
+
 };
 
 export default withRouter(PageEditor);

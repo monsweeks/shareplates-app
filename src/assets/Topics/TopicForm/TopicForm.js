@@ -20,6 +20,7 @@ import {
   TextArea,
 } from '@/components';
 import { UserManager, UserSearchPopup } from '@/assets';
+import { TOPIC_FONT_FAMILIES } from '@/assets/Topics/PageEditor/PageController/constants';
 import './TopicForm.scss';
 
 class TopicForm extends Component {
@@ -34,6 +35,15 @@ class TopicForm extends Component {
         iconIndex: null,
         users: [],
         privateYn: false,
+        content: {
+          topicProperties: {
+            fontFamily: TOPIC_FONT_FAMILIES[0].value,
+            fontSize: '16px',
+            backgroundColor: '#ffffff',
+            color: '#333333',
+            padding: '0px 0px 0px 0px',
+          },
+        },
       },
       existName: false,
       openUserPopup: false,
@@ -54,6 +64,7 @@ class TopicForm extends Component {
 
     if (edit && props.topic) {
       topic = props.topic;
+      topic.content = topic.content ? JSON.parse(topic.content) : {};
       initialized = true;
     }
 
@@ -143,6 +154,7 @@ class TopicForm extends Component {
       return;
     }
 
+    topic.content = JSON.stringify(topic.content);
     onSave(topic);
   };
 

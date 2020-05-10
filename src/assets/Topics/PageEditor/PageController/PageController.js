@@ -9,7 +9,16 @@ import ButtonControl from '@/assets/Topics/PageEditor/PageController/ButtonContr
 import Separator from '@/assets/Topics/PageEditor/PageController/Separator/Separator';
 import ControllerTabs from '@/assets/Topics/PageEditor/PageController/ControllerTabs/ControllerTabs';
 import SelectControl from '@/assets/Topics/PageEditor/PageController/SelectControl/SelectControl';
-import { FONT_FAMILIES, FONT_SIZES } from './constants';
+import {
+  CHAPTER_FONT_FAMILIES,
+  CHAPTER_FONT_SIZES,
+  ITEM_FONT_FAMILIES,
+  ITEM_FONT_SIZES,
+  PAGE_FONT_FAMILIES,
+  PAGE_FONT_SIZES,
+  TOPIC_FONT_FAMILIES,
+  TOPIC_FONT_SIZES,
+} from './constants';
 import ColorControl from '@/assets/Topics/PageEditor/PageController/ColorControl/ColorControl';
 import PaddingControl from '@/assets/Topics/PageEditor/PageController/PaddingControl/PaddingControl';
 import BorderControl from '@/assets/Topics/PageEditor/PageController/BorderControl/BorderControl';
@@ -32,6 +41,14 @@ const tabs = [
   {
     key: 'page-property',
     name: '페이지 속성',
+  },
+  {
+    key: 'chapter-property',
+    name: '챕터 속성',
+  },
+  {
+    key: 'topic-property',
+    name: '토픽 속성',
   },
 ];
 
@@ -93,8 +110,8 @@ class PageController extends React.Component {
     return defaultColor;
   };
 
-  getFontFamilyName = (fontFamily) => {
-    const font = FONT_FAMILIES.find((info) => info.value === fontFamily);
+  getFontFamilyName = (list, fontFamily) => {
+    const font = list.find((info) => info.value === fontFamily);
     if (font) {
       return font.name;
     }
@@ -102,8 +119,8 @@ class PageController extends React.Component {
     return fontFamily;
   };
 
-  getFontSizeName = (fontSize) => {
-    const font = FONT_SIZES.find((info) => info.value === fontSize);
+  getFontSizeName = (list, fontSize) => {
+    const font = list.find((info) => info.value === fontSize);
     if (font) {
       return font.name;
     }
@@ -114,6 +131,8 @@ class PageController extends React.Component {
   render() {
     const { t, className } = this.props;
     const {
+      topicId,
+      chapterId,
       pageId,
       showPageList,
       setShowPageList,
@@ -123,10 +142,15 @@ class PageController extends React.Component {
       itemOptions,
       onChangeOption,
       setEditing,
+      onChangeTopicProperties,
+      onChangeChapterProperties,
       onChangePageProperties,
       pageProperties,
+      topicProperties,
+      chapterProperties,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
+
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -254,24 +278,24 @@ class PageController extends React.Component {
                   minWidth="120px"
                   height="140px"
                   optionKey="fontFamily"
-                  list={FONT_FAMILIES}
+                  list={ITEM_FONT_FAMILIES}
                   active={!!itemOptions.fontFamily}
                   value={itemOptions.fontFamily}
                   onSelect={onChangeOption}
                 >
-                  <span>{this.getFontFamilyName(itemOptions.fontFamily)}</span>
+                  <span>{this.getFontFamilyName(ITEM_FONT_FAMILIES, itemOptions.fontFamily)}</span>
                 </SelectControl>
                 <SelectControl
                   dataTip={t('폰트 크기')}
                   minWidth="64px"
                   height="140px"
                   optionKey="fontSize"
-                  list={FONT_SIZES}
+                  list={ITEM_FONT_SIZES}
                   active={!!itemOptions.fontSize}
                   value={itemOptions.fontSize}
                   onSelect={onChangeOption}
                 >
-                  <span>{this.getFontSizeName(itemOptions.fontSize)}</span>
+                  <span>{this.getFontSizeName(ITEM_FONT_SIZES, itemOptions.fontSize)}</span>
                 </SelectControl>
                 <Separator />
                 <ColorControl
@@ -538,24 +562,24 @@ class PageController extends React.Component {
                   minWidth="120px"
                   height="140px"
                   optionKey="fontFamily"
-                  list={FONT_FAMILIES}
+                  list={PAGE_FONT_FAMILIES}
                   active={!!pageId}
                   value={pageProperties.fontFamily}
                   onSelect={onChangePageProperties}
                 >
-                  <span>{this.getFontFamilyName(pageProperties.fontFamily)}</span>
+                  <span>{this.getFontFamilyName(PAGE_FONT_FAMILIES, pageProperties.fontFamily)}</span>
                 </SelectControl>
                 <SelectControl
                   dataTip={t('페이지 기본 폰트 크기')}
                   minWidth="64px"
                   height="140px"
                   optionKey="fontSize"
-                  list={FONT_SIZES}
+                  list={PAGE_FONT_SIZES}
                   active={!!pageId}
                   value={pageProperties.fontSize}
                   onSelect={onChangePageProperties}
                 >
-                  <span>{this.getFontSizeName(pageProperties.fontSize)}</span>
+                  <span>{this.getFontSizeName(PAGE_FONT_SIZES, pageProperties.fontSize)}</span>
                 </SelectControl>
                 <Separator />
                 <ColorControl
@@ -607,6 +631,158 @@ class PageController extends React.Component {
                 />
               </>
             )}
+            {selectedTab === 'chapter-property' && (
+              <>
+                <SelectControl
+                  dataTip={t('챕터 폰트')}
+                  minWidth="120px"
+                  height="140px"
+                  optionKey="fontFamily"
+                  list={CHAPTER_FONT_FAMILIES}
+                  active={!!chapterId}
+                  value={chapterProperties.fontFamily}
+                  onSelect={onChangeChapterProperties}
+                >
+                  <span>{this.getFontFamilyName(CHAPTER_FONT_FAMILIES, chapterProperties.fontFamily)}</span>
+                </SelectControl>
+                <SelectControl
+                  dataTip={t('챕터 기본 폰트 크기')}
+                  minWidth="64px"
+                  height="140px"
+                  optionKey="fontSize"
+                  list={CHAPTER_FONT_SIZES}
+                  active={!!chapterId}
+                  value={chapterProperties.fontSize}
+                  onSelect={onChangeChapterProperties}
+                >
+                  <span>{this.getFontSizeName(CHAPTER_FONT_SIZES, chapterProperties.fontSize)}</span>
+                </SelectControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('챕터 기본 폰트 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="color"
+                  active={!!chapterId}
+                  value={chapterProperties.color}
+                  onSelect={onChangeChapterProperties}
+                >
+                  <span className="color-border">
+                    가
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: chapterProperties.color,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('챕터 배경 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="backgroundColor"
+                  active={!!chapterId}
+                  value={chapterProperties.backgroundColor}
+                  onSelect={onChangeChapterProperties}
+                >
+                  <span className="color-border fill-color">
+                    <i className="fal fa-fill" />
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: chapterProperties.backgroundColor,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <PaddingControl
+                  dataTip={t('챕터 내부 간격')}
+                  optionKey="padding"
+                  active={!!chapterId}
+                  value={chapterProperties.padding}
+                  onApply={onChangeChapterProperties}
+                />
+              </>
+            )}
+            {selectedTab === 'topic-property' && (
+              <>
+                <SelectControl
+                  dataTip={t('토픽 폰트')}
+                  minWidth="120px"
+                  height="140px"
+                  optionKey="fontFamily"
+                  list={TOPIC_FONT_FAMILIES}
+                  active={!!topicId}
+                  value={topicProperties.fontFamily}
+                  onSelect={onChangeTopicProperties}
+                >
+                  <span>{this.getFontFamilyName(TOPIC_FONT_FAMILIES, topicProperties.fontFamily)}</span>
+                </SelectControl>
+                <SelectControl
+                  dataTip={t('토픽 기본 폰트 크기')}
+                  minWidth="64px"
+                  height="140px"
+                  optionKey="fontSize"
+                  list={TOPIC_FONT_SIZES}
+                  active={!!topicId}
+                  value={topicProperties.fontSize}
+                  onSelect={onChangeTopicProperties}
+                >
+                  <span>{this.getFontSizeName(TOPIC_FONT_SIZES, topicProperties.fontSize)}</span>
+                </SelectControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('토픽 기본 폰트 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="color"
+                  active={!!topicId}
+                  value={topicProperties.color}
+                  onSelect={onChangeTopicProperties}
+                >
+                  <span className="color-border">
+                    가
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: topicProperties.color,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <ColorControl
+                  dataTip={t('토픽 배경 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="backgroundColor"
+                  active={!!topicId}
+                  value={topicProperties.backgroundColor}
+                  onSelect={onChangeTopicProperties}
+                >
+                  <span className="color-border fill-color">
+                    <i className="fal fa-fill" />
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: topicProperties.backgroundColor,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
+                <Separator />
+                <PaddingControl
+                  dataTip={t('토픽 내부 간격')}
+                  optionKey="padding"
+                  active={!!topicId}
+                  value={topicProperties.padding}
+                  onApply={onChangeTopicProperties}
+                />
+              </>
+            )}
           </div>
         </div>
         <div className="always-menu">
@@ -631,6 +807,8 @@ PageController.defaultProps = {
 };
 
 PageController.propTypes = {
+  topicId: PropTypes.number,
+  chapterId: PropTypes.number,
   pageId: PropTypes.number,
   t: PropTypes.func,
   className: PropTypes.string,
@@ -643,7 +821,11 @@ PageController.propTypes = {
   onChangeOption: PropTypes.func,
   selectedItemId: PropTypes.string,
   setEditing: PropTypes.func,
+  onChangeTopicProperties: PropTypes.func,
+  onChangeChapterProperties: PropTypes.func,
   onChangePageProperties: PropTypes.func,
+  topicProperties: PropTypes.objectOf(PropTypes.any),
+  chapterProperties: PropTypes.objectOf(PropTypes.any),
   pageProperties: PropTypes.objectOf(PropTypes.any),
 };
 

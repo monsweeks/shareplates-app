@@ -7,6 +7,24 @@ import { EmptyMessage } from '@/components';
 import './PageContent.scss';
 
 class PageContent extends React.PureComponent {
+  getMergedPageProperties = (topicProperties, chapterProperties, pageProperties) => {
+    const properties = { ...topicProperties };
+
+    Object.keys(chapterProperties).forEach((key) => {
+      if (chapterProperties[key] && chapterProperties[key] !== 'inherit' && chapterProperties[key] !== 'transparent') {
+        properties[key] = chapterProperties[key];
+      }
+    });
+
+    Object.keys(pageProperties).forEach((key) => {
+      if (pageProperties[key] && pageProperties[key] !== 'inherit' && pageProperties[key] !== 'transparent') {
+        properties[key] = pageProperties[key];
+      }
+    });
+
+    return properties;
+  };
+
   render() {
     const {
       className,
@@ -21,17 +39,16 @@ class PageContent extends React.PureComponent {
       movePage,
       removeItem,
       t,
+      topicProperties,
+      chapterProperties,
     } = this.props;
 
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId, setDragging, moveItem, pageId } = this.props;
 
-    let items = [];
-    let pageProperties = {};
-
-    if (content) {
-      items = content.items;
-      pageProperties = content.pageProperties;
-    }
+    const items = content ? content.items : [];
+    const pageProperties = pageId
+      ? this.getMergedPageProperties(topicProperties, chapterProperties, content.pageProperties)
+      : {};
 
     return (
       <div
@@ -116,6 +133,8 @@ PageContent.defaultProps = {
 PageContent.propTypes = {
   className: PropTypes.string,
   content: PropTypes.objectOf(PropTypes.any),
+  topicProperties: PropTypes.objectOf(PropTypes.any),
+  chapterProperties: PropTypes.objectOf(PropTypes.any),
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
   onChangeOption: PropTypes.func,
