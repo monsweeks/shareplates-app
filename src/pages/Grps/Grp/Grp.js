@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, P, SubLabel, UserManager } from '@/components';
+import { EmptyMessage, P, SubLabel } from '@/components';
+import { UserManager } from '@/assets';
 
 class Grp extends Component {
   constructor(props) {

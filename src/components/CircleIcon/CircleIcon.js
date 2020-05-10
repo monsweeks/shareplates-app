@@ -26,5 +26,5 @@ CircleIcon.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.node,
   size: PropTypes.string,
-  color : PropTypes.string,
+  color: PropTypes.string,
 };

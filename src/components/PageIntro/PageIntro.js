@@ -1,6 +1,6 @@
 import React from 'react';
-import './PageIntro.scss';
 import PropTypes from 'prop-types';
+import './PageIntro.scss';
 
 class PageIntro extends React.PureComponent {
   render() {

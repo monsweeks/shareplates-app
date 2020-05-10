@@ -1,0 +1,41 @@
+.check-control-wrapper {
+  height: 100%;
+  vertical-align: middle;
+  align-self: center;
+  display: flex;
+  cursor: pointer;
+  line-height: 0;
+  padding: 0 0.25rem;
+  margin: 0 1px;
+  border-radius: 2px;
+
+  &.in-active {
+    opacity: 0.3;
+    transition: all 0.1s;
+  }
+
+  &.active {
+    opacity: 1;
+    transition: all 0.1s;
+    &:hover {
+      background-color: lighten($yellow, 20%);
+      background-color: $gray-300;
+    }
+    &.selected {
+      background-color: $yellow;
+    }
+  }
+
+  &.selected {
+    background-color: $yellow;
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  > div {
+    vertical-align: middle;
+    align-self: center;
+  }
+}

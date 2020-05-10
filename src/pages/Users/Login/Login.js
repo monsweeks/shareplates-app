@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import qs from 'qs';
 import { connect } from 'react-redux';
-import Kakao from '@/vendor/kakao.min.js';
+import KakaoLib from '@/vendor/kakao.min.js';
 import { Button, CheckBoxInput, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
@@ -21,7 +21,7 @@ class Login extends React.PureComponent {
 
     const email = storage.getItem('login', 'email');
 
-    if (!Kakao.isInitialized()) Kakao.init('863525fbdd02a15ac03536bbfcf0151d');
+    if (!KakaoLib.isInitialized()) KakaoLib.init('863525fbdd02a15ac03536bbfcf0151d');
 
     this.state = {
       email: email || '',

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Avatar.scss';
 import Color from 'color';
 import PropTypes from 'prop-types';
 import {
@@ -13,6 +12,7 @@ import {
   hairColors,
   hairs,
 } from '../AvatarBuilder/avatar.js';
+import './Avatar.scss';
 
 class Avatar extends React.Component {
   id = new Date().getTime();

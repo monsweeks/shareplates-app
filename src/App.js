@@ -2,13 +2,12 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Common, NoMatch } from 'pages';
-import { Footer, Header, EmptyHeader } from '@/layouts';
+import { EmptyHeader, Footer, Header } from '@/layouts';
 import About from '@/pages/About';
 import Users from '@/pages/Users';
 import Topics from '@/pages/Topics';
 import Grps from '@/pages/Grps';
 import Shares from '@/pages/Shares';
-
 import '@/App.scss';
 
 function App() {

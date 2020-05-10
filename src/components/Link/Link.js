@@ -8,7 +8,11 @@ class Link extends React.PureComponent {
     const { enabled, color, className, componentClassName, underline, effect, ...last } = this.props;
 
     return (
-      <span className={`link-wrapper ${enabled ? '' : 'disabled'} text-${color} ${className} ${underline ? 'underline' : ''}`}>
+      <span
+        className={`link-wrapper ${enabled ? '' : 'disabled'} text-${color} ${className} ${
+          underline ? 'underline' : ''
+        }`}
+      >
         <RouterLink
           onClick={(e) => {
             if (!enabled) {

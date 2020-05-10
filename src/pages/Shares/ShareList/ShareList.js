@@ -3,15 +3,18 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { setUserInfo } from 'actions';
 import { FullLayout } from '@/layouts';
 import { Button, Col, Popup, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
-import './ShareList.scss';
 import { ShareEditorPopup } from '@/assets';
+import './ShareList.scss';
 
 class ShareList extends React.Component {
+  init = false;
+
   constructor(props) {
     super(props);
 
@@ -28,7 +31,6 @@ class ShareList extends React.Component {
         searchWord: '',
         ...options,
       },
-      init: false,
       shares: [],
       accessCode: '',
       openShareEditorPopup: false,
@@ -39,32 +41,42 @@ class ShareList extends React.Component {
     this.setOptionToUrl();
   }
 
-  componentDidMount() {
-    const { options } = this.state;
-    this.getOpenShares(options);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const {
       location,
       location: { search },
     } = this.props;
 
-    const { options, init } = this.state;
-
-    if (!init) {
-      return;
-    }
+    const { options } = this.state;
 
     const pathOptions = common.getOptions(search, ['order', 'direction', 'searchWord']);
 
-    if ((!prevState.init && init) || location !== prevProps.location) {
+    if (!this.init) {
+      this.getMyInfo();
+    }
+
+    if (!this.init || location !== prevProps.location) {
+      this.init = true;
       this.getOpenShares({
         ...options,
         ...pathOptions,
       });
     }
   }
+
+  getMyInfo = () => {
+    const { setUserInfo: setUserInfoReducer } = this.props;
+    request.get(
+      '/api/users/my-info',
+      null,
+      (data) => {
+        setUserInfoReducer(data.user || {}, data.grps);
+      },
+      () => {
+        setUserInfoReducer({}, []);
+      },
+    );
+  };
 
   getOpenShares = (options) => {
     request.get('/api/shares', { ...options }, (data) => {
@@ -276,6 +288,12 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+  };
+};
+
 ShareList.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
@@ -283,6 +301,7 @@ ShareList.propTypes = {
     name: PropTypes.string,
     info: PropTypes.string,
   }),
+  setUserInfo: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
@@ -293,4 +312,4 @@ ShareList.propTypes = {
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareList)));

@@ -1,6 +1,6 @@
 import React from 'react';
-import './Footer.scss';
 import { Link, Logo } from '@/components';
+import './Footer.scss';
 
 class Footer extends React.PureComponent {
   render() {
@@ -8,7 +8,7 @@ class Footer extends React.PureComponent {
       <footer className="footer-header-wrapper ">
         <div className="flex-grow-1 copyright-col text-center text-lg-right">
           <div className="copyright">
-            <div className='d-none d-md-block'>COPYRIGHT 2020 ALL RIGHT RESERVED</div>
+            <div className="d-none d-md-block">COPYRIGHT 2020 ALL RIGHT RESERVED</div>
             <div className="small">BY FUNNY-BROTHERS</div>
           </div>
         </div>

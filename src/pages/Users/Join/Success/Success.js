@@ -7,30 +7,28 @@ import ReactTooltip from 'react-tooltip';
 import { addMessage } from 'actions';
 import { FullLayout } from '@/layouts';
 import { Button, Card, CardBody, CardHeader, Col, Container, Link, Logo, Row } from '@/components';
-import naver from '@/images/sites/naver.png';
-import google from '@/images/sites/google.png';
-import daum from '@/images/sites/daum.png';
-import './Success.scss';
+import siteImage from '@/images/sites';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import './Success.scss';
 
 const mailServers = [
   {
     postfix: '@naver.com',
     url: 'http://mail.naver.com',
     name: 'naver',
-    img: naver,
+    img: siteImage.naver,
   },
   {
     postfix: '@daum.net',
     url: 'http://mail.daum.net/',
     name: 'daum',
-    img: daum,
+    img: siteImage.daum,
   },
   {
     postfix: '@gmail.com',
     url: 'https://mail.google.com',
     name: 'google',
-    img: google,
+    img: siteImage.google,
   },
 ];
 

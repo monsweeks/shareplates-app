@@ -1,23 +1,21 @@
-import RegisterLayout from './RegisterLayout/RegisterLayout';
-import DetailLayout from './DetailLayout/DetailLayout';
+import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
 import CenterBoxLayout from './CenterBoxLayout/CenterBoxLayout';
+import DetailLayout from './DetailLayout/DetailLayout';
+import Footer from './Footer/Footer';
 import FullLayout from './FullLayout/FullLayout';
+import PageTitle from './PageTitle/PageTitle';
+import RegisterLayout from './RegisterLayout/RegisterLayout';
 import Header from './Header/Header';
 import EmptyHeader from './Header/EmptyHeader';
-import Footer from './Footer/Footer';
-import Breadcrumbs from './Breadcrumbs/Breadcrumbs';
-import PageTitle from './PageTitle/PageTitle';
-import SubContentBox from './SubContentBox/SubContentBox';
 
 export {
+  Breadcrumbs,
+  CenterBoxLayout,
+  DetailLayout,
+  Footer,
+  FullLayout,
+  PageTitle,
   RegisterLayout,
   Header,
-  DetailLayout,
-  FullLayout,
-  Footer,
-  Breadcrumbs,
-  PageTitle,
-  CenterBoxLayout,
-  SubContentBox,
   EmptyHeader,
 };

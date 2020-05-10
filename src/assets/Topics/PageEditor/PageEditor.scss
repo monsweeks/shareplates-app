@@ -1,0 +1,23 @@
+.page-editor-wrapper {
+  background-color: $gray-300;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .property-manager {
+    flex-grow: 0;
+  }
+
+  .editor-content {
+    padding: 1rem;
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+
+    > div {
+      flex-grow: 1;
+      background-color: $white;
+      _border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+  }
+}

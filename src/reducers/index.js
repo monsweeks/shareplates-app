@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import {
   ADD_MESSAGE,
   CLEAR_MESSAGE,
+  SET_CONFIRM,
+  SET_GRP_ID,
   SET_JOIN_EMAIL,
   SET_LOADING,
-  SET_GRP_ID,
   SET_SUPPORTED,
   SET_USER_AND_GRP,
-  SET_CONFIRM,
 } from '../actions';
 
 const userState = {
@@ -28,7 +28,7 @@ const user = (state = userState, action) => {
 
     case SET_GRP_ID:
       return { ...state, grpId: action.grpId };
-	  
+
     case SET_JOIN_EMAIL:
       return Object.assign(currentState, { join: { email: action.email } });
 

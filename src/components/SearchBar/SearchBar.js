@@ -1,12 +1,8 @@
 import React from 'react';
-
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import SearchInput from '@/components/SearchInput/SearchInput';
-import RadioButton from '@/components/RadioButton/RadioButton';
-import CircleIcon from '@/components/CircleIcon/CircleIcon';
-import { Selector } from '@/components';
+import { CircleIcon, RadioButton, SearchInput, Selector } from '@/components';
 import './SearchBar.scss';
 
 class SearchBar extends React.Component {
@@ -146,9 +142,9 @@ SearchBar.propTypes = {
   onSearch: PropTypes.func,
   onChangeSearchWord: PropTypes.func,
   t: PropTypes.func,
-  searchPlaceholder : PropTypes.string,
-  searchWord : PropTypes.string,
-  onClear : PropTypes.func,
+  searchPlaceholder: PropTypes.string,
+  searchWord: PropTypes.string,
+  onClear: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(SearchBar));

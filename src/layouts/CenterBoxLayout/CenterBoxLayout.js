@@ -1,6 +1,6 @@
 import React from 'react';
-import './CenterBoxLayout.scss';
 import PropTypes from 'prop-types';
+import './CenterBoxLayout.scss';
 
 class CenterBoxLayout extends React.PureComponent {
   render() {

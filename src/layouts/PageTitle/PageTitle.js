@@ -1,8 +1,8 @@
 import React from 'react';
-import './PageTitle.scss';
 import PropTypes from 'prop-types';
 import { Breadcrumbs } from '@/layouts';
 import { Button } from '@/components';
+import './PageTitle.scss';
 
 class PageTitle extends React.PureComponent {
   render() {
@@ -17,11 +17,11 @@ class PageTitle extends React.PureComponent {
           <span className="text">{children}</span>
         </h1>
         <span className="page-title-button">
-            {onDelete && (
-              <Button className='mr-3' color="danger" onClick={onDelete}>
-                <i className="fal fa-trash-alt" />
-              </Button>
-            )}
+          {onDelete && (
+            <Button className="mr-3" color="danger" onClick={onDelete}>
+              <i className="fal fa-trash-alt" />
+            </Button>
+          )}
           {onCancel && (
             <Button color="secondary" onClick={onCancel}>
               <i className="fal fa-arrow-alt-left" />
@@ -42,7 +42,7 @@ class PageTitle extends React.PureComponent {
               <i className="fal fa-save" />
             </Button>
           )}
-          </span>
+        </span>
         <span className="breadcrumbs">
           <Breadcrumbs list={list} />
         </span>
@@ -56,7 +56,7 @@ export default PageTitle;
 PageTitle.defaultProps = {
   className: '',
   border: false,
-  marginBottom : true,
+  marginBottom: true,
 };
 
 PageTitle.propTypes = {
@@ -74,5 +74,5 @@ PageTitle.propTypes = {
   onList: PropTypes.func,
   onSave: PropTypes.func,
   onCancel: PropTypes.func,
-  marginBottom : PropTypes.bool,
+  marginBottom: PropTypes.bool,
 };

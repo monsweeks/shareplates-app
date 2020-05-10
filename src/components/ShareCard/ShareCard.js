@@ -95,7 +95,7 @@ ShareCard.propTypes = {
     adminUserName: PropTypes.string,
     adminUserInfo: PropTypes.string,
     startedYn: PropTypes.bool,
-    accessCode : PropTypes.string,
+    accessCode: PropTypes.string,
   }),
   t: PropTypes.func,
   className: PropTypes.string,

@@ -1,22 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import objectIcons from '@/images/objectIcons';
 import './IconViewer.scss';
 
 class IconViewer extends React.PureComponent {
   render() {
-    const { iconIndex, className, size, circle } = this.props;
+    const { index, className, size } = this.props;
+    const set = Math.floor(index / 30);
+    const serial = index % 30;
 
     return (
-      <div className={`icon-viewer-wrapper ${circle ? 'circle' : ''} ${className} ${size}`}>
-        <div className="icon-image">
-          {iconIndex === null && <div className="image-item no-image" />}
-          {iconIndex !== null && (
-            <div className="image-item">
-              <img src={objectIcons[iconIndex]} alt="" />
-            </div>
-          )}
-        </div>
+      <div className={`icon-viewer-wrapper ${className} ${size}`}>
+        <div className={`img set-${set} serial-${serial}`} />
       </div>
     );
   }
@@ -24,15 +18,14 @@ class IconViewer extends React.PureComponent {
 
 IconViewer.defaultProps = {
   className: '',
+  index: null,
   size: 'md',
-  circle: false,
 };
 
 IconViewer.propTypes = {
   className: PropTypes.string,
-  iconIndex: PropTypes.number,
+  index: PropTypes.number,
   size: PropTypes.string,
-  circle : PropTypes.bool,
 };
 
 export default IconViewer;

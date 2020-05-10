@@ -1,5 +1,4 @@
 import React from 'react';
-import './AvatarBuilder.scss';
 import Color from 'color';
 import PropTypes from 'prop-types';
 import { Card, CardBody, CardHeader, CircleIcon, Nav, NavItem } from '@/components';
@@ -14,6 +13,7 @@ import {
   hairColors,
   hairs,
 } from './avatar.js';
+import './AvatarBuilder.scss';
 
 const tabs = [
   {
@@ -295,7 +295,7 @@ class AvatarBuilder extends React.Component {
     const { onChange, className } = this.props;
 
     return (
-      <article className={`avatar-builder g-no-select ${className}`}>
+      <article className={`avatar-builder-wrapper g-no-select ${className}`}>
         <div className="preview-box">
           <div className="preview-image">
             <svg viewBox="0 0 100 100">

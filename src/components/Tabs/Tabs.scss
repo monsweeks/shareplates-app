@@ -1,0 +1,44 @@
+.tabs-wrapper {
+  padding: 0 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  text-align: right;
+  position: relative;
+
+  > div.sub-title {
+    display: inline-block;
+    position: absolute;
+    top: 4px;
+    left: 0;
+  }
+
+  > div.tab-item {
+    min-width: 50px;
+    display: inline-block;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    line-height: 100%;
+    text-align: center;
+    position: relative;
+    top: 1px;
+    background-color: $light;
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.7);
+    }
+
+    &.selected {
+      border-bottom-color: $white;
+      background-color: $white;
+    }
+
+    &:nth-child(2n) {
+      border-top-left-radius: 2px;
+    }
+
+    &:last-child {
+      border-left: none;
+      border-top-right-radius: 2px;
+    }
+  }
+}

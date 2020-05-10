@@ -13,7 +13,7 @@ $blue: #007bff;
 $indigo: #6610f2;
 $purple: #593196;
 $pink: #e83e8c;
-$red: #FF2B2B;
+$red: #ff2b2b;
 $orange: #fd7e14;
 $yellow: #ffbf00;
 $green: #13b955;
@@ -52,12 +52,12 @@ $list-group-hover-bg: lighten($list-group-bg, 10%);
 $list-group-active-color: $white;
 $list-group-active-bg: $list-group-bg;
 $list-group-disabled-color: lighten($list-group-bg, 30%);
-$border-color: #BBB;
+$border-color: #bbb;
 $sea-blue: #0978ae;
-$sub-content-color : #3c4252;
+$sub-content-color: #3c4252;
 
 :export {
   primaryColor: $primary;
-  seaBlueColor : $sea-blue;
-  white : $white;
+  seaBlueColor: $sea-blue;
+  white: $white;
 }

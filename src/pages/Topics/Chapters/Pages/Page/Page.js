@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage } from '@/components';
 import request from '@/utils/request';
-import './Page.scss';
 import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
-import { FONT_FAMILIES } from '@/components/PageController/data';
+import { PAGE_FONT_FAMILIES, PAGE_FONT_SIZES } from '@/assets/Topics/PageEditor/PageController/constants';
+import './Page.scss';
 
 class Page extends React.Component {
   pageEditorRef = React.createRef();
@@ -23,6 +23,7 @@ class Page extends React.Component {
 
     this.state = {
       topicId: Number(topicId),
+      topic: {},
       chapterId: Number(chapterId),
       chapter: {},
       pages: false,
@@ -56,8 +57,18 @@ class Page extends React.Component {
 
   getPages = (topicId, chapterId) => {
     request.get(`/api/topics/${topicId}/chapters/${chapterId}/pages`, {}, (data) => {
+      const { topic, chapter } = data;
+      if (topic && topic.content) {
+        topic.content = JSON.parse(topic.content);
+      }
+
+      if (chapter && chapter.content) {
+        chapter.content = JSON.parse(chapter.content);
+      }
+
       this.setState({
-        chapter: data.chapter || {},
+        topic,
+        chapter,
         pages: data.pages || [],
       });
     });
@@ -70,11 +81,11 @@ class Page extends React.Component {
     const content = {
       items: [],
       pageProperties: {
-        fontFamily: FONT_FAMILIES[1].value,
-        fontSize: '16px',
-        backgroundColor: '#FFFFFF',
-        color: '#333',
-        padding: '0px 0px 0px 0px',
+        fontFamily: PAGE_FONT_FAMILIES[0].value,
+        fontSize: PAGE_FONT_SIZES[0].value,
+        backgroundColor: 'inherit',
+        color: 'inherit',
+        padding: '',
       },
     };
 
@@ -197,6 +208,50 @@ class Page extends React.Component {
     );
   };
 
+  updateTopicContent = (content) => {
+    const { topicId } = this.state;
+
+    request.put(
+      `/api/topics/${topicId}/content`,
+      {
+        id: topicId,
+        content,
+      },
+      () => {
+        const { topic } = this.state;
+        const next = { ...topic };
+        next.content = JSON.parse(content);
+        this.setState({
+          topic: next,
+        });
+      },
+      null,
+      true,
+    );
+  };
+
+  updateChapterContent = (content) => {
+    const { topicId, chapterId } = this.state;
+
+    request.put(
+      `/api/topics/${topicId}/chapters/${chapterId}/content`,
+      {
+        id: chapterId,
+        content,
+      },
+      () => {
+        const { chapter } = this.state;
+        const next = { ...chapter };
+        next.content = JSON.parse(content);
+        this.setState({
+          chapter: next,
+        });
+      },
+      null,
+      true,
+    );
+  };
+
   setShowPageList = (value) => {
     this.setState({
       showPageList: value,
@@ -260,7 +315,7 @@ class Page extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { topicId, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
+    const { topicId, topic, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
     const isWriter = true;
 
     return (
@@ -368,12 +423,16 @@ class Page extends React.Component {
             showPageList={showPageList}
             setShowPageList={this.setShowPageList}
             topicId={topicId}
+            topic={topic}
             chapterId={chapterId}
+            chapter={chapter}
             pageId={selectedPageId}
             page={pages ? pages.find((d) => d.id === selectedPageId) : {}}
             setPageContent={this.setPageContent}
             setPageDirty={this.setPageDirty}
             updatePage={this.updatePage}
+            updateTopicContent={this.updateTopicContent}
+            updateChapterContent={this.updateChapterContent}
           />
         </div>
       </div>
