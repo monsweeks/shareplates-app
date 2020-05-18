@@ -12,7 +12,6 @@ import {
   Description,
   Form,
   FormGroup,
-  IconSelector,
   Input,
   Popup,
   Selector,
@@ -32,7 +31,6 @@ class TopicForm extends Component {
         name: '',
         summary: '',
         grpId: '',
-        iconIndex: null,
         users: [],
         privateYn: false,
         content: {
@@ -180,12 +178,6 @@ class TopicForm extends Component {
               value={topic.grpId}
               onChange={this.onChange('grpId')}
             />
-          </FormGroup>
-          <hr className="g-dashed mb-3" />
-          <SubLabel>{t('label.icon')}</SubLabel>
-          <Description>{t('message.topicIconDesc')}</Description>
-          <FormGroup>
-            <IconSelector className="icon-selector" iconIndex={topic.iconIndex} onChange={this.onChange('iconIndex')} />
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
