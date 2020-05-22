@@ -207,7 +207,7 @@ class TopicForm extends Component {
   };
 
   render() {
-    const { t, grps, saveText, onCancel } = this.props;
+    const { t, grps, saveText, onCancel, edit } = this.props;
     const { topic, existName, openUserPopup } = this.state;
     const {
       content: { topicProperties },
@@ -217,7 +217,7 @@ class TopicForm extends Component {
     return (
       <>
         <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
-          <hr className="g-dashed mb-3" />
+          {!edit && <hr className="g-dashed mb-3" />}
           <SubLabel>{t('그룹')}</SubLabel>
           <Description>{t('message.selectGrpForTopic')}</Description>
           <FormGroup>
