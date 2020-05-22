@@ -108,6 +108,7 @@
           &.separator {
             min-width: 9px;
             flex-grow: 0;
+
             > div {
               height: 20px;
               width: 1px;
@@ -125,81 +126,7 @@
         }
       }
 
-      .topic-description {
-        display: flex;
-        flex: 1;
-        border-radius: 5px;
-        background-color: $light;
-        min-height: 82px;
-        display: none;
 
-        .icon {
-          align-self: center;
-          flex: 0;
-          color: white;
-          display: inline-block;
-          min-width: 120px;
-          width: 120px;
-          height: 60px;
-          font-size: 24px;
-          text-align: center;
-          padding: 0 30px;
-
-          > div {
-            width: 60px;
-            height: 60px;
-            background-color: $gray-400;
-            background-color: $primary;
-            background-color: $white;
-            border-radius: 50%;
-            padding: 6px;
-            box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
-          }
-        }
-
-        .counts {
-          flex: 1;
-          align-self: center;
-          > div {
-            display: flex;
-            align-self: center;
-            > div {
-              flex: 1;
-
-              .level-icon {
-                font-size: 1.2rem;
-                margin-bottom: 8px;
-
-                i {
-                  background-color: $white;
-                  display: inline-block;
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 50%;
-                  justify-content: center;
-                  padding-top: 6px;
-                  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
-                }
-              }
-
-              .level-count {
-                font-family: 'Baloo Bhai', cursive;
-                font-size: 1.1rem;
-                line-height: 0;
-                padding: 4px 0;
-              }
-
-              .tag {
-                display: inline-block;
-                font-size: 0.7rem;
-                line-height: 100%;
-                border-radius: 3px;
-                width: 100%;
-              }
-            }
-          }
-        }
-      }
     }
   }
 }

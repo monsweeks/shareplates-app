@@ -7,21 +7,34 @@ import request from '@/utils/request';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
   BottomButton,
-  Button,
-  CheckBoxInput,
   Description,
   Form,
   FormGroup,
-  IconSelector,
   Input,
   Popup,
+  RadioButton,
   Selector,
   SubLabel,
   TextArea,
 } from '@/components';
-import { UserManager, UserSearchPopup } from '@/assets';
-import { TOPIC_FONT_FAMILIES } from '@/assets/Topics/PageEditor/PageController/constants';
+import { FormLevelProperties, UserManager, UserSearchPopup } from '@/assets';
+import {
+  PAGE_TRANSFER_ANIMATION,
+  TOPIC_FONT_FAMILIES,
+  TOPIC_FONT_SIZES,
+} from '@/assets/Topics/PageEditor/PageController/constants';
 import './TopicForm.scss';
+
+const privateTopicValues = [
+  {
+    key: false,
+    value: '공개 토픽',
+  },
+  {
+    key: true,
+    value: '비공개 토픽',
+  },
+];
 
 class TopicForm extends Component {
   constructor(props) {
@@ -32,7 +45,6 @@ class TopicForm extends Component {
         name: '',
         summary: '',
         grpId: '',
-        iconIndex: null,
         users: [],
         privateYn: false,
         content: {
@@ -42,6 +54,9 @@ class TopicForm extends Component {
             backgroundColor: '#ffffff',
             color: '#333333',
             padding: '0px 0px 0px 0px',
+          },
+          settings: {
+            transferAnimation: 'sweep',
           },
         },
       },
@@ -137,6 +152,38 @@ class TopicForm extends Component {
     });
   };
 
+  onChangeTopicProperties = (key, value) => {
+    const { topic } = this.state;
+
+    const next = { ...topic };
+    const content = { ...next.content };
+    const topicProperties = { ...content.topicProperties };
+
+    topicProperties[key] = value;
+    content.topicProperties = topicProperties;
+    next.content = content;
+
+    this.setState({
+      topic: next,
+    });
+  };
+
+  onChangeTopicSettings = (key, value) => {
+    const { topic } = this.state;
+
+    const next = { ...topic };
+    const content = { ...next.content };
+    const settings = { ...content.settings };
+
+    settings[key] = value;
+    content.settings = settings;
+    next.content = content;
+
+    this.setState({
+      topic: next,
+    });
+  };
+
   setOpenUserPopup = (openUserPopup) => {
     this.setState({
       openUserPopup,
@@ -154,17 +201,23 @@ class TopicForm extends Component {
       return;
     }
 
-    topic.content = JSON.stringify(topic.content);
-    onSave(topic);
+    const next = { ...topic };
+    next.content = JSON.stringify(next.content);
+    onSave(next);
   };
 
   render() {
-    const { t, grps, saveText, onCancel } = this.props;
+    const { t, grps, saveText, onCancel, edit } = this.props;
     const { topic, existName, openUserPopup } = this.state;
+    const {
+      content: { topicProperties },
+      content: { settings },
+    } = topic;
 
     return (
       <>
         <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
+          {!edit && <hr className="g-dashed mb-3" />}
           <SubLabel>{t('그룹')}</SubLabel>
           <Description>{t('message.selectGrpForTopic')}</Description>
           <FormGroup>
@@ -179,13 +232,8 @@ class TopicForm extends Component {
               })}
               value={topic.grpId}
               onChange={this.onChange('grpId')}
+              minWidth="140px"
             />
-          </FormGroup>
-          <hr className="g-dashed mb-3" />
-          <SubLabel>{t('label.icon')}</SubLabel>
-          <Description>{t('message.topicIconDesc')}</Description>
-          <FormGroup>
-            <IconSelector className="icon-selector" iconIndex={topic.iconIndex} onChange={this.onChange('iconIndex')} />
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
@@ -221,30 +269,53 @@ class TopicForm extends Component {
           <SubLabel>{t('label.privateTopic')}</SubLabel>
           <Description>{t('message.privateTopicDesc')}</Description>
           <FormGroup>
-            <CheckBoxInput
-              size="sm"
-              type="checkbox"
+            <RadioButton
+              outline
+              items={privateTopicValues}
               value={topic.privateYn}
-              onChange={this.onChange('privateYn')}
-              label={t('message.privateTopic')}
+              onClick={this.onChange('privateYn')}
             />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('토픽 기본 스타일')}</SubLabel>
+          <Description>
+            {t(
+              '토픽의 컨텐츠에 지정할 기본적인 스타일 정보를 선택합니다. 기본 스타일은 토픽, 챕터, 페이지 각각의 스타일을 지정할 수 있으며, 페이지에 지정된 스타일이 업다면, 챕터의 스타일이 기본 값으로 지정되며, 챕터의 기본 스타일이 없다면, 토픽의 기본 스타일 값이 사용됩니다.',
+            )}
+          </Description>
+          <FormGroup>
+            <FormLevelProperties
+              fontSizes={TOPIC_FONT_SIZES}
+              fontFamilies={TOPIC_FONT_FAMILIES}
+              onChangeProperties={this.onChangeTopicProperties}
+              properties={topicProperties}
+            />
+          </FormGroup>
+          <hr className="g-dashed mb-3" />
+          <SubLabel>{t('페이지 전환 애니메이션')}</SubLabel>
+          <Description>{t('페이지 전환 애니메이션')}</Description>
+          <FormGroup>
+            <Selector
+              outline
+              items={PAGE_TRANSFER_ANIMATION}
+              value={settings.transferAnimation}
+              onChange={(value) => {
+                this.onChangeTopicSettings('transferAnimation', value);
+              }}
+              minWidth="140px"
+            />
+            <span className="transfer-animation-desc">
+              {PAGE_TRANSFER_ANIMATION.find((d) => d.key === settings.transferAnimation).desc}
+            </span>
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <div className="position-relative">
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
-            <Button
-              className="g-circle-icon-button manager-button"
-              color="primary"
-              onClick={() => {
-                this.setOpenUserPopup(true);
-              }}
-            >
-              <i className="fal fa-plus" />
-            </Button>
           </div>
-          <FormGroup className="mt-2">
+          <FormGroup>
             <UserManager
+              className="user-manager"
               onRemove={(id) => {
                 const users = topic.users.splice(0);
                 const index = users.findIndex((u) => u.id === id);
@@ -253,11 +324,10 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
-              className="bg-light"
-              lg={3}
-              md={4}
-              sm={6}
-              xl={12}
+              newCard="사용자 관리"
+              onNewCard={() => {
+                this.setOpenUserPopup(true);
+              }}
               users={topic.users}
             />
           </FormGroup>

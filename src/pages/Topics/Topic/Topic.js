@@ -6,9 +6,14 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, IconViewer, P, SubLabel } from '@/components';
+import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
 import { UserManager } from '@/assets';
 import './Topic.scss';
+import {
+  PAGE_TRANSFER_ANIMATION,
+  TOPIC_FONT_FAMILIES,
+  TOPIC_FONT_SIZES,
+} from '@/assets/Topics/PageEditor/PageController/constants';
 
 class Topic extends Component {
   constructor(props) {
@@ -45,8 +50,10 @@ class Topic extends Component {
       `/api/topics/${topicId}`,
       null,
       (topic) => {
+        const next = { ...topic };
+        next.content = JSON.parse(next.content);
         this.setState({
-          topic,
+          topic: next,
         });
       },
       null,
@@ -130,29 +137,89 @@ class Topic extends Component {
                   to: `/topics/${topicId}`,
                 },
               ]}
-              onDelete={isAdmin ? this.onDelete : null}
-              onList={this.onList}
-              onEdit={isAdmin ? this.onEdit : null}
               border
             >
               {t('토픽 정보')}
             </PageTitle>
-            <SubLabel>{t('label.icon')}</SubLabel>
-            <div className="text-center py-4 bg-light mb-3 rounded">
-              <div className="topic-image m-2 m-lg-0">
-                <IconViewer size="lg" index={topic.iconIndex} />
+            <SubLabel>{t('그룹')}</SubLabel>
+            <Description>{t('message.selectGrpForTopic')}</Description>
+            <DetailValue upppercase>{topic.grpName}</DetailValue>
+            <SubLabel>{t('label.name')}</SubLabel>
+            <Description>{t('message.topicNameDesc')}</Description>
+            <DetailValue>{topic.name}</DetailValue>
+            <SubLabel>{t('label.desc')}</SubLabel>
+            <Description>{t('message.topicDescDesc')}</Description>
+            <DetailValue pre>{topic.summary}</DetailValue>
+            <SubLabel>{t('label.privateTopic')}</SubLabel>
+            <Description>{t('message.privateTopicDesc')}</Description>
+            <DetailValue upppercase>{topic.privateYn ? 'private' : 'public'}</DetailValue>
+            <SubLabel>{t('토픽 기본 스타일')}</SubLabel>
+            <Description>
+              {t(
+                '토픽의 컨텐츠에 지정할 기본적인 스타일 정보를 선택합니다. 기본 스타일은 토픽, 챕터, 페이지 각각의 스타일을 지정할 수 있으며, 페이지에 지정된 스타일이 업다면, 챕터의 스타일이 기본 값으로 지정되며, 챕터의 기본 스타일이 없다면, 토픽의 기본 스타일 값이 사용됩니다.',
+              )}
+            </Description>
+            <div className="topic-properties-info">
+              <div className="topic-properties-preview">
+                <div
+                  style={{
+                    padding: topic.content.topicProperties.padding,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: topic.content.topicProperties.fontFamily,
+                      fontSize: topic.content.topicProperties.fontSize,
+                      backgroundColor: topic.content.topicProperties.backgroundColor,
+                      color: topic.content.topicProperties.color,
+                    }}
+                  >
+                    <div>CONTENT</div>
+                  </div>
+                </div>
+              </div>
+              <div className="topic-properties-values">
+                <div className='font-family'>
+                  <div className="label"><span>{t('폰트 종류')}</span></div>
+                  <div className="value">{TOPIC_FONT_FAMILIES.find((d) => d.value === topic.content.topicProperties.fontFamily).name}</div>
+                </div>
+                <div className='font-size'>
+                  <div className="label"><span>{t('폰트 크기')}</span></div>
+                  <div className="value">{TOPIC_FONT_SIZES.find((d) => d.value === topic.content.topicProperties.fontSize).name}</div>
+                </div>
+                <div className='color'>
+                  <div className="label"><span>{t('폰트 색상')}</span></div>
+                  <div className="value">{topic.content.topicProperties.color}</div>
+                </div>
+                <div className='background-color'>
+                  <div className="label"><span>{t('배경 색상')}</span></div>
+                  <div className="value">{topic.content.topicProperties.backgroundColor}</div>
+                </div>
+                <div className='padding'>
+                  <div className="label"><span>{t('페이지 여백')}</span></div>
+                  <div className="value">{topic.content.topicProperties.padding}</div>
+                </div>
               </div>
             </div>
-            <SubLabel>{t('label.name')}</SubLabel>
-            <P>{topic.name}</P>
-            <SubLabel>{t('그룹')}</SubLabel>
-            <P upppercase>{topic.grpName}</P>
-            <SubLabel>{t('label.desc')}</SubLabel>
-            <P pre>{topic.summary}</P>
-            <SubLabel>{t('label.privateTopic')}</SubLabel>
-            <P upppercase>{topic.privateYn ? 'private' : 'public'}</P>
+            <SubLabel>{t('페이지 전환 애니메이션')}</SubLabel>
+            <Description>{t('페이지 전환 애니메이션')}</Description>
+            <DetailValue>
+              <span>
+                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
+              </span>
+              <span className="ml-3">
+                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
+              </span>
+            </DetailValue>
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
-            <UserManager className="bg-light" lg={3} md={4} sm={6} xl={12} users={topic.users} blockStyle />
+            <Description>{t('message.topicUserDesc')}</Description>
+            <UserManager className='pt-2 px-2' users={topic.users} blockStyle />
+            <BottomButton
+              className="text-right mt-4"
+              onList={this.onList}
+              onDelete={isAdmin ? this.onDelete : null}
+              onEdit={isAdmin ? this.onEdit : null}
+            />
           </>
         )}
       </DetailLayout>

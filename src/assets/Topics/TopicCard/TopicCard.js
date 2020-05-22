@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { Card, CardBody, IconViewer } from '@/components';
+import { Card, CardBody } from '@/components';
 import './TopicCard.scss';
 
 class TopicCard extends React.PureComponent {
@@ -76,31 +76,6 @@ class TopicCard extends React.PureComponent {
                       <i className="fal fa-info-circle" />
                     </div>
                     <div className="text">{t('토픽 정보')}</div>
-                  </div>
-                </div>
-                <div className="topic-description">
-                  <div className="icon">
-                    <div>
-                      <IconViewer circle size="md" index={topic.iconIndex} />
-                    </div>
-                  </div>
-                  <div className="counts">
-                    <div>
-                      <div>
-                        <div className="level-icon">
-                          <i className="fal fa-book" />
-                        </div>
-                        <div className="level-count">{topic.chapterCount}</div>
-                        <div className="tag">CHAPTERS</div>
-                      </div>
-                      <div>
-                        <div className="level-icon">
-                          <i className="fal fa-clipboard" />
-                        </div>
-                        <div className="level-count">{topic.pageCount}</div>
-                        <div className="tag">PAGES</div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </>

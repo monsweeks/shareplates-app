@@ -45,7 +45,7 @@ class UserSearchPopup extends React.Component {
 
   search = () => {
     const { grpId, searchWord } = this.state;
-    request.get('/api/users', { grpId, condition: searchWord }, (users) => {
+    request.get('/api/users/search', { grpId, condition: searchWord }, (users) => {
       this.setState({
         users,
       });

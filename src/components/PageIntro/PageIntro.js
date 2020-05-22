@@ -7,6 +7,9 @@ class PageIntro extends React.PureComponent {
     const { children, className } = this.props;
     return (
       <div className={`page-intro-wrapper ${className}`}>
+        <span className='info-icon'>
+          <i className="fas fa-info-circle" />
+        </span>
         <span>{children}</span>
       </div>
     );

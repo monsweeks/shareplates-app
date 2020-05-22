@@ -18,6 +18,7 @@ import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import CopySpan from '@/components/CopySpan/CopySpan';
 import DateTime from '@/components/DateTime/DateTime';
 import Description from '@/components/Description/Description';
+import DetailValue from '@/components/DetailValue/DetailValue';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 import IconSelector from '@/components/IconSelector/IconSelector';
 import IconViewer from '@/components/IconViewer/IconViewer';
@@ -60,6 +61,7 @@ export {
   CopySpan,
   DateTime,
   Description,
+  DetailValue,
   EmptyMessage,
   IconSelector,
   IconViewer,

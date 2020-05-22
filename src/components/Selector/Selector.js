@@ -13,7 +13,7 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value, addAll, outline, color, size, separator } = this.props;
+    const { className, onChange, items, value, addAll, outline, color, size, separator, minWidth } = this.props;
     let selcetedItem = items.find((item) => String(item.key) === String(value));
     if (addAll && value === '') {
       selcetedItem = {
@@ -23,7 +23,9 @@ class Selector extends React.Component {
     }
 
     return (
-      <div className={`selector-wrapper g-no-select ${className} ${size}`}>
+      <div className={`selector-wrapper g-no-select ${className} ${size}`} style={{
+        minWidth : `${minWidth}`
+      }}>
         {open && (
           <div
             className="selector-overlay g-overlay"
@@ -102,6 +104,7 @@ Selector.defaultProps = {
   color: '',
   size: 'md',
   separator: true,
+  minWidth : 'auto',
 };
 
 Selector.propTypes = {
@@ -119,4 +122,5 @@ Selector.propTypes = {
   color: PropTypes.string,
   size: PropTypes.string,
   separator: PropTypes.bool,
+  minWidth : PropTypes.string,
 };

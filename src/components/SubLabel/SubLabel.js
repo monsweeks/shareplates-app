@@ -10,7 +10,7 @@ class SubLabel extends React.PureComponent {
         <span>
           {icon && (
             <span className="icon">
-              <i className="fal fa-info-circle" />
+              <i className="fal fa-chevron-circle-right"/>
             </span>
           )}
           <span className="text">{children}</span>

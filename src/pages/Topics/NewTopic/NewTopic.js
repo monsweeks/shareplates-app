@@ -49,7 +49,7 @@ class NewTopic extends React.PureComponent {
         >
           {t('message.makeNewTopic')}
         </PageTitle>
-        <PageIntro>{t('토픽에 대한 설명')}</PageIntro>
+        <PageIntro>{t('토픽은 어떤 강의나 주제 등을 의미하는 단위로 사용되며, 컨텐츠를 담는 가장 큰 단위입니다. 토픽은 챕터로 구성되며, 챕터는 페이지로 구성됩니다. 지금 토픽을 만들고, 컨텐츠를 설계해보세요.')}</PageIntro>
         <TopicForm
           saveText="label.makeTopic"
           onSave={this.onSubmit}

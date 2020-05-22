@@ -1,0 +1,20 @@
+.detail-value-wrapper {
+  padding: 0 0.5rem;
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+  color: $black;
+  > div {
+    padding: 0.25rem 0.5rem;
+    _background-color: $light;
+    font-family: LGSmHaB, sans-serif;
+    border-bottom: 1px solid rgba(0,0,0,0.4);
+  }
+
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+  }
+
+  &.pre {
+    white-space: pre-wrap;
+  }
+}

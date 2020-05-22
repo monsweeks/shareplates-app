@@ -99,6 +99,24 @@ const ITEM_FONT_SIZES = [{
   name: '페이지 폰트 크기',
 }].concat(FONT_SIZES);
 
+const PAGE_TRANSFER_ANIMATION = [
+  {
+    key: 'no',
+    value: 'NO ANIMATION',
+    desc : '화면 전환 애니메이션을 사용하지 않습니다',
+  },
+  {
+    key: 'sweep',
+    value: 'SWEEP',
+    desc : '페이지 이동 방향에 따라 페이지가 좌에서 우 또는 우에서 좌로 이동합니다.',
+  },
+  {
+    key: 'fade',
+    value: 'FADE',
+    desc : '페이지 이동시 현재 화면이 FADE OUT 되고, 새로운 화면이 FADE IN 됩니다',
+  },
+];
+
 export {
   TOPIC_FONT_FAMILIES,
   CHAPTER_FONT_FAMILIES,
@@ -109,4 +127,5 @@ export {
   PAGE_FONT_SIZES,
   ITEM_FONT_SIZES,
   BORDER_WIDTHS,
+  PAGE_TRANSFER_ANIMATION,
 };

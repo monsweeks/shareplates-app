@@ -49,6 +49,8 @@
       position: relative;
       top: 1px;
       white-space: nowrap;
+      font-weight: bold;
+
     }
   }
 
@@ -85,7 +87,7 @@
     line-height: 160%;
     position: absolute;
     top: 10px;
-    left: 1rem;
+    left: 22px;
 
     @media (max-width: 576px) {
     }

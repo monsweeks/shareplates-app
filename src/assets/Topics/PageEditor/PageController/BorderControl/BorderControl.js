@@ -142,7 +142,7 @@ class BorderControl extends React.Component {
             }}
           >
             <span>
-              <i className="far fa-angle-down" />
+              <i className="fal fa-angle-down" />
             </span>
           </div>
         </div>

@@ -1,5 +1,9 @@
 .description-wrapper {
   margin-bottom: 0.25rem;
-  padding: 0 0.25rem;
+  padding: 0 0.5rem;
   font-size: 0.75rem;
+  text-align: justify;
+  > .icon {
+    margin-right: 0.25rem;
+  }
 }

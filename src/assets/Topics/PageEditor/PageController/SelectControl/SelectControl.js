@@ -75,7 +75,7 @@ class SelectControl extends React.Component {
         <div className="select-control-content">
           <div className="select-content">{children}</div>
           <div className="bullet">
-            <i className="far fa-angle-down" />
+            <i className="fal fa-angle-down" />
           </div>
         </div>
         <ul

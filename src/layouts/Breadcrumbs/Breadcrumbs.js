@@ -9,9 +9,6 @@ class Breadcrumbs extends React.PureComponent {
     return (
       <div className={`breadcrumbs-wrapper ${className}`}>
         <ul>
-          <li>
-            <i className="fal fa-bread-slice" />
-          </li>
           {list.map((item, inx) => {
             if (list.length - 1 === inx) {
               return (
