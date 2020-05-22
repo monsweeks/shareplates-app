@@ -63,6 +63,7 @@ class ColorControl extends React.Component {
       lastColor,
       dataTip,
       clearColor,
+      disableChildrenClickEvent,
     } = this.props;
     const { open, color } = this.state;
 
@@ -74,9 +75,9 @@ class ColorControl extends React.Component {
       >
         <div className="color-control-content">
           <div
-            className="color-content"
+            className={`color-content ${disableChildrenClickEvent ? 'disable-hover' : 'enable-hover'}`}
             onClick={() => {
-              if (active) {
+              if (!disableChildrenClickEvent && active) {
                 this.setState({
                   open: false,
                 });
@@ -97,7 +98,7 @@ class ColorControl extends React.Component {
             }}
           >
             <span>
-              <i className="far fa-angle-down" />
+              <i className="fal fa-angle-down" />
             </span>
           </div>
         </div>
@@ -171,6 +172,7 @@ class ColorControl extends React.Component {
 
 ColorControl.defaultProps = {
   className: '',
+  disableChildrenClickEvent : false,
 };
 
 ColorControl.propTypes = {
@@ -185,6 +187,7 @@ ColorControl.propTypes = {
   lastColor: PropTypes.string,
   dataTip: PropTypes.string,
   clearColor: PropTypes.string,
+  disableChildrenClickEvent : PropTypes.bool,
 };
 
 export default ColorControl;

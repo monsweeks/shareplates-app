@@ -36,7 +36,9 @@ class LevelProperties extends React.PureComponent {
   };
 
   render() {
-    const { t, level, fontFamilies, fontSizes, onChangeProperties, properties, levelId } = this.props;
+    const { t, level, fontFamilies, fontSizes, onChangeProperties, properties, active } = this.props;
+
+    console.log(properties);
 
     return (
       <>
@@ -46,7 +48,7 @@ class LevelProperties extends React.PureComponent {
           height="140px"
           optionKey="fontFamily"
           list={fontFamilies}
-          active={!!levelId}
+          active={!!active}
           value={properties.fontFamily}
           onSelect={onChangeProperties}
         >
@@ -58,7 +60,7 @@ class LevelProperties extends React.PureComponent {
           height="140px"
           optionKey="fontSize"
           list={fontSizes}
-          active={!!levelId}
+          active={active}
           value={properties.fontSize}
           onSelect={onChangeProperties}
         >
@@ -70,7 +72,7 @@ class LevelProperties extends React.PureComponent {
           colorPickerWidth="257px"
           colorPickerHeight="200px"
           optionKey="color"
-          active={!!levelId}
+          active={active}
           value={properties.color}
           onSelect={onChangeProperties}
         >
@@ -90,7 +92,7 @@ class LevelProperties extends React.PureComponent {
           colorPickerWidth="257px"
           colorPickerHeight="200px"
           optionKey="backgroundColor"
-          active={!!levelId}
+          active={active}
           value={properties.backgroundColor}
           onSelect={onChangeProperties}
         >
@@ -108,7 +110,7 @@ class LevelProperties extends React.PureComponent {
         <PaddingControl
           dataTip={`${level} ${t('내부 간격')}`}
           optionKey="padding"
-          active={!!levelId}
+          active={active}
           value={properties.padding}
           onApply={onChangeProperties}
         />
@@ -124,7 +126,7 @@ LevelProperties.propTypes = {
   fontFamilies: PropTypes.arrayOf(PropTypes.any),
   onChangeProperties: PropTypes.func,
   properties: PropTypes.objectOf(PropTypes.any),
-  levelId: PropTypes.number,
+  active: PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(LevelProperties));

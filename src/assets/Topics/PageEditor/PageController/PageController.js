@@ -562,7 +562,7 @@ class PageController extends React.Component {
                 fontFamilies={PAGE_FONT_FAMILIES}
                 onChangeProperties={onChangePageProperties}
                 properties={pageProperties}
-                levelId={pageId}
+                active={!!pageId}
               />
             )}
             {selectedTab === 'chapter-property' && (
@@ -572,7 +572,7 @@ class PageController extends React.Component {
                 fontFamilies={CHAPTER_FONT_FAMILIES}
                 onChangeProperties={onChangeChapterProperties}
                 properties={chapterProperties}
-                levelId={chapterId}
+                active={!!chapterId}
               />
             )}
             {selectedTab === 'topic-property' && (
@@ -582,7 +582,7 @@ class PageController extends React.Component {
                 fontFamilies={TOPIC_FONT_FAMILIES}
                 onChangeProperties={onChangeTopicProperties}
                 properties={topicProperties}
-                levelId={topicId}
+                active={!!topicId}
               />
             )}
           </div>

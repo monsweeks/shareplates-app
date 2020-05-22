@@ -9,7 +9,7 @@ class PageTitle extends React.PureComponent {
     const { children, className, list, border, marginBottom } = this.props;
     const { onList, onEdit, onDelete, onSave, onCancel } = this.props;
     return (
-      <div className={`page-title-wrapper ${className} ${border ? 'has-border' : ''} ${marginBottom ? 'mb-3' : ''}`}>
+      <div className={`page-title-wrapper ${className} ${border ? 'has-border' : ''} ${marginBottom ? 'mb-4' : ''}`}>
         <h1>
           <span className="icon">
             <i className="fal fa-star" />

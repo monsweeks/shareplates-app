@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Card, CardBody, CircleIcon } from '@/components';
+import { Avatar, Button, Card, CardBody } from '@/components';
 import './UserCard.scss';
 
 class UserCard extends React.PureComponent {
@@ -17,6 +17,7 @@ class UserCard extends React.PureComponent {
       markedTag,
       border,
       edit,
+      newCard,
     } = this.props;
 
     return (
@@ -26,33 +27,50 @@ class UserCard extends React.PureComponent {
         } ${hover ? 'hover' : ''} ${selected ? 'selected' : ''} ${edit ? 'edit' : ''}`}
         onClick={() => {
           if (onClick) {
-            onClick(user.id);
+            if (user) {
+              onClick(user.id);
+            } else {
+              onClick();
+            }
           }
         }}
       >
-        <CardBody>
-          <div className="user-card-content">
-            <div className="user-icon">
-              {user.info && <Avatar data={JSON.parse(user.info)} />}
-              {!user.info && (
-                <span>
-                  <i className="fal fa-smile" />
-                </span>
-              )}
+        <CardBody className="p-0">
+          {!newCard && (
+            <div className="user-card-content">
+              <div className="user-icon">
+                {user.info && <Avatar data={JSON.parse(user.info)} />}
+                {!user.info && (
+                  <span>
+                    <i className="fal fa-smile" />
+                  </span>
+                )}
+              </div>
+              <div className="user-text">
+                <div className="name">{user.name}</div>
+                <div className="email">{user.email}</div>
+              </div>
             </div>
-            <div className="user-text">
-              <div className="name">{user.name}</div>
-              <div className="email">{user.email}</div>
+          )}
+          {newCard && (
+            <div className="user-card-content">
+              <div className="new-card">
+                <i className="fal fa-plus" />
+                <div className="text">{newCard}</div>
+              </div>
             </div>
-          </div>
+          )}
           {onRemove && (
-            <CircleIcon
-              className="remove-button bg-transparent text-danger"
-              icon={<i className="fal fa-times" />}
+            <Button
+              size='sm'
+              color="danger"
+              className="remove-button"
               onClick={() => {
                 onRemove(user.id);
               }}
-            />
+            >
+              <i className="fal fa-times" />
+            </Button>
           )}
           {marked && <div className="marked-tag">{markedTag}</div>}
         </CardBody>
@@ -70,6 +88,7 @@ UserCard.defaultProps = {
   marked: false,
   markedTag: '',
   border: true,
+  newCard: null,
 };
 
 UserCard.propTypes = {
@@ -89,4 +108,5 @@ UserCard.propTypes = {
   markedTag: PropTypes.string,
   border: PropTypes.bool,
   edit: PropTypes.bool,
+  newCard: PropTypes.string,
 };

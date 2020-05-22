@@ -6,8 +6,19 @@
     display: inline-block;
     line-height: 100%;
     padding: 0.25rem;
+
     > span.icon {
       margin-right: 0.25rem;
+    }
+
+    > span.text {
+      font-family: NanumGothic, sans-serif;
+      &:before {
+        content: '<';
+      }
+      &:after {
+        content: '>';
+      }
     }
   }
 

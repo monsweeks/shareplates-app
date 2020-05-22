@@ -1,13 +1,17 @@
 .user-card-wrapper {
   text-align: center;
   position: relative;
-  border: 1px solid #a8a8a8 !important;
+  border: 1px solid rgba(0, 0, 0, 0.4) !important;
   border-radius: 2px;
 
   .remove-button {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 5px;
+    right: 5px;
+    padding: 2px 0 0 !important;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
   }
 
   .marked-tag {
@@ -28,20 +32,24 @@
 
   .user-card-content {
     display: block;
-    align-items: center;
+    vertical-align: top;
+    height: 70px;
 
     > div {
-      align-items: center;
+      display: inline-block;
+      vertical-align: top;
+
       &.user-icon {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         text-align: center;
         margin: 0 auto;
+        padding: 10px;
 
         > span {
           display: inline-block;
-          width: 60px;
-          height: 60px;
+          width: 50px;
+          height: 50px;
           font-size: 34px;
           border-radius: 50%;
           padding-top: 5px;
@@ -50,20 +58,16 @@
         }
       }
 
+
       &.user-text {
-        background-color: #eef3f7;
-        background-color: $light;
+        width: calc(100% - 70px);
         text-align: left;
-        align-items: center;
-        margin: -30px -0.75rem -0.75rem;
-        padding: 30px 0.75rem 0.75rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 2px 2px;
+        padding-top: 22px;
+        line-height: 110%;
 
         .name {
           font-size: 0.9rem;
-          font-weight: bold;
-          text-align: center;
+          font-family: LGSmHaB, sans-serif;
         }
 
         .email {
@@ -72,12 +76,27 @@
           width: 100%;
           white-space: nowrap;
           text-overflow: ellipsis;
-          text-align: center;
-          text-transform: uppercase;
-          _font-weight: bold;
+          font-family: 'Baloo Bhai', cursive;
         }
       }
     }
+
+    .new-card {
+      font-size: 1.6rem;
+      padding-top: 13px;
+      line-height: 0;
+
+      .text {
+        font-size: 0.7rem;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  &.hover:hover {
+    cursor: pointer;
+    border-color: $primary;
+    color: $primary;
   }
 
   &.edit {
