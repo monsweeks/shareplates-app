@@ -54,6 +54,12 @@ class Topic extends Component {
         const next = { ...topic };
         if (next.content) {
           next.content = JSON.parse(next.content);
+          if (!next.content.topicProperties) {
+            next.content.topicProperties = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.topicProperties));
+          }
+          if (!next.content.settings) {
+            next.content.settings = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.settings));
+          }
         } else {
           next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
         }
@@ -224,10 +230,9 @@ class Topic extends Component {
             <SubLabel>{t('페이지 전환 애니메이션')}</SubLabel>
             <Description>{t('페이지 전환 애니메이션')}</Description>
             <DetailValue>
-              <span>
+              <span className='mr-1'>
                 {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
-              </span>
-              <span className="ml-3">
+              </span>-<span className='ml-1'>
                 {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
               </span>
             </DetailValue>
