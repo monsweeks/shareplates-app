@@ -117,6 +117,19 @@ const PAGE_TRANSFER_ANIMATION = [
   },
 ];
 
+const DEFAULT_TOPIC_CONTENT = {
+  topicProperties: {
+    fontFamily: TOPIC_FONT_FAMILIES[0].value,
+    fontSize: '16px',
+    backgroundColor: '#ffffff',
+    color: '#333333',
+    padding: '0px 0px 0px 0px',
+  },
+  settings: {
+    transferAnimation: 'sweep',
+  }
+};
+
 export {
   TOPIC_FONT_FAMILIES,
   CHAPTER_FONT_FAMILIES,
@@ -128,4 +141,5 @@ export {
   ITEM_FONT_SIZES,
   BORDER_WIDTHS,
   PAGE_TRANSFER_ANIMATION,
+  DEFAULT_TOPIC_CONTENT,
 };

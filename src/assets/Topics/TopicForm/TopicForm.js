@@ -19,6 +19,7 @@ import {
 } from '@/components';
 import { FormLevelProperties, UserManager, UserSearchPopup } from '@/assets';
 import {
+  DEFAULT_TOPIC_CONTENT,
   PAGE_TRANSFER_ANIMATION,
   TOPIC_FONT_FAMILIES,
   TOPIC_FONT_SIZES,
@@ -47,18 +48,7 @@ class TopicForm extends Component {
         grpId: '',
         users: [],
         privateYn: false,
-        content: {
-          topicProperties: {
-            fontFamily: TOPIC_FONT_FAMILIES[0].value,
-            fontSize: '16px',
-            backgroundColor: '#ffffff',
-            color: '#333333',
-            padding: '0px 0px 0px 0px',
-          },
-          settings: {
-            transferAnimation: 'sweep',
-          },
-        },
+        content: JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT))
       },
       existName: false,
       openUserPopup: false,
