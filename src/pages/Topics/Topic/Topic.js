@@ -196,7 +196,9 @@ class Topic extends Component {
                     <span>{t('폰트 종류')}</span>
                   </div>
                   <div className="value">
-                    {TOPIC_FONT_FAMILIES.find((d) => d.value === topic.content.topicProperties.fontFamily).name}
+                    {topic.content.topicProperties.fontFamily
+                      ? TOPIC_FONT_FAMILIES.find((d) => d.value === topic.content.topicProperties.fontFamily).name
+                      : '-'}
                   </div>
                 </div>
                 <div className="font-size">
@@ -204,37 +206,54 @@ class Topic extends Component {
                     <span>{t('폰트 크기')}</span>
                   </div>
                   <div className="value">
-                    {TOPIC_FONT_SIZES.find((d) => d.value === topic.content.topicProperties.fontSize).name}
+                    {topic.content.topicProperties.fontSize
+                      ? TOPIC_FONT_SIZES.find((d) => d.value === topic.content.topicProperties.fontSize).name
+                      : '-'}
                   </div>
                 </div>
                 <div className="color">
                   <div className="label">
                     <span>{t('폰트 색상')}</span>
                   </div>
-                  <div className="value">{topic.content.topicProperties.color}</div>
+                  <div className="value">
+                    {topic.content.topicProperties.color ? topic.content.topicProperties.color : '-'}
+                  </div>
                 </div>
                 <div className="background-color">
                   <div className="label">
                     <span>{t('배경 색상')}</span>
                   </div>
-                  <div className="value">{topic.content.topicProperties.backgroundColor}</div>
+                  <div className="value">
+                    {topic.content.topicProperties.backgroundColor
+                      ? topic.content.topicProperties.backgroundColor
+                      : '-'}
+                  </div>
                 </div>
                 <div className="padding">
                   <div className="label">
                     <span>{t('페이지 여백')}</span>
                   </div>
-                  <div className="value">{topic.content.topicProperties.padding}</div>
+                  <div className="value">
+                    {topic.content.topicProperties.padding ? topic.content.topicProperties.padding : '-'}
+                  </div>
                 </div>
               </div>
             </div>
             <SubLabel>{t('페이지 전환 애니메이션')}</SubLabel>
             <Description>{t('페이지 전환 애니메이션')}</Description>
             <DetailValue>
-              <span className='mr-1'>
-                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
-              </span>-<span className='ml-1'>
-                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
-              </span>
+              {topic.content.settings.transferAnimation && (
+                <>
+                  <span className="mr-1">
+                    {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
+                  </span>
+                  -
+                  <span className="ml-1">
+                    {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
+                  </span>
+                </>
+              )}
+              {!topic.content.settings.transferAnimation && <span>-</span>}
             </DetailValue>
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
