@@ -1,13 +1,14 @@
 .popup-wrapper {
   align-items: center;
+  overflow-y: auto;
   > div {
-    max-width: 1160px;
+    max-width: 1400px;
     background-color: $white;
     margin: 0 auto;
-    border-radius: 3px;
+    border-radius: 1px;
     position: relative;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1440px) {
       max-width: none;
       margin: 0 40px;
     }
@@ -20,11 +21,10 @@
     .popup-title {
       font-size: 1.1rem;
       padding: 1rem;
-      background-color: $secondary;
-      background-color: $primary;
-      color: $white;
-      border-radius: 3px 3px 0 0;
+      background-color: $white;
+      border-radius: 1px 1px 0 0;
       text-align: left;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
       @media (max-width: 768px) {
         font-size: 1rem;
@@ -33,12 +33,12 @@
 
     .close-popup-button {
       position: absolute;
-      top: 13px;
+      top: 16px;
       right: 10px;
     }
 
     .popup-buttons {
-      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      _border-top: 1px solid rgba(0, 0, 0, 0.2);
       text-align: right;
       padding: 1rem;
 

@@ -324,7 +324,7 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
-              newCard="사용자 관리"
+              newCard="토픽 관리자 설정"
               onNewCard={() => {
                 this.setOpenUserPopup(true);
               }}
@@ -334,10 +334,13 @@ class TopicForm extends Component {
           <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {openUserPopup && (
-          <Popup title="사용자 검색" open setOpen={this.setOpenUserPopup}>
+          <Popup title="토픽 관리자" open setOpen={this.setOpenUserPopup}>
             <UserSearchPopup
               users={topic.users}
               setOpen={this.setOpenUserPopup}
+              selectedTitle='선택된 사용자'
+              selectedUserMarked
+              markedTag='ADMIN'
               onApply={(users) => {
                 const info = { ...topic };
                 info.users = users;

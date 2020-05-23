@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, Col, Row, SearchInput, Selector } from '@/components';
+import { Button, SearchInput, Selector } from '@/components';
 import { UserManager } from '@/assets';
 import request from '@/utils/request';
 import './UserSearchPopup.scss';
@@ -60,18 +60,19 @@ class UserSearchPopup extends React.Component {
 
   render() {
     const { t, className, grps, setOpen, onApply } = this.props;
-    const { markedUsers, markedTag } = this.props;
+    const { markedUsers, markedTag, selectedTitle, selectedUserMarked } = this.props;
     const { grpId, users, selectedUsers, tempSelectedUsers, condition, searchWord } = this.state;
 
     return (
       <div className={`user-search-popup-wrapper ${className}`}>
-        <Row className="user-search-row">
-          <Col className="user-search-col" lg={9}>
+        <div className="user-search-row">
+          <div className="user-search-col">
             <div className="user-search-content first">
               <div className="search-bar">
                 <div className="grp-col">
                   <span className="label small mr-2 d-none d-sm-inline-block">그룹</span>
                   <Selector
+                    outline
                     className="grp-selector"
                     items={grps.map((org) => {
                       return {
@@ -86,10 +87,12 @@ class UserSearchPopup extends React.Component {
                         grpId: id,
                       });
                     }}
+                    minWidth="100px"
                   />
                 </div>
                 <div className="search-col">
                   <SearchInput
+                    color="white"
                     onChange={this.onChangeSearchWord}
                     onSearch={this.search}
                     placeholder={t('사용자 이름 또는 이메일')}
@@ -143,21 +146,27 @@ class UserSearchPopup extends React.Component {
                   hover
                   users={users}
                   selectedUsers={tempSelectedUsers}
-                  markedUsers={markedUsers}
+                  markedUsers={selectedUserMarked ? selectedUsers : markedUsers }
                   markedTag={markedTag}
                   emptyContent="검색된 사용자가 없습니다"
                   edit
+                  popupContent
+
                 />
               </div>
             </div>
-          </Col>
-          <Col className="user-search-col d-none d-lg-block" lg={3}>
+          </div>
+          <div className="manager-col d-none d-lg-block">
             <div className="user-search-content">
-              <div className="title-bar">
-                <div>
-                  <span>추가된 사용자</span>
+              {selectedUsers.length > 0 && (
+                <div className="title-bar">
+                  <div>
+                    <span>
+                      {selectedTitle} ({selectedUsers.length}명)
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="user-select-result scrollbar ">
                 <UserManager
                   onRemove={(id) => {
@@ -175,17 +184,15 @@ class UserSearchPopup extends React.Component {
                       selectedUsers: selected,
                     });
                   }}
-                  lg={12}
-                  md={12}
-                  sm={12}
                   users={selectedUsers}
-                  emptyContent="검색된 사용자가 없습니다"
+                  emptyContent="선택된 토픽 관리자가 없습니다"
                   edit
+                  singleRow
                 />
               </div>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
         <div className="popup-buttons">
           <Button
             className="px-4 mr-2"
@@ -224,6 +231,8 @@ const mapStateToProps = (state) => {
 
 UserSearchPopup.defaultProps = {
   className: '',
+  selectedTitle: '',
+  selectedUserMarked : false,
 };
 
 UserSearchPopup.propTypes = {
@@ -241,6 +250,8 @@ UserSearchPopup.propTypes = {
   onApply: PropTypes.func,
   markedUsers: PropTypes.arrayOf(PropTypes.any),
   markedTag: PropTypes.string,
+  selectedTitle: PropTypes.string,
+  selectedUserMarked : PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(UserSearchPopup)));

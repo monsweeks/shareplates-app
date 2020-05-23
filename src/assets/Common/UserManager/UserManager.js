@@ -19,6 +19,8 @@ class UserManager extends React.PureComponent {
       edit,
       newCard,
       onNewCard,
+      popupContent,
+      singleRow,
     } = this.props;
 
     const { markedUsers, markedTag } = this.props;
@@ -27,7 +29,7 @@ class UserManager extends React.PureComponent {
       <div className={`user-manager-wrapper ${className}`}>
         {!(users && users.length > 0) && !newCard && (
           <EmptyMessage
-            className="h6 mb-0"
+            className="h6 mb-0 d-flex flex-grow-1 h-100"
             message={
               <div>
                 <div>
@@ -41,7 +43,7 @@ class UserManager extends React.PureComponent {
           />
         )}
         {(users && users.length > 0 || newCard) && (
-          <div className="list">
+          <div className={`list ${popupContent ? 'in-popup-list' : ''} ${singleRow ? 'single-row' : ''}`}>
             {users.map((user) => {
               return (
                 <div className="user-col" key={user.id}>
@@ -86,6 +88,8 @@ UserManager.defaultProps = {
   border: true,
   edit: false,
   newCard: null,
+  popupContent: false,
+  singleRow : false,
 };
 
 UserManager.propTypes = {
@@ -109,4 +113,6 @@ UserManager.propTypes = {
   edit: PropTypes.bool,
   newCard: PropTypes.string,
   onNewCard : PropTypes.func,
+  popupContent : PropTypes.bool,
+  singleRow : PropTypes.bool,
 };

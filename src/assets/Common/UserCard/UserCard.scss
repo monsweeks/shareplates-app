@@ -1,8 +1,9 @@
 .user-card-wrapper {
   text-align: center;
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.4) !important;
-  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid #666 !important;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.05);
 
   .remove-button {
     position: absolute;
@@ -31,17 +32,15 @@
   }
 
   .user-card-content {
-    display: block;
+    display: flex;
     vertical-align: top;
     height: 70px;
 
     > div {
-      display: inline-block;
-      vertical-align: top;
-
       &.user-icon {
         width: 70px;
         height: 70px;
+        min-width: 70px;
         text-align: center;
         margin: 0 auto;
         padding: 10px;
@@ -58,45 +57,48 @@
         }
       }
 
-
       &.user-text {
-        width: calc(100% - 70px);
+        flex-grow: 1;
         text-align: left;
-        padding-top: 22px;
+        align-self: center;
         line-height: 110%;
+        overflow-y: hidden;
 
         .name {
           font-size: 0.9rem;
-          font-family: LGSmHaB, sans-serif;
+          padding-right: 10px;
+          font-weight: bold;
         }
 
         .email {
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           overflow: hidden;
           width: 100%;
+          padding-right: 10px;
           white-space: nowrap;
           text-overflow: ellipsis;
-          font-family: 'Baloo Bhai', cursive;
+          font-family: LGSmHaL, sans-serif;
+          margin-top: 1px;
         }
       }
     }
 
     .new-card {
       font-size: 1.6rem;
-      padding-top: 13px;
-      line-height: 0;
+      flex-grow: 1;
+      align-self: center;
 
       .text {
         font-size: 0.7rem;
-        margin-top: 10px;
+        position: relative;
+        top: -5px;
       }
     }
   }
 
   &.hover:hover {
     cursor: pointer;
-    border-color: $primary;
-    color: $primary;
+    border-color: $primary !important;
   }
 
   &.edit {
@@ -107,12 +109,6 @@
   }
 
   &.selected {
-    background-color: $primary;
-    border-radius: 2px;
-
-    .card-body {
-      border-radius: 2px;
-    }
     .user-icon {
       > span {
         border: 4px solid black;

@@ -196,6 +196,27 @@ button.btn {
       border: 1px solid rgba(0, 0, 0, 0.7);
     }
   }
+
+  &.btn-black {
+    background-color: $white;
+    color: $black;
+
+    &:hover {
+      background-color: $yellow;
+    }
+
+    &.disabled:hover {
+      background-color: $white;
+    }
+  }
+
+  &.btn-outline-black {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: $white;
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.7);
+    }
+  }
 }
 
 .g-circle-icon-button {
@@ -206,4 +227,10 @@ button.btn {
   margin-left: 0.25rem;
   font-size: 16px;
   padding: 1px 0 0;
+
+  &.btn-sm {
+    width: 24px;
+    height: 24px;
+    padding: 1px 0 0 !important;
+  }
 }
