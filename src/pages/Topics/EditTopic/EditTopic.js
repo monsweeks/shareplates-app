@@ -93,7 +93,7 @@ class EditTopic extends React.PureComponent {
             </PageTitle>
             <TopicForm
               edit
-              saveText="button.edit"
+              saveText="button.save"
               topic={topic}
               user={user}
               grps={grps}

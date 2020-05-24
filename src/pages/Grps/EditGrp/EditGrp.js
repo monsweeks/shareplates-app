@@ -74,7 +74,7 @@ class EditGrp extends React.PureComponent {
         >
           {t('그룹 편집')}
         </PageTitle>
-        <GrpForm edit saveText="label.saveGrp" onSave={this.onSubmit} onCancel={this.onCancel} grp={grp} />
+        <GrpForm edit saveText="button.save" onSave={this.onSubmit} onCancel={this.onCancel} grp={grp} />
       </RegisterLayout>
     );
   }

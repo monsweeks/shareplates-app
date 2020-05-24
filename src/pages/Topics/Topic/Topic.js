@@ -10,6 +10,7 @@ import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '
 import { UserManager } from '@/assets';
 import './Topic.scss';
 import {
+  DEFAULT_TOPIC_CONTENT,
   PAGE_TRANSFER_ANIMATION,
   TOPIC_FONT_FAMILIES,
   TOPIC_FONT_SIZES,
@@ -51,7 +52,18 @@ class Topic extends Component {
       null,
       (topic) => {
         const next = { ...topic };
-        next.content = JSON.parse(next.content);
+        if (next.content) {
+          next.content = JSON.parse(next.content);
+          if (!next.content.topicProperties) {
+            next.content.topicProperties = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.topicProperties));
+          }
+          if (!next.content.settings) {
+            next.content.settings = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.settings));
+          }
+        } else {
+          next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
+        }
+
         this.setState({
           topic: next,
         });
@@ -179,41 +191,73 @@ class Topic extends Component {
                 </div>
               </div>
               <div className="topic-properties-values">
-                <div className='font-family'>
-                  <div className="label"><span>{t('폰트 종류')}</span></div>
-                  <div className="value">{TOPIC_FONT_FAMILIES.find((d) => d.value === topic.content.topicProperties.fontFamily).name}</div>
+                <div className="font-family">
+                  <div className="label">
+                    <span>{t('폰트 종류')}</span>
+                  </div>
+                  <div className="value">
+                    {topic.content.topicProperties.fontFamily
+                      ? TOPIC_FONT_FAMILIES.find((d) => d.value === topic.content.topicProperties.fontFamily).name
+                      : '-'}
+                  </div>
                 </div>
-                <div className='font-size'>
-                  <div className="label"><span>{t('폰트 크기')}</span></div>
-                  <div className="value">{TOPIC_FONT_SIZES.find((d) => d.value === topic.content.topicProperties.fontSize).name}</div>
+                <div className="font-size">
+                  <div className="label">
+                    <span>{t('폰트 크기')}</span>
+                  </div>
+                  <div className="value">
+                    {topic.content.topicProperties.fontSize
+                      ? TOPIC_FONT_SIZES.find((d) => d.value === topic.content.topicProperties.fontSize).name
+                      : '-'}
+                  </div>
                 </div>
-                <div className='color'>
-                  <div className="label"><span>{t('폰트 색상')}</span></div>
-                  <div className="value">{topic.content.topicProperties.color}</div>
+                <div className="color">
+                  <div className="label">
+                    <span>{t('폰트 색상')}</span>
+                  </div>
+                  <div className="value">
+                    {topic.content.topicProperties.color ? topic.content.topicProperties.color : '-'}
+                  </div>
                 </div>
-                <div className='background-color'>
-                  <div className="label"><span>{t('배경 색상')}</span></div>
-                  <div className="value">{topic.content.topicProperties.backgroundColor}</div>
+                <div className="background-color">
+                  <div className="label">
+                    <span>{t('배경 색상')}</span>
+                  </div>
+                  <div className="value">
+                    {topic.content.topicProperties.backgroundColor
+                      ? topic.content.topicProperties.backgroundColor
+                      : '-'}
+                  </div>
                 </div>
-                <div className='padding'>
-                  <div className="label"><span>{t('페이지 여백')}</span></div>
-                  <div className="value">{topic.content.topicProperties.padding}</div>
+                <div className="padding">
+                  <div className="label">
+                    <span>{t('페이지 여백')}</span>
+                  </div>
+                  <div className="value">
+                    {topic.content.topicProperties.padding ? topic.content.topicProperties.padding : '-'}
+                  </div>
                 </div>
               </div>
             </div>
             <SubLabel>{t('페이지 전환 애니메이션')}</SubLabel>
             <Description>{t('페이지 전환 애니메이션')}</Description>
             <DetailValue>
-              <span>
-                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
-              </span>
-              <span className="ml-3">
-                {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
-              </span>
+              {topic.content.settings.transferAnimation && (
+                <>
+                  <span className="mr-1">
+                    {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).value}
+                  </span>
+                  -
+                  <span className="ml-1">
+                    {PAGE_TRANSFER_ANIMATION.find((d) => d.key === topic.content.settings.transferAnimation).desc}
+                  </span>
+                </>
+              )}
+              {!topic.content.settings.transferAnimation && <span>-</span>}
             </DetailValue>
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
-            <UserManager className='pt-2 px-2' users={topic.users} blockStyle />
+            <UserManager className="pt-2 px-2" users={topic.users} />
             <BottomButton
               className="text-right mt-4"
               onList={this.onList}

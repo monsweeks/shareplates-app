@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { CircleIcon } from '@/components';
+import { Button } from '@/components';
 import './Popup.scss';
 
 class Popup extends React.PureComponent {
@@ -20,19 +20,22 @@ class Popup extends React.PureComponent {
     const { className, open, children, title, setOpen } = this.props;
 
     return (
-      <div className={`popup-wrapper g-overlay ${className} ${open ? 'd-flex' : 'd-none'}`}>
+      <div className={`popup-wrapper g-overlay scrollbar ${className} ${open ? 'd-flex' : 'd-none'}`}>
         <div>
           {title && <div className="popup-title">{title}</div>}
           {setOpen && (
-            <CircleIcon
-              className="close-popup-button bg-transparent"
-              icon={<i className="fal fa-times" />}
+            <Button
+              size='sm'
+              color="black"
+              className="close-popup-button g-circle-icon-button"
               onClick={() => {
                 if (setOpen) {
                   setOpen(false);
                 }
               }}
-            />
+            >
+              <i className="fal fa-times" />
+            </Button>
           )}
           <div className="popup-content">{children}</div>
         </div>

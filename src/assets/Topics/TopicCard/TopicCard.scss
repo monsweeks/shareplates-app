@@ -134,5 +134,9 @@
 @media (min-width: 992px) {
   .topic-card-wrapper:hover {
     box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.3);
+
+    .new-topic-content {
+      color: $primary;
+    }
   }
 }

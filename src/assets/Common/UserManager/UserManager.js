@@ -10,7 +10,6 @@ class UserManager extends React.PureComponent {
       users,
       className,
       emptyContent,
-      blockStyle,
       hover,
       onClick,
       selectedUsers,
@@ -19,6 +18,9 @@ class UserManager extends React.PureComponent {
       edit,
       newCard,
       onNewCard,
+      popupContent,
+      singleRow,
+      selectedUserMarkedTag,
     } = this.props;
 
     const { markedUsers, markedTag } = this.props;
@@ -27,7 +29,7 @@ class UserManager extends React.PureComponent {
       <div className={`user-manager-wrapper ${className}`}>
         {!(users && users.length > 0) && !newCard && (
           <EmptyMessage
-            className="h6 mb-0"
+            className="h6 mb-0 d-flex flex-grow-1 h-100"
             message={
               <div>
                 <div>
@@ -41,7 +43,7 @@ class UserManager extends React.PureComponent {
           />
         )}
         {(users && users.length > 0 || newCard) && (
-          <div className="list">
+          <div className={`list ${popupContent ? 'in-popup-list' : ''} ${singleRow ? 'single-row' : ''}`}>
             {users.map((user) => {
               return (
                 <div className="user-col" key={user.id}>
@@ -49,9 +51,9 @@ class UserManager extends React.PureComponent {
                     onClick={onClick}
                     hover={hover}
                     user={user}
-                    blockStyle={blockStyle}
                     selected={selectedUsers[user.id]}
-                    marked={markedUsers.find((u) => u.id === user.id)}
+                    selectedUserMarkedTag={selectedUserMarkedTag}
+                    marked={!!markedUsers.find((u) => u.id === user.id)}
                     markedTag={markedTag}
                     onRemove={onRemove}
                     border={border}
@@ -78,7 +80,6 @@ export default UserManager;
 UserManager.defaultProps = {
   className: '',
   emptyContent: '설정된 사용자가 없습니다.',
-  blockStyle: false,
   hover: false,
   selectedUsers: {},
   markedUsers: [],
@@ -86,6 +87,8 @@ UserManager.defaultProps = {
   border: true,
   edit: false,
   newCard: null,
+  popupContent: false,
+  singleRow : false,
 };
 
 UserManager.propTypes = {
@@ -98,7 +101,6 @@ UserManager.propTypes = {
     }),
   ),
   emptyContent: PropTypes.node,
-  blockStyle: PropTypes.bool,
   hover: PropTypes.bool,
   onClick: PropTypes.func,
   selectedUsers: PropTypes.objectOf(PropTypes.any),
@@ -109,4 +111,7 @@ UserManager.propTypes = {
   edit: PropTypes.bool,
   newCard: PropTypes.string,
   onNewCard : PropTypes.func,
+  popupContent : PropTypes.bool,
+  singleRow : PropTypes.bool,
+  selectedUserMarkedTag: PropTypes.string,
 };

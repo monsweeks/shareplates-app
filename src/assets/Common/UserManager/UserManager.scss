@@ -1,24 +1,17 @@
 .user-manager-wrapper {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
   height: 100%;
-  width: 100%;
-  padding: 1rem 0.5rem 0;
   padding: 0;
   margin-left: 0;
   margin-right: 0;
-  width: auto;
-
-  @media (max-width: 576px) {
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-  }
+  width: 100%;
 
   .list {
     margin: 0;
+    text-align: left;
+    padding-bottom: 0.5rem;
 
     .user-col {
+      vertical-align: top;
       width: calc((100% - 50px) / 6);
       display: inline-block;
       margin-right: 10px;
@@ -39,7 +32,6 @@
         &:nth-child(5n) {
           margin-right: 0;
         }
-
       }
 
       @media (max-width: 1400px) {
@@ -57,7 +49,6 @@
         &:nth-child(4n) {
           margin-right: 0;
         }
-
       }
 
       @media (max-width: 1200px) {
@@ -79,7 +70,6 @@
         &:nth-child(3n) {
           margin-right: 0;
         }
-
       }
 
       @media (max-width: 900px) {
@@ -105,7 +95,6 @@
         &:nth-child(2n) {
           margin-right: 0;
         }
-
       }
 
       @media (max-width: 600px) {
@@ -113,7 +102,88 @@
         display: inline-block;
         margin-right: 0;
       }
+    }
+  }
 
+  .list.in-popup-list {
+    margin: 0;
+
+    .user-col {
+      width: calc((100% - 30px) / 4);
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+      &:nth-child(6n) {
+        margin-right: 10px;
+      }
+
+      &:nth-child(5n) {
+        margin-right: 10px;
+      }
+
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+
+      @media (max-width: 1300px) {
+        width: calc((100% - 20px) / 3);
+        display: inline-block;
+
+        &:nth-child(6n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(5n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(4n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
+
+      @media (max-width: 900px) {
+        width: calc((100% - 10px) / 2);
+        display: inline-block;
+
+        &:nth-child(6n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(5n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(4n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(3n) {
+          margin-right: 10px;
+        }
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+
+      @media (max-width: 600px) {
+        width: 100%;
+        display: inline-block;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .list.single-row {
+    .user-col {
+      margin-right: 0;
+      width: 100%;
     }
   }
 
