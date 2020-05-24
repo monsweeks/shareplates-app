@@ -70,8 +70,13 @@ class TopicForm extends Component {
     let topic = { ...state.topic };
 
     if (edit && props.topic) {
-      topic = props.topic;
-      topic.content = topic.content ? JSON.parse(topic.content) : {};
+      topic = { ...props.topic };
+      if (topic.content) {
+        topic.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(topic.content) };
+      } else {
+        topic.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
+      }
+
       initialized = true;
     }
 
@@ -118,7 +123,7 @@ class TopicForm extends Component {
 
     request.get(
       '/api/topics/exist',
-      { grpId: topic.grpId, name, topicId : topic.id },
+      { grpId: topic.grpId, name, topicId: topic.id },
       (data) => {
         this.setState({
           existName: data,
@@ -223,7 +228,7 @@ class TopicForm extends Component {
 
     return (
       <>
-        <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1">
+        <Form onSubmit={this.onSubmit} className="topic-form-wrapper flex-grow-1 d-flex flex-column">
           {!edit && <hr className="g-dashed mb-3" />}
           <SubLabel>{t('그룹')}</SubLabel>
           <Description>{t('message.selectGrpForTopic')}</Description>
@@ -320,7 +325,7 @@ class TopicForm extends Component {
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
           </div>
-          <FormGroup>
+          <FormGroup className="flex-grow-1">
             <UserManager
               className="user-manager"
               onRemove={(id) => {

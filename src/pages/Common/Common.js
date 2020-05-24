@@ -69,7 +69,7 @@ class Common extends React.Component {
 
   checkAuthentification = (pathname) => {
     const { user, history } = this.props;
-    if (!user.id && !UNAUTH_URLS[pathname]) {
+    if ((!user || !user.id) && !UNAUTH_URLS[pathname]) {
       history.push(`/users/login?url=${pathname}`);
     }
   };

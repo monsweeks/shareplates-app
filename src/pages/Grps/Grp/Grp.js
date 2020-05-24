@@ -140,10 +140,10 @@ class Grp extends Component {
             </DetailValue>
             <SubLabel>{t('어드민')}</SubLabel>
             <Description>{t('message.grpAdminDesc')}</Description>
-            <UserManager className="pt-2 px-2" users={grp.admins} />
+            <UserManager className="h-auto pt-2 px-2" users={grp.admins} />
             <SubLabel>{t('label.grpMember')}</SubLabel>
             <Description>{t('message.grpUserDesc')}</Description>
-            <UserManager className="pt-2 px-2" users={grp.members} />
+            <UserManager className="flex-grow-1 pt-2 px-2" users={grp.members} />
             <BottomButton
               className="text-right mt-4"
               onList={this.onList}

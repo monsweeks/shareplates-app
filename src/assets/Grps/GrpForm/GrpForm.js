@@ -123,7 +123,7 @@ class GrpForm extends Component {
 
     return (
       <>
-        <Form onSubmit={this.onSubmit} className="grp-form-wrapper flex-grow-1">
+        <Form onSubmit={this.onSubmit} className="grp-form-wrapper flex-grow-1 d-flex flex-column">
           <SubLabel>{t('label.name')}</SubLabel>
           <Description>{t('message.grpNameDesc')}</Description>
           <FormGroup>
@@ -177,7 +177,7 @@ class GrpForm extends Component {
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.grpMember')}</SubLabel>
           <Description>{t('message.grpUserDesc')}</Description>
-          <FormGroup>
+          <FormGroup className='flex-grow-1'>
             <UserManager
               className="user-manager"
               onRemove={(id) => {
