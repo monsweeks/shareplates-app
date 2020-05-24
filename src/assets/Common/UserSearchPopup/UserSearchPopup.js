@@ -60,7 +60,7 @@ class UserSearchPopup extends React.Component {
 
   render() {
     const { t, className, grps, setOpen, onApply } = this.props;
-    const { markedUsers, markedTag, selectedTitle, selectedUserMarked } = this.props;
+    const { markedUsers, markedTag, selectedTitle, selectedUserMarkedTag } = this.props;
     const { grpId, users, selectedUsers, tempSelectedUsers, condition, searchWord } = this.state;
 
     return (
@@ -146,7 +146,8 @@ class UserSearchPopup extends React.Component {
                   hover
                   users={users}
                   selectedUsers={tempSelectedUsers}
-                  markedUsers={selectedUserMarked ? selectedUsers : markedUsers }
+                  selectedUserMarkedTag={selectedUserMarkedTag}
+                  markedUsers={markedUsers }
                   markedTag={markedTag}
                   emptyContent="검색된 사용자가 없습니다"
                   edit
@@ -232,7 +233,6 @@ const mapStateToProps = (state) => {
 UserSearchPopup.defaultProps = {
   className: '',
   selectedTitle: '',
-  selectedUserMarked : false,
 };
 
 UserSearchPopup.propTypes = {
@@ -251,7 +251,7 @@ UserSearchPopup.propTypes = {
   markedUsers: PropTypes.arrayOf(PropTypes.any),
   markedTag: PropTypes.string,
   selectedTitle: PropTypes.string,
-  selectedUserMarked : PropTypes.bool,
+  selectedUserMarkedTag : PropTypes.string,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(UserSearchPopup)));

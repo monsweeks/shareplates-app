@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { BottomButton, Button, Description, Form, FormGroup, Input, Popup, SubLabel, TextArea } from '@/components';
+import { BottomButton, Description, Form, FormGroup, Input, Popup, SubLabel, TextArea } from '@/components';
 import { UserManager, UserSearchPopup } from '@/assets';
 import './GrpForm.scss';
 
@@ -154,21 +154,11 @@ class GrpForm extends Component {
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
-          <div className="position-relative">
-            <SubLabel>{t('label.grpAdmin')}</SubLabel>
-            <Description>{t('message.grpAdminDesc')}</Description>
-            <Button
-              className="g-circle-icon-button manager-button"
-              color="primary"
-              onClick={() => {
-                this.setOpenPopup('openAdminPopup', true);
-              }}
-            >
-              <i className="fal fa-plus" />
-            </Button>
-          </div>
-          <FormGroup className="mt-2">
+          <SubLabel>{t('label.grpAdmin')}</SubLabel>
+          <Description>{t('message.grpAdminDesc')}</Description>
+          <FormGroup>
             <UserManager
+              className="user-manager"
               onRemove={(id) => {
                 const admins = grp.admins.splice(0);
                 const index = admins.findIndex((u) => u.id === id);
@@ -177,30 +167,19 @@ class GrpForm extends Component {
                   grp: { ...grp, admins },
                 });
               }}
-              lg={3}
-              md={4}
-              sm={6}
-              xl={12}
               users={grp.admins}
-              className="bg-light"
+              newCard="그룹 관리자 설정"
+              onNewCard={() => {
+                this.setOpenPopup('openAdminPopup', true);
+              }}
             />
           </FormGroup>
           <hr className="g-dashed mb-3" />
-          <div className="position-relative">
-            <SubLabel>{t('label.grpMember')}</SubLabel>
-            <Description>{t('message.grpUserDesc')}</Description>
-            <Button
-              className="g-circle-icon-button manager-button"
-              color="primary"
-              onClick={() => {
-                this.setOpenPopup('openMemberPopup', true);
-              }}
-            >
-              <i className="fal fa-plus" />
-            </Button>
-          </div>
-          <FormGroup className="mt-2">
+          <SubLabel>{t('label.grpMember')}</SubLabel>
+          <Description>{t('message.grpUserDesc')}</Description>
+          <FormGroup>
             <UserManager
+              className="user-manager"
               onRemove={(id) => {
                 const members = grp.members.splice(0);
                 const index = members.findIndex((u) => u.id === id);
@@ -209,12 +188,11 @@ class GrpForm extends Component {
                   grp: { ...grp, members },
                 });
               }}
-              lg={3}
-              md={4}
-              sm={6}
-              xl={12}
               users={grp.members}
-              className="bg-light"
+              newCard="그룹 멤버 설정"
+              onNewCard={() => {
+                this.setOpenPopup('openMemberPopup', true);
+              }}
             />
           </FormGroup>
           <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
@@ -227,6 +205,7 @@ class GrpForm extends Component {
               onApply={(users) => {
                 this.onApply(openAdminPopup, users);
               }}
+              selectedUserMarkedTag={openAdminPopup ? 'ADMIN' : 'MEMBER'}
               markedUsers={openAdminPopup ? grp.members : grp.admins}
               markedTag={openAdminPopup ? 'MEMBER' : 'ADMIN'}
             />

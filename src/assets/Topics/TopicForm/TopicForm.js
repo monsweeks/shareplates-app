@@ -331,11 +331,11 @@ class TopicForm extends Component {
                   topic: { ...topic, users },
                 });
               }}
+              users={topic.users}
               newCard="토픽 관리자 설정"
               onNewCard={() => {
                 this.setOpenUserPopup(true);
               }}
-              users={topic.users}
             />
           </FormGroup>
           <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
@@ -346,8 +346,7 @@ class TopicForm extends Component {
               users={topic.users}
               setOpen={this.setOpenUserPopup}
               selectedTitle="선택된 사용자"
-              selectedUserMarked
-              markedTag="ADMIN"
+              selectedUserMarkedTag="ADMIN"
               onApply={(users) => {
                 const info = { ...topic };
                 info.users = users;

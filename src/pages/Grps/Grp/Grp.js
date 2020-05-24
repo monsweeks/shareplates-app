@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, P, SubLabel } from '@/components';
+import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
 import { UserManager } from '@/assets';
 
 class Grp extends Component {
@@ -95,6 +95,8 @@ class Grp extends Component {
     const { t } = this.props;
     const { grp, isAdmin } = this.state;
 
+    console.log(grp);
+
     return (
       <DetailLayout margin={false}>
         {!grp && grp === false && (
@@ -124,25 +126,30 @@ class Grp extends Component {
                   to: `/groups/${grpId}`,
                 },
               ]}
-              onDelete={isAdmin ? this.onDelete : null}
-              onList={this.onList}
-              onEdit={isAdmin ? this.onEdit : null}
               border
             >
               {t('그룹 정보')}
             </PageTitle>
             <SubLabel>{t('label.name')}</SubLabel>
-            <P upppercase className="mb-3">
-              {grp.name}
-            </P>
+            <Description>{t('message.grpNameDesc')}</Description>
+            <DetailValue>{grp.name}</DetailValue>
             <SubLabel>{t('label.desc')}</SubLabel>
-            <P upppercase pre>
+            <Description>{t('message.grpDescDesc')}</Description>
+            <DetailValue upppercase pre>
               {grp.description}
-            </P>
+            </DetailValue>
             <SubLabel>{t('어드민')}</SubLabel>
-            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={grp.admins} border />
+            <Description>{t('message.grpAdminDesc')}</Description>
+            <UserManager className="pt-2 px-2" users={grp.admins} />
             <SubLabel>{t('label.grpMember')}</SubLabel>
-            <UserManager className="h-auto bg-light" lg={3} md={4} sm={6} xl={12} users={grp.members} border />
+            <Description>{t('message.grpUserDesc')}</Description>
+            <UserManager className="pt-2 px-2" users={grp.members} />
+            <BottomButton
+              className="text-right mt-4"
+              onList={this.onList}
+              onDelete={isAdmin ? this.onDelete : null}
+              onEdit={isAdmin ? this.onEdit : null}
+            />
           </>
         )}
       </DetailLayout>

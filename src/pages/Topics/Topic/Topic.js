@@ -257,7 +257,7 @@ class Topic extends Component {
             </DetailValue>
             <SubLabel>{t('label.topicAdmin')}</SubLabel>
             <Description>{t('message.topicUserDesc')}</Description>
-            <UserManager className="pt-2 px-2" users={topic.users} blockStyle />
+            <UserManager className="pt-2 px-2" users={topic.users} />
             <BottomButton
               className="text-right mt-4"
               onList={this.onList}

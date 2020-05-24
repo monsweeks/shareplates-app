@@ -8,23 +8,20 @@ class UserCard extends React.PureComponent {
     const {
       className,
       user,
-      blockStyle,
       hover,
       onClick,
       selected,
       onRemove,
       marked,
       markedTag,
-      border,
       edit,
       newCard,
+      selectedUserMarkedTag,
     } = this.props;
 
     return (
       <Card
-        className={`user-card-wrapper g-no-select ${className} ${border ? 'has-border' : ''} ${
-          blockStyle ? 'block-style' : ''
-        } ${hover ? 'hover' : ''} ${selected ? 'selected' : ''} ${edit ? 'edit' : ''}`}
+        className={`user-card-wrapper g-no-select ${className} ${hover ? 'hover' : ''} ${selected ? 'selected' : ''} ${edit ? 'edit' : ''}`}
         onClick={() => {
           if (onClick) {
             if (user) {
@@ -73,6 +70,7 @@ class UserCard extends React.PureComponent {
             </Button>
           )}
           {marked && <div className="marked-tag">{markedTag}</div>}
+          {(selected && selectedUserMarkedTag) && <div className="marked-tag">{selectedUserMarkedTag}</div>}
         </CardBody>
       </Card>
     );
@@ -87,7 +85,6 @@ UserCard.defaultProps = {
   selected: false,
   marked: false,
   markedTag: '',
-  border: true,
   newCard: null,
 };
 
@@ -99,14 +96,13 @@ UserCard.propTypes = {
     email: PropTypes.string,
     info: PropTypes.string,
   }),
-  blockStyle: PropTypes.bool,
   hover: PropTypes.bool,
   onClick: PropTypes.func,
   selected: PropTypes.bool,
   onRemove: PropTypes.func,
   marked: PropTypes.bool,
   markedTag: PropTypes.string,
-  border: PropTypes.bool,
   edit: PropTypes.bool,
   newCard: PropTypes.string,
+  selectedUserMarkedTag : PropTypes.string,
 };

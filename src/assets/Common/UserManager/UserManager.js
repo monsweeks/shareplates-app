@@ -10,7 +10,6 @@ class UserManager extends React.PureComponent {
       users,
       className,
       emptyContent,
-      blockStyle,
       hover,
       onClick,
       selectedUsers,
@@ -21,6 +20,7 @@ class UserManager extends React.PureComponent {
       onNewCard,
       popupContent,
       singleRow,
+      selectedUserMarkedTag,
     } = this.props;
 
     const { markedUsers, markedTag } = this.props;
@@ -51,8 +51,8 @@ class UserManager extends React.PureComponent {
                     onClick={onClick}
                     hover={hover}
                     user={user}
-                    blockStyle={blockStyle}
                     selected={selectedUsers[user.id]}
+                    selectedUserMarkedTag={selectedUserMarkedTag}
                     marked={!!markedUsers.find((u) => u.id === user.id)}
                     markedTag={markedTag}
                     onRemove={onRemove}
@@ -80,7 +80,6 @@ export default UserManager;
 UserManager.defaultProps = {
   className: '',
   emptyContent: '설정된 사용자가 없습니다.',
-  blockStyle: false,
   hover: false,
   selectedUsers: {},
   markedUsers: [],
@@ -102,7 +101,6 @@ UserManager.propTypes = {
     }),
   ),
   emptyContent: PropTypes.node,
-  blockStyle: PropTypes.bool,
   hover: PropTypes.bool,
   onClick: PropTypes.func,
   selectedUsers: PropTypes.objectOf(PropTypes.any),
@@ -115,4 +113,5 @@ UserManager.propTypes = {
   onNewCard : PropTypes.func,
   popupContent : PropTypes.bool,
   singleRow : PropTypes.bool,
+  selectedUserMarkedTag: PropTypes.string,
 };
