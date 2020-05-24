@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addMessage } from 'actions';
 import request from '@/utils/request';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
@@ -48,7 +50,7 @@ class TopicForm extends Component {
         grpId: '',
         users: [],
         privateYn: false,
-        content: JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT))
+        content: JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)),
       },
       existName: false,
       openUserPopup: false,
@@ -116,7 +118,7 @@ class TopicForm extends Component {
 
     request.get(
       '/api/topics/exist',
-      { grpId: topic.grpId, name },
+      { grpId: topic.grpId, name, topicId : topic.id },
       (data) => {
         this.setState({
           existName: data,
@@ -183,11 +185,26 @@ class TopicForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { topic } = this.state;
+    const { topic, existName } = this.state;
     const { t, addMessage: addMessageReducer, onSave } = this.props;
 
-    if (topic.passwordConfirm !== topic.password) {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
+    if (!topic.users || topic.users.length < 1) {
+      addMessageReducer(
+        0,
+        MESSAGE_CATEGORY.INFO,
+        t('validation.badInput'),
+        t('최소 1명의 토픽 관리자는 지정되어야 합니다.'),
+      );
+      return;
+    }
+
+    if (existName) {
+      addMessageReducer(
+        0,
+        MESSAGE_CATEGORY.INFO,
+        t('validation.badInput'),
+        t('그룹에 동일한 이름의 토픽 이름이 존재합니다.'),
+      );
       return;
     }
 
@@ -328,9 +345,9 @@ class TopicForm extends Component {
             <UserSearchPopup
               users={topic.users}
               setOpen={this.setOpenUserPopup}
-              selectedTitle='선택된 사용자'
+              selectedTitle="선택된 사용자"
               selectedUserMarked
-              markedTag='ADMIN'
+              markedTag="ADMIN"
               onApply={(users) => {
                 const info = { ...topic };
                 info.users = users;
@@ -346,7 +363,13 @@ class TopicForm extends Component {
   }
 }
 
-export default withRouter(withTranslation()(TopicForm));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
+  };
+};
+
+export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(TopicForm)));
 
 TopicForm.defaultProps = {
   t: null,

@@ -53,7 +53,7 @@ class UserManager extends React.PureComponent {
                     user={user}
                     blockStyle={blockStyle}
                     selected={selectedUsers[user.id]}
-                    marked={markedUsers.find((u) => u.id === user.id)}
+                    marked={!!markedUsers.find((u) => u.id === user.id)}
                     markedTag={markedTag}
                     onRemove={onRemove}
                     border={border}
