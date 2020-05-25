@@ -1,0 +1,49 @@
+.image-builder-wrapper {
+  text-align: center;
+  display: flex;
+  width: 100%;
+  height: 120px;
+
+  @media (max-width: 576px) {
+    display: block;
+  }
+
+  > div {
+    &.preview-box {
+      padding: 10px 50px;
+      text-align: center;
+      flex: 0;
+      align-self: center;
+
+      @media (max-width: 992px) {
+        padding: 10px 20px;
+      }
+
+      .preview-image {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: $light;
+
+        > img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    &.controller {
+      vertical-align: top;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: calc(100% - 200px);
+
+      @media (max-width: 576px) {
+        width: 100%;
+      }
+    }
+  }
+}

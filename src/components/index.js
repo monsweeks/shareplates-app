@@ -22,6 +22,7 @@ import DetailValue from '@/components/DetailValue/DetailValue';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
 import IconSelector from '@/components/IconSelector/IconSelector';
 import IconViewer from '@/components/IconViewer/IconViewer';
+import ImageBuilder from '@/components/ImageBuilder/ImageBuilder';
 import Input from '@/components/Input/Input';
 import Link from '@/components/Link/Link';
 import ListControlBar from '@/components/ListControlBar/ListControlBar';
@@ -39,6 +40,7 @@ import SubLabel from '@/components/SubLabel/SubLabel';
 import Tabs from '@/components/Tabs/Tabs';
 import TextArea from '@/components/TextArea/TextArea';
 import TopLogo from '@/components/TopLogo/TopLogo';
+import UserIcon from '@/components/UserIcon/UserIcon';
 
 export {
   Button,
@@ -65,6 +67,7 @@ export {
   EmptyMessage,
   IconSelector,
   IconViewer,
+  ImageBuilder,
   Input,
   Link,
   ListControlBar,
@@ -82,4 +85,5 @@ export {
   Tabs,
   TextArea,
   TopLogo,
+  UserIcon,
 };

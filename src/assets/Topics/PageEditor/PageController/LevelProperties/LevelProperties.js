@@ -38,8 +38,6 @@ class LevelProperties extends React.PureComponent {
   render() {
     const { t, level, fontFamilies, fontSizes, onChangeProperties, properties, active } = this.props;
 
-    console.log(properties);
-
     return (
       <>
         <SelectControl

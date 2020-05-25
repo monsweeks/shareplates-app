@@ -17,6 +17,7 @@ import {
   ShareStandByPopup,
 } from '@/assets';
 import './Share.scss';
+import { convertUser, convertUsers } from '@/pages/Users/util';
 
 class Share extends React.Component {
   constructor(props) {
@@ -86,7 +87,7 @@ class Share extends React.Component {
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
           isAdmin: data.share.adminUserId === user.id,
-          users: data.users,
+          users: convertUsers(data.users),
         });
 
         this.getPages(shareId, data.share.currentChapterId);
@@ -296,12 +297,12 @@ class Share extends React.Component {
         const userIndex = next.findIndex((user) => user.id === data.user.id);
 
         if (userIndex < 0) {
-          next.push(data.user);
+          next.push(convertUser(data.user));
           this.setState({
             users: next,
           });
         } else {
-          next[userIndex] = data.user;
+          next[userIndex] = convertUser(data.user);
           this.setState({
             users: next,
           });
@@ -618,7 +619,6 @@ Share.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   match: PropTypes.shape({

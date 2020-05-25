@@ -172,7 +172,6 @@ Register.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

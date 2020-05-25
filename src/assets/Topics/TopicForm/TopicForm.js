@@ -71,12 +71,6 @@ class TopicForm extends Component {
 
     if (edit && props.topic) {
       topic = { ...props.topic };
-      if (topic.content) {
-        topic.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(topic.content) };
-      } else {
-        topic.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
-      }
-
       initialized = true;
     }
 
@@ -343,7 +337,7 @@ class TopicForm extends Component {
               }}
             />
           </FormGroup>
-          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-right mt-3" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {openUserPopup && (
           <Popup title="토픽 관리자" open setOpen={this.setOpenUserPopup}>
@@ -393,7 +387,12 @@ TopicForm.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   grps: PropTypes.arrayOf(
     PropTypes.shape({

@@ -195,7 +195,7 @@ class GrpForm extends Component {
               }}
             />
           </FormGroup>
-          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-right mt-3" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {(openAdminPopup || openMemberPopup) && (
           <Popup title="사용자 검색" open setOpen={this.setClosePopup}>
@@ -235,7 +235,12 @@ GrpForm.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
 
   onSave: PropTypes.func,

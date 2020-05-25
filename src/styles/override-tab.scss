@@ -1,15 +1,38 @@
 .nav-tabs {
   border-bottom: none;
+
+  .nav-item {
+    display: inline-block;
+    padding: 2px 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    &.focus {
+      background-color: $primary;
+      color: $white;
+      border-radius: 3px;
+    }
+  }
 }
 
-.nav-item {
-  display: inline-block;
-  padding: 2px 12px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  &.focus {
-    background-color: $primary;
-    color: $white;
-    border-radius: 3px;
+.g-tabs {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+
+  > .nav-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    .nav-item {
+      display: inline-block;
+      padding: 2px 12px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      &.focus {
+        background-color: $primary;
+        color: $white;
+        border-radius: 0;
+      }
+    }
+  }
+
+  .g-tabs-content {
   }
 }

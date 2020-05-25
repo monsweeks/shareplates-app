@@ -81,7 +81,6 @@ NewTopic.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   grps: PropTypes.arrayOf(
     PropTypes.shape({

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import ReactTimeAgo from 'react-time-ago';
 import moment from 'moment';
-import { Avatar, Card, CardBody } from '@/components';
+import { Card, CardBody, UserIcon } from '@/components';
 import './ShareCard.scss';
 
 class ShareCard extends React.PureComponent {
@@ -41,7 +41,7 @@ class ShareCard extends React.PureComponent {
             </div>
             <div className="share-info">
               <div className="admin-user">
-                <div className="info">{share.adminUserInfo && <Avatar data={JSON.parse(share.adminUserInfo)} />}</div>
+                <div className="info">{share.adminUserInfo && <UserIcon info={share.adminUserInfo} />}</div>
                 <div className="name">{share.adminUserName}</div>
                 <div className="email">{share.adminUserEmail}</div>
                 <div className="separator" />
@@ -93,7 +93,12 @@ ShareCard.propTypes = {
     topicName: PropTypes.string,
     adminUserEmail: PropTypes.string,
     adminUserName: PropTypes.string,
-    adminUserInfo: PropTypes.string,
+    adminUserInfo: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
     startedYn: PropTypes.bool,
     accessCode: PropTypes.string,
   }),

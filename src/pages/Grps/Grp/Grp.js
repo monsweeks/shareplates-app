@@ -8,6 +8,7 @@ import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
 import { UserManager } from '@/assets';
+import { convertUsers } from '@/pages/Users/util';
 
 class Grp extends Component {
   constructor(props) {
@@ -44,8 +45,12 @@ class Grp extends Component {
       `/api/groups/${grpId}`,
       null,
       (grp) => {
+        const next = grp;
+        next.admins = convertUsers(grp.admins);
+        next.members = convertUsers(grp.members);
+
         this.setState({
-          grp,
+          grp: next,
         });
       },
       null,
@@ -95,8 +100,6 @@ class Grp extends Component {
     const { t } = this.props;
     const { grp, isAdmin } = this.state;
 
-    console.log(grp);
-
     return (
       <DetailLayout margin={false}>
         {!grp && grp === false && (
@@ -145,7 +148,7 @@ class Grp extends Component {
             <Description>{t('message.grpUserDesc')}</Description>
             <UserManager className="flex-grow-1 pt-2 px-2" users={grp.members} />
             <BottomButton
-              className="text-right mt-4"
+              className="text-right mt-3"
               onList={this.onList}
               onDelete={isAdmin ? this.onDelete : null}
               onEdit={isAdmin ? this.onEdit : null}
@@ -180,7 +183,6 @@ Grp.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

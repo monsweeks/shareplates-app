@@ -12,7 +12,7 @@ import request from '@/utils/request';
 import storage from '@/utils/storage';
 import { addMessage, setUserInfo } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
-import socialLogin from '../util';
+import { convertUser, socialLogin } from '../util';
 import './Login.scss';
 
 class Login extends React.PureComponent {
@@ -83,7 +83,8 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            setUserInfoReducer(data.user || {}, data.grps);
+            setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+
             if (url) {
               history.push(url);
             } else {

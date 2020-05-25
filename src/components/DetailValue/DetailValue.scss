@@ -5,9 +5,24 @@
   color: $black;
   > div {
     padding: 0.25rem 0.5rem;
-    _background-color: $light;
-    font-family: LGSmHaB, sans-serif;
-    border-bottom: 1px solid rgba(0,0,0,0.4);
+  }
+
+  &.bold {
+    > div {
+      font-family: LGSmHaB, sans-serif;
+    }
+  }
+
+  &.has-border {
+    > div {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  &.uppercase {
+    > div {
+      text-transform: uppercase;
+    }
   }
 
   @media (max-width: 576px) {

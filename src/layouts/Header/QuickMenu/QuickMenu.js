@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Avatar, Button, Card, CardBody, CardHeader, Col, FormGroup, Link, RadioButton, Row } from 'components';
+import { Button, Card, CardBody, CardHeader, Col, FormGroup, Link, RadioButton, Row, UserIcon } from 'components';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import LANGUAGES from '@/languages/languages';
@@ -39,8 +39,7 @@ class QuickMenu extends React.Component {
             <CardHeader className="g-border-normal p-3 bg-white rounded-sm border-0">
               <div className="user-info">
                 <div className="user-icon">
-                  {!(user && user.info) && <i className="fal fa-robot" />}
-                  {user && user.info && <Avatar data={JSON.parse(user.info)} />}
+                  {user && <UserIcon info={user.info} />}
                 </div>
                 <div className="user-text">
                   <div className="name">{user && user.name}</div>
@@ -160,7 +159,12 @@ QuickMenu.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   location: PropTypes.shape({
     pathname: PropTypes.string,
