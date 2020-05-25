@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { GrpForm } from '@/assets';
-import { convertUsers } from '@/pages/Users/util';
+import { convertUsers, serializeUsers } from '@/pages/Users/util';
 
 class EditGrp extends React.PureComponent {
   constructor(props) {
@@ -46,6 +46,10 @@ class EditGrp extends React.PureComponent {
 
   onSubmit = (grp) => {
     const { history } = this.props;
+
+    const next = {...grp};
+    next.admins = serializeUsers(next.admins);
+    next.members = serializeUsers(next.members);
 
     request.put(`/api/groups/${grp.id}`, grp, () => {
       history.push(`/groups/${grp.id}`);

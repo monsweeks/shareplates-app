@@ -8,12 +8,16 @@ import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/assets';
 import { PageIntro } from '@/components';
 import common from '@/utils/common';
+import { serializeUsers } from '@/pages/Users/util';
 
 class NewTopic extends React.PureComponent {
   onSubmit = (topic) => {
     const { history } = this.props;
 
-    request.post('/api/topics', topic, (data) => {
+    const next = {...topic};
+    next.users = serializeUsers(next.users);
+
+    request.post('/api/topics', next, (data) => {
       history.push(`/topics/${data.id}`);
     });
   };
