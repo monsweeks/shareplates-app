@@ -71,12 +71,6 @@ class TopicForm extends Component {
 
     if (edit && props.topic) {
       topic = { ...props.topic };
-      if (topic.content) {
-        topic.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(topic.content) };
-      } else {
-        topic.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
-      }
-
       initialized = true;
     }
 

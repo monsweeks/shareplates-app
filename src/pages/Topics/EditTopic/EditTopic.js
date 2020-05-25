@@ -7,6 +7,7 @@ import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/assets';
 import { EmptyMessage } from '@/components';
+import { DEFAULT_TOPIC_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 
 class EditTopic extends React.PureComponent {
   constructor(props) {
@@ -31,8 +32,15 @@ class EditTopic extends React.PureComponent {
       `/api/topics/${topicId}`,
       null,
       (topic) => {
+        const next = topic;
+        if (next.content) {
+          next.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(next.content) };
+        } else {
+          next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
+        }
+
         this.setState({
-          topic,
+          topic : next
         });
       },
       null,
