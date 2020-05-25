@@ -145,7 +145,7 @@ class Grp extends Component {
             <Description>{t('message.grpUserDesc')}</Description>
             <UserManager className="flex-grow-1 pt-2 px-2" users={grp.members} />
             <BottomButton
-              className="text-right mt-4"
+              className="text-right mt-3"
               onList={this.onList}
               onDelete={isAdmin ? this.onDelete : null}
               onEdit={isAdmin ? this.onEdit : null}

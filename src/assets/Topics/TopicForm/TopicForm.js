@@ -337,7 +337,7 @@ class TopicForm extends Component {
               }}
             />
           </FormGroup>
-          <BottomButton className="text-right mt-4" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
+          <BottomButton className="text-right mt-3" saveText={saveText} onSave={() => {}} onCancel={onCancel} />
         </Form>
         {openUserPopup && (
           <Popup title="토픽 관리자" open setOpen={this.setOpenUserPopup}>

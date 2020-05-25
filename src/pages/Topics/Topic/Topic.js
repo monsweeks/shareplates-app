@@ -259,7 +259,7 @@ class Topic extends Component {
             <Description>{t('message.topicUserDesc')}</Description>
             <UserManager className="pt-2 px-2" users={topic.users} />
             <BottomButton
-              className="text-right mt-4"
+              className="text-right mt-3"
               onList={this.onList}
               onDelete={isAdmin ? this.onDelete : null}
               onEdit={isAdmin ? this.onEdit : null}

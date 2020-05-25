@@ -9,11 +9,12 @@ import { PageTitle, RegisterLayout } from '@/layouts';
 import {
   AvatarBuilder,
   BottomButton,
+  DateTime,
   Description,
+  DetailValue,
   Form,
   FormGroup,
   Input,
-  P,
   RadioButton,
   Selector,
   SubLabel,
@@ -94,33 +95,37 @@ class EditMyInfo extends React.PureComponent {
       <RegisterLayout>
         <PageTitle list={breadcrumbs}>{t('내 정보 수정')}</PageTitle>
         <hr className="d-none d-sm-block mb-3" />
-        <Form onSubmit={this.onSubmit} className="flex-grow-1">
-          <SubLabel>{t('아이콘')}</SubLabel>
-          <Description>{t('SHAREPLATES에서 사용되는 사용자의 아바타 아이콘을 만들 수 있습니다.')}</Description>
+        <Form onSubmit={this.onSubmit} className="flex-grow-1 d-flex flex-column">
+          <SubLabel>{t('label.email')}</SubLabel>
+          <Description>
+            {t('가입된 사용자 이메일 정보입니다. 로그인 아이디로 사용되며, 변경할 수 없습니다.')}
+          </Description>
+          <DetailValue uppercase border={false}>
+            {user.email}
+          </DetailValue>
+          <SubLabel>{t('사용자 아이콘')}</SubLabel>
+          <Description>{t('이미지를 직접 업로드하거나, 아바타를 만들어서 나를 표현할 수 있습니다.')}</Description>
           <FormGroup>
             <AvatarBuilder data={user.info} onChange={this.onChange('info')} />
           </FormGroup>
           <hr className="g-dashed mb-3" />
-          <SubLabel>{t('label.email')}</SubLabel>
+          <SubLabel>{t('label.name')}</SubLabel>
+          <Description>{t('SHAREPLATES에서 사용되는 사용자의 별명이나, 이름입니다.')}</Description>
           <FormGroup>
-            <P>{user.email}</P>
+            <Input
+              label={t('label.name')}
+              value={user.name}
+              required
+              minLength={2}
+              maxLength={100}
+              onChange={this.onChange('name')}
+              simple
+              border
+            />
           </FormGroup>
           <hr className="g-dashed mb-3" />
-          <SubLabel>{t('label.name')}</SubLabel>
-
-          <Input
-            label={t('label.name')}
-            value={user.name}
-            required
-            minLength={2}
-            maxLength={100}
-            onChange={this.onChange('name')}
-            simple
-            border
-          />
-
-          <hr className="g-dashed mb-3" />
           <SubLabel>{t('날짜 형식')}</SubLabel>
+          <Description>{t('날짜 형식의 데이터를 표현할 때 사용되는 날짜 형식을 선택합니다.')}</Description>
           <FormGroup>
             <Selector
               outline
@@ -131,6 +136,7 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('언어')}</SubLabel>
+          <Description>{t('사용할 언어를 선택할 수 있습니다.')}</Description>
           <FormGroup>
             <RadioButton
               items={Object.keys(LANGUAGES)
@@ -149,7 +155,9 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
-          <P className="bg-white">{user.creationDate}</P>
+          <DetailValue className='flex-grow-1' uppercase border={false}>
+            <DateTime value={user.creationDate} dateTimeFormat={user.dateTimeFormat} />
+          </DetailValue>
           <BottomButton onList={() => {}} onEdit={() => {}} />
         </Form>
       </RegisterLayout>
