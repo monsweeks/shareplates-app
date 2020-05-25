@@ -7,10 +7,15 @@ import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { PageIntro } from '@/components';
 import { GrpForm } from '@/assets';
+import { serializeUsers } from '@/pages/Users/util';
 
 class NewGrp extends React.PureComponent {
   onSubmit = (grp) => {
     const { history } = this.props;
+
+    const next = {...grp};
+    next.admins = serializeUsers(next.admins);
+    next.members = serializeUsers(next.members);
 
     request.post('/api/groups', grp, () => {
       history.push('/groups');

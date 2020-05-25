@@ -54,13 +54,7 @@ class Topic extends Component {
       (topic) => {
         const next = { ...topic };
         if (next.content) {
-          next.content = JSON.parse(next.content);
-          if (!next.content.topicProperties) {
-            next.content.topicProperties = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.topicProperties));
-          }
-          if (!next.content.settings) {
-            next.content.settings = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT.settings));
-          }
+          next.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(next.content) };
         } else {
           next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
         }

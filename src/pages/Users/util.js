@@ -85,4 +85,23 @@ function convertUsers(users) {
   return next;
 }
 
-export { convertInfo, convertUser, convertUsers, socialLogin };
+function serializeUser(user) {
+  const next = user;
+  if (user && user.info && typeof(user.info) === 'object') {
+    next.info = JSON.stringify(user.info);
+  }
+
+  return next;
+}
+
+
+function serializeUsers(users) {
+  const next = users.slice(0);
+
+  for (let i = 0; i < next.length; i += 1) {
+    next[i] = serializeUser(next[i]);
+  }
+  return next;
+}
+
+export { convertInfo, convertUser, convertUsers, socialLogin, serializeUsers };

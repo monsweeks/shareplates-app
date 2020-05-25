@@ -8,6 +8,7 @@ import { PageTitle, RegisterLayout } from '@/layouts';
 import { TopicForm } from '@/assets';
 import { EmptyMessage } from '@/components';
 import { DEFAULT_TOPIC_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
+import { convertUsers, serializeUsers } from '@/pages/Users/util';
 
 class EditTopic extends React.PureComponent {
   constructor(props) {
@@ -39,6 +40,8 @@ class EditTopic extends React.PureComponent {
           next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
         }
 
+        next.users = convertUsers(next.users);
+
         this.setState({
           topic : next
         });
@@ -50,7 +53,9 @@ class EditTopic extends React.PureComponent {
 
   onSubmit = (topic) => {
     const { history } = this.props;
-    request.put(`/api/topics/${topic.id}`, topic, () => {
+    const next = {...topic};
+    next.users = serializeUsers(next.users);
+    request.put(`/api/topics/${next.id}`, next, () => {
       history.push(`/topics/${topic.id}`);
     });
   };
