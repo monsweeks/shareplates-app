@@ -387,7 +387,12 @@ TopicForm.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   grps: PropTypes.arrayOf(
     PropTypes.shape({

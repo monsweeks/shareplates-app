@@ -11,6 +11,7 @@ import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { ShareEditorPopup } from '@/assets';
 import './ShareList.scss';
+import { convertInfo, convertUser } from '@/pages/Users/util';
 
 class ShareList extends React.Component {
   init = false;
@@ -70,7 +71,7 @@ class ShareList extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(data.user || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
       },
       () => {
         setUserInfoReducer({}, []);
@@ -80,8 +81,14 @@ class ShareList extends React.Component {
 
   getOpenShares = (options) => {
     request.get('/api/shares', { ...options }, (data) => {
+
+      const next = data.shares.slice(0);
+      for (let i=0; i<next.length; i+=1) {
+        next[i].adminUserInfo = convertInfo(next[i].adminUserInfo);
+      }
+
       this.setState({
-        shares: data.shares || [],
+        shares: next || [],
         options: {
           ...options,
         },
@@ -299,7 +306,6 @@ ShareList.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   setUserInfo: PropTypes.func,
   history: PropTypes.shape({

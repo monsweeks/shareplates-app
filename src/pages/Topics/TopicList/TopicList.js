@@ -11,6 +11,7 @@ import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { ShareEditorPopup, ShareHistoryListPopup, TopicCard } from '@/assets';
 import './TopicList.scss';
+import { convertUser } from '@/pages/Users/util';
 
 class TopicList extends React.Component {
   constructor(props) {
@@ -102,7 +103,7 @@ class TopicList extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(data.user || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
       },
       () => {
         setUserInfoReducer({}, []);

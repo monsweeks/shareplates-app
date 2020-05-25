@@ -14,7 +14,10 @@ import {
   DetailValue,
   Form,
   FormGroup,
+  ImageBuilder,
   Input,
+  Nav,
+  NavItem,
   RadioButton,
   Selector,
   SubLabel,
@@ -22,6 +25,7 @@ import {
 import { DATETIME_FORMATS } from '@/constants/constants';
 import LANGUAGES from '@/languages/languages';
 import './EditMyInfo.scss';
+import { convertUser } from '@/pages/Users/util';
 
 const breadcrumbs = [
   {
@@ -34,11 +38,23 @@ const breadcrumbs = [
   },
 ];
 
+const tabs = [
+  {
+    key: 'avatar',
+    name: '아바타',
+  },
+  {
+    key: 'image',
+    name: '이미지',
+  },
+];
+
 class EditMyInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       user: {},
+      iconType: 'avatar',
     };
   }
 
@@ -55,8 +71,11 @@ class EditMyInfo extends React.PureComponent {
         if (user && !user.dateTimeFormat) user.dateTimeFormat = DATETIME_FORMATS[0].key;
         if (user && !user.language) user.language = 'ko';
 
+        const next = convertUser(user);
+
         this.setState({
-          user: data.user || {},
+          user: next|| {},
+          iconType : next && next.info.icon && next.info.icon.type ? next.info.icon.type : 'avatar'
         });
       },
       () => {
@@ -77,19 +96,78 @@ class EditMyInfo extends React.PureComponent {
     });
   };
 
+  onChangeAvatar = (value) => {
+    const { user } = this.state;
+    const next = { ...user };
+    next.info.icon.type = 'avatar';
+    next.info.icon.data = value;
+
+    this.setState({
+      user: next,
+    });
+  };
+
+  getFileType = (file) => {
+    if (!/^image\//.test(file.type)) {
+      return 'image';
+    }
+    if (!/^video\//.test(file.type)) {
+      return 'video';
+    }
+    return 'file';
+  };
+
+  onChangeFile = (file) => {
+    const {
+      user: { id },
+    } = this.state;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', file.name);
+    formData.append('size', file.size);
+    formData.append('type', this.getFileType(file));
+
+    request.post(`/api/users/${id}/image`, formData, (data) => {
+      const { user } = this.state;
+      const obj = {};
+      obj.info = {
+        icon: {
+          type: 'image',
+          data: {
+            id: data.id,
+            uuid: data.uuid,
+          },
+        },
+      };
+
+      this.setState({
+        user: { ...user, ...obj },
+      });
+    });
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const { user } = this.state;
     const { setUserInfo: setUserInfoReducer } = this.props;
+    const next = { ...user };
+    next.info = JSON.stringify(next.info);
 
-    request.put('/api/users/my-info', user, (data) => {
-      setUserInfoReducer(data.user || {}, data.grps);
+    request.put('/api/users/my-info', next, (data) => {
+      setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+    });
+  };
+
+  changeTab = (iconType) => {
+    this.setState({
+      iconType,
     });
   };
 
   render() {
     const { t } = this.props;
-    const { user } = this.state;
+    const { user, iconType } = this.state;
 
     return (
       <RegisterLayout>
@@ -106,7 +184,27 @@ class EditMyInfo extends React.PureComponent {
           <SubLabel>{t('사용자 아이콘')}</SubLabel>
           <Description>{t('이미지를 직접 업로드하거나, 아바타를 만들어서 나를 표현할 수 있습니다.')}</Description>
           <FormGroup>
-            <AvatarBuilder data={user.info} onChange={this.onChange('info')} />
+            <div className="g-tabs mt-2">
+              <Nav className="tabs" tabs>
+                {tabs.map((tab) => {
+                  return (
+                    <NavItem
+                      key={tab.key}
+                      className={iconType === tab.key ? 'focus' : ''}
+                      onClick={() => {
+                        this.changeTab(tab.key);
+                      }}
+                    >
+                      {tab.name}
+                    </NavItem>
+                  );
+                })}
+              </Nav>
+              <div className="g-tabs-content">
+                {iconType === 'image' && <ImageBuilder info={user.info} onChangeFile={this.onChangeFile} />}
+                {iconType === 'avatar' && <AvatarBuilder info={user.info} onChange={this.onChangeAvatar} />}
+              </div>
+            </div>
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('label.name')}</SubLabel>
@@ -155,7 +253,7 @@ class EditMyInfo extends React.PureComponent {
           </FormGroup>
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
-          <DetailValue className='flex-grow-1' uppercase border={false}>
+          <DetailValue className="flex-grow-1" uppercase border={false}>
             <DateTime value={user.creationDate} dateTimeFormat={user.dateTimeFormat} />
           </DetailValue>
           <BottomButton onList={() => {}} onEdit={() => {}} />

@@ -408,7 +408,6 @@ ShareEditorPopup.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   setOpen: PropTypes.func,
   setStatusChange: PropTypes.func,

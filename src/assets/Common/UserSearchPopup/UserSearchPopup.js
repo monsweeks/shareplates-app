@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, SearchInput, Selector } from '@/components';
 import { UserManager } from '@/assets';
 import request from '@/utils/request';
+import { convertUsers } from '@/pages/Users/util';
 import './UserSearchPopup.scss';
 
 class UserSearchPopup extends React.Component {
@@ -46,8 +47,9 @@ class UserSearchPopup extends React.Component {
   search = () => {
     const { grpId, searchWord } = this.state;
     request.get('/api/users/search', { grpId, condition: searchWord }, (users) => {
+      const next = convertUsers(users);
       this.setState({
-        users,
+        users: next,
       });
     });
   };
@@ -147,12 +149,11 @@ class UserSearchPopup extends React.Component {
                   users={users}
                   selectedUsers={tempSelectedUsers}
                   selectedUserMarkedTag={selectedUserMarkedTag}
-                  markedUsers={markedUsers }
+                  markedUsers={markedUsers}
                   markedTag={markedTag}
                   emptyContent="검색된 사용자가 없습니다"
                   edit
                   popupContent
-
                 />
               </div>
             </div>
@@ -251,7 +252,7 @@ UserSearchPopup.propTypes = {
   markedUsers: PropTypes.arrayOf(PropTypes.any),
   markedTag: PropTypes.string,
   selectedTitle: PropTypes.string,
-  selectedUserMarkedTag : PropTypes.string,
+  selectedUserMarkedTag: PropTypes.string,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(UserSearchPopup)));

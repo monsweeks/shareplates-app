@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { Avatar, CircleIcon, Link, RadioButton } from '@/components';
+import { CircleIcon, Link, RadioButton, UserIcon } from '@/components';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
 
@@ -38,7 +38,7 @@ class ShortCutMenu extends React.PureComponent {
               }}
             >
               <div className="hover-item" />
-              <Avatar data={JSON.parse(user.info)} />
+              {user && <UserIcon info={user.info} />}
             </div>
           )}
           {!(user && user.info) && (
@@ -102,7 +102,12 @@ ShortCutMenu.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   history: PropTypes.shape({
     push: PropTypes.func,

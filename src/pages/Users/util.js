@@ -42,4 +42,47 @@ function socialLogin(vendor, noImplementSite) {
   }
 }
 
-export default socialLogin;
+function convertInfo(info) {
+  let next = info;
+  if (info && typeof(info) === 'string') {
+    next = JSON.parse(info);
+    if (!(next.icon && next.icon.type)) {
+      next = {
+        icon: {
+          type: 'avatar',
+          data: next.info,
+        },
+      };
+    }
+  }
+
+  return next;
+}
+
+function convertUser(user) {
+  const next = user;
+  if (user && user.info && typeof(user.info) === 'string') {
+    next.info = JSON.parse(user.info);
+    if (!(next.info.icon && next.info.icon.type)) {
+      next.info = {
+        icon: {
+          type: 'avatar',
+          data: next.info,
+        },
+      };
+    }
+  }
+
+  return next;
+}
+
+function convertUsers(users) {
+  const next = users.slice(0);
+
+  for (let i = 0; i < next.length; i += 1) {
+    next[i] = convertUser(next[i]);
+  }
+  return next;
+}
+
+export { convertInfo, convertUser, convertUsers, socialLogin };

@@ -15,6 +15,7 @@ import {
   TOPIC_FONT_FAMILIES,
   TOPIC_FONT_SIZES,
 } from '@/assets/Topics/PageEditor/PageController/constants';
+import { convertUsers } from '@/pages/Users/util';
 
 class Topic extends Component {
   constructor(props) {
@@ -63,6 +64,8 @@ class Topic extends Component {
         } else {
           next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
         }
+
+        next.users = convertUsers(next.users);
 
         this.setState({
           topic: next,
@@ -294,7 +297,6 @@ Topic.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

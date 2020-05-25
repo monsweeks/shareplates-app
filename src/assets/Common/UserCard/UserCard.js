@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Button, Card, CardBody } from '@/components';
+import { Button, Card, CardBody, UserIcon } from '@/components';
 import './UserCard.scss';
 
 class UserCard extends React.PureComponent {
@@ -21,7 +21,9 @@ class UserCard extends React.PureComponent {
 
     return (
       <Card
-        className={`user-card-wrapper g-no-select ${className} ${hover ? 'hover' : ''} ${selected ? 'selected' : ''} ${edit ? 'edit' : ''}`}
+        className={`user-card-wrapper g-no-select ${className} ${hover ? 'hover' : ''} ${selected ? 'selected' : ''} ${
+          edit ? 'edit' : ''
+        }`}
         onClick={() => {
           if (onClick) {
             if (user) {
@@ -36,12 +38,7 @@ class UserCard extends React.PureComponent {
           {!newCard && (
             <div className="user-card-content">
               <div className="user-icon">
-                {user.info && <Avatar data={JSON.parse(user.info)} />}
-                {!user.info && (
-                  <span>
-                    <i className="fal fa-smile" />
-                  </span>
-                )}
+                <UserIcon info={user.info} />
               </div>
               <div className="user-text">
                 <div className="name">{user.name}</div>
@@ -59,7 +56,7 @@ class UserCard extends React.PureComponent {
           )}
           {onRemove && (
             <Button
-              size='sm'
+              size="sm"
               color="danger"
               className="remove-button"
               onClick={() => {
@@ -70,7 +67,7 @@ class UserCard extends React.PureComponent {
             </Button>
           )}
           {marked && <div className="marked-tag">{markedTag}</div>}
-          {(selected && selectedUserMarkedTag) && <div className="marked-tag">{selectedUserMarkedTag}</div>}
+          {selected && selectedUserMarkedTag && <div className="marked-tag">{selectedUserMarkedTag}</div>}
         </CardBody>
       </Card>
     );
@@ -94,7 +91,12 @@ UserCard.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   hover: PropTypes.bool,
   onClick: PropTypes.func,
@@ -104,5 +106,5 @@ UserCard.propTypes = {
   markedTag: PropTypes.string,
   edit: PropTypes.bool,
   newCard: PropTypes.string,
-  selectedUserMarkedTag : PropTypes.string,
+  selectedUserMarkedTag: PropTypes.string,
 };

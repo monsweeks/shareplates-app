@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { GrpForm } from '@/assets';
+import { convertUsers } from '@/pages/Users/util';
 
 class EditGrp extends React.PureComponent {
   constructor(props) {
@@ -30,8 +31,12 @@ class EditGrp extends React.PureComponent {
       `/api/groups/${grpId}`,
       null,
       (grp) => {
+        const next = grp;
+        next.admins = convertUsers(grp.admins);
+        next.members = convertUsers(grp.members);
+
         this.setState({
-          grp,
+          grp: next,
         });
       },
       null,
@@ -97,7 +102,6 @@ EditGrp.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

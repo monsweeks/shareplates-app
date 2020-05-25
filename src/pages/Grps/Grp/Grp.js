@@ -8,6 +8,7 @@ import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
 import { UserManager } from '@/assets';
+import { convertUsers } from '@/pages/Users/util';
 
 class Grp extends Component {
   constructor(props) {
@@ -44,8 +45,12 @@ class Grp extends Component {
       `/api/groups/${grpId}`,
       null,
       (grp) => {
+        const next = grp;
+        next.admins = convertUsers(grp.admins);
+        next.members = convertUsers(grp.members);
+
         this.setState({
-          grp,
+          grp: next,
         });
       },
       null,
@@ -94,8 +99,6 @@ class Grp extends Component {
     } = this.props;
     const { t } = this.props;
     const { grp, isAdmin } = this.state;
-
-    console.log(grp);
 
     return (
       <DetailLayout margin={false}>
@@ -180,7 +183,6 @@ Grp.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({

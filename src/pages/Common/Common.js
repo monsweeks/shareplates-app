@@ -9,6 +9,7 @@ import { Button, Logo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import request from '@/utils/request';
 import './Common.scss';
+import { convertUser } from '@/pages/Users/util';
 
 const UNAUTH_URLS = {
   '/': true,
@@ -80,7 +81,7 @@ class Common extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(data.user || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },

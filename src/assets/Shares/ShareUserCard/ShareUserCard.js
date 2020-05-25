@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import { Avatar, Button, Card, CardBody } from '@/components';
+import { Button, Card, CardBody, UserIcon } from '@/components';
 import './ShareUserCard.scss';
 
 class ShareUserCard extends React.PureComponent {
@@ -30,8 +30,7 @@ class ShareUserCard extends React.PureComponent {
             )}
             <div className="user-icon">
               <div>
-                {user.info && <Avatar data={JSON.parse(user.info)} />}
-                {!user.info && <span className="default-icon" />}
+                {user && <UserIcon info={user.info} />}
               </div>
             </div>
             <div className="user-name">
@@ -93,7 +92,12 @@ ShareUserCard.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
     status: PropTypes.string,
     message: PropTypes.string,
     banYn: PropTypes.bool,
@@ -102,7 +106,12 @@ ShareUserCard.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    info: PropTypes.string,
+    info: PropTypes.shape({
+      icon: PropTypes.shape({
+        type: PropTypes.string,
+        data: PropTypes.objectOf(PropTypes.any),
+      }),
+    }),
   }),
   adminCard: PropTypes.bool,
   className: PropTypes.string,
