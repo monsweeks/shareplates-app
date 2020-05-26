@@ -6,10 +6,10 @@ import './PageTitle.scss';
 
 class PageTitle extends React.PureComponent {
   render() {
-    const { children, className, list, border, marginBottom } = this.props;
+    const { children, className, list, border } = this.props;
     const { onList, onEdit, onDelete, onSave, onCancel } = this.props;
     return (
-      <div className={`page-title-wrapper ${className} ${border ? 'has-border' : ''} ${marginBottom ? 'mb-4' : ''}`}>
+      <div className={`page-title-wrapper ${className} ${border ? 'has-border' : ''}`}>
         <h1>
           <span className="icon">
             <i className="fal fa-star" />
@@ -56,7 +56,6 @@ export default PageTitle;
 PageTitle.defaultProps = {
   className: '',
   border: false,
-  marginBottom: true,
 };
 
 PageTitle.propTypes = {
@@ -74,5 +73,4 @@ PageTitle.propTypes = {
   onList: PropTypes.func,
   onSave: PropTypes.func,
   onCancel: PropTypes.func,
-  marginBottom: PropTypes.bool,
 };

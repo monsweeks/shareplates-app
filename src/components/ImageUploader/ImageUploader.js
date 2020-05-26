@@ -41,6 +41,10 @@ class ImageUploader extends React.Component {
     if (e.dataTransfer.files.length > 0) {
       onChangeFile(e.dataTransfer.files[0]);
     }
+
+    this.setState({
+      dragging: false,
+    });
   };
 
   render() {
