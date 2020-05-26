@@ -1,57 +1,122 @@
 .open-share-list-wrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
+
+  .view-type {
+    text-align: center;
+    padding: 1rem 0;
+    flex-grow: 0;
+    background: linear-gradient(180deg, rgba(9,120,174,1) 0%, rgba(11,154,223,1) 100%);
+
+    button {
+      width: 110px;
+    }
+  }
 
   .access-code {
-    padding: 2rem 1rem 3rem;
-    background-color: darken($sea-blue, 5%);
-    background-color: $sea-blue;
-    display: none;
+    > div {
+      display: flex;
+      flex-grow: 1;
+      width: 100%;
+      .access-code-content {
+        width: 100%;
+        @media (max-width: 768px) {
+          align-self: center;
+          margin-bottom: 60px;
+        }
 
-    h4 {
-      text-align: center;
-      color: $white;
-      margin-bottom: 1rem;
-    }
+        .access-code-message {
+          text-align: center;
+          width: 100%;
+          color: $white;
+          font-size: 1.5rem;
+          padding: 3rem 1rem 0;
 
-    > div.access-code-input {
-      width: 300px;
-      margin: 0 auto;
-      vertical-align: top;
-      line-height: 0;
-      height: 37px;
-      border: 1px solid $secondary;
-      border-radius: 0;
+          @media (max-width: 576px) {
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem 0;
+            align-self: center;
+          }
+        }
 
-      > input {
-        border: none;
-        outline: none;
-        font-size: 18px;
-        font-family: LGSmHaB;
-        padding: 0.5rem;
-        height: 35px;
-        border-radius: 5px 0 0 5px;
-        border-radius: 2px 0 0 2px;
-        border-radius: 0;
-        vertical-align: top;
-        text-align: center;
-        width: calc(100% - 60px);
-        _background-color: $yellow;
-      }
+        .access-result-message {
+          text-align: center;
+          padding: 0.25rem 0.25rem 0.5rem;
 
-      .access-join-button {
-        padding: 0.5rem 0;
-        width: 60px;
-        text-align: center;
-        border: none;
-        border-radius: 0 5px 5px 0;
-        border-radius: 0 2px 2px 0;
-        border-radius: 0;
-        margin: 0;
-        vertical-align: top;
-        height: 35px;
+          > span {
+            color: $white;
+            padding: 0.125rem 1rem;
+            display: inline-block;
+            border-radius: 10px;
+          }
+
+          &.in-valid {
+            > span {
+              color: $white;
+              background-color: $danger;
+            }
+          }
+
+          @media (max-width: 576px) {
+            font-size: 0.8rem;
+          }
+        }
+
+        .access-code-input {
+          align-self: center;
+          width: 40%;
+          margin: 0 auto;
+          line-height: 0;
+          border-radius: 0;
+          position: relative;
+
+          .clear-button {
+            position: absolute;
+            top: 0;
+            right: -40px;
+          }
+
+          @media (max-width: 992px) {
+            width: 60%;
+          }
+
+          @media (max-width: 768px) {
+            width: calc(100% - 100px);
+            margin: 0 50px;
+          }
+
+          > input {
+            border: none;
+            outline: none;
+            font-size: 18px;
+            font-family: LGSmHaB;
+            padding: 0.5rem;
+            height: 35px;
+            border-radius: 2px;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 4px;
+          }
+
+          .access-code-button {
+            text-align: center;
+            padding: 1rem 0;
+            button {
+              padding: 0.5rem 0;
+              width: 60px;
+              text-align: center;
+              border: none;
+              border-radius: 0 5px 5px 0;
+              border-radius: 0 2px 2px 0;
+              border-radius: 0;
+              margin: 0;
+              vertical-align: top;
+              height: 35px;
+              line-height: 0;
+            }
+          }
+        }
       }
     }
   }

@@ -10,8 +10,10 @@ import Grp from './Grps/Grp/Grp';
 import GrpList from './Grps/GrpList/GrpList';
 import NewGrp from './Grps/NewGrp/NewGrp';
 // Shares
+import AccessCode from './Shares/AccessCode/AccessCode';
 import Share from './Shares/Share/Share';
 import ShareList from './Shares/ShareList/ShareList';
+
 // Topic
 import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
 import Page from './Topics/Chapters/Pages/Page/Page';
@@ -39,6 +41,7 @@ export {
   GrpList,
   NewGrp,
   // Share
+  AccessCode,
   ShareList,
   Share,
   // Topic

@@ -210,6 +210,18 @@ button.btn {
     }
   }
 
+  &.btn-transparent {
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    &.disabled:hover {
+      background-color: transparent;
+    }
+  }
+
   &.btn-outline-black {
     border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: $white;
