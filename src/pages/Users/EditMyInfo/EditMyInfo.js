@@ -171,8 +171,7 @@ class EditMyInfo extends React.PureComponent {
 
     return (
       <RegisterLayout>
-        <PageTitle list={breadcrumbs}>{t('내 정보 수정')}</PageTitle>
-        <hr className="d-none d-sm-block mb-3" />
+        <PageTitle list={breadcrumbs} border>{t('내 정보 수정')}</PageTitle>
         <Form onSubmit={this.onSubmit} className="flex-grow-1 d-flex flex-column">
           <SubLabel>{t('label.email')}</SubLabel>
           <Description>

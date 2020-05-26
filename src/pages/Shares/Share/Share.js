@@ -18,6 +18,7 @@ import {
 } from '@/assets';
 import './Share.scss';
 import { convertUser, convertUsers } from '@/pages/Users/util';
+import { Header } from '@/layouts';
 
 class Share extends React.Component {
   constructor(props) {
@@ -42,21 +43,22 @@ class Share extends React.Component {
       hideShareNavigator: false,
       fullScreen: false,
       openUserPopup: false,
+      init: false,
     };
   }
 
   componentDidMount() {
-    const { shareId } = this.state;
+    const { shareId, init } = this.state;
     const { user } = this.props;
-    if (user) {
+    if (user && !init) {
       this.getShare(shareId);
     }
   }
 
   componentDidUpdate() {
-    const { shareId, share } = this.state;
+    const { shareId, share, init } = this.state;
     const { user } = this.props;
-    if (user && share.id !== shareId) {
+    if (user && share.id !== shareId && !init) {
       this.getShare(shareId);
     }
   }
@@ -74,11 +76,12 @@ class Share extends React.Component {
       (data) => {
         const { user } = this.props;
 
-        if (data && data.chapters) {
-          data.chapters.sort((a, b) => {
-            return a.orderNo - b.order;
-          });
-        }
+        if (data.access)
+          if (data && data.chapters) {
+            data.chapters.sort((a, b) => {
+              return a.orderNo - b.order;
+            });
+          }
 
         this.setState({
           topic: data.topic,
@@ -88,16 +91,33 @@ class Share extends React.Component {
           currentPageId: data.share.currentPageId,
           isAdmin: data.share.adminUserId === user.id,
           users: convertUsers(data.users),
+          init: true,
         });
 
         this.getPages(shareId, data.share.currentChapterId);
       },
       (error, response) => {
         const { t, history, addMessage: addMessageReducer } = this.props;
-        if (response.data.code === 'SHARE_BANNED_USER') {
+
+        if (response.data.code === 'SHARE_NOT_EXISTS_SHARE') {
+          this.setState({
+            init: true,
+          });
+          addMessageReducer(
+            0,
+            MESSAGE_CATEGORY.INFO,
+            t('토픽에 참여할 수 없습니다'),
+            t('공유가 종료된 토픽이거나, 찾을 수 없는 토픽입니다.'),
+          );
+        } else if (response.data.code === 'SHARE_NEED_ACCESS_CODE') {
+          history.push(`/shares/${shareId}/code`);
+        } else if (response.data.code === 'SHARE_BANNED_USER') {
           history.push('/shares');
           addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('접속 오류'), response.data.message);
         } else {
+          this.setState({
+            init: true,
+          });
           addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('요청이 올바르지 않습니다.'), response.data.message);
         }
       },
@@ -460,138 +480,157 @@ class Share extends React.Component {
       hideShareNavigator,
       fullScreen,
       openUserPopup,
+      init,
     } = this.state;
 
     return (
       <div className="content-viewer-wrapper">
-        {share && share.id && (
-          <SocketClient
-            topics={[`/sub/share-room/${shareId}`]}
-            onMessage={this.onMessage}
-            onConnect={() => {
-              this.joinShare(shareId);
-            }}
-            onDisconnect={() => {}}
-            setRef={(client) => {
-              this.clientRef = client;
-            }}
-          />
-        )}
-        <div className={`viewer-top g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
-          <div>
-            <div className="logo-area">
-              <TopLogo />
-            </div>
-            <div className="menu">
-              {chapters.length > 0 && (
-                <>
-                  <ShareNavigator
-                    className="chapters-menu"
-                    list={chapters}
-                    selectedId={currentChapterId}
-                    onClick={this.setChapter}
-                    onPrevClick={this.setChapter}
-                    onNextClick={this.setChapter}
-                  />
-                  <ShareNavigator
-                    className="pages-menu"
-                    list={pages}
-                    selectedId={currentPageId}
-                    onClick={this.setPage}
-                    onPrevClick={this.setPage}
-                    onNextClick={this.setPage}
-                  />
-                </>
-              )}
-              {chapters.length < 1 && (
-                <div className="no-menu">
-                  <div>작성된 컨텐츠가 없습니다</div>
-                </div>
-              )}
-            </div>
-            <div className="side-menu">
-              <ShareSideMenu
-                share={share}
-                isAdmin={isAdmin}
-                stopShare={this.stopShare}
-                hideShareNavigator={hideShareNavigator}
-                setHideShareNavigator={this.setHideShareNavigator}
-                fullScreen={fullScreen}
-                setFullScreen={this.setFullScreen}
-                openUserPopup={openUserPopup}
-                setOpenUserPopup={this.setOpenUserPopup}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="content">
-          {share.startedYn && currentPage && (
-            <PageContent
-              content={JSON.parse(currentPage.content)}
-              setPageContent={this.setPageContent}
-              onLayoutChange={this.onLayoutChange}
-              setSelectedItem={this.setSelectedItem}
-              onChangeValue={this.onChangeValue}
-              setEditing={this.setEditing}
-              movePage={this.movePage}
-            />
-          )}
-          {share.startedYn && !currentPage && (
-            <div className="empty-page">
+        {!(share && share.id) && (
+          <>
+            <Header />
+            <div className="empty-share">
               <EmptyMessage
-                className="h5"
+                className="h5 text-white"
                 message={
                   <div>
-                    <div>{t('선택된 컨텐츠가 없습니다')}</div>
+                    {!init && <div>{t('잠시만 기다려주세요')}</div>}
+                    {init && <div>{t('공유가 종료된 토픽이거나, 찾을 수 없는 토픽입니다.')}</div>}
                   </div>
                 }
               />
             </div>
-          )}
-          {openUserPopup && (
-            <ShareSidePopup
-              name="user-popup"
-              className="open-user-popup"
-              title={`참여중인 사용자 (${users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length}/${
-                users.filter((u) => !u.banYn).length
-              })`}
-              arrowRight={isAdmin ? '126px' : '110px'}
-              setOpen={this.setOpenUserPopup}
-            >
-              <ShareSideUserPopup
-                user={user}
-                users={users}
-                banUser={this.banUser}
-                kickOutUser={this.kickOutUser}
-                allowUser={this.allowUser}
-                isAdmin={isAdmin}
-              />
-            </ShareSidePopup>
-          )}
-        </div>
-        <div className="screen-type d-none" onClick={() => {}}>
-          <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
-          <div>
-            <Button color="primary">프리젠테이션 스크린</Button>
-            <Button color="primary">웹 페이지</Button>
-            <Button color="primary">컨트롤러</Button>
-          </div>
-        </div>
-        {!share.startedYn && (
-          <Popup open>
-            <ShareStandByPopup
-              users={users}
-              share={share}
-              isAdmin={isAdmin}
-              user={user}
-              sendReadyChat={this.sendReadyChat}
-              startShare={this.startShare}
-              closeShare={this.closeShare}
-              exitShare={() => {
-                history.push('/shares');
+          </>
+        )}
+        {share && share.id && (
+          <>
+            <SocketClient
+              topics={[`/sub/share-room/${shareId}`]}
+              onMessage={this.onMessage}
+              onConnect={() => {
+                this.joinShare(shareId);
+              }}
+              onDisconnect={() => {}}
+              setRef={(client) => {
+                this.clientRef = client;
               }}
             />
-          </Popup>
+            <div className={`viewer-top g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
+              <div>
+                <div className="logo-area">
+                  <TopLogo />
+                </div>
+                <div className="menu">
+                  {chapters.length > 0 && (
+                    <>
+                      <ShareNavigator
+                        className="chapters-menu"
+                        list={chapters}
+                        selectedId={currentChapterId}
+                        onClick={this.setChapter}
+                        onPrevClick={this.setChapter}
+                        onNextClick={this.setChapter}
+                      />
+                      <ShareNavigator
+                        className="pages-menu"
+                        list={pages}
+                        selectedId={currentPageId}
+                        onClick={this.setPage}
+                        onPrevClick={this.setPage}
+                        onNextClick={this.setPage}
+                      />
+                    </>
+                  )}
+                  {chapters.length < 1 && (
+                    <div className="no-menu">
+                      <div>작성된 컨텐츠가 없습니다</div>
+                    </div>
+                  )}
+                </div>
+                <div className="side-menu">
+                  <ShareSideMenu
+                    share={share}
+                    isAdmin={isAdmin}
+                    stopShare={this.stopShare}
+                    hideShareNavigator={hideShareNavigator}
+                    setHideShareNavigator={this.setHideShareNavigator}
+                    fullScreen={fullScreen}
+                    setFullScreen={this.setFullScreen}
+                    openUserPopup={openUserPopup}
+                    setOpenUserPopup={this.setOpenUserPopup}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="content">
+              {share.startedYn && currentPage && (
+                <PageContent
+                  content={JSON.parse(currentPage.content)}
+                  setPageContent={this.setPageContent}
+                  onLayoutChange={this.onLayoutChange}
+                  setSelectedItem={this.setSelectedItem}
+                  onChangeValue={this.onChangeValue}
+                  setEditing={this.setEditing}
+                  movePage={this.movePage}
+                />
+              )}
+              {share.startedYn && !currentPage && (
+                <div className="empty-page">
+                  <EmptyMessage
+                    className="h5"
+                    message={
+                      <div>
+                        <div>{t('선택된 컨텐츠가 없습니다')}</div>
+                      </div>
+                    }
+                  />
+                </div>
+              )}
+              {openUserPopup && (
+                <ShareSidePopup
+                  name="user-popup"
+                  className="open-user-popup"
+                  title={`참여중인 사용자 (${
+                    users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length
+                  }/${users.filter((u) => !u.banYn).length})`}
+                  arrowRight={isAdmin ? '126px' : '110px'}
+                  setOpen={this.setOpenUserPopup}
+                >
+                  <ShareSideUserPopup
+                    user={user}
+                    users={users}
+                    banUser={this.banUser}
+                    kickOutUser={this.kickOutUser}
+                    allowUser={this.allowUser}
+                    isAdmin={isAdmin}
+                  />
+                </ShareSidePopup>
+              )}
+            </div>
+            <div className="screen-type d-none" onClick={() => {}}>
+              <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
+              <div>
+                <Button color="primary">프리젠테이션 스크린</Button>
+                <Button color="primary">웹 페이지</Button>
+                <Button color="primary">컨트롤러</Button>
+              </div>
+            </div>
+            {!share.startedYn && (
+              <Popup open>
+                <ShareStandByPopup
+                  users={users}
+                  share={share}
+                  isAdmin={isAdmin}
+                  user={user}
+                  sendReadyChat={this.sendReadyChat}
+                  startShare={this.startShare}
+                  closeShare={this.closeShare}
+                  exitShare={() => {
+                    history.push('/shares');
+                  }}
+                />
+              </Popup>
+            )}
+          </>
         )}
       </div>
     );

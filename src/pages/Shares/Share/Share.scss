@@ -3,6 +3,11 @@
   flex-direction: column;
   width: 100%;
 
+  .empty-share {
+    display: flex;
+    flex-grow: 1;
+  }
+
   .viewer-top {
     flex-grow: 0;
     display: block;

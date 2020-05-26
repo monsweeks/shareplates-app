@@ -4,14 +4,25 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { setUserInfo } from 'actions';
-import { FullLayout } from '@/layouts';
-import { Button, Col, Popup, Row, SearchBar, ShareCard } from '@/components';
+import { DetailLayout, FullLayout } from '@/layouts';
+import { Button, Col, Popup, RadioButton, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { ShareEditorPopup } from '@/assets';
 import './ShareList.scss';
 import { convertInfo, convertUser } from '@/pages/Users/util';
+
+const viewTypes = [
+  {
+    key: 'accessCode',
+    value: '엑세스 코드로 참여',
+  },
+  {
+    key: 'list',
+    value: '공개 토픽 리스트',
+  },
+];
 
 class ShareList extends React.Component {
   init = false;
@@ -37,6 +48,8 @@ class ShareList extends React.Component {
       openShareEditorPopup: false,
       selectedTopicId: null,
       selectedShareId: null,
+      viewType: 'accessCode',
+      joinResult: true,
     };
 
     this.setOptionToUrl();
@@ -81,9 +94,8 @@ class ShareList extends React.Component {
 
   getOpenShares = (options) => {
     request.get('/api/shares', { ...options }, (data) => {
-
       const next = data.shares.slice(0);
-      for (let i=0; i<next.length; i+=1) {
+      for (let i = 0; i < next.length; i += 1) {
         next[i].adminUserInfo = convertInfo(next[i].adminUserInfo);
       }
 
@@ -161,6 +173,45 @@ class ShareList extends React.Component {
     history.push(`/shares/${shareId}`);
   };
 
+  onChangeViewType = (viewType) => {
+    this.setState({
+      viewType,
+    });
+  };
+
+  onJoin = () => {
+    const { accessCode } = this.state;
+    const { t, history } = this.props;
+
+    if (!accessCode && accessCode.length < 1) {
+      this.setState({
+        joinResult: t('엑세스 코드를 입력해주세요'),
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('accessCode', accessCode);
+
+    request.post(
+      '/api/shares/code',
+      formData,
+      (share) => {
+        history.push(`/shares/${share.id}`);
+      },
+      (error, response) => {
+        if (response.data.code === 'SHARE_NOT_EXISTS_SHARE') {
+          this.setState({
+            joinResult: t('공유가 종료된 토픽이거나, 찾을 수 없는 토픽입니다.'),
+          });
+        } else {
+          request.processError(error);
+        }
+      },
+      true,
+    );
+  };
+
   render() {
     const { user, t } = this.props;
 
@@ -172,6 +223,8 @@ class ShareList extends React.Component {
       selectedTopicId,
       selectedShareId,
       openShareEditorPopup,
+      viewType,
+      joinResult,
     } = this.state;
 
     return (
@@ -230,47 +283,77 @@ class ShareList extends React.Component {
             );
           }}
         />
-        <div className="access-code">
-          <h4>액세스 코드로 참여하기</h4>
-          <div className="access-code-input">
-            <input
-              type="text"
-              value={accessCode}
-              maxLength={6}
-              onChange={(e) => {
-                this.setState({
-                  accessCode: e.target.value,
-                });
-              }}
-            />
-            <Button className="access-join-button">참여</Button>
-          </div>
+        <div className="view-type">
+          <RadioButton items={viewTypes} value={viewType} outline onClick={this.onChangeViewType} />
         </div>
-        <FullLayout className="topic-list-content text-center align-self-center">
-          <div className="topic-list">
-            <Row>
-              {shares.map((share, i) => {
-                return (
-                  <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
-                    <ShareCard
-                      share={share}
-                      onConfigClick={
-                        user && share.adminUserId === user.id
-                          ? (topicId, shareId) => {
-                              this.onConfigClick(topicId, shareId);
-                            }
-                          : null
-                      }
-                      onCardClick={(shareId, code) => {
-                        this.onCardClick(shareId, code);
-                      }}
-                    />
-                  </Col>
-                );
-              })}
-            </Row>
-          </div>
-        </FullLayout>
+        {viewType === 'accessCode' && (
+          <DetailLayout className="access-code m-0 p-0 bg-transparent">
+            <div>
+              <div className="access-code-content">
+                <div className="access-code-message">{t('참여하려는 토픽의 엑세스 코드를 입력해주세요')}</div>
+                <div className={`access-result-message ${joinResult === true ? '' : 'in-valid'}`}>
+                  <span>
+                    {joinResult === true ? '비공개 토픽은 엑세스 코드를 통해서만 접근이 가능합니다' : joinResult}
+                  </span>
+                </div>
+                <div className="access-code-input">
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        accessCode: '',
+                      });
+                    }}
+                    color="transparent"
+                    className="text-white clear-button"
+                  >
+                    <i className="fal fa-times" />
+                  </Button>
+                  <input
+                    type="text"
+                    value={accessCode}
+                    maxLength={6}
+                    onChange={(e) => {
+                      this.setState({
+                        accessCode: e.target.value,
+                      });
+                    }}
+                  />
+                  <div className="access-code-button">
+                    <Button onClick={this.onJoin}>참여</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DetailLayout>
+        )}
+        {viewType === 'list' && (
+          <FullLayout className="topic-list-content text-center align-self-center">
+            <div className="topic-list">
+              <Row>
+                {shares.map((share, i) => {
+                  return (
+                    <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
+                      <ShareCard
+                        share={share}
+                        onConfigClick={
+                          user && share.adminUserId === user.id
+                            ? (topicId, shareId) => {
+                                this.onConfigClick(topicId, shareId);
+                              }
+                            : null
+                        }
+                        onCardClick={(shareId, code) => {
+                          this.onCardClick(shareId, code);
+                        }}
+                      />
+                    </Col>
+                  );
+                })}
+              </Row>
+            </div>
+          </FullLayout>
+        )}
+
         {openShareEditorPopup && selectedShareId && (
           <Popup title="토픽 공유 관리" open setOpen={this.setOpenShareEditorPopup}>
             <ShareEditorPopup

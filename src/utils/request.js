@@ -229,6 +229,7 @@ const request = {
   put,
   del,
   getBase,
+  processError,
 };
 
 export default request;
