@@ -210,6 +210,19 @@ button.btn {
     }
   }
 
+  &.btn-gray {
+    background-color: $gray-400;
+    color: $black;
+
+    &:hover {
+      background-color: $yellow;
+    }
+
+    &.disabled:hover {
+      background-color: $gray-300;
+    }
+  }
+
   &.btn-transparent {
     background-color: transparent;
 

@@ -48,7 +48,7 @@ class ShareList extends React.Component {
       openShareEditorPopup: false,
       selectedTopicId: null,
       selectedShareId: null,
-      viewType: 'accessCode',
+      viewType: 'list',
       joinResult: true,
     };
 
@@ -230,6 +230,7 @@ class ShareList extends React.Component {
     return (
       <div className="open-share-list-wrapper">
         <SearchBar
+          className='search-bar'
           order={order}
           onChangeOrder={(value) => {
             this.setState(
@@ -342,9 +343,7 @@ class ShareList extends React.Component {
                               }
                             : null
                         }
-                        onCardClick={(shareId, code) => {
-                          this.onCardClick(shareId, code);
-                        }}
+                        onCardClick={this.onCardClick}
                       />
                     </Col>
                   );

@@ -15,14 +15,13 @@ class SearchBar extends React.Component {
 
   render() {
     const { openOptions } = this.state;
-
-    const { grps, grpId, onChangeGrp } = this.props;
+    const { className, grps, grpId, onChangeGrp } = this.props;
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
     const { onSearch, onChangeSearchWord, t, searchPlaceholder, searchWord, onClear } = this.props;
 
     return (
-      <div className="search-bar-wrapper g-no-select ">
+      <div className={`search-bar-wrapper g-no-select ${className}`}>
         <div>
           {onChangeGrp && (
             <div className="grp-col">
@@ -125,7 +124,12 @@ class SearchBar extends React.Component {
   }
 }
 
+SearchBar.defaultProps = {
+  className: '',
+};
+
 SearchBar.propTypes = {
+  className: PropTypes.string,
   grpId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   grps: PropTypes.arrayOf(
     PropTypes.shape({

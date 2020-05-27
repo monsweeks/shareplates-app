@@ -6,12 +6,17 @@
   .view-type {
     text-align: center;
     padding: 1rem 0;
+    padding: 1.5rem 0 0;
     flex-grow: 0;
     background: linear-gradient(180deg, rgba(9,120,174,1) 0%, rgba(11,154,223,1) 100%);
 
     button {
       width: 110px;
     }
+  }
+
+  .search-bar {
+    display: none;
   }
 
   .access-code {

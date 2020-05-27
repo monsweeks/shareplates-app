@@ -1,191 +1,232 @@
 .share-card-wrapper {
   border: none !important;
-  height: 200px;
-  border-radius: 3px;
+
+  border-radius: 0;
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
   position: relative;
   vertical-align: top;
-  cursor: pointer;
 
-  .private {
-    position: absolute;
-    top: 0.5rem;
-    right: 28px;
+  .title {
+    .share-name {
+      flex: 0;
+      padding: 1.25rem 0.25rem 1.25rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      font-family: LGSmHaB, sans-serif;
+      margin: 0;
+      line-height: 100%;
+      _background-color: $light;
+    }
+  }
+
+  .slide-content {
+    background-color: $light;
+    overflow: hidden;
+    .slide-content-viewer {
+      height: 100px;
+      white-space: normal;
+      width: 300%;
+      position: relative;
+      transition: all 0.3s;
+      vertical-align: top;
+
+      > div {
+        vertical-align: top;
+        display: inline-block;
+        width: calc(100% / 3);
+        height: 100%;
+      }
+
+      .main {
+        > div {
+          display: flex;
+          flex-direction: row;
+          height: 100%;
+
+          align-self: center;
+
+          > div {
+            align-self: center;
+            flex-grow: 1;
+
+            .current-count {
+              margin-bottom: 0.5rem;
+              .count {
+                font-size: 0.8rem;
+                font-family: LGSmHaB, sans-serif;
+              }
+
+              .name {
+                font-size: 0.7rem;
+              }
+            }
+
+            .open-time {
+              text-transform: uppercase;
+              font-size: 0.7rem;
+            }
+          }
+        }
+      }
+
+      .admin {
+        padding: 0;
+        .admin-user {
+          display: flex;
+          flex-direction: row;
+
+          .icon {
+            width: 120px;
+            height: 100px;
+            padding: 10px 20px;
+            flex-grow: 0;
+            > div {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          .info {
+            flex-grow: 1;
+            align-self: center;
+            text-align: left;
+
+            .label {
+              font-size: 0.7rem;
+            }
+
+            .name {
+              font-family: LGSmHaB, sans-serif;
+              font-size: 1.2rem;
+            }
+
+            .email {
+              font-family: 'Baloo Bhai';
+              font-size: 0.8rem;
+              display: none;
+            }
+          }
+        }
+      }
+
+      .current {
+        > div {
+          display: flex;
+          flex-direction: row;
+          height: 100%;
+          align-self: center;
+
+          > div {
+            align-self: center;
+            flex-grow: 1;
+            padding: 0 20px;
+
+            .label {
+              font-size: 0.7rem;
+            }
+
+            .topic {
+              font-size: 1rem;
+              font-family: LGSmHaB, sans-serif;
+              line-height: 100%;
+              margin-bottom: 0.25rem;
+
+              &:before {
+                content: '<';
+              }
+
+              &:after {
+                content: '>';
+              }
+            }
+
+            .value {
+              line-height: 100%;
+              font-size: 1rem;
+              font-family: LGSmHaB, sans-serif;
+              margin-bottom: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+
+    .slide-buttons {
+      line-height: 0;
+      padding: 0.5rem 0;
+      _background-color: $light;
+      background-color: $white;
+      button {
+        width: 10px;
+        height: 10px;
+        padding: 0;
+        border-radius: 50%;
+        margin: 0 3px;
+
+        &.selected {
+          background-color: $yellow;
+
+          &:hover {
+            background-color: darken($yellow, 5%);
+          }
+        }
+      }
+    }
+  }
+
+  .bottom-buttons {
+    padding: 0.25rem 0.25rem 0.75rem;
+    margin: 0 1rem;
+    _background-color: $light;
+
+    > button {
+      margin: 0 0.125rem;
+    }
+  }
+
+  .tag {
     display: inline-block;
     text-transform: uppercase;
     font-size: 0.75rem;
-    background-color: $danger;
+    background-color: $secondary;
+    font-family: NanumGothic, sans-serif;
     line-height: 100%;
-    padding: 3px 4px 2px;
     color: $white;
-    border-radius: 3px;
-    font-family: 'Baloo Bhai', cursive;
+    padding: 4px 6px;
+    border-radius: 2px;
+  }
+
+  .private {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 0;
+    text-align: center;
+
+    .tag {
+      background-color: $danger;
+      padding: 2px 6px;
+      font-family: 'Baloo Bhai', cursive;
+      border-radius: 0 0 3px 3px;
+    }
+  }
+
+  .status {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
   }
 
   .card-body {
     display: flex;
     text-align: center;
-    padding: 1rem 0 !important;
+    flex-direction: column;
+    padding: 0 !important;
 
     > div {
       align-self: center;
       vertical-align: middle;
       width: 100%;
-    }
-
-    .share-card-content {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-
-      .share-name {
-        flex: 0;
-        padding: 0.25rem 0.25rem 0;
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin-bottom: 0.125rem;
-      }
-
-      .status {
-        text-align: center;
-        background-color: $light;
-        padding: 0.25rem 0;
-        line-height: 100%;
-
-        > span {
-          display: inline-block;
-          font-size: 11px;
-          background-color: $secondary;
-          color: $white;
-          line-height: 100%;
-          padding: 4px 6px 2px;
-          border-radius: 2px;
-          font-family: LGSmHaB;
-        }
-      }
-
-      .share-topic-name {
-        font-size: 10px;
-        text-align: right;
-        position: absolute;
-        top: 0.5rem;
-        left: 0.5rem;
-
-        .tag {
-          display: inline-block;
-          padding: 2px 0 2px 4px;
-          line-height: 100%;
-        }
-
-        .topic-name {
-          display: inline-block;
-          line-height: 100%;
-          padding: 2px 4px;
-        }
-      }
-
-      .config-button {
-        font-size: 14px;
-        position: absolute;
-        top: 6px;
-        right: 5px;
-        display: inline-block;
-        line-height: 0;
-        width: 20px;
-        height: 20px;
-        padding-top: 3px;
-        border-radius: 50%;
-        &:hover {
-          background-color: $yellow;
-        }
-      }
-
-      .share-info {
-        display: flex;
-
-        .admin-user {
-          min-width: 110px;
-          max-width: 110px;
-          flex-grow: 0;
-          padding: 0.5rem 1rem;
-          text-align: center;
-          align-self: center;
-          position: relative;
-
-          .separator {
-            position: absolute;
-            top: 20px;
-            bottom: 20px;
-            right: 0;
-            width: 1px;
-            border-left: 1px dashed rgba(0, 0, 0, 0.15);
-          }
-
-          .info {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto;
-          }
-
-          .name {
-            font-size: 12px;
-            margin-top: 0.25rem;
-          }
-
-          .email {
-            font-size: 10px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: none;
-          }
-        }
-
-        .current-info {
-          flex-grow: 1;
-          align-self: center;
-          padding: 1rem 1rem 0.5rem;
-
-          _border: 1px solid rgba(0, 0, 0, 0.2);
-
-          .chapter-name,
-          .page-name {
-            position: relative;
-            font-size: 12px;
-            text-align: left;
-
-            .tag {
-              font-size: 10px;
-              line-height: 100%;
-              margin-bottom: 0.25rem;
-              > span {
-                display: inline-block;
-                padding: 2px 4px;
-                border-radius: 2px;
-                border: 1px solid rgba(0, 0, 0, 0.2);
-              }
-            }
-
-            .name {
-              padding: 0 0.5rem;
-            }
-          }
-
-          .chapter-name {
-            margin-bottom: 0.5rem;
-          }
-        }
-      }
-
-      .open-time {
-        font-size: 10px;
-        text-transform: uppercase;
-        position: absolute;
-        bottom: 3px;
-        text-align: right;
-        right: 0.5rem;
-      }
     }
   }
 }
