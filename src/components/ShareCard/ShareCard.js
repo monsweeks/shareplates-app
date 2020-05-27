@@ -3,71 +3,123 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import ReactTimeAgo from 'react-time-ago';
 import moment from 'moment';
-import { Card, CardBody, UserIcon } from '@/components';
+import { Button, Card, CardBody, UserIcon } from '@/components';
 import './ShareCard.scss';
 
+const tabs = ['main', 'admin', 'current'];
+
 class ShareCard extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tab: 'main',
+    };
+  }
+
   render() {
     const { className, share, onConfigClick, onCardClick, t } = this.props;
+    const { tab } = this.state;
 
     return (
-      <Card
-        className={`share-card-wrapper g-no-select ${className}`}
-        onClick={() => {
-          onCardClick(share.id, share.accessCode);
-        }}
-      >
+      <Card className={`share-card-wrapper g-no-select ${className}`}>
         <CardBody>
-          {share && share.privateYn && <span className="private">private</span>}
-          <div className="share-card-content">
-            <div className="share-topic-name">
-              <span className="tag">{t('TOPIC')}</span>
-              <span className="topic-name">{share.topicName}</span>
+          {share && share.privateYn && (
+            <div className="private">
+              <span className="tag">private</span>
             </div>
+          )}
+          <span className="tag status">{share.startedYn ? t('진행중') : t('대기중')}</span>
+          <div className="title">
+            <div className="share-name">{share.name}</div>
+          </div>
+          <div className="slide-content">
+            <div
+              className="slide-content-viewer"
+              style={{
+                left: `${tabs.findIndex((key) => key === tab) * -100}%`,
+              }}
+            >
+              <div className="main">
+                <div>
+                  <div>
+                    <div className="current-count">
+                      <div className="count">
+                        {share.onLineUserCount} / {share.onLineUserCount + share.offLineUserCount} {t('명')}
+                      </div>
+                      <div className="name">{t('참여중')}</div>
+                    </div>
+                    <div className="open-time">
+                      <ReactTimeAgo date={moment(share.lastOpenDate).valueOf()} /> 열림
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="admin">
+                <div className="admin-user">
+                  <div className="icon">
+                    <div>{share.adminUserInfo && <UserIcon info={share.adminUserInfo} />}</div>
+                  </div>
+                  <div className="info">
+                    <div className="label">어드민</div>
+                    <div className="name">{share.adminUserName}</div>
+                    <div className="email">{share.adminUserEmail}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="current">
+                <div>
+                  <div>
+                    <div className="topic">{share.topicName}</div>
+                    <div className="value">
+                      {share.currentChapterTitle} / {share.currentPageTitle}
+                    </div>
+                    <div className="label">진행중</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="slide-buttons">
+              {tabs.map((key) => {
+                return (
+                  <Button
+                    key={key}
+                    color="gray"
+                    className={`${tab === key ? 'selected' : ''}`}
+                    onClick={() => {
+                      this.setState({
+                        tab: key,
+                      });
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          <div className="bottom-buttons">
+            <Button
+              onClick={() => {
+                onCardClick(share.id);
+              }}
+              size="sm"
+              color="white"
+              outline
+            >
+              참여
+            </Button>
             {onConfigClick && (
-              <span
-                className="config-button"
+              <Button
                 onClick={(e) => {
                   e.stopPropagation();
                   onConfigClick(share.topicId, share.id);
                 }}
+                size="sm"
+                color="white"
+                outline
               >
-                <i className="fal fa-cog" />
-              </span>
+                관리
+              </Button>
             )}
-            <div className="share-name">{share.name}</div>
-            <div className="status">
-              <span>{share.startedYn ? t('ON AIR') : t('READY')}</span>
-            </div>
-            <div className="share-info">
-              <div className="admin-user">
-                <div className="info">{share.adminUserInfo && <UserIcon info={share.adminUserInfo} />}</div>
-                <div className="name">{share.adminUserName}</div>
-                <div className="email">{share.adminUserEmail}</div>
-                <div className="separator" />
-              </div>
-              <div className="current-info">
-                <div className="chapter-name">
-                  <div className="tag">
-                    <span>CHAPTER</span>
-                  </div>
-                  <div className="name">
-                    <i className="fal fa-book" /> {share.currentChapterTitle}
-                  </div>
-                </div>
-                <div className="page-name">
-                  <div className="tag">
-                    <span>PAGE</span>
-                  </div>
-                  <div className="name">
-                    <i className="fal fa-clipboard" /> {share.currentPageTitle}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="open-time">
-              <ReactTimeAgo date={moment(share.lastOpenDate).valueOf()} />
-            </div>
           </div>
         </CardBody>
       </Card>
@@ -101,6 +153,8 @@ ShareCard.propTypes = {
     }),
     startedYn: PropTypes.bool,
     accessCode: PropTypes.string,
+    onLineUserCount: PropTypes.number,
+    offLineUserCount: PropTypes.number,
   }),
   t: PropTypes.func,
   className: PropTypes.string,
