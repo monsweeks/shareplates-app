@@ -5,7 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { setUserInfo } from 'actions';
 import { DetailLayout, FullLayout } from '@/layouts';
-import { Button, Col, Popup, RadioButton, Row, SearchBar, ShareCard } from '@/components';
+import { Button, Col, EmptyMessage, Popup, RadioButton, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
 import { DIRECTIONS, ORDERS } from '@/constants/constants';
@@ -26,6 +26,8 @@ const viewTypes = [
 
 class ShareList extends React.Component {
   init = false;
+
+  initSearched = false;
 
   constructor(props) {
     super(props);
@@ -84,12 +86,24 @@ class ShareList extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
       },
       () => {
-        setUserInfoReducer({}, []);
+        setUserInfoReducer({}, [], 0);
       },
     );
+  };
+
+  getViewType = (list) => {
+    if (this.initSearched) {
+      return 'list';
+    }
+
+    if (list.length > 0) {
+      return 'list';
+    }
+
+    return 'accessCode';
   };
 
   getOpenShares = (options) => {
@@ -104,7 +118,12 @@ class ShareList extends React.Component {
         options: {
           ...options,
         },
+        viewType: this.getViewType(next),
       });
+
+      if (!this.initSearched) {
+        this.initSearched = true;
+      }
     });
   };
 
@@ -230,7 +249,10 @@ class ShareList extends React.Component {
     return (
       <div className="open-share-list-wrapper">
         <SearchBar
-          className='search-bar'
+          viewTypes={viewTypes}
+          viewType={viewType}
+          onChangeViewType={this.onChangeViewType}
+          className="search-bar"
           order={order}
           onChangeOrder={(value) => {
             this.setState(
@@ -285,7 +307,7 @@ class ShareList extends React.Component {
           }}
         />
         <div className="view-type">
-          <RadioButton items={viewTypes} value={viewType} outline onClick={this.onChangeViewType} />
+          <RadioButton items={viewTypes} value={viewType} onClick={this.onChangeViewType} />
         </div>
         {viewType === 'accessCode' && (
           <DetailLayout className="access-code m-0 p-0 bg-transparent">
@@ -320,7 +342,9 @@ class ShareList extends React.Component {
                     }}
                   />
                   <div className="access-code-button">
-                    <Button onClick={this.onJoin}>참여</Button>
+                    <Button color="yellow" onClick={this.onJoin}>
+                      {t('참여')}
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -329,30 +353,54 @@ class ShareList extends React.Component {
         )}
         {viewType === 'list' && (
           <FullLayout className="topic-list-content text-center align-self-center">
-            <div className="topic-list">
-              <Row>
-                {shares.map((share, i) => {
-                  return (
-                    <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
-                      <ShareCard
-                        share={share}
-                        onConfigClick={
-                          user && share.adminUserId === user.id
-                            ? (topicId, shareId) => {
-                                this.onConfigClick(topicId, shareId);
-                              }
-                            : null
-                        }
-                        onCardClick={this.onCardClick}
-                      />
-                    </Col>
-                  );
-                })}
-              </Row>
-            </div>
+            {shares && shares.length > 0 && (
+              <div className="topic-list">
+                <Row>
+                  {shares.map((share, i) => {
+                    return (
+                      <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
+                        <ShareCard
+                          share={share}
+                          onConfigClick={
+                            user && share.adminUserId === user.id
+                              ? (topicId, shareId) => {
+                                  this.onConfigClick(topicId, shareId);
+                                }
+                              : null
+                          }
+                          onCardClick={this.onCardClick}
+                        />
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </div>
+            )}
+            {!(shares && shares.length > 0) && (
+              <EmptyMessage
+                className="empty-share-info text-white"
+                message={
+                  <div>
+                    <div className="h4 mb-3">{t('검색된 토픽이 없거나, 참여할 수 있는 토픽이 없습니다.')}</div>
+                    <div className="h6">
+                      {t('프라이빗 토픽은 검색되지 않으며, 엑세스 코드를 입력해서 참여할 수 있습니다.')}
+                    </div>
+                    <div>
+                      <Button
+                        color="yellow"
+                        onClick={() => {
+                          this.onChangeViewType('accessCode');
+                        }}
+                      >
+                        {t('엑세스 코드로 참여')}
+                      </Button>
+                    </div>
+                  </div>
+                }
+              />
+            )}
           </FullLayout>
         )}
-
         {openShareEditorPopup && selectedShareId && (
           <Popup title="토픽 공유 관리" open setOpen={this.setOpenShareEditorPopup}>
             <ShareEditorPopup
@@ -379,7 +427,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
 

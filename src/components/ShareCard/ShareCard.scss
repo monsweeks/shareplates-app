@@ -1,7 +1,6 @@
 .share-card-wrapper {
   border: none !important;
-
-  border-radius: 0;
+  border-radius: 3px;
   box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
   position: relative;
   vertical-align: top;
@@ -9,12 +8,13 @@
   .title {
     .share-name {
       flex: 0;
-      padding: 1.25rem 0.25rem 1.25rem;
+      padding: 1.25rem 0.25rem 0.5rem;
       font-size: 1.4rem;
       font-weight: bold;
       font-family: LGSmHaB, sans-serif;
       margin: 0;
       line-height: 100%;
+      _background-color: $light;
       _background-color: $light;
     }
   }
@@ -43,14 +43,13 @@
           flex-direction: row;
           height: 100%;
 
-          align-self: center;
-
           > div {
             align-self: center;
             flex-grow: 1;
+            padding-bottom: 10px;
 
             .current-count {
-              margin-bottom: 0.5rem;
+              margin-bottom: 0.25rem;
               .count {
                 font-size: 0.8rem;
                 font-family: LGSmHaB, sans-serif;
@@ -101,7 +100,7 @@
             }
 
             .email {
-              font-family: 'Baloo Bhai';
+              font-family: 'Baloo Bhai', sans-serif;
               font-size: 0.8rem;
               display: none;
             }
@@ -144,7 +143,7 @@
               line-height: 100%;
               font-size: 1rem;
               font-family: LGSmHaB, sans-serif;
-              margin-bottom: 0.5rem;
+              margin-bottom: 0.25rem;
             }
           }
         }
@@ -152,10 +151,13 @@
     }
 
     .slide-buttons {
+      position: absolute;
+      bottom: 50px;
+      width: 100%;
+      left: 0;
       line-height: 0;
       padding: 0.5rem 0;
-      _background-color: $light;
-      background-color: $white;
+      background-color: transparent;
       button {
         width: 10px;
         height: 10px;
@@ -175,10 +177,7 @@
   }
 
   .bottom-buttons {
-    padding: 0.25rem 0.25rem 0.75rem;
-    margin: 0 1rem;
-    _background-color: $light;
-
+    padding: 0.75rem 0.25rem 0.75rem;
     > button {
       margin: 0 0.125rem;
     }

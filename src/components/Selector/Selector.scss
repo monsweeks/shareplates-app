@@ -77,6 +77,12 @@
     }
   }
 
+  &.radius {
+    .selector-current {
+      border-radius: 5px;
+    }
+  }
+
   &.sm {
     line-height: 100%;
     height: 100%;

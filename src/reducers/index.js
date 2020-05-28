@@ -14,6 +14,7 @@ const userState = {
   user: null,
   grpId: null,
   grps: [],
+  shareCount : 0,
   join: {
     email: null,
   },
@@ -24,7 +25,7 @@ const user = (state = userState, action) => {
 
   switch (action.type) {
     case SET_USER_AND_GRP:
-      return { ...state, user: action.user, grps: action.grps };
+      return { ...state, user: action.user, grps: action.grps, shareCount : action.shareCount };
 
     case SET_GRP_ID:
       return { ...state, grpId: action.grpId };

@@ -83,7 +83,7 @@ class Login extends React.PureComponent {
       (success) => {
         if (success) {
           request.get('/api/users/my-info', null, (data) => {
-            setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+            setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
 
             if (url) {
               history.push(url);
@@ -298,7 +298,7 @@ class Login extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
 

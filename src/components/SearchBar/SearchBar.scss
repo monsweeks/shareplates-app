@@ -24,10 +24,15 @@
       align-self: center;
     }
 
+    .view-type-col {
+      flex: 0;
+      margin-right: 0.5rem;
+    }
+
     .grp-col {
       flex: 0;
       white-space: nowrap;
-      margin-right: 1rem;
+      margin-right: 0.5rem;
 
       @media (max-width: 768px) {
         margin-right: 0.5rem;
@@ -45,8 +50,7 @@
     .search-col {
       flex: 1;
       text-align: left;
-      margin-right: 1rem;
-      padding-right: 0.5rem;
+      margin-right: 0.5rem;
 
       @media (max-width: 992px) {
         margin-right: 0;
@@ -141,6 +145,8 @@
       .label {
         top: 2px;
         align-self: center;
+        position: relative;
+        margin-right: 10px;
       }
 
       .separator {

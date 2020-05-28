@@ -50,7 +50,7 @@ class ShareCard extends React.PureComponent {
                       <div className="name">{t('참여중')}</div>
                     </div>
                     <div className="open-time">
-                      <ReactTimeAgo date={moment(share.lastOpenDate).valueOf()} /> 열림
+                      <ReactTimeAgo date={moment(share.lastOpenDate).valueOf()} /> 시작
                     </div>
                   </div>
                 </div>

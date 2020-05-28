@@ -36,14 +36,23 @@
       position: absolute;
       top: 6px;
       right: 12px;
-      width: 18px;
+      min-width: 18px;
       height: 18px;
       background-color: $yellow;
       border-radius: 50%;
-      font-family: Righteous;
+      font-family: 'Baloo Bhai', sans-serif;
       color: $black;
       font-size: 12px;
       text-align: center;
+
+      .plus-symbol {
+        position: absolute;
+        color: $yellow;
+        top: -3px;
+        right: -10px;
+        font-family: LGSmHaB, sans-serif;
+        font-size: 16px;
+      }
     }
 
     .icon {

@@ -77,7 +77,9 @@ class Menu extends React.PureComponent {
               effect={false}
               enabled={enabled}
             >
-              {menu.key === 'shares' && <div className="share-badge-count">{shareBadgeCount}</div>}
+              {menu.key === 'shares' && shareBadgeCount > 0 && (
+                <div className="share-badge-count">{shareBadgeCount > 99 ? <span><span>99</span><span className='plus-symbol'>+</span></span> : shareBadgeCount}</div>
+              )}
               <div className="current-arrow">
                 <span
                   style={{

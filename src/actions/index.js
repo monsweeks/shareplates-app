@@ -14,11 +14,12 @@ export function setJoinEmail(email) {
   };
 }
 
-export function setUserInfo(user, grps) {
+export function setUserInfo(user, grps, shareCount) {
   return {
     type: SET_USER_AND_GRP,
     user,
     grps,
+    shareCount,
   };
 }
 

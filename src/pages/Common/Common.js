@@ -81,12 +81,12 @@ class Common extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
       () => {
-        setUserInfoReducer({}, []);
+        setUserInfoReducer({}, [], 0);
         this.initialized = true;
         this.checkAuthentification(location.pathname);
       },
@@ -209,7 +209,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
     setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
   };
 };
