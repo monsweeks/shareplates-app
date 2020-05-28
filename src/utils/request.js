@@ -93,7 +93,7 @@ function processError(error, failHandler) {
         // 로그인 정보 삭제 및 퍼블릭 그룹만 보이도록 변경
         const { user } = store.getState('user');
         const grps = user.grps ? user.grps.filter((org) => org.publicYn) : [];
-        store.dispatch(setUserInfo({}, grps));
+        store.dispatch(setUserInfo({}, grps, user.shareCount));
 
         store.dispatch(
           addMessage(

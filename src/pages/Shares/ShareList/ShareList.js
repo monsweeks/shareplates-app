@@ -86,10 +86,10 @@ class ShareList extends React.Component {
       '/api/users/my-info',
       null,
       (data) => {
-        setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+        setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
       },
       () => {
-        setUserInfoReducer({}, []);
+        setUserInfoReducer({}, [], 0);
       },
     );
   };
@@ -427,7 +427,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
 

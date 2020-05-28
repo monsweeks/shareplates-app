@@ -129,14 +129,14 @@ class Header extends React.Component {
     const { history, setUserInfo: setUserInfoReducer } = this.props;
 
     request.del('/api/users/logout', {}, () => {
-      setUserInfoReducer({}, []);
+      setUserInfoReducer({}, [], 0);
       this.setOpenQuickMenu(false);
       history.push('/');
     });
   };
 
   render() {
-    const { i18n, user, location, grps } = this.props;
+    const { i18n, user, location, grps, shareCount } = this.props;
     const { openMenu, openQuickMenu, activePropsKeys, menus } = this.state;
 
     const ready = user !== null;
@@ -152,7 +152,7 @@ class Header extends React.Component {
               openMenu={openMenu}
               setOpen={this.setOpen}
               activePropsKeys={activePropsKeys}
-              shareBadgeCount={7}
+              shareBadgeCount={shareCount}
             />
           </div>
           <div className="logo-area">
@@ -217,12 +217,13 @@ const mapStateToProps = (state) => {
   return {
     user: state.user.user,
     grps: state.user.grps,
+    shareCount: state.user.shareCount,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
 
@@ -232,7 +233,6 @@ Header.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-
   }),
   grps: PropTypes.arrayOf(
     PropTypes.shape({
@@ -241,6 +241,7 @@ Header.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
+  shareCount: PropTypes.number,
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),

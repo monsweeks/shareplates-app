@@ -155,7 +155,7 @@ class EditMyInfo extends React.PureComponent {
     next.info = JSON.stringify(next.info);
 
     request.put('/api/users/my-info', next, (data) => {
-      setUserInfoReducer(convertUser(data.user) || {}, data.grps);
+      setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
     });
   };
 
@@ -265,7 +265,7 @@ class EditMyInfo extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
   return {
     addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-    setUserInfo: (user, grps) => dispatch(setUserInfo(user, grps)),
+    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
 
