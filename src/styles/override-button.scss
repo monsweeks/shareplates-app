@@ -197,6 +197,27 @@ button.btn {
     }
   }
 
+  &.btn-yellow {
+    background-color: $yellow;
+    color: $black;
+
+    &:hover {
+      background-color: darken($yellow, 3%);
+    }
+
+    &.disabled:hover {
+      background-color: $yellow;
+    }
+  }
+
+  &.btn-outline-yellow {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: $yellow;
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.7);
+    }
+  }
+
   &.btn-black {
     background-color: $white;
     color: $black;

@@ -19,15 +19,22 @@ class SearchBar extends React.Component {
     const { order, onChangeOrder } = this.props;
     const { direction, onChangeDirection } = this.props;
     const { onSearch, onChangeSearchWord, t, searchPlaceholder, searchWord, onClear } = this.props;
+    const { viewTypes, viewType, onChangeViewType } = this.props;
 
     return (
       <div className={`search-bar-wrapper g-no-select ${className}`}>
         <div>
+          {onChangeViewType && (
+            <div className="view-type-col">
+              <RadioButton outline items={viewTypes} value={viewType} onClick={onChangeViewType} />
+            </div>
+          )}
           {onChangeGrp && (
             <div className="grp-col">
               <span className="label small text-white d-none d-md-inline">{t('label.org')}</span>
               <Selector
                 outline
+                radius
                 className="grp-selector"
                 items={grps.map((org) => {
                   return {
@@ -37,6 +44,7 @@ class SearchBar extends React.Component {
                 })}
                 value={grpId}
                 onChange={onChangeGrp}
+                minWidth="120px"
               />
             </div>
           )}
@@ -149,6 +157,14 @@ SearchBar.propTypes = {
   searchPlaceholder: PropTypes.string,
   searchWord: PropTypes.string,
   onClear: PropTypes.func,
+  viewTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      value: PropTypes.string,
+    }),
+  ),
+  viewType: PropTypes.string,
+  onChangeViewType: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(SearchBar));
