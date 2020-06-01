@@ -5,7 +5,7 @@ import { Button } from '@/components';
 import request from '@/utils/request';
 import './Image.scss';
 
-class Image extends React.Component {
+class Image extends React.PureComponent {
   control = React.createRef();
 
   fileInput = React.createRef();

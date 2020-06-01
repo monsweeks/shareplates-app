@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Text.scss';
 
-class Text extends React.Component {
+class Text extends React.PureComponent {
   control = React.createRef();
 
   contentEditable = React.createRef();

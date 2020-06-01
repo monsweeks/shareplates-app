@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React from 'react';
 import './withPageItem.scss';
 
 const withPageItem = () => (WrappedComponent) => {
-  return class extends Component {
+  return class extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = {
@@ -258,8 +258,8 @@ const withPageItem = () => (WrappedComponent) => {
             height: this.getSize(wrapperHeight, wrapperHeightUnit),
           }}
           onClick={(e) => {
-            if (editable) {
-              e.stopPropagation();
+            e.stopPropagation();
+            if (editable && !selected) {
               setSelectedItem(item.id, item.options);
             }
           }}
