@@ -10,17 +10,25 @@ class PageContent extends React.PureComponent {
   getMergedPageProperties = (topicProperties, chapterProperties, pageProperties) => {
     const properties = { ...topicProperties };
 
-    Object.keys(chapterProperties).forEach((key) => {
-      if (chapterProperties[key] && chapterProperties[key] !== 'inherit' && chapterProperties[key] !== 'transparent') {
-        properties[key] = chapterProperties[key];
-      }
-    });
+    if (chapterProperties) {
+      Object.keys(chapterProperties).forEach((key) => {
+        if (
+          chapterProperties[key] &&
+          chapterProperties[key] !== 'inherit' &&
+          chapterProperties[key] !== 'transparent'
+        ) {
+          properties[key] = chapterProperties[key];
+        }
+      });
+    }
 
-    Object.keys(pageProperties).forEach((key) => {
-      if (pageProperties[key] && pageProperties[key] !== 'inherit' && pageProperties[key] !== 'transparent') {
-        properties[key] = pageProperties[key];
-      }
-    });
+    if (pageProperties) {
+      Object.keys(pageProperties).forEach((key) => {
+        if (pageProperties[key] && pageProperties[key] !== 'inherit' && pageProperties[key] !== 'transparent') {
+          properties[key] = pageProperties[key];
+        }
+      });
+    }
 
     return properties;
   };

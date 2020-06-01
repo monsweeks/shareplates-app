@@ -232,11 +232,18 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    getSize = (size, unit) => {
+      if (size === 'auto' || !size) {
+        return 'auto';
+      }
+
+      return `${size}${unit}`;
+    };
+
     render() {
       const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, showLayout } = this.props;
       const { draggingItemId, removeItem } = this.props;
-
       const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit } = item.options;
 
       return (
@@ -247,8 +254,8 @@ const withPageItem = () => (WrappedComponent) => {
                                              ${showLayout ? 'show-layout' : ''}
                                              ${item && item.id === draggingItemId ? 'dragging' : ''}`}
           style={{
-            width: wrapperWidth === 'auto' ? wrapperWidth : wrapperWidth + wrapperWidthUnit,
-            height: wrapperHeight === 'auto' ? wrapperHeight : wrapperHeight + wrapperHeightUnit,
+            width: this.getSize(wrapperWidth, wrapperWidthUnit),
+            height: this.getSize(wrapperHeight, wrapperHeightUnit),
           }}
           onClick={(e) => {
             if (editable) {

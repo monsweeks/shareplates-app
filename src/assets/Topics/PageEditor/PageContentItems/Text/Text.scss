@@ -13,6 +13,12 @@
     > article {
       overflow-y: auto;
       word-break: break-all;
+
+      &:focus {
+        border: none;
+        outline: none;
+        outline: 1px solid rgba(0,0,0,0.4);
+      }
     }
   }
 }
