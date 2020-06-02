@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
-import './Text.scss';
+import './Table.scss';
 
-class Text extends React.PureComponent {
+class Table extends React.PureComponent {
   control = React.createRef();
 
   contentEditable = React.createRef();
@@ -66,7 +66,7 @@ class Text extends React.PureComponent {
     return (
       <div
         ref={this.control}
-        className={`text-wrapper ${className} ${editable ? 'editable' : ''}`}
+        className={`table-wrapper ${className} ${editable ? 'editable' : ''}`}
         {...item}
         style={last}
         onClick={() => {
@@ -104,11 +104,12 @@ class Text extends React.PureComponent {
               }
             }}
             onChange={(e) => {
+              console.log(e);
               this.setState({
                 text: e.target.value,
               });
             }} // handle innerHTML change
-            tagName="article" // Use a custom HTML tag (uses a div by default)
+            tagName="table" // Use a custom HTML tag (uses a div by default)
           />
         </div>
       </div>
@@ -116,11 +117,11 @@ class Text extends React.PureComponent {
   }
 }
 
-Text.defaultProps = {
+Table.defaultProps = {
   className: '',
 };
 
-Text.propTypes = {
+Table.propTypes = {
   className: PropTypes.string,
   item: PropTypes.objectOf(PropTypes.any),
   style: PropTypes.objectOf(PropTypes.any),
@@ -148,11 +149,13 @@ pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
 const pageItemValues = {};
-pageItemValues.text = '텍스트를 입력해주세요.';
+pageItemValues.text = '<tbody><tr><td>셀1</td><td>셀2</td></tr></tbody>';
+// 여기에 행개수, 열개수 XXXX
+// 열, 행 정보를 JSON으로 다시 관리
 
-Text.setting = {
+Table.setting = {
   pageItemProps,
   pageItemValues,
 };
 
-export default withPageItem()(Text);
+export default withPageItem()(Table);

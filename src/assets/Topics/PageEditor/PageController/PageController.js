@@ -423,6 +423,14 @@ class PageController extends React.Component {
                 >
                   {t('이미지')}
                 </ButtonControl>
+                <ButtonControl
+                  dataTip={t('테이블 추가')}
+                  onClick={() => {
+                    addItem('Table');
+                  }}
+                >
+                  {t('테이블')}
+                </ButtonControl>
               </>
             )}
             {selectedTab === 'image' && (
