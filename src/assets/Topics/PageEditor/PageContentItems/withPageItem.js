@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, { Component } from 'react';
+import React from 'react';
 import './withPageItem.scss';
 
 const withPageItem = () => (WrappedComponent) => {
-  return class extends Component {
+  return class extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -146,7 +146,6 @@ const withPageItem = () => (WrappedComponent) => {
               wrapperHeightUnit: '%',
               wrapperWidth: 100,
               wrapperWidthUnit: '%',
-              rapperHeightUnit: '%',
             });
           }
 
@@ -232,11 +231,18 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    getSize = (size, unit) => {
+      if (size === 'auto' || !size) {
+        return 'auto';
+      }
+
+      return `${size}${unit}`;
+    };
+
     render() {
       const { editable, draggable } = this.state;
-      const { item, selected, setSelectedItem, showLayout } = this.props;
+      const { item, selected, setSelectedItem, childSelectedList, setChildSelectedInfo, showLayout } = this.props;
       const { draggingItemId, removeItem } = this.props;
-
       const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit } = item.options;
 
       return (
@@ -247,12 +253,12 @@ const withPageItem = () => (WrappedComponent) => {
                                              ${showLayout ? 'show-layout' : ''}
                                              ${item && item.id === draggingItemId ? 'dragging' : ''}`}
           style={{
-            width: wrapperWidth === 'auto' ? wrapperWidth : wrapperWidth + wrapperWidthUnit,
-            height: wrapperHeight === 'auto' ? wrapperHeight : wrapperHeight + wrapperHeightUnit,
+            width: this.getSize(wrapperWidth, wrapperWidthUnit),
+            height: this.getSize(wrapperHeight, wrapperHeightUnit),
           }}
           onClick={(e) => {
-            if (editable) {
-              e.stopPropagation();
+            e.stopPropagation();
+            if (editable && !selected) {
               setSelectedItem(item.id, item.options);
             }
           }}
@@ -270,6 +276,7 @@ const withPageItem = () => (WrappedComponent) => {
             onClick={(e) => {
               e.stopPropagation();
               setSelectedItem(null, {});
+              setChildSelectedInfo(null);
               removeItem(item.id);
             }}
           >
@@ -318,7 +325,10 @@ const withPageItem = () => (WrappedComponent) => {
               values={item.values}
               {...this.props}
               editable={editable}
+              selected={selected}
               setSelectedItem={setSelectedItem}
+              childSelectedList={childSelectedList}
+              setChildSelectedInfo={setChildSelectedInfo}
             />
           </div>
         </div>

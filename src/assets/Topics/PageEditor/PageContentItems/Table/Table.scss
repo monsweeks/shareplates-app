@@ -1,0 +1,34 @@
+.table-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  > div {
+    flex-grow: 1;
+    vertical-align: middle;
+    align-self: center;
+    position: relative;
+
+    > table {
+      word-break: break-all;
+      width: 100%;
+
+
+      tbody {
+        tr {
+          td {
+            _border: 1px solid rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+
+      :focus,
+      .table-cell {
+        &.selected {
+          outline: 1px solid $primary;
+        }
+      }
+    }
+  }
+}

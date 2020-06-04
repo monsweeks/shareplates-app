@@ -14,7 +14,6 @@ class Text extends React.Component {
     this.state = {
       text: '',
       edit: false,
-      height: '',
     };
   }
 
@@ -22,7 +21,6 @@ class Text extends React.Component {
     if (!state.edit && props.values && props.values.text) {
       return {
         text: props.values.text,
-        height: props.values.height,
       };
     }
 
@@ -31,11 +29,10 @@ class Text extends React.Component {
 
   onOutsideClick = (e) => {
     const { onChangeValue, setEditing } = this.props;
-    const { text, height } = this.state;
+    const { text } = this.state;
 
     onChangeValue({
       text,
-      height,
     });
 
     if (this.control.current && !this.control.current.contains(e.target)) {
@@ -63,7 +60,7 @@ class Text extends React.Component {
 
   render() {
     const { className, item, style, editable, setEditing } = this.props;
-    const { text, edit, height } = this.state;
+    const { text, edit } = this.state;
     const { alignSelf, ...last } = style;
 
     return (
@@ -107,16 +104,9 @@ class Text extends React.Component {
               }
             }}
             onChange={(e) => {
-              if (height !== e.target.scrollHeight) {
-                this.setState({
-                  text: e.target.value,
-                  height: this.contentEditable.current.clientHeight,
-                });
-              } else {
-                this.setState({
-                  text: e.target.value,
-                });
-              }
+              this.setState({
+                text: e.target.value,
+              });
             }} // handle innerHTML change
             tagName="article" // Use a custom HTML tag (uses a div by default)
           />

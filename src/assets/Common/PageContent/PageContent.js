@@ -6,21 +6,29 @@ import { getItem } from '@/assets/Topics/PageEditor/PageContentItems';
 import { EmptyMessage } from '@/components';
 import './PageContent.scss';
 
-class PageContent extends React.PureComponent {
+class PageContent extends React.Component {
   getMergedPageProperties = (topicProperties, chapterProperties, pageProperties) => {
     const properties = { ...topicProperties };
 
-    Object.keys(chapterProperties).forEach((key) => {
-      if (chapterProperties[key] && chapterProperties[key] !== 'inherit' && chapterProperties[key] !== 'transparent') {
-        properties[key] = chapterProperties[key];
-      }
-    });
+    if (chapterProperties) {
+      Object.keys(chapterProperties).forEach((key) => {
+        if (
+          chapterProperties[key] &&
+          chapterProperties[key] !== 'inherit' &&
+          chapterProperties[key] !== 'transparent'
+        ) {
+          properties[key] = chapterProperties[key];
+        }
+      });
+    }
 
-    Object.keys(pageProperties).forEach((key) => {
-      if (pageProperties[key] && pageProperties[key] !== 'inherit' && pageProperties[key] !== 'transparent') {
-        properties[key] = pageProperties[key];
-      }
-    });
+    if (pageProperties) {
+      Object.keys(pageProperties).forEach((key) => {
+        if (pageProperties[key] && pageProperties[key] !== 'inherit' && pageProperties[key] !== 'transparent') {
+          properties[key] = pageProperties[key];
+        }
+      });
+    }
 
     return properties;
   };
@@ -31,6 +39,8 @@ class PageContent extends React.PureComponent {
       content,
       selectedItemId,
       setSelectedItem,
+      childSelectedList,
+      setChildSelectedInfo,
       editable,
       onChangeOption,
       onChangeValue,
@@ -56,6 +66,7 @@ class PageContent extends React.PureComponent {
         onClick={() => {
           if (editable) {
             setSelectedItem(null, {});
+            setChildSelectedInfo(null);
           }
         }}
         style={{ ...pageProperties }}
@@ -105,6 +116,8 @@ class PageContent extends React.PureComponent {
                   editable,
                   selected,
                   setSelectedItem,
+                  childSelectedList,
+                  setChildSelectedInfo,
                   showLayout: dragging,
                   onChangeOption,
                   onChangeValue,
@@ -137,6 +150,8 @@ PageContent.propTypes = {
   chapterProperties: PropTypes.objectOf(PropTypes.any),
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
+  childSelectedList : PropTypes.arrayOf(PropTypes.any),
+  setChildSelectedInfo : PropTypes.func,
   onChangeOption: PropTypes.func,
   onChangeValue: PropTypes.func,
   onChangeFile: PropTypes.func,

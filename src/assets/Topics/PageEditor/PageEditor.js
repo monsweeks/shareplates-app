@@ -20,6 +20,7 @@ class PageEditor extends React.Component {
       originalContent: null,
       pageId: -1,
       selectedItemId: null,
+      childSelectedList: null,
       itemOptions: {},
       editing: false,
       dragging: false,
@@ -169,43 +170,123 @@ class PageEditor extends React.Component {
     });
   };
 
+  setChildSelectedInfo = (childSelectedInfo, type) => {
+    if (!childSelectedInfo) {
+      this.setState({
+        childSelectedList: null,
+      });
+      return;
+    }
+
+    const { childSelectedList } = this.state;
+    let next = childSelectedList ? childSelectedList.slice(0) : [];
+    if (type === 'click') {
+      next = [childSelectedInfo];
+    } else if (type === 'ctrl') {
+      const findIndex = next.findIndex((info) => JSON.stringify(info) === JSON.stringify(childSelectedInfo));
+      if (findIndex > -1) {
+        next.splice(findIndex, 1);
+      } else {
+        next.push(childSelectedInfo);
+      }
+    } else if (type === 'alt') {
+      const findIndex = next.findIndex((info) => JSON.stringify(info) === JSON.stringify(childSelectedInfo));
+      if (findIndex > -1) {
+        next.splice(findIndex, 1);
+      }
+    } else if (type === 'shift') {
+      next = childSelectedInfo;
+    }
+
+    this.setState({
+      childSelectedList: next.sort((a, b) => {
+        return JSON.stringify(a).localeCompare(JSON.stringify(b));
+      }),
+    });
+  };
+
   onChangeOption = (optionKey, optionValue) => {
-    const { selectedItemId, content } = this.state;
+    const { selectedItemId, content, childSelectedList } = this.state;
+
     if (selectedItemId) {
       if (typeof optionKey === 'object') {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
-        const options = { ...item.options };
 
-        Object.keys(optionKey).forEach((key) => {
-          options[key] = optionKey[key];
-        });
+        if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+          for (let i = 0; i < childSelectedList.length; i += 1) {
+            const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
 
-        item.options = options;
-        this.setState(
-          {
-            content: next,
-            itemOptions: options,
-          },
-          () => {
-            this.checkDirty();
-          },
-        );
+            Object.keys(optionKey).forEach((key) => {
+              if (key.indexOf('wrapper') !== 0) {
+                options[key] = optionKey[key];
+              }
+            });
+
+            item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options = options;
+          }
+
+          this.setState(
+            {
+              content: next,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        } else {
+          const options = { ...item.options };
+
+          Object.keys(optionKey).forEach((key) => {
+            options[key] = optionKey[key];
+          });
+
+          item.options = options;
+          this.setState(
+            {
+              content: next,
+              itemOptions: options,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        }
       } else {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
-        const options = { ...item.options };
-        options[optionKey] = optionValue;
-        item.options = options;
-        this.setState(
-          {
-            content: next,
-            itemOptions: options,
-          },
-          () => {
-            this.checkDirty();
-          },
-        );
+
+        if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+          for (let i = 0; i < childSelectedList.length; i += 1) {
+            if (optionKey.indexOf('wrapper') !== 0) {
+              const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
+              options[optionKey] = optionValue;
+              item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options = options;
+            }
+          }
+
+          this.setState(
+            {
+              content: next,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        } else {
+          const options = { ...item.options };
+          options[optionKey] = optionValue;
+          item.options = options;
+          this.setState(
+            {
+              content: next,
+              itemOptions: options,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        }
       }
     }
   };
@@ -238,7 +319,7 @@ class PageEditor extends React.Component {
     const { topic } = this.props;
     if (topicId) {
       const next = { ...topic };
-      const topicProperties = (next.content && next.content.topicProperties) ? next.content.topicProperties : {};
+      const topicProperties = next.content && next.content.topicProperties ? next.content.topicProperties : {};
 
       topicProperties[key] = value;
       if (!next.content) {
@@ -255,7 +336,7 @@ class PageEditor extends React.Component {
     const { chapter } = this.props;
     if (chapterId) {
       const next = { ...chapter };
-      const chapterProperties = (next.content && next.content.chapterProperties) ? next.content.chapterProperties : {};
+      const chapterProperties = next.content && next.content.chapterProperties ? next.content.chapterProperties : {};
 
       chapterProperties[key] = value;
       if (!next.content) {
@@ -339,7 +420,7 @@ class PageEditor extends React.Component {
   render() {
     const { className, updatePage, setPageContent, topicId, chapterId, pageId, ...last } = this.props;
     const { topic, chapter } = this.props;
-    const { content, selectedItemId, itemOptions, editing } = this.state;
+    const { content, selectedItemId, childSelectedList, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
 
     return (
@@ -361,6 +442,7 @@ class PageEditor extends React.Component {
           onChangeChapterProperties={this.onChangeChapterProperties}
           onChangePageProperties={this.onChangePageProperties}
           selectedItemId={selectedItemId}
+          childSelectedList={childSelectedList}
           setEditing={this.setEditing}
         />
         <div className="editor-content">
@@ -372,6 +454,8 @@ class PageEditor extends React.Component {
             setPageContent={this.setPageContent}
             selectedItemId={selectedItemId}
             setSelectedItem={this.setSelectedItem}
+            childSelectedList={childSelectedList}
+            setChildSelectedInfo={this.setChildSelectedInfo}
             onChangeOption={this.onChangeOption}
             onChangeValue={this.onChangeValue}
             onChangeFile={this.onChangeFile}
@@ -420,8 +504,7 @@ PageEditor.propTypes = {
   moveItem: PropTypes.func,
   onRef: PropTypes.func,
   updateTopicContent: PropTypes.func,
-  updateChapterContent : PropTypes.func,
-
+  updateChapterContent: PropTypes.func,
 };
 
 export default withRouter(PageEditor);
