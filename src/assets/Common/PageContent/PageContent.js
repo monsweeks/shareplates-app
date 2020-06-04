@@ -6,7 +6,7 @@ import { getItem } from '@/assets/Topics/PageEditor/PageContentItems';
 import { EmptyMessage } from '@/components';
 import './PageContent.scss';
 
-class PageContent extends React.PureComponent {
+class PageContent extends React.Component {
   getMergedPageProperties = (topicProperties, chapterProperties, pageProperties) => {
     const properties = { ...topicProperties };
 
@@ -39,6 +39,8 @@ class PageContent extends React.PureComponent {
       content,
       selectedItemId,
       setSelectedItem,
+      childSelectedList,
+      setChildSelectedInfo,
       editable,
       onChangeOption,
       onChangeValue,
@@ -64,6 +66,7 @@ class PageContent extends React.PureComponent {
         onClick={() => {
           if (editable) {
             setSelectedItem(null, {});
+            setChildSelectedInfo(null);
           }
         }}
         style={{ ...pageProperties }}
@@ -113,6 +116,8 @@ class PageContent extends React.PureComponent {
                   editable,
                   selected,
                   setSelectedItem,
+                  childSelectedList,
+                  setChildSelectedInfo,
                   showLayout: dragging,
                   onChangeOption,
                   onChangeValue,
@@ -145,6 +150,8 @@ PageContent.propTypes = {
   chapterProperties: PropTypes.objectOf(PropTypes.any),
   selectedItemId: PropTypes.string,
   setSelectedItem: PropTypes.func,
+  childSelectedList : PropTypes.arrayOf(PropTypes.any),
+  setChildSelectedInfo : PropTypes.func,
   onChangeOption: PropTypes.func,
   onChangeValue: PropTypes.func,
   onChangeFile: PropTypes.func,

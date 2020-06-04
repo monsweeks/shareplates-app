@@ -11,24 +11,23 @@
     position: relative;
 
     > table {
-      overflow-y: auto;
       word-break: break-all;
       width: 100%;
-      table-layout: fixed;
+
 
       tbody {
-
         tr {
           td {
-            border: 1px solid rgba(0,0,0,0.3);
+            _border: 1px solid rgba(0, 0, 0, 0.3);
           }
         }
       }
 
-      &:focus {
-        border: none;
-        outline: none;
-        outline: 1px solid rgba(0,0,0,0.4);
+      :focus,
+      .table-cell {
+        &.selected {
+          outline: 1px solid $primary;
+        }
       }
     }
   }

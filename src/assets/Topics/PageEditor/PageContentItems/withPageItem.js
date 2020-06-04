@@ -3,7 +3,7 @@ import React from 'react';
 import './withPageItem.scss';
 
 const withPageItem = () => (WrappedComponent) => {
-  return class extends React.PureComponent {
+  return class extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -146,7 +146,6 @@ const withPageItem = () => (WrappedComponent) => {
               wrapperHeightUnit: '%',
               wrapperWidth: 100,
               wrapperWidthUnit: '%',
-              rapperHeightUnit: '%',
             });
           }
 
@@ -242,7 +241,7 @@ const withPageItem = () => (WrappedComponent) => {
 
     render() {
       const { editable, draggable } = this.state;
-      const { item, selected, setSelectedItem, showLayout } = this.props;
+      const { item, selected, setSelectedItem, childSelectedList, setChildSelectedInfo, showLayout } = this.props;
       const { draggingItemId, removeItem } = this.props;
       const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit } = item.options;
 
@@ -277,6 +276,7 @@ const withPageItem = () => (WrappedComponent) => {
             onClick={(e) => {
               e.stopPropagation();
               setSelectedItem(null, {});
+              setChildSelectedInfo(null);
               removeItem(item.id);
             }}
           >
@@ -325,7 +325,10 @@ const withPageItem = () => (WrappedComponent) => {
               values={item.values}
               {...this.props}
               editable={editable}
+              selected={selected}
               setSelectedItem={setSelectedItem}
+              childSelectedList={childSelectedList}
+              setChildSelectedInfo={setChildSelectedInfo}
             />
           </div>
         </div>
