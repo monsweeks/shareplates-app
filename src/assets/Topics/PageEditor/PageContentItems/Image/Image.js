@@ -540,8 +540,6 @@ pageItemProps[withPageItem.options.ratio] = '';
 pageItemProps[withPageItem.options.borderRadius] = '0';
 pageItemProps[withPageItem.options.borderRadiusUnit] = 'px';
 
-pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
-pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 

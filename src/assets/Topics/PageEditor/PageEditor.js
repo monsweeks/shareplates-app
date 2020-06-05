@@ -279,6 +279,7 @@ class PageEditor extends React.Component {
     this.setState({
       selectedItemId,
       itemOptions,
+      childSelectedList : null,
     });
   };
 
@@ -591,6 +592,7 @@ class PageEditor extends React.Component {
             lastMovedItemId={lastMovedItemId}
             setDragging={this.setDragging}
             removeItem={this.removeItem}
+            checkDirty={this.checkDirty}
           />
         </div>
       </div>

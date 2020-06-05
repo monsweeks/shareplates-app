@@ -13,7 +13,7 @@ class Selector extends React.Component {
 
   render() {
     const { open } = this.state;
-    const { className, onChange, items, value, addAll, outline, color, size, separator, minWidth, radius } = this.props;
+    const { className, onChange, items, value, addAll, outline, color, size, separator, minWidth, radius, disabled } = this.props;
     let selcetedItem = items.find((item) => String(item.key) === String(value));
     if (addAll && value === '') {
       selcetedItem = {
@@ -24,7 +24,7 @@ class Selector extends React.Component {
 
     return (
       <div
-        className={`selector-wrapper g-no-select ${className} ${size} ${radius ? 'radius' : ''}`}
+        className={`selector-wrapper g-no-select ${className} ${size} ${radius ? 'radius' : ''} ${disabled ? 'disabled' : ''}`}
         style={{
           minWidth: `${minWidth}`,
         }}
@@ -42,9 +42,11 @@ class Selector extends React.Component {
         <div
           className={`${open ? 'open' : ''} selector-current ${outline ? 'outline' : ''} color-${color}`}
           onClick={() => {
-            this.setState({
-              open: !open,
-            });
+            if (!disabled) {
+              this.setState({
+                open: !open,
+              });
+            }
           }}
         >
           <span className="text">{selcetedItem ? selcetedItem.value : ' '}</span>
@@ -109,6 +111,7 @@ Selector.defaultProps = {
   separator: true,
   minWidth: 'auto',
   radius: false,
+  disabled : false,
 };
 
 Selector.propTypes = {
@@ -128,4 +131,5 @@ Selector.propTypes = {
   separator: PropTypes.bool,
   minWidth: PropTypes.string,
   radius: PropTypes.bool,
+  disabled : PropTypes.bool,
 };

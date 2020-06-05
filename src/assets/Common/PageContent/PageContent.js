@@ -53,7 +53,7 @@ class PageContent extends React.Component {
       chapterProperties,
     } = this.props;
 
-    const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId, setDragging, moveItem, pageId } = this.props;
+    const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId, setDragging, moveItem, pageId, checkDirty } = this.props;
 
     const items = content ? content.items : [];
     const pageProperties = pageId
@@ -93,7 +93,7 @@ class PageContent extends React.Component {
             </div>
           </>
         )}
-        <div className="page-content-viewer scrollbar">
+        <div className="page-content-viewer">
           {editable && !pageId && (
             <div className="h-100 d-flex">
               <EmptyMessage
@@ -129,6 +129,7 @@ class PageContent extends React.Component {
                   lastMovedItemId,
                   moveItem,
                   removeItem,
+                  checkDirty,
                 })}
               </React.Fragment>
             );
@@ -167,6 +168,7 @@ PageContent.propTypes = {
   t: PropTypes.func,
   removeItem: PropTypes.func,
   lastMovedItemId: PropTypes.string,
+  checkDirty : PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageContent));

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Table.scss';
-import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
+import { getBlockMarginByAlign, getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
 
 class Table extends React.PureComponent {
   control = React.createRef();
+
+  clickedCell = null;
 
   constructor(props) {
     super(props);
@@ -90,14 +92,12 @@ class Table extends React.PureComponent {
       editable,
       setEditing,
       childSelectedList,
+      setSelectedItem,
       setChildSelectedInfo,
       selected,
-      values,
     } = this.props;
     const { rows, edit } = this.state;
-    const { alignSelf, ...last } = style;
-
-    console.log(item, values);
+    const { alignSelf, textAlign, width, widthUnit, ...last } = style;
 
     return (
       <div
@@ -111,7 +111,7 @@ class Table extends React.PureComponent {
               edit: false,
             });
             setEditing(false);
-            setChildSelectedInfo(item.id, null);
+            setSelectedItem(item.id, item.options);
           }
         }}
       >
@@ -120,7 +120,12 @@ class Table extends React.PureComponent {
             alignSelf,
           }}
         >
-          <table>
+          <table
+            style={{
+              width: getSize(width, widthUnit),
+              margin: getBlockMarginByAlign(textAlign),
+            }}
+          >
             <tbody>
               {rows &&
                 rows.map((row, inx) => {
@@ -128,8 +133,8 @@ class Table extends React.PureComponent {
                     <tr key={inx}>
                       {row.cols.map((col, jnx) => {
                         const {
-                          wrapperWidth,
-                          wrapperWidthUnit,
+                          width: cellWidth,
+                          widthUnit: cellWidthUnit,
                           wrapperHeight,
                           wrapperHeightUnit,
                           alignSelf: cellAlignSelf,
@@ -149,21 +154,27 @@ class Table extends React.PureComponent {
                             }`}
                             key={jnx}
                             style={{
-                              width: getSize(wrapperWidth, wrapperWidthUnit),
+                              width: getSize(cellWidth, cellWidthUnit),
                               height: getSize(wrapperHeight, wrapperHeightUnit),
                               verticalAlign: this.getTableAlignSelf(cellAlignSelf),
                               ...lastOption,
                             }}
-                            html={col.text} // innerHTML of the editable div
-                            disabled={!edit} // use true to disable editing
+                            html={col.text}
+                            disabled={!edit}
                             onClick={(e) => {
+                              e.stopPropagation();
+
                               if (editable && !edit) {
                                 this.setState({
                                   edit: true,
                                 });
                                 setEditing(true);
-                              } else {
-                                e.stopPropagation();
+
+                                this.clickedCell = e.target;
+                                setTimeout(() => {
+                                  this.clickedCell.focus();
+                                  this.clickedCell = null;
+                                }, 200);
                               }
 
                               if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
@@ -188,7 +199,7 @@ class Table extends React.PureComponent {
                             }}
                             onChange={(e) => {
                               this.onCellTextChange(inx, jnx, e.target.value);
-                            }} // handle innerHTML change
+                            }}
                             tagName="td"
                           />
                         );
@@ -218,13 +229,14 @@ Table.propTypes = {
   setEditing: PropTypes.func,
   rows: PropTypes.arrayOf(PropTypes.any),
   childSelectedList: PropTypes.arrayOf(PropTypes.any),
+  setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
 const pageItemProps = {};
-pageItemProps[withPageItem.options.textAlign] = 'left';
+pageItemProps[withPageItem.options.textAlign] = 'center';
 pageItemProps[withPageItem.options.fontFamily] = 'inherit'; // 'LGSmHaL';
 pageItemProps[withPageItem.options.fontSize] = 'inherit'; // '16px';
 pageItemProps[withPageItem.options.color] = 'inherit'; // '#000000';
@@ -232,9 +244,9 @@ pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
 pageItemProps[withPageItem.options.border] = 'none';
+pageItemProps[withPageItem.options.width] = '100';
+pageItemProps[withPageItem.options.widthUnit] = '%';
 
-pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
-pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
@@ -252,9 +264,9 @@ const headerCell = {
     backgroundColor: '#EEE',
     alignSelf: 'center',
     padding: '0.5rem 0.5rem 0.5rem 0.5rem',
-    border: '1px solid #333',
-    wrapperWidth: 'auto',
-    wrapperWidthUnit: '%',
+    border: '2px solid #666',
+    width: 'auto',
+    widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
   },
@@ -270,9 +282,9 @@ const contentCell = {
     backgroundColor: 'transparent',
     alignSelf: 'center',
     padding: '0.5rem 0.5rem 0.5rem 0.5rem',
-    border: '1px solid #333',
-    wrapperWidth: 'auto',
-    wrapperWidthUnit: '%',
+    border: '2px solid #666',
+    width: 'auto',
+    widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
   },
