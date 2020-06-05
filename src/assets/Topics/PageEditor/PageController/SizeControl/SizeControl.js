@@ -123,6 +123,7 @@ class SizeControl extends React.Component {
             <span />
           </div>
           <Selector
+            disabled={!active}
             size="sm"
             separator={false}
             className="unit-selector"

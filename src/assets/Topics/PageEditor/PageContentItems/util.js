@@ -6,6 +6,20 @@ function getSize(size, unit) {
   return `${size}${unit || '%'}`;
 }
 
-const temp = 1;
+function getBlockMarginByAlign(textAlign) {
+  if (textAlign === 'center') {
+    return '0 auto';
+  }
 
-export { getSize, temp };
+  if (textAlign === 'left' || textAlign === 'justify') {
+    return '0 auto 0 0';
+  }
+
+  if (textAlign === 'right') {
+    return '0 0 0 auto';
+  }
+
+  return textAlign;
+}
+
+export { getSize, getBlockMarginByAlign };

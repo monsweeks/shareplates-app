@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Text.scss';
+import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
 
 class Text extends React.Component {
   control = React.createRef();
@@ -61,14 +62,17 @@ class Text extends React.Component {
   render() {
     const { className, item, style, editable, setEditing } = this.props;
     const { text, edit } = this.state;
-    const { alignSelf, ...last } = style;
+    const { alignSelf, width, widthUnit, ...last } = style;
 
     return (
       <div
         ref={this.control}
         className={`text-wrapper ${className} ${editable ? 'editable' : ''}`}
         {...item}
-        style={last}
+        style={{
+          width: getSize(width, widthUnit),
+          ...last,
+        }}
         onClick={() => {
           if (editable && edit) {
             this.setState({
@@ -88,8 +92,8 @@ class Text extends React.Component {
               alignSelf,
             }}
             innerRef={this.contentEditable}
-            html={text} // innerHTML of the editable div
-            disabled={!edit} // use true to disable editing
+            html={text}
+            disabled={!edit}
             onClick={(e) => {
               if (editable && !edit) {
                 this.setState({
@@ -107,8 +111,8 @@ class Text extends React.Component {
               this.setState({
                 text: e.target.value,
               });
-            }} // handle innerHTML change
-            tagName="article" // Use a custom HTML tag (uses a div by default)
+            }}
+            tagName="article"
           />
         </div>
       </div>
@@ -140,9 +144,9 @@ pageItemProps[withPageItem.options.backgroundColor] = 'transparent';
 pageItemProps[withPageItem.options.alignSelf] = 'center';
 pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
 pageItemProps[withPageItem.options.border] = 'none';
+pageItemProps[withPageItem.options.width] = 'auto';
+pageItemProps[withPageItem.options.widthUnit] = '%';
 
-pageItemProps[withPageItem.options.wrapperWidth] = 'auto';
-pageItemProps[withPageItem.options.wrapperWidthUnit] = '%';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 

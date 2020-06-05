@@ -13,20 +13,13 @@
     > table {
       word-break: break-all;
       width: 100%;
-
-
-      tbody {
-        tr {
-          td {
-            _border: 1px solid rgba(0, 0, 0, 0.3);
-          }
-        }
-      }
+      table-layout: fixed;
 
       :focus,
       .table-cell {
         &.selected {
-          outline: 1px solid $primary;
+          outline: 3px solid $primary;
+          outline-offset: -1px;
         }
       }
     }

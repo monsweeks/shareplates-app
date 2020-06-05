@@ -1,5 +1,5 @@
 $grap-size: 8px;
-$sizer-size: 11px;
+$sizer-size: 14px;
 
 .page-item {
   &.editable {
@@ -19,15 +19,18 @@ $sizer-size: 11px;
 
   &.editable {
     &:hover {
-      outline: 1px dashed rgba(0, 0, 0, 0.4);
+      outline: 3px solid #AAA;
+      outline-offset: -1px;
     }
 
     &.show-layout {
-      outline: 1px dashed rgba(0, 0, 0, 0.4);
+      outline: 3px solid #AAA;
+      outline-offset: -1px;
     }
 
     &.selected {
-      outline: 1px solid rgba(0, 0, 0, 0.4) !important;
+      outline: 3px solid $primary;
+      outline-offset: -1px;
     }
   }
 
@@ -41,22 +44,23 @@ $sizer-size: 11px;
   }
 
   .remove-item-button {
-    font-size: 14px;
-    width: 20px;
-    height: 20px;
-    background-color: $danger;
-    color: $white;
+    line-height: 0;
+    font-size: 20px;
+    width: 21px;
+    height: 21px;
+    _background-color: $light;
+    color: $danger;
     text-align: center;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
     border-radius: 2px;
     z-index: 3;
     cursor: pointer;
     display: none;
 
     &:hover {
-      background-color: darken($danger, 10%);
+      color: darken($danger, 10%);
     }
   }
 
@@ -140,30 +144,9 @@ $sizer-size: 11px;
     &.bottom {
       height: 0;
       width: 100%;
-      bottom: 5px;
+      bottom: 7px;
       left: 0;
       cursor: s-resize;
-    }
-
-    &.right {
-      height: 100%;
-      width: 0;
-      right: 5px;
-      top: 0;
-      cursor: w-resize;
-
-      > span {
-        position: absolute;
-        top: calc(50% - 5px);
-      }
-    }
-
-    &.right-bottom {
-      text-align: right;
-      height: 0;
-      bottom: 6px;
-      right: -5px;
-      cursor: nwse-resize;
     }
   }
 

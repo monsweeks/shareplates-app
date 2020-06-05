@@ -160,6 +160,7 @@ class PageController extends React.Component {
     const { selectedTab, lastProperties } = this.state;
 
     const isTable = !!(item && item.name === 'Table');
+    const isImage = !!(item && item.name === 'Image');
     const isSingleTableCellSelected = !!(childSelectedList && childSelectedList.length === 1);
 
     return (
@@ -383,13 +384,13 @@ class PageController extends React.Component {
                 </BorderControl>
                 <Separator />
                 <SizeControl
-                  dataTip={t('상자 너비')}
+                  dataTip={t('너비')}
                   icon={<i className="fal fa-arrows-h" />}
-                  optionKey="wrapperWidth"
-                  optionValue={itemOptions.wrapperWidth}
-                  unitKey="wrapperWidthUnit"
-                  unitValue={itemOptions.wrapperWidthUnit}
-                  active={!!itemOptions.wrapperWidth}
+                  optionKey="width"
+                  optionValue={itemOptions.width}
+                  unitKey="widthUnit"
+                  unitValue={itemOptions.widthUnit}
+                  active={!!itemOptions.width}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />
@@ -449,7 +450,7 @@ class PageController extends React.Component {
                   dataTip={t('이미지 원본 비율 유지')}
                   optionKey="keepingRatio"
                   optionValue="Y"
-                  active={!!itemOptions.keepingRatio}
+                  active={!!itemOptions.keepingRatio && isImage}
                   value={itemOptions.keepingRatio}
                   onClick={onChangeOption}
                 >
@@ -459,7 +460,7 @@ class PageController extends React.Component {
                   dataTip={t('이미지 비율 유지 안함')}
                   optionKey="keepingRatio"
                   optionValue="N"
-                  active={!!itemOptions.keepingRatio}
+                  active={!!itemOptions.keepingRatio && isImage}
                   value={itemOptions.keepingRatio}
                   onClick={onChangeOption}
                 >
@@ -473,7 +474,7 @@ class PageController extends React.Component {
                   optionValue={itemOptions.width}
                   unitKey="widthUnit"
                   unitValue={itemOptions.widthUnit}
-                  active={!!itemOptions.width}
+                  active={!!itemOptions.width && isImage}
                   onApply={(unitKey, unitValue) => {
                     if (unitKey === 'width') {
                       if (itemOptions.keepingRatio) {
@@ -504,7 +505,7 @@ class PageController extends React.Component {
                   optionValue={itemOptions.height}
                   unitKey="heightUnit"
                   unitValue={itemOptions.heightUnit}
-                  active={!!itemOptions.height}
+                  active={!!itemOptions.height && isImage}
                   onApply={(unitKey, unitValue) => {
                     if (unitKey === 'height') {
                       if (itemOptions.keepingRatio) {
@@ -536,13 +537,13 @@ class PageController extends React.Component {
                   optionValue={itemOptions.borderRadius}
                   unitKey="borderRadiusUnit"
                   unitValue={itemOptions.borderRadiusUnit}
-                  active={!!itemOptions.borderRadius}
+                  active={!!itemOptions.borderRadius && isImage}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />
                 <Separator />
                 <ButtonControl
-                  enabled={!!itemOptions.naturalWidth}
+                  active={!!itemOptions.naturalWidth && isImage}
                   dataTip={t('이미지 원본 크기로')}
                   icon
                   onClick={() => {
@@ -557,7 +558,7 @@ class PageController extends React.Component {
                   <i className="fal fa-window" />
                 </ButtonControl>
                 <ButtonControl
-                  enabled={!!itemOptions.naturalWidth}
+                  active={!!itemOptions.naturalWidth && isImage}
                   dataTip={t('박스 크기에 맞춤')}
                   icon
                   onClick={() => {

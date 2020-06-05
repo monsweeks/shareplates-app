@@ -16,8 +16,9 @@
 
       &:focus {
         border: none;
-        outline: none;
-        outline: 1px solid rgba(0,0,0,0.4);
+        outline: 2px solid rgba(0,0,0,0.2);
+        outline-offset: 2px;
+
       }
     }
   }

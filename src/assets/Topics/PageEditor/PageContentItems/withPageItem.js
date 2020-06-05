@@ -21,8 +21,6 @@ const withPageItem = () => (WrappedComponent) => {
 
     sizerType = '';
 
-    startWidth = null;
-
     startHeight = null;
 
     static itemName = WrappedComponent.name;
@@ -46,12 +44,13 @@ const withPageItem = () => (WrappedComponent) => {
     };
 
     onDragEnd = () => {
-      const { draggingItemId, setDragging } = this.props;
+      const { draggingItemId, setDragging, checkDirty } = this.props;
       if (draggingItemId) {
         setDragging(false);
         this.setState({
           draggable: false,
         });
+        checkDirty();
       }
     };
 
@@ -103,7 +102,6 @@ const withPageItem = () => (WrappedComponent) => {
 
       this.startX = e.clientX;
       this.startY = e.clientY;
-      this.startWidth = this.control.current.clientWidth;
       this.startHeight = this.control.current.clientHeight;
       this.sizerType = sizerType;
     };
@@ -114,44 +112,11 @@ const withPageItem = () => (WrappedComponent) => {
         item: { options },
       } = this.props;
 
-      switch (sizerType) {
-        case 'bottom': {
-          if (options.wrapperHeight !== 100 || options.wrapperHeightUnit !== '%') {
-            onChangeOption({
-              wrapperHeight: 100,
-              wrapperHeightUnit: '%',
-            });
-          }
-          break;
-        }
-
-        case 'right': {
-          if (options.wrapperWidth !== 100 || options.wrapperWidthUnit !== '%') {
-            onChangeOption({
-              wrapperWidth: 100,
-              wrapperWidthUnit: '%',
-            });
-          }
-          break;
-        }
-
-        case 'right-bottom': {
-          if (
-            options.wrapperHeight !== 100 ||
-            options.wrapperHeightUnit !== '%' ||
-            options.wrapperWidth !== 100 ||
-            options.wrapperWidthUnit !== '%'
-          ) {
-            onChangeOption({
-              wrapperHeight: 100,
-              wrapperHeightUnit: '%',
-              wrapperWidth: 100,
-              wrapperWidthUnit: '%',
-            });
-          }
-
-          break;
-        }
+      if ((sizerType === 'bottom' && options.wrapperHeight !== 100) || options.wrapperHeightUnit !== '%') {
+        onChangeOption({
+          wrapperHeight: 100,
+          wrapperHeightUnit: '%',
+        });
       }
     };
 
@@ -161,47 +126,19 @@ const withPageItem = () => (WrappedComponent) => {
         item: { options },
       } = this.props;
 
-      const parentWidth = Number.parseFloat(this.control.current.parentNode.clientWidth);
       const parentHeight = Number.parseFloat(this.control.current.parentNode.clientHeight);
-
-      const width = Number.parseFloat(this.control.current.clientWidth);
       const height = Number.parseFloat(this.control.current.clientHeight);
-
-      const wrapperWidth = options.wrapperWidthUnit === '%' ? this.getPercentSize(width, parentWidth) : width;
       const wrapperHeight = options.wrapperHeightUnit === '%' ? this.getPercentSize(height, parentHeight) : height;
-
-      const wrapperWidthUnit = options.wrapperWidthUnit === '%' ? '%' : 'px';
       const wrapperHeightUnit = options.wrapperHeightUnit === '%' ? '%' : 'px';
 
-      switch (this.sizerType) {
-        case 'bottom': {
-          if (options.wrapperHeight !== wrapperHeight || options.wrapperHeightUnit !== wrapperHeightUnit) {
-            onChangeOption({
-              wrapperHeight,
-              wrapperHeightUnit,
-            });
-          }
-
-          break;
-        }
-
-        case 'right': {
-          onChangeOption({
-            wrapperWidth,
-            wrapperWidthUnit,
-          });
-          break;
-        }
-
-        case 'right-bottom': {
-          onChangeOption({
-            wrapperHeight,
-            wrapperHeightUnit,
-            wrapperWidth,
-            wrapperWidthUnit,
-          });
-          break;
-        }
+      if (
+        (this.sizerType === 'bottom' && options.wrapperHeight !== wrapperHeight) ||
+        options.wrapperHeightUnit !== wrapperHeightUnit
+      ) {
+        onChangeOption({
+          wrapperHeight,
+          wrapperHeightUnit,
+        });
       }
 
       document.removeEventListener('mousemove', this.onSizerMouseMove);
@@ -209,26 +146,13 @@ const withPageItem = () => (WrappedComponent) => {
 
       this.startX = null;
       this.startY = null;
-      this.startWidth = null;
       this.startHeight = null;
       this.sizerType = '';
     };
 
     onSizerMouseMove = (e) => {
-      switch (this.sizerType) {
-        case 'bottom': {
-          this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
-          break;
-        }
-        case 'right': {
-          this.control.current.style.width = this.startWidth + (e.clientX - this.startX) + 'px';
-          break;
-        }
-        case 'right-bottom': {
-          this.control.current.style.width = this.startWidth + (e.clientX - this.startX) + 'px';
-          this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
-          break;
-        }
+      if (this.sizerType === 'bottom') {
+        this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
       }
     };
 
@@ -290,28 +214,6 @@ const withPageItem = () => (WrappedComponent) => {
           >
             <span />
           </div>
-          <div
-            className="sizer right"
-            onMouseDown={(e) => {
-              this.onSizerMouseDown('right', e);
-            }}
-            onDoubleClick={() => {
-              this.onSizerDoubleClick('right');
-            }}
-          >
-            <span />
-          </div>
-          <div
-            className="sizer right-bottom"
-            onMouseDown={(e) => {
-              this.onSizerMouseDown('right-bottom', e);
-            }}
-            onDoubleClick={() => {
-              this.onSizerDoubleClick('right-bottom');
-            }}
-          >
-            <span />
-          </div>
           <div className="anti-mover" onTouchStart={this.stopPropagation} onMouseDown={this.stopPropagation}>
             <WrappedComponent
               style={item.options}
@@ -346,8 +248,6 @@ withPageItem.options = {
   height: 'height',
   heightUnit: 'heightUnit',
   keepingRatio: 'keepingRatio',
-  wrapperWidth: 'wrapperWidth',
-  wrapperWidthUnit: 'wrapperWidthUnit',
   wrapperHeight: 'wrapperHeight',
   wrapperHeightUnit: 'wrapperHeightUnit',
   borderRadius: 'borderRadius',

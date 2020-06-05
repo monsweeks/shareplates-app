@@ -58,6 +58,14 @@
           color: inherit;
         }
       }
+
+      &.disabled {
+        .selector-current {
+          &:hover {
+            background-color: transparent !important;
+          }
+        }
+      }
     }
   }
 

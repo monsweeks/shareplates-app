@@ -43,13 +43,4 @@
       max-width: 100%;
     }
   }
-
-  &.editable {
-    > div {
-      .img-control:hover {
-        outline: 2px solid rgba(0, 0, 0, 0.4);
-        max-width: none;
-      }
-    }
-  }
 }
