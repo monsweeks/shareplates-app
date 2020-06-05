@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Table.scss';
+import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
 
 class Table extends React.PureComponent {
   control = React.createRef();
@@ -65,6 +66,22 @@ class Table extends React.PureComponent {
     });
   };
 
+  getTableAlignSelf = (alignSelf) => {
+    if (alignSelf === 'flex-end') {
+      return 'bottom';
+    }
+
+    if (alignSelf === 'baseline') {
+      return 'top';
+    }
+
+    if (alignSelf === 'center') {
+      return 'middle';
+    }
+
+    return alignSelf;
+  };
+
   render() {
     const {
       className,
@@ -75,9 +92,12 @@ class Table extends React.PureComponent {
       childSelectedList,
       setChildSelectedInfo,
       selected,
+      values,
     } = this.props;
     const { rows, edit } = this.state;
     const { alignSelf, ...last } = style;
+
+    console.log(item, values);
 
     return (
       <div
@@ -91,7 +111,7 @@ class Table extends React.PureComponent {
               edit: false,
             });
             setEditing(false);
-            setChildSelectedInfo(null);
+            setChildSelectedInfo(item.id, null);
           }
         }}
       >
@@ -107,6 +127,14 @@ class Table extends React.PureComponent {
                   return (
                     <tr key={inx}>
                       {row.cols.map((col, jnx) => {
+                        const {
+                          wrapperWidth,
+                          wrapperWidthUnit,
+                          wrapperHeight,
+                          wrapperHeightUnit,
+                          alignSelf: cellAlignSelf,
+                          ...lastOption
+                        } = col.options;
                         return (
                           <ContentEditable
                             className={`table-cell ${
@@ -120,7 +148,12 @@ class Table extends React.PureComponent {
                                 : ''
                             }`}
                             key={jnx}
-                            style={col.options}
+                            style={{
+                              width: getSize(wrapperWidth, wrapperWidthUnit),
+                              height: getSize(wrapperHeight, wrapperHeightUnit),
+                              verticalAlign: this.getTableAlignSelf(cellAlignSelf),
+                              ...lastOption,
+                            }}
                             html={col.text} // innerHTML of the editable div
                             disabled={!edit} // use true to disable editing
                             onClick={(e) => {
@@ -134,11 +167,11 @@ class Table extends React.PureComponent {
                               }
 
                               if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
-                                setChildSelectedInfo([inx, jnx], 'click');
+                                setChildSelectedInfo(item.id, [inx, jnx], 'click');
                               } else if (e.ctrlKey) {
-                                setChildSelectedInfo([inx, jnx], 'ctrl');
+                                setChildSelectedInfo(item.id, [inx, jnx], 'ctrl');
                               } else if (e.altKey) {
-                                setChildSelectedInfo([inx, jnx], 'alt');
+                                setChildSelectedInfo(item.id, [inx, jnx], 'alt');
                               } else if (e.shiftKey) {
                                 if (childSelectedList && childSelectedList.length > 0) {
                                   const selectedList = [];
@@ -147,9 +180,9 @@ class Table extends React.PureComponent {
                                       selectedList.push([i, j]);
                                     }
                                   }
-                                  setChildSelectedInfo(selectedList, 'shift');
+                                  setChildSelectedInfo(item.id, selectedList, 'shift');
                                 } else {
-                                  setChildSelectedInfo([inx, jnx], 'click');
+                                  setChildSelectedInfo(item.id, [inx, jnx], 'click');
                                 }
                               }
                             }}
@@ -208,83 +241,51 @@ pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
 const pageItemValues = {};
 pageItemValues.rows = [];
+
+const headerCell = {
+  text: '셀',
+  options: {
+    textAlign: 'center',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    color: 'inherit',
+    backgroundColor: '#EEE',
+    alignSelf: 'center',
+    padding: '0.5rem 0.5rem 0.5rem 0.5rem',
+    border: '1px solid #333',
+    wrapperWidth: 'auto',
+    wrapperWidthUnit: '%',
+    wrapperHeight: 'auto',
+    wrapperHeightUnit: 'px',
+  },
+};
+
+const contentCell = {
+  text: '셀',
+  options: {
+    textAlign: 'center',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    color: 'inherit',
+    backgroundColor: 'transparent',
+    alignSelf: 'center',
+    padding: '0.5rem 0.5rem 0.5rem 0.5rem',
+    border: '1px solid #333',
+    wrapperWidth: 'auto',
+    wrapperWidthUnit: '%',
+    wrapperHeight: 'auto',
+    wrapperHeightUnit: 'px',
+  },
+};
+
 pageItemValues.rows.push({
-  cols: [
-    {
-      text: '셀',
-      options: {
-        backgroundColor: '#EEE',
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        backgroundColor: '#EEE',
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        backgroundColor: '#EEE',
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-  ],
+  cols: [headerCell, headerCell, headerCell],
 });
 pageItemValues.rows.push({
-  cols: [
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-  ],
+  cols: [contentCell, contentCell, contentCell],
 });
 pageItemValues.rows.push({
-  cols: [
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-    {
-      text: '셀',
-      options: {
-        padding: '0.5rem 0.5rem 0.5rem 0.5rem ',
-        border: '1px solid #333',
-      },
-    },
-  ],
+  cols: [contentCell, contentCell, contentCell],
 });
 
 Table.setting = {

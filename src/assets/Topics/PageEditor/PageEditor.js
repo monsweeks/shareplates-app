@@ -170,9 +170,10 @@ class PageEditor extends React.Component {
     });
   };
 
-  setChildSelectedInfo = (childSelectedInfo, type) => {
+  setChildSelectedInfo = (itemId, childSelectedInfo, type) => {
     if (!childSelectedInfo) {
       this.setState({
+        selectedItemId : itemId,
         childSelectedList: null,
       });
       return;
@@ -199,6 +200,7 @@ class PageEditor extends React.Component {
     }
 
     this.setState({
+      selectedItemId : itemId,
       childSelectedList: next.sort((a, b) => {
         return JSON.stringify(a).localeCompare(JSON.stringify(b));
       }),
@@ -218,9 +220,7 @@ class PageEditor extends React.Component {
             const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
 
             Object.keys(optionKey).forEach((key) => {
-              if (key.indexOf('wrapper') !== 0) {
-                options[key] = optionKey[key];
-              }
+              options[key] = optionKey[key];
             });
 
             item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options = options;
@@ -258,11 +258,9 @@ class PageEditor extends React.Component {
 
         if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
-            if (optionKey.indexOf('wrapper') !== 0) {
-              const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
-              options[optionKey] = optionValue;
-              item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options = options;
-            }
+            const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
+            options[optionKey] = optionValue;
+            item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options = options;
           }
 
           this.setState(
@@ -423,6 +421,17 @@ class PageEditor extends React.Component {
     const { content, selectedItemId, childSelectedList, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
 
+    let childSelected = false;
+    let childOptions = {};
+    if (childSelectedList && childSelectedList.length > 0) {
+      childSelected = true;
+
+      const item = content.items.find((d) => d.id === selectedItemId);
+      if (item.name === 'Table') {
+        childOptions = item.values.rows[childSelectedList[0][0]].cols[childSelectedList[0][1]].options;
+      }
+    }
+
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
         <PageController
@@ -433,7 +442,7 @@ class PageEditor extends React.Component {
           addItem={this.addItem}
           {...last}
           updateContent={this.updateContent}
-          itemOptions={itemOptions}
+          itemOptions={childSelected ? childOptions : itemOptions}
           topicProperties={topic.content ? topic.content.topicProperties : {}}
           chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
           pageProperties={content.pageProperties || {}}
