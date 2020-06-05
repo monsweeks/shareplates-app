@@ -4,10 +4,18 @@ import './ButtonControl.scss';
 
 class ButtonControl extends React.PureComponent {
   render() {
-    const { className, onClick, children, icon, dataTip } = this.props;
+    const { className, onClick, children, icon, dataTip, active } = this.props;
 
     return (
-      <div className={`button-control-wrapper ${className} ${icon ? 'icon' : ''}`} onClick={onClick} data-tip={dataTip}>
+      <div
+        className={`button-control-wrapper ${className} ${icon ? 'icon' : ''} ${active ? 'active' : 'in-active'}`}
+        onClick={() => {
+          if (active) {
+            onClick();
+          }
+        }}
+        data-tip={dataTip}
+      >
         <div>{children}</div>
       </div>
     );
@@ -16,6 +24,7 @@ class ButtonControl extends React.PureComponent {
 
 ButtonControl.defaultProps = {
   className: '',
+  active: true,
 };
 
 ButtonControl.propTypes = {
@@ -24,6 +33,7 @@ ButtonControl.propTypes = {
   children: PropTypes.node,
   icon: PropTypes.bool,
   dataTip: PropTypes.string,
+  active: PropTypes.bool,
 };
 
 export default ButtonControl;

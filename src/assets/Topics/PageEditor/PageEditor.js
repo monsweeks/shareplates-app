@@ -123,6 +123,118 @@ class PageEditor extends React.Component {
     }
   };
 
+  addChild = (operation) => {
+    const { selectedItemId, content, childSelectedList } = this.state;
+    const defaultCellText = '컨텐츠';
+
+    if (selectedItemId) {
+      const next = { ...content };
+      const item = next.items.find((i) => i.id === selectedItemId);
+      let nextChildSelectedList = childSelectedList;
+
+      if (item.name === 'Table') {
+        if (operation === 'add-row-top') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentRowIndex = childSelectedList[0][0];
+            const selectedRow = JSON.parse(JSON.stringify(item.values.rows[currentRowIndex]));
+            selectedRow.cols.forEach((col) => {
+              col.text = defaultCellText;
+            });
+            item.values.rows.splice(currentRowIndex, 0, selectedRow);
+          } else {
+            const firstRow = JSON.parse(JSON.stringify(item.values.rows[0]));
+            firstRow.cols.forEach((col) => {
+              col.text = defaultCellText;
+            });
+            item.values.rows.unshift(firstRow);
+          }
+        } else if (operation === 'add-row-bottom') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentRowIndex = childSelectedList[0][0];
+            const selectedRow = JSON.parse(JSON.stringify(item.values.rows[currentRowIndex]));
+            selectedRow.cols.forEach((col) => {
+              col.text = defaultCellText;
+            });
+            item.values.rows.splice(currentRowIndex + 1, 0, selectedRow);
+          } else {
+            const lastRow = JSON.parse(JSON.stringify(item.values.rows[item.values.rows.length - 1]));
+            lastRow.cols.forEach((col) => {
+              col.text = defaultCellText;
+            });
+            item.values.rows.push(lastRow);
+          }
+        } else if (operation === 'add-col-left') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentColIndex = childSelectedList[0][1];
+            item.values.rows.forEach((row) => {
+              const selectedCell = JSON.parse(JSON.stringify(row.cols[currentColIndex]));
+              selectedCell.text = defaultCellText;
+              row.cols.splice(currentColIndex, 0, selectedCell);
+            });
+          } else {
+            item.values.rows.forEach((row) => {
+              const firstCell = JSON.parse(JSON.stringify(row.cols[0]));
+              firstCell.text = defaultCellText;
+              row.cols.unshift(firstCell);
+            });
+          }
+        } else if (operation === 'add-col-right') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentColIndex = childSelectedList[0][1];
+            item.values.rows.forEach((row) => {
+              const selectedCell = JSON.parse(JSON.stringify(row.cols[currentColIndex]));
+              selectedCell.text = defaultCellText;
+              row.cols.splice(currentColIndex + 1, 0, selectedCell);
+            });
+          } else {
+            item.values.rows.forEach((row) => {
+              const lastCell = JSON.parse(JSON.stringify(row.cols[row.cols.length - 1]));
+              lastCell.text = defaultCellText;
+              row.cols.push(lastCell);
+            });
+          }
+        } else if (operation === 'remove-row') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const selectRowIndex = childSelectedList[0][0];
+            item.values.rows.splice(selectRowIndex, 1);
+            nextChildSelectedList = null;
+
+            if (item.values.rows.length < 1) {
+              this.removeItem(item.id);
+            }
+          }
+        } else if (operation === 'remove-col') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const selectColIndex = childSelectedList[0][1];
+            item.values.rows.forEach((row) => {
+              row.cols.splice(selectColIndex, 1);
+            });
+
+            item.values.rows = item.values.rows.filter((row) => {
+              return row.cols.length > 0;
+            });
+
+            if (item.values.rows.length < 1) {
+              this.removeItem(item.id);
+            }
+
+            nextChildSelectedList = null;
+          }
+        }
+
+        this.setState(
+          {
+            content: next,
+            childSelectedList: nextChildSelectedList,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
+    }
+  };
+
   setDragging = (dragging, draggingItemId, draggingItemIndex) => {
     this.setState({
       dragging,
@@ -173,7 +285,7 @@ class PageEditor extends React.Component {
   setChildSelectedInfo = (itemId, childSelectedInfo, type) => {
     if (!childSelectedInfo) {
       this.setState({
-        selectedItemId : itemId,
+        selectedItemId: itemId,
         childSelectedList: null,
       });
       return;
@@ -200,7 +312,7 @@ class PageEditor extends React.Component {
     }
 
     this.setState({
-      selectedItemId : itemId,
+      selectedItemId: itemId,
       childSelectedList: next.sort((a, b) => {
         return JSON.stringify(a).localeCompare(JSON.stringify(b));
       }),
@@ -420,14 +532,13 @@ class PageEditor extends React.Component {
     const { topic, chapter } = this.props;
     const { content, selectedItemId, childSelectedList, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
+    const item = content.items.find((d) => d.id === selectedItemId);
 
     let childSelected = false;
     let childOptions = {};
     if (childSelectedList && childSelectedList.length > 0) {
       childSelected = true;
-
-      const item = content.items.find((d) => d.id === selectedItemId);
-      if (item.name === 'Table') {
+      if (item && item.name === 'Table') {
         childOptions = item.values.rows[childSelectedList[0][0]].cols[childSelectedList[0][1]].options;
       }
     }
@@ -439,7 +550,9 @@ class PageEditor extends React.Component {
           chapterId={chapterId}
           pageId={pageId}
           className="property-manager"
+          item={item}
           addItem={this.addItem}
+          addChild={this.addChild}
           {...last}
           updateContent={this.updateContent}
           itemOptions={childSelected ? childOptions : itemOptions}

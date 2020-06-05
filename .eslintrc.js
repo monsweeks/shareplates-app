@@ -25,5 +25,6 @@ module.exports = {
         'jsx-a11y/label-has-associated-control' : 'off',
         'jsx-a11y/no-noninteractive-element-interactions' : 'off',
         'no-underscore-dangle' : 'off',
+        'no-param-reassign' : 'off',
     },
 };

@@ -40,6 +40,10 @@ const tabs = [
     name: '이미지',
   },
   {
+    key: 'table',
+    name: '테이블',
+  },
+  {
     key: 'page-property',
     name: '페이지 속성',
   },
@@ -139,6 +143,7 @@ class PageController extends React.Component {
       setShowPageList,
       createPage,
       addItem,
+      addChild,
       updateContent,
       itemOptions,
       onChangeOption,
@@ -149,8 +154,13 @@ class PageController extends React.Component {
       pageProperties,
       topicProperties,
       chapterProperties,
+      childSelectedList,
+      item,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
+
+    const isTable = !!(item && item.name === 'Table');
+    const isSingleTableCellSelected = !!(childSelectedList && childSelectedList.length === 1);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -563,6 +573,100 @@ class PageController extends React.Component {
                 </ButtonControl>
               </>
             )}
+            {selectedTab === 'table' && (
+              <>
+                <ButtonControl
+                  active={isTable}
+                  className="table-operation-button direction-up"
+                  dataTip={t('위에 행 추가')}
+                  onClick={() => {
+                    addChild('add-row-top');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-table" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isTable}
+                  className="table-operation-button direction-down"
+                  dataTip={t('아래 행 추가')}
+                  onClick={() => {
+                    addChild('add-row-bottom');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-table" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isTable}
+                  className="table-operation-button direction-left"
+                  dataTip={t('왼쪽 열 추가')}
+                  onClick={() => {
+                    addChild('add-col-left');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-table" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isTable}
+                  className="table-operation-button direction-right"
+                  dataTip={t('오른쪽 열 추가')}
+                  onClick={() => {
+                    addChild('add-col-right');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-table" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isTable && isSingleTableCellSelected}
+                  className="table-operation-button direction-up remove"
+                  dataTip={t('행 삭제')}
+                  onClick={() => {
+                    addChild('remove-row');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-arrows-h" />
+                    <span>
+                      <i className="fal fa-minus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isTable && isSingleTableCellSelected}
+                  className="table-operation-button direction-right remove"
+                  dataTip={t('열 삭제')}
+                  onClick={() => {
+                    addChild('remove-col');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-arrows-v" />
+                    <span>
+                      <i className="fal fa-minus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+              </>
+            )}
             {selectedTab === 'page-property' && (
               <LevelProperties
                 level="페이지"
@@ -626,6 +730,7 @@ PageController.propTypes = {
   setShowPageList: PropTypes.func,
   createPage: PropTypes.func,
   addItem: PropTypes.func,
+  addChild: PropTypes.func,
   updateContent: PropTypes.func,
   itemOptions: PropTypes.objectOf(PropTypes.any),
   onChangeOption: PropTypes.func,
@@ -637,6 +742,8 @@ PageController.propTypes = {
   topicProperties: PropTypes.objectOf(PropTypes.any),
   chapterProperties: PropTypes.objectOf(PropTypes.any),
   pageProperties: PropTypes.objectOf(PropTypes.any),
+  item: PropTypes.objectOf(PropTypes.any),
+  childSelectedList: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(PageController));
