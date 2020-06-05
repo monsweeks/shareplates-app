@@ -155,4 +155,85 @@
     flex-grow: 0;
     align-self: center;
   }
+
+  .table-operation-button {
+    padding: 0;
+    min-width: 30px;
+    text-align: center;
+    > div {
+      width: 100%;
+      text-align: center;
+      > span {
+        position: relative;
+        display: inline-block;
+        font-size: 16px;
+        width: 100%;
+        > span {
+          position: absolute;
+          display: inline-block;
+          font-size: 10px;
+          background-color: $primary;
+          color: $white;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          text-align: center;
+        }
+      }
+    }
+
+    &.direction-up {
+      > div {
+        > span {
+          > span {
+            top: -4px;
+            left: 10px;
+          }
+        }
+      }
+    }
+
+    &.direction-down {
+      > div {
+        > span {
+          > span {
+            bottom: -4px;
+            left: 10px;
+          }
+        }
+      }
+    }
+
+    &.direction-left {
+      > div {
+        > span {
+          > span {
+            top: 3px;
+            left: 2px;
+          }
+        }
+      }
+    }
+
+    &.direction-right {
+      > div {
+        > span {
+          > span {
+            top: 3px;
+            right: 2px;
+          }
+        }
+      }
+    }
+
+    &.remove {
+      > div {
+        > span {
+          > span {
+            background-color: $danger;
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import './withPageItem.scss';
+import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
 
 const withPageItem = () => (WrappedComponent) => {
   return class extends React.Component {
@@ -231,14 +232,6 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
-    getSize = (size, unit) => {
-      if (size === 'auto' || !size) {
-        return 'auto';
-      }
-
-      return `${size}${unit}`;
-    };
-
     render() {
       const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, childSelectedList, setChildSelectedInfo, showLayout } = this.props;
@@ -253,8 +246,8 @@ const withPageItem = () => (WrappedComponent) => {
                                              ${showLayout ? 'show-layout' : ''}
                                              ${item && item.id === draggingItemId ? 'dragging' : ''}`}
           style={{
-            width: this.getSize(wrapperWidth, wrapperWidthUnit),
-            height: this.getSize(wrapperHeight, wrapperHeightUnit),
+            width: getSize(wrapperWidth, wrapperWidthUnit),
+            height: getSize(wrapperHeight, wrapperHeightUnit),
           }}
           onClick={(e) => {
             e.stopPropagation();
@@ -276,7 +269,7 @@ const withPageItem = () => (WrappedComponent) => {
             onClick={(e) => {
               e.stopPropagation();
               setSelectedItem(null, {});
-              setChildSelectedInfo(null);
+              setChildSelectedInfo(null, null);
               removeItem(item.id);
             }}
           >

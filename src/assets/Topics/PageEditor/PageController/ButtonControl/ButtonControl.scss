@@ -9,6 +9,11 @@
   margin: 0 1px;
   border-radius: 2px;
 
+  &.in-active {
+    opacity: 0.3;
+    transition: all 0.1s;
+  }
+
   &.icon {
     padding: 0 0.25rem;
   }

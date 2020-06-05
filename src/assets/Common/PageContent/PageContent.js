@@ -66,7 +66,7 @@ class PageContent extends React.Component {
         onClick={() => {
           if (editable) {
             setSelectedItem(null, {});
-            setChildSelectedInfo(null);
+            setChildSelectedInfo(null, null);
           }
         }}
         style={{ ...pageProperties }}
