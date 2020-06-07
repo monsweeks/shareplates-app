@@ -1,0 +1,35 @@
+.list-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  > div {
+    flex-grow: 1;
+    vertical-align: middle;
+    align-self: center;
+    position: relative;
+
+    > ol,
+    > ul {
+      word-break: break-all;
+      width: 100%;
+      table-layout: fixed;
+      margin-bottom: 0;
+      padding: 0;
+      list-style-position: inside !important;
+
+      .list-item {
+        list-style-position: inside !important;
+      }
+
+      :focus,
+      .list-item {
+        &.selected {
+          outline: 3px solid $primary;
+          outline-offset: -1px;
+        }
+      }
+    }
+  }
+}

@@ -251,7 +251,9 @@ withPageItem.options = {
   wrapperHeight: 'wrapperHeight',
   wrapperHeightUnit: 'wrapperHeightUnit',
   borderRadius: 'borderRadius',
-  borderRadiusUnit: 'borderRadiusUnit,',
+  borderRadiusUnit: 'borderRadiusUnit',
+  listStyle: 'listStyle',
+  indentLevel: 'indentLevel',
 };
 
 export default withPageItem;

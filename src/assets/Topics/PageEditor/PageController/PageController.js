@@ -14,6 +14,7 @@ import {
   CHAPTER_FONT_SIZES,
   ITEM_FONT_FAMILIES,
   ITEM_FONT_SIZES,
+  LIST_STYLES,
   PAGE_FONT_FAMILIES,
   PAGE_FONT_SIZES,
   TOPIC_FONT_FAMILIES,
@@ -42,6 +43,10 @@ const tabs = [
   {
     key: 'table',
     name: '테이블',
+  },
+  {
+    key: 'list',
+    name: '리스트',
   },
   {
     key: 'page-property',
@@ -133,6 +138,15 @@ class PageController extends React.Component {
     return fontSize;
   };
 
+  getListStyleName = (list, listStyle) => {
+    const item = list.find((info) => info.value === listStyle);
+    if (item) {
+      return item.name;
+    }
+
+    return listStyle;
+  };
+
   render() {
     const { t, className } = this.props;
     const {
@@ -160,8 +174,9 @@ class PageController extends React.Component {
     const { selectedTab, lastProperties } = this.state;
 
     const isTable = !!(item && item.name === 'Table');
+    const isList = !!(item && item.name === 'List');
     const isImage = !!(item && item.name === 'Image');
-    const isSingleTableCellSelected = !!(childSelectedList && childSelectedList.length === 1);
+    const isSingleChildSelected = !!(childSelectedList && childSelectedList.length === 1);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -442,6 +457,14 @@ class PageController extends React.Component {
                 >
                   {t('테이블')}
                 </ButtonControl>
+                <ButtonControl
+                  dataTip={t('리스트 추가')}
+                  onClick={() => {
+                    addItem('List');
+                  }}
+                >
+                  {t('리스트')}
+                </ButtonControl>
               </>
             )}
             {selectedTab === 'image' && (
@@ -637,7 +660,7 @@ class PageController extends React.Component {
                   </span>
                 </ButtonControl>
                 <ButtonControl
-                  active={isTable && isSingleTableCellSelected}
+                  active={isTable && isSingleChildSelected}
                   className="table-operation-button direction-up remove"
                   dataTip={t('행 삭제')}
                   onClick={() => {
@@ -652,7 +675,7 @@ class PageController extends React.Component {
                   </span>
                 </ButtonControl>
                 <ButtonControl
-                  active={isTable && isSingleTableCellSelected}
+                  active={isTable && isSingleChildSelected}
                   className="table-operation-button direction-right remove"
                   dataTip={t('열 삭제')}
                   onClick={() => {
@@ -661,6 +684,89 @@ class PageController extends React.Component {
                 >
                   <span>
                     <i className="fal fa-arrows-v" />
+                    <span>
+                      <i className="fal fa-minus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+              </>
+            )}
+            {selectedTab === 'list' && (
+              <>
+                <SelectControl
+                  dataTip={t('리스트 스타일')}
+                  minWidth="64px"
+                  height="140px"
+                  optionKey="listStyle"
+                  list={LIST_STYLES}
+                  active={!!itemOptions.listStyle && isList}
+                  value={itemOptions.listStyle}
+                  onSelect={onChangeOption}
+                >
+                  <span>{this.getListStyleName(LIST_STYLES, itemOptions.listStyle)}</span>
+                </SelectControl>
+                <ButtonControl
+                  active={isList && !Number.isNaN(itemOptions.indentLevel)}
+                  dataTip={t('들여쓰기')}
+                  icon
+                  onClick={() => {
+                    onChangeOption('indentLevel', Number(itemOptions.indentLevel) + 1);
+                  }}
+                >
+                  <i className="fal fa-indent" />
+                </ButtonControl>
+                <ButtonControl
+                  active={isList && !Number.isNaN(itemOptions.indentLevel)}
+                  dataTip={t('내어쓰기')}
+                  icon
+                  onClick={() => {
+                    if (itemOptions.indentLevel > 0) {
+                      onChangeOption('indentLevel', itemOptions.indentLevel - 1);
+                    }
+                  }}
+                >
+                  <i className="fal fa-outdent" />
+                </ButtonControl>
+                <ButtonControl
+                  active={isList}
+                  className="table-operation-button direction-up"
+                  dataTip={t('위에 아이템 추가')}
+                  onClick={() => {
+                    addChild('add-item-top');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul"/>
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isList}
+                  className="table-operation-button direction-down"
+                  dataTip={t('아래 아이템 추가')}
+                  onClick={() => {
+                    addChild('add-item-bottom');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul"/>
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isList && isSingleChildSelected}
+                  className="table-operation-button direction-up remove"
+                  dataTip={t('아이템 삭제')}
+                  onClick={() => {
+                    addChild('remove-item');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul"/>
                     <span>
                       <i className="fal fa-minus" />
                     </span>
