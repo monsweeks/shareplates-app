@@ -116,7 +116,7 @@ const withPageItem = () => (WrappedComponent) => {
         onChangeOption({
           wrapperHeight: 100,
           wrapperHeightUnit: '%',
-        });
+        }, null, true);
       }
     };
 
@@ -138,7 +138,7 @@ const withPageItem = () => (WrappedComponent) => {
         onChangeOption({
           wrapperHeight,
           wrapperHeightUnit,
-        });
+        }, null, true);
       }
 
       document.removeEventListener('mousemove', this.onSizerMouseMove);

@@ -367,7 +367,7 @@ class PageEditor extends React.Component {
     });
   };
 
-  onChangeOption = (optionKey, optionValue) => {
+  onChangeOption = (optionKey, optionValue, forceChangeWrapper) => {
     const { selectedItemId, content, childSelectedList } = this.state;
 
     if (selectedItemId) {
@@ -375,7 +375,7 @@ class PageEditor extends React.Component {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
 
-        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0) {
+        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].options };
 
@@ -394,7 +394,7 @@ class PageEditor extends React.Component {
               this.checkDirty();
             },
           );
-        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0 && forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
 
@@ -435,7 +435,7 @@ class PageEditor extends React.Component {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
 
-        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0) {
+        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].options };
             options[optionKey] = optionValue;
@@ -450,7 +450,7 @@ class PageEditor extends React.Component {
               this.checkDirty();
             },
           );
-        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
             options[optionKey] = optionValue;
