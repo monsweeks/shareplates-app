@@ -649,6 +649,7 @@ class PageEditor extends React.Component {
           onChangeTopicProperties={this.onChangeTopicProperties}
           onChangeChapterProperties={this.onChangeChapterProperties}
           onChangePageProperties={this.onChangePageProperties}
+          onChangeValue={this.onChangeValue}
           selectedItemId={selectedItemId}
           childSelectedList={childSelectedList}
           setEditing={this.setEditing}

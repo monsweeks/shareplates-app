@@ -147,6 +147,121 @@ class PageController extends React.Component {
     return listStyle;
   };
 
+  getSelectionStyleContent = (styleKey, styleValue) => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const rootElement = selection.focusNode.parentElement.closest('[contenteditable]');
+    const rootChildNodes = rootElement.childNodes;
+    let next = '';
+    let crossChangeStart = false;
+    for (let i=0; i<rootChildNodes.length; i+=1) {
+      // 같은 레벨의 컨테이너의 텍스트를 선택하고, 부모가 editable인 경우, 선택한 부분만 스팬으로 쪼개고, 스타일 추가
+      if (rootChildNodes[i] === range.startContainer && range.startContainer.nodeType === 3 && range.startContainer === range.endContainer && range.endContainer.parentElement === rootElement) {
+        const text = range.startContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(range.startOffset, range.endOffset);
+        span.style[styleKey] = styleValue;
+        next += `${text.substring(0, range.startOffset)}${span.outerHTML}${text.substring(range.endOffset, text.length)}`;
+      }
+      // 같은 레벨의 컨테이너의 스팬을 선택한 경우, 스팬을 복사해서 앞/뒤로 쪼개고, 선택 부분에 스타일 추가
+      else if (rootChildNodes[i] === range.startContainer.parentElement && range.startContainer.parentElement.nodeType !== 3 && range.startContainer === range.endContainer) {
+        const element = range.startContainer.parentElement;
+        const pre = element.cloneNode(true);
+        const post = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.startOffset);
+        post.textContent = element.textContent.substring(range.endOffset, element.textContent.length);
+        element.textContent = element.textContent.substring(range.startOffset, range.endOffset);
+        element.style[styleKey] = styleValue;
+
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+
+        if (post.textContent !== '') {
+          next += post.outerHTML;
+        }
+
+      }
+      // 다른 레벨의 컨테이너들을 선택하고, 시작 컨테이너인데, 텍스트인 경우, 선택 부분부터 컨테이너의 끝까지 스팬으로 묶고, 스타일 추가하고, 플래그 true
+      else if (range.startContainer !== range.endContainer && rootChildNodes[i] === range.startContainer && range.startContainer.nodeType === 3) {
+        const text = range.startContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(range.startOffset, text.length);
+        span.style[styleKey] = styleValue;
+        next += `${text.substring(0, range.startOffset)}${span.outerHTML}`;
+        crossChangeStart = true;
+      }
+      // 다른 레벨의 컨테이너들을 선택하고, 시작 컨테이너인데, 스팬인 경우, 스팬으 쪼개고, 뒤의 스팬에 스타일 추가하고, 플래그 true
+      else if (range.startContainer !== range.endContainer && rootChildNodes[i] === range.startContainer.parentElement && range.startContainer.parentElement.nodeType !== 3) {
+        const element = range.startContainer.parentElement;
+        const pre = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.startOffset);
+        element.textContent = element.textContent.substring(range.startOffset, element.textContent.length);
+        element.style[styleKey] = styleValue;
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+        crossChangeStart = true;
+      }
+      // 플래그가 시작되었고, 마지막 컨테이너인데, 텍스트인 경우, 앞 부분을 스팬으로 묶고, 스타일을 추가하고, 플래그 종료
+      else if (crossChangeStart && rootChildNodes[i] === range.endContainer && range.endContainer.nodeType === 3) {
+        const text = range.endContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(0, range.endOffset);
+        span.style[styleKey] = styleValue;
+        next += `${span.textContent !== '' ? span.outerHTML : ''}${text.substring(range.endOffset, text.length)}`;
+        crossChangeStart = false;
+      }
+      // 플래그가 시작되었고, 마지막 컨테이너인데, 스팬인 경우, 스팬을 쪼개고 앞부분에 스타일을 추가하고, 플래그 종료
+      else if (crossChangeStart && rootChildNodes[i] === range.endContainer.parentElement && range.endContainer.parentElement.nodeType !== 3) {
+        const element = range.endContainer.parentElement;
+        const pre = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.endOffset); // 스타일 추가
+        pre.style[styleKey] = styleValue;
+        element.textContent = element.textContent.substring(range.endOffset, element.textContent.length);
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+
+        crossChangeStart = false;
+      }
+      // 플래그가 시작되고, 중간 컨테이너인데 텍스트인 경우, 전체를 스팬으로 묶고 스타일 추가
+      else if (crossChangeStart && rootChildNodes[i].nodeType === 3) {
+        const text = rootChildNodes[i].nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text;
+        span.style[styleKey] = styleValue;
+        next += span.outerHTML;
+      }
+      // 플래스가 시작되고, 중간 컨테인데 스팬인 경우 스타일 추가
+      else if (crossChangeStart && rootChildNodes[i].nodeType !== 3) {
+        rootChildNodes[i].style[styleKey] = styleValue;
+        next += rootChildNodes[i].outerHTML;
+      }
+      // 선택되지 않은 텍스트 노드의 경우, 단순 추가
+      else if (rootChildNodes[i].nodeType === 3 && rootChildNodes[i].nodeValue !== '') {
+        next += rootChildNodes[i].nodeValue;
+      }
+      // 선택되지 않은 스팬 노드의 경우, 단순 추가
+      else if (rootChildNodes[i].nodeType !== 3) {
+        next += rootChildNodes[i].outerHTML;
+      }
+    }
+
+    return next;
+  };
+
   render() {
     const { t, className } = this.props;
     const {
@@ -170,6 +285,7 @@ class PageController extends React.Component {
       chapterProperties,
       childSelectedList,
       item,
+      onChangeValue,
     } = this.props;
     const { selectedTab, lastProperties } = this.state;
 
@@ -346,6 +462,24 @@ class PageController extends React.Component {
                   </span>
                 </ColorControl>
                 <Separator />
+                <CheckControl
+                  dataTip={t('굵게')}
+                  optionKey="textWeight"
+                  optionValue="bold"
+                  active
+                  value={itemOptions.textWeight}
+                  onClick={() => {
+                    const selection = window.getSelection();
+                    if (item.name === 'Text' && !selection.isCollapsed) {
+                      const next = this.getSelectionStyleContent('color', 'red');
+                      onChangeValue({
+                        text: next,
+                      });
+                    }
+                  }}
+                >
+                  <i className="fal fa-bold"/>
+                </CheckControl>
                 <ColorControl
                   dataTip={t('상자 배경 색상')}
                   colorPickerWidth="257px"
@@ -736,7 +870,7 @@ class PageController extends React.Component {
                   }}
                 >
                   <span>
-                    <i className="fal fa-list-ul"/>
+                    <i className="fal fa-list-ul" />
                     <span>
                       <i className="fal fa-plus" />
                     </span>
@@ -751,7 +885,7 @@ class PageController extends React.Component {
                   }}
                 >
                   <span>
-                    <i className="fal fa-list-ul"/>
+                    <i className="fal fa-list-ul" />
                     <span>
                       <i className="fal fa-plus" />
                     </span>
@@ -766,7 +900,7 @@ class PageController extends React.Component {
                   }}
                 >
                   <span>
-                    <i className="fal fa-list-ul"/>
+                    <i className="fal fa-list-ul" />
                     <span>
                       <i className="fal fa-minus" />
                     </span>
@@ -851,6 +985,7 @@ PageController.propTypes = {
   pageProperties: PropTypes.objectOf(PropTypes.any),
   item: PropTypes.objectOf(PropTypes.any),
   childSelectedList: PropTypes.arrayOf(PropTypes.any),
+  onChangeValue: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageController));
