@@ -84,36 +84,42 @@ for (let i = 0; i <= 20; i += 1) {
 
 const TOPIC_FONT_SIZES = JSON.parse(JSON.stringify(FONT_SIZES));
 
-const CHAPTER_FONT_SIZES = [{
-  value: 'inherit',
-  name: '토픽 폰트 크기',
-}].concat(FONT_SIZES);
+const CHAPTER_FONT_SIZES = [
+  {
+    value: 'inherit',
+    name: '토픽 폰트 크기',
+  },
+].concat(FONT_SIZES);
 
-const PAGE_FONT_SIZES = [{
-  value: 'inherit',
-  name: '챕터 폰트 크기',
-}].concat(FONT_SIZES);
+const PAGE_FONT_SIZES = [
+  {
+    value: 'inherit',
+    name: '챕터 폰트 크기',
+  },
+].concat(FONT_SIZES);
 
-const ITEM_FONT_SIZES = [{
-  value: 'inherit',
-  name: '페이지 폰트 크기',
-}].concat(FONT_SIZES);
+const ITEM_FONT_SIZES = [
+  {
+    value: 'inherit',
+    name: '페이지 폰트 크기',
+  },
+].concat(FONT_SIZES);
 
 const PAGE_TRANSFER_ANIMATION = [
   {
     key: 'no',
     value: 'NO ANIMATION',
-    desc : '화면 전환 애니메이션을 사용하지 않습니다',
+    desc: '화면 전환 애니메이션을 사용하지 않습니다',
   },
   {
     key: 'sweep',
     value: 'SWEEP',
-    desc : '페이지 이동 방향에 따라 페이지가 좌에서 우 또는 우에서 좌로 이동합니다.',
+    desc: '페이지 이동 방향에 따라 페이지가 좌에서 우 또는 우에서 좌로 이동합니다.',
   },
   {
     key: 'fade',
     value: 'FADE',
-    desc : '페이지 이동시 현재 화면이 FADE OUT 되고, 새로운 화면이 FADE IN 됩니다',
+    desc: '페이지 이동시 현재 화면이 FADE OUT 되고, 새로운 화면이 FADE IN 됩니다',
   },
 ];
 
@@ -127,8 +133,63 @@ const DEFAULT_TOPIC_CONTENT = {
   },
   settings: {
     transferAnimation: 'sweep',
-  }
+  },
 };
+
+const LIST_STYLES = [
+  {
+    value: 'none',
+    name: '없음',
+  },
+  {
+    value: 'disc',
+    name: '●',
+  },
+  {
+    value: 'circle',
+    name: '○',
+  },
+  {
+    value: 'square',
+    name: '■',
+  },
+  {
+    value: 'decimal',
+    name: '1,2,3,..',
+  },
+
+  {
+    value: 'lower-alpha',
+    name: 'a,b,c,..',
+  },
+  {
+    value: 'upper-alpha',
+    name: 'A,B,C,..',
+  },
+  {
+    value: 'lower-roman',
+    name: 'i,ii,iii,..',
+  },
+  {
+    value: 'upper-roman',
+    name: 'I,II,III,..',
+  },
+];
+
+const TEXT_DECORATION_STYLES = [
+  {
+    value: 'solid',
+    name: '실선',
+  },
+  {
+    value: 'dashed',
+    name: '점선',
+  },
+  {
+    value: 'wavy',
+    name: '물결',
+  },
+];
 
 export {
   TOPIC_FONT_FAMILIES,
@@ -142,4 +203,6 @@ export {
   BORDER_WIDTHS,
   PAGE_TRANSFER_ANIMATION,
   DEFAULT_TOPIC_CONTENT,
+  LIST_STYLES,
+  TEXT_DECORATION_STYLES,
 };

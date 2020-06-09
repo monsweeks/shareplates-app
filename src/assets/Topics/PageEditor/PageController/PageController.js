@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 import { withTranslation } from 'react-i18next';
 import ReactTooltip from 'react-tooltip';
 import { Button } from '@/components';
@@ -14,8 +15,10 @@ import {
   CHAPTER_FONT_SIZES,
   ITEM_FONT_FAMILIES,
   ITEM_FONT_SIZES,
+  LIST_STYLES,
   PAGE_FONT_FAMILIES,
   PAGE_FONT_SIZES,
+  TEXT_DECORATION_STYLES,
   TOPIC_FONT_FAMILIES,
   TOPIC_FONT_SIZES,
 } from './constants';
@@ -44,6 +47,10 @@ const tabs = [
     name: '테이블',
   },
   {
+    key: 'list',
+    name: '리스트',
+  },
+  {
     key: 'page-property',
     name: '페이지 속성',
   },
@@ -65,6 +72,8 @@ class PageController extends React.Component {
       selectedItemId: null,
       lastProperties: {},
     };
+
+    this.selectionChangeDebounced = debounce(this.onSelectionChange, 200);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -86,11 +95,20 @@ class PageController extends React.Component {
 
   componentDidMount() {
     ReactTooltip.rebuild();
+    document.addEventListener('selectionchange', this.selectionChangeDebounced);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('selectionchange', this.selectionChangeDebounced);
   }
 
   componentDidUpdate() {
     ReactTooltip.rebuild();
   }
+
+  onSelectionChange = () => {
+    this.forceUpdate();
+  };
 
   onMemoryAndChangeOption = (optionKey, color) => {
     const { onChangeOption } = this.props;
@@ -133,6 +151,190 @@ class PageController extends React.Component {
     return fontSize;
   };
 
+  getListStyleName = (list, listStyle) => {
+    const item = list.find((info) => info.value === listStyle);
+    if (item) {
+      return item.name;
+    }
+
+    return listStyle;
+  };
+
+  getSelectionStyleContent = (styleKey, styleValue) => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const rootElement = selection.focusNode.parentElement.closest('[contenteditable]');
+    const rootChildNodes = rootElement.childNodes;
+    let next = '';
+    let crossChangeStart = false;
+
+    for (let i = 0; i < rootChildNodes.length; i += 1) {
+      // 같은 레벨의 컨테이너의 텍스트를 선택하고, 부모가 editable인 경우, 선택한 부분만 스팬으로 쪼개고, 스타일 추가
+      if (
+        rootChildNodes[i] === range.startContainer &&
+        range.startContainer.nodeType === 3 &&
+        range.startContainer === range.endContainer &&
+        range.endContainer.parentElement === rootElement
+      ) {
+        const text = range.startContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(range.startOffset, range.endOffset);
+        span.style[styleKey] = styleValue;
+        next += `${text.substring(0, range.startOffset)}${span.outerHTML}${text.substring(
+          range.endOffset,
+          text.length,
+        )}`;
+      }
+      // 같은 레벨의 컨테이너의 스팬을 선택한 경우, 스팬을 복사해서 앞/뒤로 쪼개고, 선택 부분에 스타일 추가
+      else if (
+        rootChildNodes[i] === range.startContainer.parentElement &&
+        range.startContainer.parentElement.nodeType !== 3 &&
+        range.startContainer === range.endContainer
+      ) {
+        const element = range.startContainer.parentElement;
+        const pre = element.cloneNode(true);
+        const post = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.startOffset);
+        post.textContent = element.textContent.substring(range.endOffset, element.textContent.length);
+        element.textContent = element.textContent.substring(range.startOffset, range.endOffset);
+        element.style[styleKey] = styleValue;
+
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+
+        if (post.textContent !== '') {
+          next += post.outerHTML;
+        }
+      }
+      // 다른 레벨의 컨테이너들을 선택하고, 시작 컨테이너인데, 텍스트인 경우, 선택 부분부터 컨테이너의 끝까지 스팬으로 묶고, 스타일 추가하고, 플래그 true
+      else if (
+        range.startContainer !== range.endContainer &&
+        rootChildNodes[i] === range.startContainer &&
+        range.startContainer.nodeType === 3
+      ) {
+        const text = range.startContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(range.startOffset, text.length);
+        span.style[styleKey] = styleValue;
+        next += `${text.substring(0, range.startOffset)}${span.outerHTML}`;
+        crossChangeStart = true;
+      }
+      // 다른 레벨의 컨테이너들을 선택하고, 시작 컨테이너인데, 스팬인 경우, 스팬으 쪼개고, 뒤의 스팬에 스타일 추가하고, 플래그 true
+      else if (
+        range.startContainer !== range.endContainer &&
+        rootChildNodes[i] === range.startContainer.parentElement &&
+        range.startContainer.parentElement.nodeType !== 3
+      ) {
+        const element = range.startContainer.parentElement;
+        const pre = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.startOffset);
+        element.textContent = element.textContent.substring(range.startOffset, element.textContent.length);
+        element.style[styleKey] = styleValue;
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+        crossChangeStart = true;
+      }
+      // 플래그가 시작되었고, 마지막 컨테이너인데, 텍스트인 경우, 앞 부분을 스팬으로 묶고, 스타일을 추가하고, 플래그 종료
+      else if (crossChangeStart && rootChildNodes[i] === range.endContainer && range.endContainer.nodeType === 3) {
+        const text = range.endContainer.nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text.substring(0, range.endOffset);
+        span.style[styleKey] = styleValue;
+        next += `${span.textContent !== '' ? span.outerHTML : ''}${text.substring(range.endOffset, text.length)}`;
+        crossChangeStart = false;
+      }
+      // 플래그가 시작되었고, 마지막 컨테이너인데, 스팬인 경우, 스팬을 쪼개고 앞부분에 스타일을 추가하고, 플래그 종료
+      else if (
+        crossChangeStart &&
+        rootChildNodes[i] === range.endContainer.parentElement &&
+        range.endContainer.parentElement.nodeType !== 3
+      ) {
+        const element = range.endContainer.parentElement;
+        const pre = element.cloneNode(true);
+        pre.textContent = element.textContent.substring(0, range.endOffset); // 스타일 추가
+        pre.style[styleKey] = styleValue;
+        element.textContent = element.textContent.substring(range.endOffset, element.textContent.length);
+        if (pre.textContent !== '') {
+          next += pre.outerHTML;
+        }
+
+        if (element.textContent !== '') {
+          next += element.outerHTML;
+        }
+
+        crossChangeStart = false;
+      }
+      // 플래그가 시작되고, 중간 컨테이너인데 텍스트인 경우, 전체를 스팬으로 묶고 스타일 추가
+      else if (crossChangeStart && rootChildNodes[i].nodeType === 3) {
+        const text = rootChildNodes[i].nodeValue;
+        const span = document.createElement('span');
+        span.textContent = text;
+        span.style[styleKey] = styleValue;
+        next += span.outerHTML;
+      }
+      // 플래스가 시작되고, 중간 컨테인데 스팬인 경우 스타일 추가
+      else if (crossChangeStart && rootChildNodes[i].nodeType !== 3) {
+        rootChildNodes[i].style[styleKey] = styleValue;
+        next += rootChildNodes[i].outerHTML;
+      }
+      // 선택되지 않은 텍스트 노드의 경우, 단순 추가
+      else if (rootChildNodes[i].nodeType === 3 && rootChildNodes[i].nodeValue !== '') {
+        next += rootChildNodes[i].nodeValue;
+      }
+      // 선택되지 않은 스팬 노드의 경우, 단순 추가
+      else if (rootChildNodes[i].nodeType !== 3) {
+        next += rootChildNodes[i].outerHTML;
+      }
+    }
+
+    return next;
+  };
+
+  isSelectionStyle = (item) => {
+    const selection = window.getSelection();
+    return item && (item.name === 'Text' || item.name === 'Table' || item.name === 'List') && !selection.isCollapsed;
+  };
+
+  getSelectionStyle = (styleKey) => {
+    const selection = window.getSelection();
+    if (selection.focusNode.nodeType === 3 && !selection.focusNode.parentElement.getAttribute('contenteditable')) {
+      return selection.focusNode.parentElement.style[styleKey];
+    }
+
+    return undefined;
+  };
+
+  setSelectionStyle = (item, next) => {
+    const { childSelectedList, onChangeValue } = this.props;
+
+    if (item.name === 'Text') {
+      onChangeValue({
+        text: next,
+      });
+    } else if (item.name === 'Table') {
+      if (childSelectedList && childSelectedList.length > 0) {
+        const { values } = item;
+        values.rows[childSelectedList[0][0]].cols[childSelectedList[0][1]].text = next;
+        onChangeValue(values, true);
+      }
+    } else if (item.name === 'List') {
+      if (childSelectedList && childSelectedList.length > 0) {
+        const { values } = item;
+        values.rows[childSelectedList[0][0]].text = next;
+        onChangeValue(values, true);
+      }
+    }
+  };
+
   render() {
     const { t, className } = this.props;
     const {
@@ -160,8 +362,10 @@ class PageController extends React.Component {
     const { selectedTab, lastProperties } = this.state;
 
     const isTable = !!(item && item.name === 'Table');
+    const isList = !!(item && item.name === 'List');
     const isImage = !!(item && item.name === 'Image');
-    const isSingleTableCellSelected = !!(childSelectedList && childSelectedList.length === 1);
+    const isSingleChildSelected = !!(childSelectedList && childSelectedList.length === 1);
+    const isSelectionStyle = this.isSelectionStyle(item);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -203,7 +407,7 @@ class PageController extends React.Component {
                   dataTip={t('왼쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="left"
-                  active={!!itemOptions.textAlign}
+                  active={!isSelectionStyle && !!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -213,7 +417,7 @@ class PageController extends React.Component {
                   dataTip={t('가운데 정렬')}
                   optionKey="textAlign"
                   optionValue="center"
-                  active={!!itemOptions.textAlign}
+                  active={!isSelectionStyle && !!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -223,7 +427,7 @@ class PageController extends React.Component {
                   dataTip={t('오른쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="right"
-                  active={!!itemOptions.textAlign}
+                  active={!isSelectionStyle && !!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -233,7 +437,7 @@ class PageController extends React.Component {
                   dataTip={t('양쪽 정렬')}
                   optionKey="textAlign"
                   optionValue="justify"
-                  active={!!itemOptions.textAlign}
+                  active={!isSelectionStyle && !!itemOptions.textAlign}
                   value={itemOptions.textAlign}
                   onClick={onChangeOption}
                 >
@@ -244,7 +448,7 @@ class PageController extends React.Component {
                   dataTip={t('위쪽 맞춤')}
                   optionKey="alignSelf"
                   optionValue="baseline"
-                  active={!!itemOptions.alignSelf}
+                  active={!isSelectionStyle && !!itemOptions.alignSelf}
                   value={itemOptions.alignSelf}
                   onClick={onChangeOption}
                 >
@@ -258,7 +462,7 @@ class PageController extends React.Component {
                   dataTip={t('가운데 맞춤')}
                   optionKey="alignSelf"
                   optionValue="center"
-                  active={!!itemOptions.alignSelf}
+                  active={!isSelectionStyle && !!itemOptions.alignSelf}
                   value={itemOptions.alignSelf}
                   onClick={onChangeOption}
                 >
@@ -272,7 +476,7 @@ class PageController extends React.Component {
                   dataTip={t('아래쪽 맞춤')}
                   optionKey="alignSelf"
                   optionValue="flex-end"
-                  active={!!itemOptions.alignSelf}
+                  active={!isSelectionStyle && !!itemOptions.alignSelf}
                   value={itemOptions.alignSelf}
                   onClick={onChangeOption}
                 >
@@ -283,6 +487,145 @@ class PageController extends React.Component {
                   </span>
                 </CheckControl>
                 <Separator />
+                <CheckControl
+                  dataTip={t('굵게')}
+                  optionKey="fontWeight"
+                  optionValue="bold"
+                  active={!!itemOptions.fontWeight}
+                  value={isSelectionStyle ? this.getSelectionStyle('fontWeight') : itemOptions.fontWeight}
+                  onClick={(optionKey) => {
+                    if (isSelectionStyle) {
+                      const selectionStyleValue = this.getSelectionStyle('fontWeight');
+                      const next = this.getSelectionStyleContent(
+                        'fontWeight',
+                        selectionStyleValue === 'bold' ? 'inherit' : 'bold',
+                      );
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      onChangeOption(optionKey, itemOptions.fontWeight === 'bold' ? 'inherit' : 'bold');
+                    }
+                  }}
+                >
+                  <i className="fas fa-bold" />
+                </CheckControl>
+                <CheckControl
+                  dataTip={t('아래선')}
+                  optionKey="textDecorationLine"
+                  optionValue="underline"
+                  active={!!itemOptions.textDecorationLine}
+                  value={
+                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
+                  }
+                  onClick={(optionKey) => {
+                    if (isSelectionStyle) {
+                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
+                      const next = this.getSelectionStyleContent(
+                        'textDecorationLine',
+                        selectionStyleValue === 'underline' ? 'none' : 'underline',
+                      );
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      onChangeOption(optionKey, itemOptions.textDecorationLine === 'underline' ? 'none' : 'underline');
+                    }
+                  }}
+                >
+                  <i className="fas fa-underline" />
+                </CheckControl>
+                <CheckControl
+                  dataTip={t('윗선')}
+                  optionKey="textDecorationLine"
+                  optionValue="overline"
+                  active={!!itemOptions.textDecorationLine}
+                  value={
+                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
+                  }
+                  onClick={(optionKey) => {
+                    if (isSelectionStyle) {
+                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
+                      const next = this.getSelectionStyleContent(
+                        'textDecorationLine',
+                        selectionStyleValue === 'overline' ? 'none' : 'overline',
+                      );
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      onChangeOption(optionKey, itemOptions.textDecorationLine === 'overline' ? 'none' : 'overline');
+                    }
+                  }}
+                >
+                  <i className="fas fa-overline" />
+                </CheckControl>
+                <CheckControl
+                  dataTip={t('취소선')}
+                  optionKey="textDecorationLine"
+                  optionValue="line-through"
+                  active={!!itemOptions.textDecorationLine}
+                  value={
+                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
+                  }
+                  onClick={(optionKey) => {
+                    if (isSelectionStyle) {
+                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
+                      const next = this.getSelectionStyleContent(
+                        'textDecorationLine',
+                        selectionStyleValue === 'line-through' ? 'none' : 'line-through',
+                      );
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      onChangeOption(
+                        optionKey,
+                        itemOptions.textDecorationLine === 'line-through' ? 'none' : 'line-through',
+                      );
+                    }
+                  }}
+                >
+                  <i className="fas fa-strikethrough" />
+                </CheckControl>
+                <SelectControl
+                  dataTip={t('선 타입')}
+                  minWidth="60px"
+                  height="auto"
+                  optionKey="textDecorationStyle"
+                  list={TEXT_DECORATION_STYLES}
+                  active={!!itemOptions.textDecorationStyle}
+                  value={itemOptions.textDecorationStyle}
+                  onSelect={(optionKey, optionValue) => {
+                    if (isSelectionStyle) {
+                      const next = this.getSelectionStyleContent('textDecorationStyle', optionValue);
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      onChangeOption(optionKey, optionValue);
+                    }
+                  }}
+                >
+                  <span>{this.getFontFamilyName(TEXT_DECORATION_STYLES, itemOptions.textDecorationStyle)}</span>
+                </SelectControl>
+                <ColorControl
+                  dataTip={t('선 색상')}
+                  colorPickerWidth="257px"
+                  colorPickerHeight="200px"
+                  optionKey="textDecorationColor"
+                  active={!!itemOptions.textDecorationColor}
+                  value={itemOptions.textDecorationColor}
+                  onSelect={(optionKey, optionValue) => {
+                    if (isSelectionStyle) {
+                      const next = this.getSelectionStyleContent('textDecorationStyle', optionValue);
+                      this.setSelectionStyle(item, next);
+                    } else {
+                      this.onMemoryAndChangeOption(optionKey, optionValue);
+                    }
+                  }}
+                  lastColor={lastProperties.textDecorationColor || itemOptions.textDecorationColor}
+                >
+                  <span className="color-border fill-color">
+                    <i className="fal fa-fill" />
+                    <span
+                      className="color-bar"
+                      style={{
+                        backgroundColor: lastProperties.textDecorationColor || itemOptions.textDecorationColor,
+                      }}
+                    />
+                  </span>
+                </ColorControl>
                 <Separator />
                 <SelectControl
                   dataTip={t('폰트')}
@@ -441,6 +784,14 @@ class PageController extends React.Component {
                   }}
                 >
                   {t('테이블')}
+                </ButtonControl>
+                <ButtonControl
+                  dataTip={t('리스트 추가')}
+                  onClick={() => {
+                    addItem('List');
+                  }}
+                >
+                  {t('리스트')}
                 </ButtonControl>
               </>
             )}
@@ -637,7 +988,7 @@ class PageController extends React.Component {
                   </span>
                 </ButtonControl>
                 <ButtonControl
-                  active={isTable && isSingleTableCellSelected}
+                  active={isTable && isSingleChildSelected}
                   className="table-operation-button direction-up remove"
                   dataTip={t('행 삭제')}
                   onClick={() => {
@@ -652,7 +1003,7 @@ class PageController extends React.Component {
                   </span>
                 </ButtonControl>
                 <ButtonControl
-                  active={isTable && isSingleTableCellSelected}
+                  active={isTable && isSingleChildSelected}
                   className="table-operation-button direction-right remove"
                   dataTip={t('열 삭제')}
                   onClick={() => {
@@ -661,6 +1012,89 @@ class PageController extends React.Component {
                 >
                   <span>
                     <i className="fal fa-arrows-v" />
+                    <span>
+                      <i className="fal fa-minus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+              </>
+            )}
+            {selectedTab === 'list' && (
+              <>
+                <SelectControl
+                  dataTip={t('리스트 스타일')}
+                  minWidth="64px"
+                  height="140px"
+                  optionKey="listStyle"
+                  list={LIST_STYLES}
+                  active={!!itemOptions.listStyle && isList}
+                  value={itemOptions.listStyle}
+                  onSelect={onChangeOption}
+                >
+                  <span>{this.getListStyleName(LIST_STYLES, itemOptions.listStyle)}</span>
+                </SelectControl>
+                <ButtonControl
+                  active={isList && !Number.isNaN(itemOptions.indentLevel)}
+                  dataTip={t('들여쓰기')}
+                  icon
+                  onClick={() => {
+                    onChangeOption('indentLevel', Number(itemOptions.indentLevel) + 1);
+                  }}
+                >
+                  <i className="fal fa-indent" />
+                </ButtonControl>
+                <ButtonControl
+                  active={isList && !Number.isNaN(itemOptions.indentLevel)}
+                  dataTip={t('내어쓰기')}
+                  icon
+                  onClick={() => {
+                    if (itemOptions.indentLevel > 0) {
+                      onChangeOption('indentLevel', itemOptions.indentLevel - 1);
+                    }
+                  }}
+                >
+                  <i className="fal fa-outdent" />
+                </ButtonControl>
+                <ButtonControl
+                  active={isList}
+                  className="table-operation-button direction-up"
+                  dataTip={t('위에 아이템 추가')}
+                  onClick={() => {
+                    addChild('add-item-top');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isList}
+                  className="table-operation-button direction-down"
+                  dataTip={t('아래 아이템 추가')}
+                  onClick={() => {
+                    addChild('add-item-bottom');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul" />
+                    <span>
+                      <i className="fal fa-plus" />
+                    </span>
+                  </span>
+                </ButtonControl>
+                <ButtonControl
+                  active={isList && isSingleChildSelected}
+                  className="table-operation-button direction-up remove"
+                  dataTip={t('아이템 삭제')}
+                  onClick={() => {
+                    addChild('remove-item');
+                  }}
+                >
+                  <span>
+                    <i className="fal fa-list-ul" />
                     <span>
                       <i className="fal fa-minus" />
                     </span>
@@ -745,6 +1179,7 @@ PageController.propTypes = {
   pageProperties: PropTypes.objectOf(PropTypes.any),
   item: PropTypes.objectOf(PropTypes.any),
   childSelectedList: PropTypes.arrayOf(PropTypes.any),
+  onChangeValue: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(PageController));

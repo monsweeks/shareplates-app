@@ -126,6 +126,7 @@ class PageEditor extends React.Component {
   addChild = (operation) => {
     const { selectedItemId, content, childSelectedList } = this.state;
     const defaultCellText = '컨텐츠';
+    const defaultItemText = '아이템';
 
     if (selectedItemId) {
       const next = { ...content };
@@ -232,6 +233,52 @@ class PageEditor extends React.Component {
           },
         );
       }
+
+      if (item.name === 'List') {
+        if (operation === 'add-item-top') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentRowIndex = childSelectedList[0][0];
+            const selectedRow = JSON.parse(JSON.stringify(item.values.rows[currentRowIndex]));
+            selectedRow.text = defaultItemText;
+            item.values.rows.splice(currentRowIndex, 0, selectedRow);
+          } else {
+            const firstRow = JSON.parse(JSON.stringify(item.values.rows[0]));
+            firstRow.text = defaultItemText;
+            item.values.rows.unshift(firstRow);
+          }
+        } else if (operation === 'add-item-bottom') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const currentRowIndex = childSelectedList[0][0];
+            const selectedRow = JSON.parse(JSON.stringify(item.values.rows[currentRowIndex]));
+            selectedRow.text = defaultItemText;
+            item.values.rows.splice(currentRowIndex + 1, 0, selectedRow);
+          } else {
+            const lastRow = JSON.parse(JSON.stringify(item.values.rows[item.values.rows.length - 1]));
+            lastRow.text = defaultItemText;
+            item.values.rows.push(lastRow);
+          }
+        } else if (operation === 'remove-item') {
+          if (childSelectedList && childSelectedList.length === 1) {
+            const selectRowIndex = childSelectedList[0][0];
+            item.values.rows.splice(selectRowIndex, 1);
+            nextChildSelectedList = null;
+
+            if (item.values.rows.length < 1) {
+              this.removeItem(item.id);
+            }
+          }
+        }
+
+        this.setState(
+          {
+            content: next,
+            childSelectedList: nextChildSelectedList,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
     }
   };
 
@@ -279,7 +326,7 @@ class PageEditor extends React.Component {
     this.setState({
       selectedItemId,
       itemOptions,
-      childSelectedList : null,
+      childSelectedList: null,
     });
   };
 
@@ -320,7 +367,7 @@ class PageEditor extends React.Component {
     });
   };
 
-  onChangeOption = (optionKey, optionValue) => {
+  onChangeOption = (optionKey, optionValue, forceChangeWrapper) => {
     const { selectedItemId, content, childSelectedList } = this.state;
 
     if (selectedItemId) {
@@ -328,7 +375,26 @@ class PageEditor extends React.Component {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
 
-        if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
+          for (let i = 0; i < childSelectedList.length; i += 1) {
+            const options = { ...item.values.rows[childSelectedList[i][0]].options };
+
+            Object.keys(optionKey).forEach((key) => {
+              options[key] = optionKey[key];
+            });
+
+            item.values.rows[childSelectedList[i][0]].options = options;
+          }
+
+          this.setState(
+            {
+              content: next,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0 && forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
 
@@ -369,7 +435,22 @@ class PageEditor extends React.Component {
         const next = { ...content };
         const item = next.items.find((i) => i.id === selectedItemId);
 
-        if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0) {
+        if (item.name === 'List' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
+          for (let i = 0; i < childSelectedList.length; i += 1) {
+            const options = { ...item.values.rows[childSelectedList[i][0]].options };
+            options[optionKey] = optionValue;
+            item.values.rows[childSelectedList[i][0]].options = options;
+          }
+
+          this.setState(
+            {
+              content: next,
+            },
+            () => {
+              this.checkDirty();
+            },
+          );
+        } else if (item.name === 'Table' && childSelectedList && childSelectedList.length > 0 && !forceChangeWrapper) {
           for (let i = 0; i < childSelectedList.length; i += 1) {
             const options = { ...item.values.rows[childSelectedList[i][0]].cols[childSelectedList[i][1]].options };
             options[optionKey] = optionValue;
@@ -402,26 +483,39 @@ class PageEditor extends React.Component {
     }
   };
 
-  onChangeValue = (obj) => {
+  onChangeValue = (obj, isWholeValues) => {
     const { selectedItemId, content } = this.state;
     if (selectedItemId) {
       const next = { ...content };
       const item = next.items.find((i) => i.id === selectedItemId);
-      const values = { ...item.values };
+      if (isWholeValues) {
+        item.values = obj;
+        this.setState(
+          {
+            content: next,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      } else {
+        const values = { ...item.values };
 
-      Object.keys(obj).forEach((key) => {
-        values[key] = obj[key];
-      });
+        Object.keys(obj).forEach((key) => {
+          values[key] = obj[key];
+        });
 
-      item.values = values;
-      this.setState(
-        {
-          content: next,
-        },
-        () => {
-          this.checkDirty();
-        },
-      );
+        item.values = values;
+        this.setState(
+          {
+            content: next,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
+
     }
   };
 
@@ -542,6 +636,10 @@ class PageEditor extends React.Component {
       if (item && item.name === 'Table') {
         childOptions = item.values.rows[childSelectedList[0][0]].cols[childSelectedList[0][1]].options;
       }
+
+      if (item && item.name === 'List') {
+        childOptions = item.values.rows[childSelectedList[0][0]].options;
+      }
     }
 
     return (
@@ -564,6 +662,7 @@ class PageEditor extends React.Component {
           onChangeTopicProperties={this.onChangeTopicProperties}
           onChangeChapterProperties={this.onChangeChapterProperties}
           onChangePageProperties={this.onChangePageProperties}
+          onChangeValue={this.onChangeValue}
           selectedItemId={selectedItemId}
           childSelectedList={childSelectedList}
           setEditing={this.setEditing}
