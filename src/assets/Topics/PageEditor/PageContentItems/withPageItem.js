@@ -113,10 +113,14 @@ const withPageItem = () => (WrappedComponent) => {
       } = this.props;
 
       if ((sizerType === 'bottom' && options.wrapperHeight !== 100) || options.wrapperHeightUnit !== '%') {
-        onChangeOption({
-          wrapperHeight: 100,
-          wrapperHeightUnit: '%',
-        }, null, true);
+        onChangeOption(
+          {
+            wrapperHeight: 100,
+            wrapperHeightUnit: '%',
+          },
+          null,
+          true,
+        );
       }
     };
 
@@ -135,10 +139,14 @@ const withPageItem = () => (WrappedComponent) => {
         (this.sizerType === 'bottom' && options.wrapperHeight !== wrapperHeight) ||
         options.wrapperHeightUnit !== wrapperHeightUnit
       ) {
-        onChangeOption({
-          wrapperHeight,
-          wrapperHeightUnit,
-        }, null, true);
+        onChangeOption(
+          {
+            wrapperHeight,
+            wrapperHeightUnit,
+          },
+          null,
+          true,
+        );
       }
 
       document.removeEventListener('mousemove', this.onSizerMouseMove);
@@ -153,6 +161,18 @@ const withPageItem = () => (WrappedComponent) => {
     onSizerMouseMove = (e) => {
       if (this.sizerType === 'bottom') {
         this.control.current.style.height = this.startHeight + (e.clientY - this.startY) + 'px';
+      }
+    };
+
+    clearTextSelection = () => {
+      if (window.getSelection) {
+        if (window.getSelection().empty) {
+          window.getSelection().empty();
+        } else if (window.getSelection().removeAllRanges) {
+          window.getSelection().removeAllRanges();
+        }
+      } else if (document.selection) {
+        document.selection.empty();
       }
     };
 
@@ -224,6 +244,7 @@ const withPageItem = () => (WrappedComponent) => {
               setSelectedItem={setSelectedItem}
               childSelectedList={childSelectedList}
               setChildSelectedInfo={setChildSelectedInfo}
+              clearTextSelection={this.clearTextSelection}
             />
           </div>
         </div>
@@ -254,6 +275,10 @@ withPageItem.options = {
   borderRadiusUnit: 'borderRadiusUnit',
   listStyle: 'listStyle',
   indentLevel: 'indentLevel',
+  fontWeight: 'fontWeight',
+  textDecorationLine: 'textDecorationLine',
+  textDecorationStyle: 'textDecorationStyle',
+  textDecorationColor: 'textDecorationColor',
 };
 
 export default withPageItem;

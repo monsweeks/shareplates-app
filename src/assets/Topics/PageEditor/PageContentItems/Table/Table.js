@@ -95,6 +95,7 @@ class Table extends React.PureComponent {
       setSelectedItem,
       setChildSelectedInfo,
       selected,
+      clearTextSelection,
     } = this.props;
     const { rows, edit } = this.state;
     const { alignSelf, textAlign, width, widthUnit, ...last } = style;
@@ -106,6 +107,11 @@ class Table extends React.PureComponent {
         {...item}
         style={last}
         onClick={() => {
+
+          if (clearTextSelection) {
+            clearTextSelection();
+          }
+
           if (editable && edit) {
             this.setState({
               edit: false,
@@ -232,6 +238,7 @@ Table.propTypes = {
   setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
+  clearTextSelection : PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
@@ -246,7 +253,10 @@ pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
 pageItemProps[withPageItem.options.border] = 'none';
 pageItemProps[withPageItem.options.width] = '100';
 pageItemProps[withPageItem.options.widthUnit] = '%';
-
+pageItemProps[withPageItem.options.fontWeight] = 'inherit';
+pageItemProps[withPageItem.options.textDecorationLine] = 'none';
+pageItemProps[withPageItem.options.textDecorationStyle] = 'solid';
+pageItemProps[withPageItem.options.textDecorationColor] = '#333333';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
@@ -269,6 +279,10 @@ const headerCell = {
     widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
+    fontWeight : 'inherit',
+    textDecorationLine: 'none',
+    textDecorationStyle : 'solid',
+    textDecorationColor : '#333333',
   },
 };
 
@@ -287,6 +301,10 @@ const contentCell = {
     widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
+    fontWeight : 'inherit',
+    textDecorationLine: 'none',
+    textDecorationStyle : 'solid',
+    textDecorationColor : '#333333',
   },
 };
 

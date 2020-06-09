@@ -259,6 +259,10 @@ pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 pageItemProps[withPageItem.options.listStyle] = 'circle';
 pageItemProps[withPageItem.options.indentLevel] = '0';
+pageItemProps[withPageItem.options.fontWeight] = 'inherit';
+pageItemProps[withPageItem.options.textDecorationLine] = 'none';
+pageItemProps[withPageItem.options.textDecorationStyle] = 'solid';
+pageItemProps[withPageItem.options.textDecorationColor] = '#333333';
 
 // 이 컴포넌트에서 사용하는 컨텐츠 관련 속성
 const pageItemValues = {};
@@ -282,6 +286,10 @@ const item = {
     wrapperHeightUnit: 'px',
     listStyle: 'inherit',
     indentLevel: 0,
+    fontWeight : 'inherit',
+    textDecorationLine : 'none',
+    textDecorationStyle : 'solid',
+    textDecorationColor : '#333333',
   },
 };
 

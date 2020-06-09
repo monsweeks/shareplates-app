@@ -176,6 +176,21 @@ const LIST_STYLES = [
   },
 ];
 
+const TEXT_DECORATION_STYLES = [
+  {
+    value: 'solid',
+    name: '실선',
+  },
+  {
+    value: 'dashed',
+    name: '점선',
+  },
+  {
+    value: 'wavy',
+    name: '물결',
+  },
+];
+
 export {
   TOPIC_FONT_FAMILIES,
   CHAPTER_FONT_FAMILIES,
@@ -189,4 +204,5 @@ export {
   PAGE_TRANSFER_ANIMATION,
   DEFAULT_TOPIC_CONTENT,
   LIST_STYLES,
+  TEXT_DECORATION_STYLES,
 };

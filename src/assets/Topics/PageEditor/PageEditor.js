@@ -483,26 +483,39 @@ class PageEditor extends React.Component {
     }
   };
 
-  onChangeValue = (obj) => {
+  onChangeValue = (obj, isWholeValues) => {
     const { selectedItemId, content } = this.state;
     if (selectedItemId) {
       const next = { ...content };
       const item = next.items.find((i) => i.id === selectedItemId);
-      const values = { ...item.values };
+      if (isWholeValues) {
+        item.values = obj;
+        this.setState(
+          {
+            content: next,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      } else {
+        const values = { ...item.values };
 
-      Object.keys(obj).forEach((key) => {
-        values[key] = obj[key];
-      });
+        Object.keys(obj).forEach((key) => {
+          values[key] = obj[key];
+        });
 
-      item.values = values;
-      this.setState(
-        {
-          content: next,
-        },
-        () => {
-          this.checkDirty();
-        },
-      );
+        item.values = values;
+        this.setState(
+          {
+            content: next,
+          },
+          () => {
+            this.checkDirty();
+          },
+        );
+      }
+
     }
   };
 

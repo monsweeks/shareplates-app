@@ -60,7 +60,7 @@ class Text extends React.Component {
   }
 
   render() {
-    const { className, item, style, editable, setEditing } = this.props;
+    const { className, item, style, editable, setEditing, clearTextSelection } = this.props;
     const { text, edit } = this.state;
     const { alignSelf, width, widthUnit, ...last } = style;
 
@@ -74,6 +74,10 @@ class Text extends React.Component {
           ...last,
         }}
         onClick={() => {
+          if (clearTextSelection) {
+            clearTextSelection();
+          }
+
           if (editable && edit) {
             this.setState({
               edit: false,
@@ -132,6 +136,7 @@ Text.propTypes = {
   editable: PropTypes.bool,
   onChangeValue: PropTypes.func,
   setEditing: PropTypes.func,
+  clearTextSelection : PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
@@ -146,7 +151,10 @@ pageItemProps[withPageItem.options.padding] = '1rem 1rem 1rem 1rem';
 pageItemProps[withPageItem.options.border] = 'none';
 pageItemProps[withPageItem.options.width] = 'auto';
 pageItemProps[withPageItem.options.widthUnit] = '%';
-
+pageItemProps[withPageItem.options.fontWeight] = 'inherit';
+pageItemProps[withPageItem.options.textDecorationLine] = 'none';
+pageItemProps[withPageItem.options.textDecorationStyle] = 'solid';
+pageItemProps[withPageItem.options.textDecorationColor] = '#333333';
 pageItemProps[withPageItem.options.wrapperHeight] = 'auto';
 pageItemProps[withPageItem.options.wrapperHeightUnit] = 'px';
 
