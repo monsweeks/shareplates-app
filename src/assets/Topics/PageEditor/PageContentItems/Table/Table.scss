@@ -21,6 +21,10 @@
           outline: 3px solid $primary;
           outline-offset: -1px;
         }
+
+        &:empty:before {
+          content: "\00a0";
+        }
       }
     }
   }

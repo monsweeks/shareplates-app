@@ -3,6 +3,13 @@
   flex-direction: row;
   width: 100%;
 
+  .short-key-guide {
+    position: absolute;
+    top: 60px;
+    left: 225px;
+    z-index: 10;
+  }
+
   .page-list-layout {
     width: 240px;
     min-width: 240px;
@@ -12,10 +19,13 @@
     background-color: $gray-200;
 
     > .page-list {
-      background-color: $white;
       background-color: $gray-200;
       flex-grow: 1;
       position: relative;
+
+      &.selected {
+        background-color: $gray-400;
+      }
 
       > div {
         position: absolute;

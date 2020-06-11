@@ -14,11 +14,14 @@
       overflow-y: auto;
       word-break: break-all;
 
+      &:empty:before {
+        content: "\00a0";
+      }
+
       &:focus {
         border: none;
         outline: 2px solid rgba(0,0,0,0.2);
         outline-offset: 2px;
-
       }
     }
   }

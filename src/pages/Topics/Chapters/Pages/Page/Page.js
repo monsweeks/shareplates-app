@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { Prompt, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage } from '@/components';
+
 import request from '@/utils/request';
-import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
+import { PageCardLayoutList, PageEditor, PageEditorShortKeyInfo, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
 import { PAGE_FONT_FAMILIES, PAGE_FONT_SIZES } from '@/assets/Topics/PageEditor/PageController/constants';
 import './Page.scss';
 
 class Page extends React.Component {
   pageEditorRef = React.createRef();
+
+  pageList = React.createRef();
+
+  pageListMouseHover = false;
 
   constructor(props) {
     super(props);
@@ -29,6 +34,8 @@ class Page extends React.Component {
       pages: false,
       selectedPageId: null,
       showPageList: true,
+      selectedPageList: false,
+      showShortKeyGuide: false,
     };
   }
 
@@ -53,7 +60,77 @@ class Page extends React.Component {
     if (topicId && chapterId) {
       this.getPages(topicId, chapterId);
     }
+
+    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keyup', this.onKeyUp);
+    document.addEventListener('mousedown', this.onMouseDown);
+    window.addEventListener('beforeunload', this.onBeforeUnload);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('keyup', this.onKeyUp);
+    document.removeEventListener('mousedown', this.onMouseDown);
+    window.removeEventListener('beforeunload', this.onBeforeUnload);
+  }
+
+  onBeforeUnload = (e) => {
+    e.preventDefault();
+
+    const { selectedPageId, pages } = this.state;
+    const page = pages.find((p) => p.id === selectedPageId);
+    if (page && page.dirty) {
+      e.returnValue = '이 페이지를 벗어나면, 변경 내용이 저장되지 않습니다.';
+    }
+  };
+
+  onKeyUp = (e) => {
+    const { showShortKeyGuide } = this.state;
+    if (showShortKeyGuide && (e.key === 'Control' || e.key === 'Alt')) {
+      this.setState({
+        showShortKeyGuide: false,
+      });
+    }
+  };
+
+  onKeyDown = (e) => {
+    const { selectedPageId, selectedPageList, showShortKeyGuide } = this.state;
+    const { setConfirm: setConfirmReducer } = this.props;
+
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      if (this.pageEditorRef) {
+        this.pageEditorRef.updateContent();
+      }
+      return;
+    }
+
+    if (selectedPageList && e.altKey && e.key === 'n') {
+      e.preventDefault();
+      this.createPage();
+    }
+
+    if (this.pageListMouseHover && selectedPageId && e.key === 'Delete') {
+      setConfirmReducer('페이지를 삭제하시겠습니까?', () => {
+        this.deletePage(selectedPageId);
+      });
+    }
+
+    if (this.pageListMouseHover && (e.ctrlKey || e.altKey) && !showShortKeyGuide) {
+      this.setState({
+        showShortKeyGuide: true,
+      });
+    }
+  };
+
+  onMouseDown = (e) => {
+    const { selectedPageList } = this.state;
+    if (selectedPageList && this.pageList.current && !this.pageList.current.contains(e.target)) {
+      this.setState({
+        selectedPageList: false,
+      });
+    }
+  };
 
   getPages = (topicId, chapterId) => {
     request.get(`/api/topics/${topicId}/chapters/${chapterId}/pages`, {}, (data) => {
@@ -118,25 +195,32 @@ class Page extends React.Component {
 
   setSelectedPageId = (selectedPageId) => {
     const { setConfirm: setConfirmReducer } = this.props;
-    const { selectedPageId: currentSelectedPageId, pages } = this.state;
+    const { selectedPageId: currentSelectedPageId, pages, selectedPageList } = this.state;
 
     if (currentSelectedPageId === selectedPageId) {
+      if (!selectedPageList && !selectedPageId) {
+        this.setState({
+          selectedPageList: true,
+        });
+      }
       return;
     }
 
     const next = pages.slice(0);
     const page = next.find((p) => p.id === currentSelectedPageId);
     if (page && page.dirty) {
-      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지로 이동하시겠습니까?', () => {
+      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지를 불러오시겠습니까?', () => {
         page.dirty = false;
         this.setState({
           selectedPageId,
           pages: next,
+          selectedPageList: !selectedPageId,
         });
       });
     } else {
       this.setState({
         selectedPageId,
+        selectedPageList: !selectedPageId,
       });
     }
   };
@@ -315,11 +399,25 @@ class Page extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { topicId, topic, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
+    const {
+      topicId,
+      topic,
+      chapterId,
+      chapter,
+      pages,
+      selectedPageId,
+      showPageList,
+      selectedPageList,
+      showShortKeyGuide,
+    } = this.state;
     const isWriter = true;
+
+    const page = pages && pages.find((p) => p.id === selectedPageId);
 
     return (
       <div className="page-manager-wrapper">
+        <Prompt when={Boolean(page && page.dirty)} message="이 페이지를 벗어나면, 변경 내용이 저장되지 않습니다." />
+        {showShortKeyGuide && <PageEditorShortKeyInfo className="short-key-guide" />}
         {showPageList && (
           <div className="page-list-layout">
             <PageListTopMenu
@@ -392,9 +490,16 @@ class Page extends React.Component {
             )}
             {pages !== false && pages.length > 0 && (
               <div
-                className="page-list"
+                ref={this.pageList}
+                className={`page-list ${selectedPageList ? 'selected' : ''}`}
                 onClick={() => {
                   this.setSelectedPageId(null);
+                }}
+                onMouseEnter={() => {
+                  this.pageListMouseHover = true;
+                }}
+                onMouseLeave={() => {
+                  this.pageListMouseHover = false;
                 }}
               >
                 <div className="scrollbar">

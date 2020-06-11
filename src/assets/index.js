@@ -26,6 +26,8 @@ import ChapterRow from '@/assets/Topics/ChapterRow/ChapterRow';
 import PageCard from '@/assets/Topics/PageCard/PageCard';
 import TopicCard from '@/assets/Topics/TopicCard/TopicCard';
 import FormLevelProperties from '@/assets/Topics/FormLevelProperties/FormLevelProperties';
+import PageEditorShortKeyInfo from '@/assets/Topics/PageEditorShortKeyInfo/PageEditorShortKeyInfo';
+
 
 export {
   // Common
@@ -56,5 +58,6 @@ export {
   PageCard,
   TopicCard,
   FormLevelProperties,
+  PageEditorShortKeyInfo,
 
 };
