@@ -304,13 +304,25 @@ class PageController extends React.Component {
     return item && (item.name === 'Text' || item.name === 'Table' || item.name === 'List') && !selection.isCollapsed;
   };
 
-  getSelectionStyle = (styleKey) => {
+  getSelectionStyleValues = (isSelectionStyle, itemOptions, styleKeyList) => {
+    const values = {};
+
     const selection = window.getSelection();
-    if (selection.focusNode.nodeType === 3 && !selection.focusNode.parentElement.getAttribute('contenteditable')) {
-      return selection.focusNode.parentElement.style[styleKey];
+    if (
+      isSelectionStyle &&
+      selection.focusNode.nodeType === 3 &&
+      !selection.focusNode.parentElement.getAttribute('contenteditable')
+    ) {
+      styleKeyList.forEach((styleKey) => {
+        values[styleKey] = selection.focusNode.parentElement.style[styleKey];
+      });
+    } else {
+      styleKeyList.forEach((styleKey) => {
+        values[styleKey] = itemOptions[styleKey];
+      });
     }
 
-    return undefined;
+    return values;
   };
 
   setSelectionStyle = (item, next) => {
@@ -332,6 +344,32 @@ class PageController extends React.Component {
         values.rows[childSelectedList[0][0]].text = next;
         onChangeValue(values, true);
       }
+    }
+  };
+
+  onChangeSelectionOrItemOption = (optionKey, optionValue) => {
+    const { onChangeOption, item } = this.props;
+
+    const isSelectionStyle = this.isSelectionStyle(item);
+
+    if (isSelectionStyle) {
+      const next = this.getSelectionStyleContent(optionKey, optionValue);
+      this.setSelectionStyle(item, next);
+    } else {
+      onChangeOption(optionKey, optionValue);
+    }
+  };
+
+  onChangeSelectionOrItemOptionAndMemory = (optionKey, optionValue) => {
+    const { item } = this.props;
+
+    const isSelectionStyle = this.isSelectionStyle(item);
+
+    if (isSelectionStyle) {
+      const next = this.getSelectionStyleContent(optionKey, optionValue);
+      this.setSelectionStyle(item, next);
+    } else {
+      this.onMemoryAndChangeOption(optionKey, optionValue);
     }
   };
 
@@ -366,6 +404,16 @@ class PageController extends React.Component {
     const isImage = !!(item && item.name === 'Image');
     const isSingleChildSelected = !!(childSelectedList && childSelectedList.length === 1);
     const isSelectionStyle = this.isSelectionStyle(item);
+    const selectionStyleValues = this.getSelectionStyleValues(isSelectionStyle, itemOptions, [
+      'fontFamily',
+      'fontSize',
+      'fontWeight',
+      'color',
+      'backgroundColor',
+      'textDecorationLine',
+      'textDecorationStyle',
+      'textDecorationColor',
+    ]);
 
     return (
       <div className={`page-controller-wrapper g-no-select ${className}`}>
@@ -492,18 +540,12 @@ class PageController extends React.Component {
                   optionKey="fontWeight"
                   optionValue="bold"
                   active={!!itemOptions.fontWeight}
-                  value={isSelectionStyle ? this.getSelectionStyle('fontWeight') : itemOptions.fontWeight}
+                  value={selectionStyleValues.fontWeight}
                   onClick={(optionKey) => {
-                    if (isSelectionStyle) {
-                      const selectionStyleValue = this.getSelectionStyle('fontWeight');
-                      const next = this.getSelectionStyleContent(
-                        'fontWeight',
-                        selectionStyleValue === 'bold' ? 'inherit' : 'bold',
-                      );
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      onChangeOption(optionKey, itemOptions.fontWeight === 'bold' ? 'inherit' : 'bold');
-                    }
+                    this.onChangeSelectionOrItemOption(
+                      optionKey,
+                      selectionStyleValues.fontWeight === 'bold' ? 'inherit' : 'bold',
+                    );
                   }}
                 >
                   <i className="fas fa-bold" />
@@ -513,20 +555,12 @@ class PageController extends React.Component {
                   optionKey="textDecorationLine"
                   optionValue="underline"
                   active={!!itemOptions.textDecorationLine}
-                  value={
-                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
-                  }
+                  value={selectionStyleValues.textDecorationLine}
                   onClick={(optionKey) => {
-                    if (isSelectionStyle) {
-                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
-                      const next = this.getSelectionStyleContent(
-                        'textDecorationLine',
-                        selectionStyleValue === 'underline' ? 'none' : 'underline',
-                      );
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      onChangeOption(optionKey, itemOptions.textDecorationLine === 'underline' ? 'none' : 'underline');
-                    }
+                    this.onChangeSelectionOrItemOption(
+                      optionKey,
+                      selectionStyleValues.textDecorationLine === 'underline' ? 'none' : 'underline',
+                    );
                   }}
                 >
                   <i className="fas fa-underline" />
@@ -536,20 +570,12 @@ class PageController extends React.Component {
                   optionKey="textDecorationLine"
                   optionValue="overline"
                   active={!!itemOptions.textDecorationLine}
-                  value={
-                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
-                  }
+                  value={selectionStyleValues.textDecorationLine}
                   onClick={(optionKey) => {
-                    if (isSelectionStyle) {
-                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
-                      const next = this.getSelectionStyleContent(
-                        'textDecorationLine',
-                        selectionStyleValue === 'overline' ? 'none' : 'overline',
-                      );
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      onChangeOption(optionKey, itemOptions.textDecorationLine === 'overline' ? 'none' : 'overline');
-                    }
+                    this.onChangeSelectionOrItemOption(
+                      optionKey,
+                      selectionStyleValues.textDecorationLine === 'overline' ? 'none' : 'overline',
+                    );
                   }}
                 >
                   <i className="fas fa-overline" />
@@ -559,23 +585,12 @@ class PageController extends React.Component {
                   optionKey="textDecorationLine"
                   optionValue="line-through"
                   active={!!itemOptions.textDecorationLine}
-                  value={
-                    isSelectionStyle ? this.getSelectionStyle('textDecorationLine') : itemOptions.textDecorationLine
-                  }
+                  value={selectionStyleValues.textDecorationLine}
                   onClick={(optionKey) => {
-                    if (isSelectionStyle) {
-                      const selectionStyleValue = this.getSelectionStyle('textDecorationLine');
-                      const next = this.getSelectionStyleContent(
-                        'textDecorationLine',
-                        selectionStyleValue === 'line-through' ? 'none' : 'line-through',
-                      );
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      onChangeOption(
-                        optionKey,
-                        itemOptions.textDecorationLine === 'line-through' ? 'none' : 'line-through',
-                      );
-                    }
+                    this.onChangeSelectionOrItemOption(
+                      optionKey,
+                      selectionStyleValues.textDecorationLine === 'line-through' ? 'none' : 'line-through',
+                    );
                   }}
                 >
                   <i className="fas fa-strikethrough" />
@@ -587,17 +602,12 @@ class PageController extends React.Component {
                   optionKey="textDecorationStyle"
                   list={TEXT_DECORATION_STYLES}
                   active={!!itemOptions.textDecorationStyle}
-                  value={itemOptions.textDecorationStyle}
-                  onSelect={(optionKey, optionValue) => {
-                    if (isSelectionStyle) {
-                      const next = this.getSelectionStyleContent('textDecorationStyle', optionValue);
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      onChangeOption(optionKey, optionValue);
-                    }
-                  }}
+                  value={selectionStyleValues.textDecorationStyle}
+                  onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>{this.getFontFamilyName(TEXT_DECORATION_STYLES, itemOptions.textDecorationStyle)}</span>
+                  <span>
+                    {this.getFontFamilyName(TEXT_DECORATION_STYLES, selectionStyleValues.textDecorationStyle)}
+                  </span>
                 </SelectControl>
                 <ColorControl
                   dataTip={t('선 색상')}
@@ -605,23 +615,15 @@ class PageController extends React.Component {
                   colorPickerHeight="200px"
                   optionKey="textDecorationColor"
                   active={!!itemOptions.textDecorationColor}
-                  value={itemOptions.textDecorationColor}
-                  onSelect={(optionKey, optionValue) => {
-                    if (isSelectionStyle) {
-                      const next = this.getSelectionStyleContent('textDecorationColor', optionValue);
-                      this.setSelectionStyle(item, next);
-                    } else {
-                      this.onMemoryAndChangeOption(optionKey, optionValue);
-                    }
-                  }}
-                  lastColor={lastProperties.textDecorationColor || itemOptions.textDecorationColor}
+                  value={selectionStyleValues.textDecorationColor}
+                  onSelect={this.onChangeSelectionOrItemOption}
                 >
                   <span className="color-border fill-color">
                     <i className="fal fa-fill" />
                     <span
                       className="color-bar"
                       style={{
-                        backgroundColor: lastProperties.textDecorationColor || itemOptions.textDecorationColor,
+                        backgroundColor: selectionStyleValues.textDecorationColor,
                       }}
                     />
                   </span>
@@ -634,10 +636,10 @@ class PageController extends React.Component {
                   optionKey="fontFamily"
                   list={ITEM_FONT_FAMILIES}
                   active={!!itemOptions.fontFamily}
-                  value={itemOptions.fontFamily}
-                  onSelect={onChangeOption}
+                  value={selectionStyleValues.fontFamily}
+                  onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>{this.getFontFamilyName(ITEM_FONT_FAMILIES, itemOptions.fontFamily)}</span>
+                  <span>{this.getFontFamilyName(ITEM_FONT_FAMILIES, selectionStyleValues.fontFamily)}</span>
                 </SelectControl>
                 <SelectControl
                   dataTip={t('폰트 크기')}
@@ -646,10 +648,10 @@ class PageController extends React.Component {
                   optionKey="fontSize"
                   list={ITEM_FONT_SIZES}
                   active={!!itemOptions.fontSize}
-                  value={itemOptions.fontSize}
-                  onSelect={onChangeOption}
+                  value={selectionStyleValues.fontSize}
+                  onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>{this.getFontSizeName(ITEM_FONT_SIZES, itemOptions.fontSize)}</span>
+                  <span>{this.getFontSizeName(ITEM_FONT_SIZES, selectionStyleValues.fontSize)}</span>
                 </SelectControl>
                 <Separator />
                 <ColorControl
@@ -658,9 +660,9 @@ class PageController extends React.Component {
                   colorPickerHeight="200px"
                   optionKey="color"
                   active={!!itemOptions.color}
-                  value={itemOptions.color}
-                  onSelect={this.onMemoryAndChangeOption}
-                  lastColor={lastProperties.color || itemOptions.color}
+                  value={selectionStyleValues.color}
+                  onSelect={this.onChangeSelectionOrItemOptionAndMemory}
+                  lastColor={lastProperties.color || selectionStyleValues.color}
                   clearColor="inherit"
                 >
                   <span className="color-border">
@@ -668,7 +670,7 @@ class PageController extends React.Component {
                     <span
                       className="color-bar"
                       style={{
-                        backgroundColor: lastProperties.color || itemOptions.color,
+                        backgroundColor: lastProperties.color || selectionStyleValues.color,
                       }}
                     />
                   </span>
@@ -680,16 +682,16 @@ class PageController extends React.Component {
                   colorPickerHeight="200px"
                   optionKey="backgroundColor"
                   active={!!itemOptions.backgroundColor}
-                  value={itemOptions.backgroundColor}
-                  onSelect={this.onMemoryAndChangeOption}
-                  lastColor={lastProperties.backgroundColor || itemOptions.backgroundColor}
+                  value={selectionStyleValues.backgroundColor}
+                  onSelect={this.onChangeSelectionOrItemOptionAndMemory}
+                  lastColor={lastProperties.backgroundColor || selectionStyleValues.backgroundColor}
                 >
                   <span className="color-border fill-color">
                     <i className="fal fa-fill" />
                     <span
                       className="color-bar"
                       style={{
-                        backgroundColor: lastProperties.backgroundColor || itemOptions.backgroundColor,
+                        backgroundColor: lastProperties.backgroundColor || selectionStyleValues.backgroundColor,
                       }}
                     />
                   </span>
@@ -698,7 +700,7 @@ class PageController extends React.Component {
                 <PaddingControl
                   dataTip={t('내부 간격')}
                   optionKey="padding"
-                  active={!!itemOptions.padding}
+                  active={!isSelectionStyle && !!itemOptions.padding}
                   value={itemOptions.padding}
                   onApply={onChangeOption}
                 />
@@ -708,7 +710,7 @@ class PageController extends React.Component {
                   colorPickerWidth="257px"
                   colorPickerHeight="200px"
                   optionKey="border"
-                  active={!!itemOptions.border}
+                  active={!isSelectionStyle && !!itemOptions.border}
                   value={itemOptions.border}
                   onSelect={this.onMemoryAndChangeOption}
                   lastValue={lastProperties.border || itemOptions.border}
@@ -733,7 +735,7 @@ class PageController extends React.Component {
                   optionValue={itemOptions.width}
                   unitKey="widthUnit"
                   unitValue={itemOptions.widthUnit}
-                  active={!!itemOptions.width}
+                  active={!isSelectionStyle && !!itemOptions.width}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />
@@ -744,7 +746,7 @@ class PageController extends React.Component {
                   optionValue={itemOptions.wrapperHeight}
                   unitKey="wrapperHeightUnit"
                   unitValue={itemOptions.wrapperHeightUnit}
-                  active={!!itemOptions.wrapperHeight}
+                  active={!isSelectionStyle && !!itemOptions.wrapperHeight}
                   onApply={onChangeOption}
                   setEditing={setEditing}
                 />
