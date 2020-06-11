@@ -608,7 +608,7 @@ class PageController extends React.Component {
                   value={itemOptions.textDecorationColor}
                   onSelect={(optionKey, optionValue) => {
                     if (isSelectionStyle) {
-                      const next = this.getSelectionStyleContent('textDecorationStyle', optionValue);
+                      const next = this.getSelectionStyleContent('textDecorationColor', optionValue);
                       this.setSelectionStyle(item, next);
                     } else {
                       this.onMemoryAndChangeOption(optionKey, optionValue);
