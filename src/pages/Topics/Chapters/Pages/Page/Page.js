@@ -13,6 +13,10 @@ import './Page.scss';
 class Page extends React.Component {
   pageEditorRef = React.createRef();
 
+  pageList = React.createRef();
+
+  pageListMouseHover = false;
+
   constructor(props) {
     super(props);
     const {
@@ -29,6 +33,7 @@ class Page extends React.Component {
       pages: false,
       selectedPageId: null,
       showPageList: true,
+      selectedPageList: false,
     };
   }
 
@@ -53,7 +58,47 @@ class Page extends React.Component {
     if (topicId && chapterId) {
       this.getPages(topicId, chapterId);
     }
+
+    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('mousedown', this.onMouseDown);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('mousedown', this.onMouseDown);
+  }
+
+  onKeyDown = (e) => {
+    const { selectedPageId, selectedPageList } = this.state;
+    const { setConfirm: setConfirmReducer } = this.props;
+
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      if (this.pageEditorRef) {
+        this.pageEditorRef.updateContent();
+      }
+    }
+
+    if (selectedPageList && e.altKey && e.key === 'n') {
+      e.preventDefault();
+      this.createPage();
+    }
+
+    if (this.pageListMouseHover && selectedPageId && e.key === 'Delete') {
+      setConfirmReducer('페이지를 삭제하시겠습니까?', () => {
+        this.deletePage(selectedPageId);
+      });
+    }
+  };
+
+  onMouseDown = (e) => {
+    const { selectedPageList } = this.state;
+    if (selectedPageList && this.pageList.current && !this.pageList.current.contains(e.target)) {
+      this.setState({
+        selectedPageList: false,
+      });
+    }
+  };
 
   getPages = (topicId, chapterId) => {
     request.get(`/api/topics/${topicId}/chapters/${chapterId}/pages`, {}, (data) => {
@@ -118,9 +163,14 @@ class Page extends React.Component {
 
   setSelectedPageId = (selectedPageId) => {
     const { setConfirm: setConfirmReducer } = this.props;
-    const { selectedPageId: currentSelectedPageId, pages } = this.state;
+    const { selectedPageId: currentSelectedPageId, pages, selectedPageList } = this.state;
 
     if (currentSelectedPageId === selectedPageId) {
+      if (!selectedPageList && !selectedPageId) {
+        this.setState({
+          selectedPageList: true,
+        });
+      }
       return;
     }
 
@@ -132,11 +182,13 @@ class Page extends React.Component {
         this.setState({
           selectedPageId,
           pages: next,
+          selectedPageList: !selectedPageId,
         });
       });
     } else {
       this.setState({
         selectedPageId,
+        selectedPageList: !selectedPageId,
       });
     }
   };
@@ -315,7 +367,7 @@ class Page extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { topicId, topic, chapterId, chapter, pages, selectedPageId, showPageList } = this.state;
+    const { topicId, topic, chapterId, chapter, pages, selectedPageId, showPageList, selectedPageList } = this.state;
     const isWriter = true;
 
     return (
@@ -392,9 +444,16 @@ class Page extends React.Component {
             )}
             {pages !== false && pages.length > 0 && (
               <div
-                className="page-list"
+                ref={this.pageList}
+                className={`page-list ${selectedPageList ? 'selected' : ''}`}
                 onClick={() => {
                   this.setSelectedPageId(null);
+                }}
+                onMouseEnter={() => {
+                  this.pageListMouseHover = true;
+                }}
+                onMouseLeave={() => {
+                  this.pageListMouseHover = false;
                 }}
               >
                 <div className="scrollbar">

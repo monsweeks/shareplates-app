@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import { withTranslation } from 'react-i18next';
 import ReactTooltip from 'react-tooltip';
-import { Button } from '@/components';
 import CheckControl from '@/assets/Topics/PageEditor/PageController/CheckControl/CheckControl';
 import ButtonControl from '@/assets/Topics/PageEditor/PageController/ButtonControl/ButtonControl';
 import Separator from '@/assets/Topics/PageEditor/PageController/Separator/Separator';
@@ -432,6 +431,15 @@ class PageController extends React.Component {
           <div className="sub-menu">
             {selectedTab === 'home' && (
               <>
+                <ButtonControl
+                  active={pageId !== null}
+                  dataTip={t('페이지 저장')}
+                  onClick={() => {
+                    updateContent();
+                  }}
+                >
+                  <i className="fas fa-save" /> 저장
+                </ButtonControl>
                 <ButtonControl
                   dataTip={t('새로운 페이지 추가')}
                   onClick={() => {
@@ -1135,18 +1143,6 @@ class PageController extends React.Component {
               />
             )}
           </div>
-        </div>
-        <div className="always-menu">
-          <Button
-            color="white"
-            size="sm"
-            onClick={() => {
-              updateContent();
-            }}
-            disabled={!pageId}
-          >
-            <i className="fas fa-save" /> 저장
-          </Button>
         </div>
       </div>
     );

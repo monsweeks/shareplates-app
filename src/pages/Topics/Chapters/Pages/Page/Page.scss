@@ -17,6 +17,10 @@
       flex-grow: 1;
       position: relative;
 
+      &.selected {
+        background-color: $gray-400;
+      }
+
       > div {
         position: absolute;
         top: 0;

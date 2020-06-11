@@ -18,7 +18,7 @@ class PageEditor extends React.Component {
     this.state = {
       content: JSON.parse(JSON.stringify(defaultContent)),
       originalContent: null,
-      pageId: -1,
+      pageId: null,
       selectedItemId: null,
       childSelectedList: null,
       itemOptions: {},
@@ -45,7 +45,7 @@ class PageEditor extends React.Component {
       return {
         content: JSON.parse(JSON.stringify(defaultContent)),
         originalContent: null,
-        pageId: -1,
+        pageId: null,
         selectedItemId: null,
         itemOptions: {},
         pageProperties: {},
@@ -59,6 +59,7 @@ class PageEditor extends React.Component {
   componentDidMount() {
     const { onRef } = this.props;
     onRef(this);
+
   }
 
   componentWillUnmount() {
@@ -104,7 +105,7 @@ class PageEditor extends React.Component {
     const next = { ...content };
     const id = String(new Date().getTime());
 
-    if (pageId && pageId > -1) {
+    if (pageId) {
       next.items.push({
         id,
         name,
@@ -319,7 +320,9 @@ class PageEditor extends React.Component {
   updateContent = () => {
     const { updatePage } = this.props;
     const { pageId, content } = this.state;
-    updatePage(pageId, JSON.stringify(content));
+    if (pageId) {
+      updatePage(pageId, JSON.stringify(content));
+    }
   };
 
   setSelectedItem = (selectedItemId, itemOptions) => {
