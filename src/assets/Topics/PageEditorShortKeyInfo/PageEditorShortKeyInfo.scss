@@ -1,0 +1,40 @@
+.short-key-guide-wrapper {
+  background-color: $primary;
+  color: $white;
+  border-radius: 5px;
+  padding-bottom: 0.5rem;
+  font-size: 0.8rem;
+  vertical-align: middle;
+
+  > div {
+    padding: 0 0.75rem;
+    _margin-bottom: 0.25rem;
+    vertical-align: middle;
+
+    > div,
+    > span {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      vertical-align: middle;
+
+      &:first-child {
+        min-width: 70px;
+        _font-family: NanumGothicCoding, monospace;
+        text-transform: uppercase;
+        background-color: $sea-blue;
+        border-radius: 5px;
+      }
+
+      > div {
+        font-size: 0.7rem;
+        &:first-child {
+          font-size: 0.8rem;
+        }
+      }
+    }
+    &.title {
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+  }
+}

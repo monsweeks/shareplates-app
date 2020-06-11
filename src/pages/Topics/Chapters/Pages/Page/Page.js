@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { Prompt, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage } from '@/components';
+
 import request from '@/utils/request';
-import { PageCardLayoutList, PageEditor, PageListTopMenu } from '@/assets';
+import { PageCardLayoutList, PageEditor, PageEditorShortKeyInfo, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
 import { PAGE_FONT_FAMILIES, PAGE_FONT_SIZES } from '@/assets/Topics/PageEditor/PageController/constants';
 import './Page.scss';
@@ -34,6 +35,7 @@ class Page extends React.Component {
       selectedPageId: null,
       showPageList: true,
       selectedPageList: false,
+      showShortKeyGuide: false,
     };
   }
 
@@ -60,16 +62,39 @@ class Page extends React.Component {
     }
 
     document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('keyup', this.onKeyUp);
     document.addEventListener('mousedown', this.onMouseDown);
+    window.addEventListener('beforeunload', this.onBeforeUnload);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('keyup', this.onKeyUp);
     document.removeEventListener('mousedown', this.onMouseDown);
+    window.removeEventListener('beforeunload', this.onBeforeUnload);
   }
 
+  onBeforeUnload = (e) => {
+    e.preventDefault();
+
+    const { selectedPageId, pages } = this.state;
+    const page = pages.find((p) => p.id === selectedPageId);
+    if (page && page.dirty) {
+      e.returnValue = '이 페이지를 벗어나면, 변경 내용이 저장되지 않습니다.';
+    }
+  };
+
+  onKeyUp = (e) => {
+    const { showShortKeyGuide } = this.state;
+    if (showShortKeyGuide && (e.key === 'Control' || e.key === 'Alt')) {
+      this.setState({
+        showShortKeyGuide: false,
+      });
+    }
+  };
+
   onKeyDown = (e) => {
-    const { selectedPageId, selectedPageList } = this.state;
+    const { selectedPageId, selectedPageList, showShortKeyGuide } = this.state;
     const { setConfirm: setConfirmReducer } = this.props;
 
     if (e.ctrlKey && e.key === 's') {
@@ -77,6 +102,7 @@ class Page extends React.Component {
       if (this.pageEditorRef) {
         this.pageEditorRef.updateContent();
       }
+      return;
     }
 
     if (selectedPageList && e.altKey && e.key === 'n') {
@@ -87,6 +113,12 @@ class Page extends React.Component {
     if (this.pageListMouseHover && selectedPageId && e.key === 'Delete') {
       setConfirmReducer('페이지를 삭제하시겠습니까?', () => {
         this.deletePage(selectedPageId);
+      });
+    }
+
+    if (this.pageListMouseHover && (e.ctrlKey || e.altKey) && !showShortKeyGuide) {
+      this.setState({
+        showShortKeyGuide: true,
       });
     }
   };
@@ -177,7 +209,7 @@ class Page extends React.Component {
     const next = pages.slice(0);
     const page = next.find((p) => p.id === currentSelectedPageId);
     if (page && page.dirty) {
-      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지로 이동하시겠습니까?', () => {
+      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지를 불러오시겠습니까?', () => {
         page.dirty = false;
         this.setState({
           selectedPageId,
@@ -367,11 +399,25 @@ class Page extends React.Component {
 
   render() {
     const { t } = this.props;
-    const { topicId, topic, chapterId, chapter, pages, selectedPageId, showPageList, selectedPageList } = this.state;
+    const {
+      topicId,
+      topic,
+      chapterId,
+      chapter,
+      pages,
+      selectedPageId,
+      showPageList,
+      selectedPageList,
+      showShortKeyGuide,
+    } = this.state;
     const isWriter = true;
+
+    const page = pages && pages.find((p) => p.id === selectedPageId);
 
     return (
       <div className="page-manager-wrapper">
+        <Prompt when={Boolean(page && page.dirty)} message="이 페이지를 벗어나면, 변경 내용이 저장되지 않습니다." />
+        {showShortKeyGuide && <PageEditorShortKeyInfo className="short-key-guide" />}
         {showPageList && (
           <div className="page-list-layout">
             <PageListTopMenu
