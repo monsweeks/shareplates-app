@@ -1,0 +1,135 @@
+.level-properties-wrapper {
+  .level-title {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+
+    .title {
+      flex-grow: 0;
+    }
+
+    .left-line,
+    .right-line {
+      flex-grow: 1;
+      align-self: center;
+      position: relative;
+      > div {
+        width: 100%;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.4);
+        align-self: center;
+
+        &.rect {
+          width: 12px;
+          height: 12px;
+          background: transparent;
+          border-top: 1px solid rgba(0, 0, 0, 0.4);
+          border-right: 1px solid rgba(0, 0, 0, 0.4);
+          position: absolute;
+          top: -5px;
+          right: 17px;
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    .left-line {
+      padding-right: 1rem;
+    }
+
+    .right-line {
+      padding-left: 1rem;
+    }
+  }
+
+  &.left-line-none {
+    .left-line {
+      > div {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.right-line-none {
+    .right-line {
+      > div {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.right-border {
+    .level-content {
+      border-right: 1px dashed rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .level-content {
+    padding: 0 1.5rem;
+
+    &.empty {
+      padding-top: 150px;
+      height: 392px;
+    }
+
+    .level-row {
+      height: 70px;
+      .level-label {
+        font-size: 0.8rem;
+        padding: 0.5rem 0 0.25rem;
+      }
+
+      .level-control {
+        font-size: 0.9rem;
+
+        .select-control-wrapper {
+          padding: 4px;
+
+          .select-content {
+            min-height: 21px;
+          }
+        }
+
+        .color-control-wrapper {
+          display: inline-block;
+          font-size: 20px;
+
+          .color-control-content {
+            .color-content {
+              > span {
+                font-size: 16px;
+              }
+            }
+
+            .bullet {
+              height: 32px;
+            }
+          }
+        }
+
+        .color-border {
+          font-size: 16px;
+        }
+
+        .padding-control-wrapper {
+          display: inline-block;
+          .direct-input {
+            padding: 6px;
+          }
+
+          .bullet {
+            height: 27px;
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .clear-button {
+    height: 42px;
+  }
+}

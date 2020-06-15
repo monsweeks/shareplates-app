@@ -42,21 +42,21 @@ const TOPIC_FONT_FAMILIES = JSON.parse(JSON.stringify(FONT_FAMILIES));
 const CHAPTER_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: '토픽 폰트',
+    name: 'INHERIT',
   },
 ].concat(FONT_FAMILIES);
 
 const PAGE_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: '챕터 폰트',
+    name: 'INHERIT',
   },
 ].concat(FONT_FAMILIES);
 
 const ITEM_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: '페이지 폰트',
+    name: 'INHERIT',
   },
 ].concat(FONT_FAMILIES);
 
@@ -87,21 +87,21 @@ const TOPIC_FONT_SIZES = JSON.parse(JSON.stringify(FONT_SIZES));
 const CHAPTER_FONT_SIZES = [
   {
     value: 'inherit',
-    name: '토픽 폰트 크기',
+    name: 'INHERIT',
   },
 ].concat(FONT_SIZES);
 
 const PAGE_FONT_SIZES = [
   {
     value: 'inherit',
-    name: '챕터 폰트 크기',
+    name: 'INHERIT',
   },
 ].concat(FONT_SIZES);
 
 const ITEM_FONT_SIZES = [
   {
     value: 'inherit',
-    name: '페이지 폰트 크기',
+    name: 'INHERIT',
   },
 ].concat(FONT_SIZES);
 
@@ -133,6 +133,27 @@ const DEFAULT_TOPIC_CONTENT = {
   },
   settings: {
     transferAnimation: 'sweep',
+  },
+};
+
+const DEFAULT_CHAPTER_CONTENT = {
+  chapterProperties: {
+    fontFamily: CHAPTER_FONT_FAMILIES[0].value,
+    fontSize: CHAPTER_FONT_SIZES[0].value,
+    backgroundColor: 'inherit',
+    color: 'inherit',
+    padding: '',
+  },
+};
+
+const DEFAULT_PAGE_CONTENT = {
+  items: [],
+  pageProperties: {
+    fontFamily: PAGE_FONT_FAMILIES[0].value,
+    fontSize: PAGE_FONT_SIZES[0].value,
+    backgroundColor: 'inherit',
+    color: 'inherit',
+    padding: '',
   },
 };
 
@@ -203,6 +224,8 @@ export {
   BORDER_WIDTHS,
   PAGE_TRANSFER_ANIMATION,
   DEFAULT_TOPIC_CONTENT,
+  DEFAULT_CHAPTER_CONTENT,
+  DEFAULT_PAGE_CONTENT,
   LIST_STYLES,
   TEXT_DECORATION_STYLES,
 };

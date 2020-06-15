@@ -3,10 +3,11 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import ReactTooltip from 'react-tooltip';
-import Separator from '@/assets/Topics/PageEditor/PageController/Separator/Separator';
 import SelectControl from '@/assets/Topics/PageEditor/PageController/SelectControl/SelectControl';
 import ColorControl from '@/assets/Topics/PageEditor/PageController/ColorControl/ColorControl';
 import PaddingControl from '@/assets/Topics/PageEditor/PageController/PaddingControl/PaddingControl';
+import './LevelProperties.scss';
+import { Button, EmptyMessage } from '@/components';
 
 class LevelProperties extends React.PureComponent {
   componentDidMount() {
@@ -36,95 +37,230 @@ class LevelProperties extends React.PureComponent {
   };
 
   render() {
-    const { t, level, fontFamilies, fontSizes, onChangeProperties, properties, active } = this.props;
+    const {
+      className,
+      rightBorder,
+      t,
+      level,
+      fontFamilies,
+      fontSizes,
+      onChangeProperties,
+      properties,
+      active,
+      readOnly,
+      onSetDefault,
+      empty,
+    } = this.props;
 
     return (
-      <>
-        <SelectControl
-          dataTip={`${level} ${t('폰트')}`}
-          minWidth="120px"
-          height="140px"
-          optionKey="fontFamily"
-          list={fontFamilies}
-          active={!!active}
-          value={properties.fontFamily}
-          onSelect={onChangeProperties}
-        >
-          <span>{this.getFontFamilyName(fontFamilies, properties.fontFamily)}</span>
-        </SelectControl>
-        <SelectControl
-          dataTip={`${level} ${t('기본 폰트 크기')}`}
-          minWidth="64px"
-          height="140px"
-          optionKey="fontSize"
-          list={fontSizes}
-          active={active}
-          value={properties.fontSize}
-          onSelect={onChangeProperties}
-        >
-          <span>{this.getFontSizeName(fontSizes, properties.fontSize)}</span>
-        </SelectControl>
-        <Separator />
-        <ColorControl
-          dataTip={`${level} ${t('기본 폰트 색상')}`}
-          colorPickerWidth="257px"
-          colorPickerHeight="200px"
-          optionKey="color"
-          active={active}
-          value={properties.color}
-          onSelect={onChangeProperties}
-        >
-          <span className="color-border">
-            가
-            <span
-              className="color-bar"
-              style={{
-                backgroundColor: properties.color,
-              }}
-            />
-          </span>
-        </ColorControl>
-        <Separator />
-        <ColorControl
-          dataTip={`${level} ${t('배경 색상')}`}
-          colorPickerWidth="257px"
-          colorPickerHeight="200px"
-          optionKey="backgroundColor"
-          active={active}
-          value={properties.backgroundColor}
-          onSelect={onChangeProperties}
-        >
-          <span className="color-border fill-color">
-            <i className="fal fa-fill" />
-            <span
-              className="color-bar"
-              style={{
-                backgroundColor: properties.backgroundColor,
-              }}
-            />
-          </span>
-        </ColorControl>
-        <Separator />
-        <PaddingControl
-          dataTip={`${level} ${t('내부 간격')}`}
-          optionKey="padding"
-          active={active}
-          value={properties.padding}
-          onApply={onChangeProperties}
-        />
-      </>
+      <div className={`level-properties-wrapper ${className} ${rightBorder ? 'right-border' : ''}`}>
+        {empty && (
+          <>
+            <div className="level-title">
+              <div className="left-line">
+                <div />
+                <div className="rect" />
+              </div>
+              <div className="title">
+                {level} {t('속성')}
+              </div>
+              <div className="right-line">
+                <div />
+              </div>
+            </div>
+            <div className="level-content empty">
+              <EmptyMessage
+                className="h5 bg-white"
+                message={
+                  <div>
+                    <div className="h4">
+                      <i className="fal fa-exclamation-circle" />
+                    </div>
+                    <div>{t('페이지가 선택되지 않았습니다')}</div>
+                  </div>
+                }
+              />
+            </div>
+          </>
+        )}
+        {!empty && (
+          <>
+            <div className="level-title">
+              <div className="left-line">
+                <div />
+                <div className="rect" />
+              </div>
+              <div className="title">
+                {level} {t('속성')}
+              </div>
+              <div className="right-line">
+                <div />
+              </div>
+            </div>
+            <div className="level-content">
+              <div className="level-row">
+                <div className="level-label">{t('폰트')}</div>
+                <div className="level-control">
+                  {readOnly && (
+                    <div className="p-2">{this.getFontFamilyName(fontFamilies, properties.fontFamily)}&nbsp;</div>
+                  )}
+                  {!readOnly && (
+                    <SelectControl
+                      dataTip={`${level} ${t('폰트')}`}
+                      minWidth="120px"
+                      height="140px"
+                      optionKey="fontFamily"
+                      list={fontFamilies}
+                      active={!!active}
+                      value={properties.fontFamily}
+                      onSelect={onChangeProperties}
+                    >
+                      <span>{this.getFontFamilyName(fontFamilies, properties.fontFamily)}</span>
+                    </SelectControl>
+                  )}
+                </div>
+              </div>
+              <div className="level-row">
+                <div className="level-label">{t('폰트 크기')}</div>
+                <div className="level-control">
+                  {readOnly && <div className="p-2">{this.getFontSizeName(fontSizes, properties.fontSize)}&nbsp;</div>}
+                  {!readOnly && (
+                    <SelectControl
+                      dataTip={`${level} ${t('기본 폰트 크기')}`}
+                      minWidth="64px"
+                      height="140px"
+                      optionKey="fontSize"
+                      list={fontSizes}
+                      active={active}
+                      value={properties.fontSize}
+                      onSelect={onChangeProperties}
+                    >
+                      <span>{this.getFontSizeName(fontSizes, properties.fontSize)}</span>
+                    </SelectControl>
+                  )}
+                </div>
+              </div>
+              <div className="level-row">
+                <div className="level-label">{t('글자 색상')}</div>
+                <div className="level-control">
+                  {readOnly && (
+                    <span className="color-border">
+                      가
+                      <span
+                        className="color-bar"
+                        style={{
+                          backgroundColor: properties.color,
+                        }}
+                      />
+                    </span>
+                  )}
+                  {!readOnly && (
+                    <ColorControl
+                      dataTip={`${level} ${t('기본 폰트 색상')}`}
+                      colorPickerWidth="257px"
+                      colorPickerHeight="200px"
+                      optionKey="color"
+                      active={active}
+                      value={properties.color}
+                      onSelect={onChangeProperties}
+                    >
+                      <span className="color-border">
+                        가
+                        <span
+                          className="color-bar"
+                          style={{
+                            backgroundColor: properties.color,
+                          }}
+                        />
+                      </span>
+                    </ColorControl>
+                  )}
+                </div>
+              </div>
+              <div className="level-row">
+                <div className="level-label">{t('배경 색상')}</div>
+                <div className="level-control">
+                  {readOnly && (
+                    <span className="color-border fill-color">
+                      <i className="fal fa-fill" />
+                      <span
+                        className="color-bar"
+                        style={{
+                          backgroundColor: properties.backgroundColor,
+                        }}
+                      />
+                    </span>
+                  )}
+                  {!readOnly && (
+                    <ColorControl
+                      dataTip={`${level} ${t('배경 색상')}`}
+                      colorPickerWidth="257px"
+                      colorPickerHeight="200px"
+                      optionKey="backgroundColor"
+                      active={active}
+                      value={properties.backgroundColor}
+                      onSelect={onChangeProperties}
+                    >
+                      <span className="color-border fill-color">
+                        <i className="fal fa-fill" />
+                        <span
+                          className="color-bar"
+                          style={{
+                            backgroundColor: properties.backgroundColor,
+                          }}
+                        />
+                      </span>
+                    </ColorControl>
+                  )}
+                </div>
+              </div>
+              <div className="level-row">
+                <div className="level-label">{t('페이지 여백')}</div>
+                <div className="level-control">
+                  {readOnly && <div className="p-1">{properties.padding}&nbsp;</div>}
+                  {!readOnly && (
+                    <PaddingControl
+                      dataTip={`${level} ${t('내부 간격')}`}
+                      optionKey="padding"
+                      active={active}
+                      value={properties.padding}
+                      onApply={onChangeProperties}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="clear-button text-center py-2">
+                {!readOnly && (
+                  <Button color="primary" size="sm" onClick={onSetDefault}>
+                    초기화
+                  </Button>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     );
   }
 }
 
+LevelProperties.defaultProps = {
+  empty: false,
+};
+
 LevelProperties.propTypes = {
+  className: PropTypes.string,
   t: PropTypes.func,
   level: PropTypes.string,
-  fontSizes : PropTypes.arrayOf(PropTypes.any),
+  fontSizes: PropTypes.arrayOf(PropTypes.any),
   fontFamilies: PropTypes.arrayOf(PropTypes.any),
   onChangeProperties: PropTypes.func,
   properties: PropTypes.objectOf(PropTypes.any),
   active: PropTypes.bool,
+  rightBorder: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  onSetDefault: PropTypes.func,
+  empty: PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(LevelProperties));

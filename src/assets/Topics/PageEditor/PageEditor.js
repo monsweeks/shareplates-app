@@ -518,52 +518,38 @@ class PageEditor extends React.Component {
           },
         );
       }
-
     }
   };
 
-  onChangeTopicProperties = (key, value) => {
+  onChangeGlobalProperties = (topicProperties, chapterProperties, pageProperties) => {
     const { topicId, updateTopicContent } = this.props;
     const { topic } = this.props;
     if (topicId) {
       const next = { ...topic };
-      const topicProperties = next.content && next.content.topicProperties ? next.content.topicProperties : {};
-
-      topicProperties[key] = value;
       if (!next.content) {
         next.content = {};
       }
-
       next.content.topicProperties = topicProperties;
       updateTopicContent(JSON.stringify(next.content));
     }
-  };
 
-  onChangeChapterProperties = (key, value) => {
     const { chapterId, updateChapterContent } = this.props;
     const { chapter } = this.props;
     if (chapterId) {
       const next = { ...chapter };
-      const chapterProperties = next.content && next.content.chapterProperties ? next.content.chapterProperties : {};
 
-      chapterProperties[key] = value;
       if (!next.content) {
         next.content = {};
       }
       next.content.chapterProperties = chapterProperties;
-
       updateChapterContent(JSON.stringify(next.content));
     }
-  };
 
-  onChangePageProperties = (key, value) => {
     const { pageId } = this.props;
     const { content } = this.state;
     if (pageId) {
       const next = { ...content };
-      const pageProperties = { ...next.pageProperties };
 
-      pageProperties[key] = value;
       next.pageProperties = pageProperties;
 
       this.setState(
@@ -662,13 +648,11 @@ class PageEditor extends React.Component {
           chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
           pageProperties={content.pageProperties || {}}
           onChangeOption={this.onChangeOption}
-          onChangeTopicProperties={this.onChangeTopicProperties}
-          onChangeChapterProperties={this.onChangeChapterProperties}
-          onChangePageProperties={this.onChangePageProperties}
           onChangeValue={this.onChangeValue}
           selectedItemId={selectedItemId}
           childSelectedList={childSelectedList}
           setEditing={this.setEditing}
+          onChangeGlobalProperties={this.onChangeGlobalProperties}
         />
         <div className="editor-content">
           <PageContent

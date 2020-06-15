@@ -8,7 +8,7 @@ import { Button, EmptyMessage, ListControlBar } from '@/components';
 import { ChapterCardLayoutList } from '@/assets';
 import storage from '@/utils/storage';
 import './ChapterList.scss';
-import { CHAPTER_FONT_FAMILIES, CHAPTER_FONT_SIZES } from '@/assets/Topics/PageEditor/PageController/constants';
+import { DEFAULT_CHAPTER_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 
 class ChapterList extends React.PureComponent {
   constructor(props) {
@@ -66,13 +66,7 @@ class ChapterList extends React.PureComponent {
     const orderNo = chapters.length + 1;
     const title = `CHAPTER-${orderNo}`;
     const content = {
-      chapterProperties: {
-        fontFamily: CHAPTER_FONT_FAMILIES[0].value,
-        fontSize: CHAPTER_FONT_SIZES[0].value,
-        backgroundColor: 'inherit',
-        color: 'inherit',
-        padding: '',
-      },
+      chapterProperties: JSON.parse(JSON.stringify(DEFAULT_CHAPTER_CONTENT.chapterProperties)),
     };
 
     request.post(

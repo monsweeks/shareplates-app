@@ -1,0 +1,17 @@
+.level-properties-popup-wrapper {
+  > div {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .global-properties {
+      display: flex;
+      flex-direction: row;
+
+      .properties-item {
+        flex: 1 1;
+        text-align: left;
+        align-self: baseline;
+      }
+    }
+  }
+}
