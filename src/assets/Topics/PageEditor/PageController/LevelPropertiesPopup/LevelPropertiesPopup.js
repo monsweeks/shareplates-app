@@ -184,16 +184,14 @@ class LevelPropertiesPopup extends React.PureComponent {
             />
           </div>
         </div>
-        <div className="popup-buttons p-0">
-          <BottomButton
-            className="text-right p-3 m-0"
-            onSave={() => {
-              onChangeGlobalProperties(topicProperties, chapterProperties, pageProperties);
-              onSetOpenLevelPropertiesPopup(false);
-            }}
-            onCancel={onCancel}
-          />
-        </div>
+        <BottomButton
+          className="p-3 m-0"
+          onSave={() => {
+            onChangeGlobalProperties(topicProperties, chapterProperties, pageProperties);
+            onSetOpenLevelPropertiesPopup(false);
+          }}
+          onCancel={onCancel}
+        />
       </Popup>
     );
   }

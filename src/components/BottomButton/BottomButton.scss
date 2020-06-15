@@ -1,13 +1,13 @@
 .bottom-button-wrapper {
   margin-top: 1rem;
   text-align: right;
-  background-color: $light;
   background-color: $gray-300;
   margin: 1rem -1.5rem -1.5rem;
   padding: 1.5rem;
   border-radius: 0 0 5px 5px;
 
   @media (max-width: 576px) {
+    text-align: center;
   }
 
   button {
@@ -28,7 +28,6 @@
   &.iconText {
     button {
       text-align: center;
-      padding: 0;
       padding: 0.25rem 0.75rem 0.25rem 0.5rem;
       border-radius: 3px;
 
