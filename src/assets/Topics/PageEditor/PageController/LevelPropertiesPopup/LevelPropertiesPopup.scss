@@ -3,6 +3,18 @@
     max-width: 1200px;
     margin: 0 auto;
 
+    @media (max-width: 1240px) {
+      max-width: none;
+      margin: 0 20px;
+    }
+
+    .level-properties-tab {
+      display: none;
+      @media (max-width: 992px) {
+        display: block;
+      }
+    }
+
     .global-properties {
       display: flex;
       flex-direction: row;
@@ -11,6 +23,14 @@
         flex: 1 1;
         text-align: left;
         align-self: baseline;
+
+        @media (max-width: 992px) {
+          display: none;
+        }
+
+        &.selected-tab {
+          display: block !important;
+        }
       }
     }
   }

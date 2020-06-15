@@ -7,6 +7,10 @@
     display: flex;
     flex-direction: row;
 
+    @media (max-width: 992px) {
+      display: none;
+    }
+
     .title {
       flex-grow: 0;
     }
@@ -21,6 +25,10 @@
         height: 1px;
         background-color: rgba(0, 0, 0, 0.4);
         align-self: center;
+
+        @media (max-width: 992px) {
+          opacity: 0;
+        }
 
         &.rect {
           width: 12px;
@@ -64,15 +72,26 @@
   &.right-border {
     .level-content {
       border-right: 1px dashed rgba(0, 0, 0, 0.2);
+      @media (max-width: 992px) {
+        border-right: none;
+      }
     }
   }
 
   .level-content {
     padding: 0 1.5rem;
 
+    @media (max-width: 992px) {
+      padding: 0 1rem 0.5rem;
+    }
+
     &.empty {
       padding-top: 150px;
       height: 392px;
+
+      @media (max-width: 992px) {
+        height: 400px;
+      }
     }
 
     .level-row {
@@ -88,6 +107,14 @@
         .select-control-wrapper {
           padding: 4px;
 
+          .select-control-list {
+            top: 30px;
+
+            li {
+              padding: 0.5rem 0.25rem;
+            }
+          }
+
           .select-content {
             min-height: 21px;
           }
@@ -96,6 +123,11 @@
         .color-control-wrapper {
           display: inline-block;
           font-size: 20px;
+
+          .color-picker-div {
+            left: 0 !important;
+            top: 32px;
+          }
 
           .color-control-content {
             .color-content {
@@ -107,6 +139,13 @@
             .bullet {
               height: 32px;
             }
+          }
+        }
+
+        .padding-control-wrapper {
+          .padding-picker-div {
+            top: 27px;
+            left: 0;
           }
         }
 

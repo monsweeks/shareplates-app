@@ -16,8 +16,15 @@ import {
   TOPIC_FONT_FAMILIES,
   TOPIC_FONT_SIZES,
 } from '@/assets/Topics/PageEditor/PageController/constants';
-import { BottomButton, Popup } from '@/components';
+import { BottomButton, Nav, NavItem, Popup } from '@/components';
 import './LevelPropertiesPopup.scss';
+
+const tabs = [
+  { key: 'topic', value: '토픽 속성' },
+  { key: 'chapter', value: '챕터 속성' },
+  { key: 'page', value: '페이지 속성' },
+  { key: 'preview', value: '적용 속성' },
+];
 
 class LevelPropertiesPopup extends React.PureComponent {
   constructor(props) {
@@ -30,6 +37,7 @@ class LevelPropertiesPopup extends React.PureComponent {
       topicProperties: {},
       chapterProperties: {},
       pageProperties: {},
+      currentTab: 'topic',
     };
   }
 
@@ -86,21 +94,35 @@ class LevelPropertiesPopup extends React.PureComponent {
   render() {
     const { className, t } = this.props;
 
-    const { topicProperties, chapterProperties, pageProperties, pageId } = this.state;
+    const { topicProperties, chapterProperties, pageProperties, pageId, currentTab } = this.state;
 
     const { onChangeGlobalProperties, onCancel, onSetOpenLevelPropertiesPopup } = this.props;
 
     const mergedProperties = contentUtil.getMergedPageProperties(topicProperties, chapterProperties, pageProperties);
 
     return (
-      <Popup
-        title={t('글로벌 속성')}
-        className={`level-properties-popup-wrapper ${className}`}
-        open
-        setOpen={onCancel}
-      >
+      <Popup title={t('글로벌 속성')} className={`level-properties-popup-wrapper ${className}`} open setOpen={onCancel}>
+        <div className="level-properties-tab g-tabs border-0">
+          <Nav className="tabs border-0 bg-light" tabs>
+            {tabs.map((tab) => {
+              return (
+                <NavItem
+                  key={tab.key}
+                  className={currentTab === tab.key ? 'focus' : ''}
+                  onClick={() => {
+                    this.setState({
+                      currentTab: tab.key,
+                    });
+                  }}
+                >
+                  {tab.value}
+                </NavItem>
+              );
+            })}
+          </Nav>
+        </div>
         <div className="global-properties">
-          <div className="properties-item">
+          <div className={`properties-item ${currentTab === 'topic' ? 'selected-tab' : ''}`}>
             <LevelProperties
               className="left-line-none"
               level="토픽"
@@ -117,7 +139,7 @@ class LevelPropertiesPopup extends React.PureComponent {
               rightBorder
             />
           </div>
-          <div className="properties-item">
+          <div className={`properties-item ${currentTab === 'chapter' ? 'selected-tab' : ''}`}>
             <LevelProperties
               level="챕터"
               fontSizes={CHAPTER_FONT_SIZES}
@@ -133,7 +155,7 @@ class LevelPropertiesPopup extends React.PureComponent {
               rightBorder
             />
           </div>
-          <div className="properties-item">
+          <div className={`properties-item ${currentTab === 'page' ? 'selected-tab' : ''}`}>
             <LevelProperties
               empty={!pageId}
               level="페이지"
@@ -150,7 +172,7 @@ class LevelPropertiesPopup extends React.PureComponent {
               rightBorder
             />
           </div>
-          <div className="properties-item">
+          <div className={`properties-item ${currentTab === 'preview' ? 'selected-tab' : ''}`}>
             <LevelProperties
               readOnly
               className="right-line-none"

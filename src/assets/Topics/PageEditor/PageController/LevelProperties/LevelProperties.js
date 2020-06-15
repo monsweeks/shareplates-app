@@ -70,7 +70,7 @@ class LevelProperties extends React.PureComponent {
             </div>
             <div className="level-content empty">
               <EmptyMessage
-                className="h5 bg-white"
+                className="h6 bg-white"
                 message={
                   <div>
                     <div className="h4">
