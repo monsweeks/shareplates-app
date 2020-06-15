@@ -9,24 +9,13 @@ import ButtonControl from '@/assets/Topics/PageEditor/PageController/ButtonContr
 import Separator from '@/assets/Topics/PageEditor/PageController/Separator/Separator';
 import ControllerTabs from '@/assets/Topics/PageEditor/PageController/ControllerTabs/ControllerTabs';
 import SelectControl from '@/assets/Topics/PageEditor/PageController/SelectControl/SelectControl';
-import {
-  CHAPTER_FONT_FAMILIES,
-  CHAPTER_FONT_SIZES,
-  ITEM_FONT_FAMILIES,
-  ITEM_FONT_SIZES,
-  LIST_STYLES,
-  PAGE_FONT_FAMILIES,
-  PAGE_FONT_SIZES,
-  TEXT_DECORATION_STYLES,
-  TOPIC_FONT_FAMILIES,
-  TOPIC_FONT_SIZES,
-} from './constants';
+import { ITEM_FONT_FAMILIES, ITEM_FONT_SIZES, LIST_STYLES, TEXT_DECORATION_STYLES } from './constants';
 import ColorControl from '@/assets/Topics/PageEditor/PageController/ColorControl/ColorControl';
 import PaddingControl from '@/assets/Topics/PageEditor/PageController/PaddingControl/PaddingControl';
 import BorderControl from '@/assets/Topics/PageEditor/PageController/BorderControl/BorderControl';
 import SizeControl from '@/assets/Topics/PageEditor/PageController/SizeControl/SizeControl';
 import './PageController.scss';
-import LevelProperties from '@/assets/Topics/PageEditor/PageController/LevelProperties/LevelProperties';
+import LevelPropertiesPopup from '@/assets/Topics/PageEditor/PageController/LevelPropertiesPopup/LevelPropertiesPopup';
 
 const tabs = [
   {
@@ -50,16 +39,8 @@ const tabs = [
     name: '리스트',
   },
   {
-    key: 'page-property',
-    name: '페이지 속성',
-  },
-  {
-    key: 'chapter-property',
-    name: '챕터 속성',
-  },
-  {
-    key: 'topic-property',
-    name: '토픽 속성',
+    key: 'global-property',
+    name: '글로벌 속성',
   },
 ];
 
@@ -70,6 +51,7 @@ class PageController extends React.Component {
       selectedTab: 'insert',
       selectedItemId: null,
       lastProperties: {},
+      openLevelPropertiesPopup: false,
     };
 
     this.selectionChangeDebounced = debounce(this.onSelectionChange, 200);
@@ -372,6 +354,12 @@ class PageController extends React.Component {
     }
   };
 
+  onSetOpenLevelPropertiesPopup = (openLevelPropertiesPopup) => {
+    this.setState({
+      openLevelPropertiesPopup,
+    });
+  };
+
   render() {
     const { t, className } = this.props;
     const {
@@ -387,16 +375,14 @@ class PageController extends React.Component {
       itemOptions,
       onChangeOption,
       setEditing,
-      onChangeTopicProperties,
-      onChangeChapterProperties,
-      onChangePageProperties,
+      onChangeGlobalProperties,
       pageProperties,
       topicProperties,
       chapterProperties,
       childSelectedList,
       item,
     } = this.props;
-    const { selectedTab, lastProperties } = this.state;
+    const { selectedTab, lastProperties, openLevelPropertiesPopup } = this.state;
 
     const isTable = !!(item && item.name === 'Table');
     const isList = !!(item && item.name === 'List');
@@ -422,9 +408,13 @@ class PageController extends React.Component {
               tabs={tabs}
               currentTab={selectedTab}
               onClick={(key) => {
-                this.setState({
-                  selectedTab: key,
-                });
+                if (key === 'global-property') {
+                  this.onSetOpenLevelPropertiesPopup(!openLevelPropertiesPopup);
+                } else {
+                  this.setState({
+                    selectedTab: key,
+                  });
+                }
               }}
             />
           </div>
@@ -639,7 +629,7 @@ class PageController extends React.Component {
                 <Separator />
                 <SelectControl
                   dataTip={t('폰트')}
-                  minWidth="120px"
+                  minWidth="80px"
                   height="140px"
                   optionKey="fontFamily"
                   list={ITEM_FONT_FAMILIES}
@@ -651,7 +641,7 @@ class PageController extends React.Component {
                 </SelectControl>
                 <SelectControl
                   dataTip={t('폰트 크기')}
-                  minWidth="64px"
+                  minWidth="80px"
                   height="140px"
                   optionKey="fontSize"
                   list={ITEM_FONT_SIZES}
@@ -1112,38 +1102,23 @@ class PageController extends React.Component {
                 </ButtonControl>
               </>
             )}
-            {selectedTab === 'page-property' && (
-              <LevelProperties
-                level="페이지"
-                fontSizes={PAGE_FONT_SIZES}
-                fontFamilies={PAGE_FONT_FAMILIES}
-                onChangeProperties={onChangePageProperties}
-                properties={pageProperties}
-                active={!!pageId}
-              />
-            )}
-            {selectedTab === 'chapter-property' && (
-              <LevelProperties
-                level="챕터"
-                fontSizes={CHAPTER_FONT_SIZES}
-                fontFamilies={CHAPTER_FONT_FAMILIES}
-                onChangeProperties={onChangeChapterProperties}
-                properties={chapterProperties}
-                active={!!chapterId}
-              />
-            )}
-            {selectedTab === 'topic-property' && (
-              <LevelProperties
-                level="토픽"
-                fontSizes={TOPIC_FONT_SIZES}
-                fontFamilies={TOPIC_FONT_FAMILIES}
-                onChangeProperties={onChangeTopicProperties}
-                properties={topicProperties}
-                active={!!topicId}
-              />
-            )}
           </div>
         </div>
+        {openLevelPropertiesPopup && (
+          <LevelPropertiesPopup
+            topicId={topicId}
+            chapterId={chapterId}
+            pageId={pageId}
+            pageProperties={pageProperties}
+            chapterProperties={chapterProperties}
+            topicProperties={topicProperties}
+            onChangeGlobalProperties={onChangeGlobalProperties}
+            onSetOpenLevelPropertiesPopup={this.onSetOpenLevelPropertiesPopup}
+            onCancel={() => {
+              this.onSetOpenLevelPropertiesPopup(false);
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -1169,9 +1144,7 @@ PageController.propTypes = {
   onChangeOption: PropTypes.func,
   selectedItemId: PropTypes.string,
   setEditing: PropTypes.func,
-  onChangeTopicProperties: PropTypes.func,
-  onChangeChapterProperties: PropTypes.func,
-  onChangePageProperties: PropTypes.func,
+  onChangeGlobalProperties: PropTypes.func,
   topicProperties: PropTypes.objectOf(PropTypes.any),
   chapterProperties: PropTypes.objectOf(PropTypes.any),
   pageProperties: PropTypes.objectOf(PropTypes.any),

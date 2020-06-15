@@ -6,6 +6,7 @@
   border-radius: 2px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   position: relative;
+  white-space: nowrap;
 
   &.open {
     border-radius: 2px 2px 0 0;
@@ -85,6 +86,7 @@
 
     &.open {
       display: block;
+      z-index: 3;
     }
 
     li {

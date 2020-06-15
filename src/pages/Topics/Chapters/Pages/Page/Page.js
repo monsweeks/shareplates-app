@@ -8,7 +8,7 @@ import { Button, EmptyMessage } from '@/components';
 import request from '@/utils/request';
 import { PageCardLayoutList, PageEditor, PageEditorShortKeyInfo, PageListTopMenu } from '@/assets';
 import { setConfirm } from '@/actions';
-import { PAGE_FONT_FAMILIES, PAGE_FONT_SIZES } from '@/assets/Topics/PageEditor/PageController/constants';
+import { DEFAULT_PAGE_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 import './Page.scss';
 
 class Page extends React.Component {
@@ -155,16 +155,7 @@ class Page extends React.Component {
     const { topicId, chapterId, pages } = this.state;
     const orderNo = pages.length + 1;
     const title = `PAGE-${orderNo}`;
-    const content = {
-      items: [],
-      pageProperties: {
-        fontFamily: PAGE_FONT_FAMILIES[0].value,
-        fontSize: PAGE_FONT_SIZES[0].value,
-        backgroundColor: 'inherit',
-        color: 'inherit',
-        padding: '',
-      },
-    };
+    const content = JSON.parse(JSON.stringify(DEFAULT_PAGE_CONTENT));
 
     request.post(
       `/api/topics/${topicId}/chapters/${chapterId}/pages`,
