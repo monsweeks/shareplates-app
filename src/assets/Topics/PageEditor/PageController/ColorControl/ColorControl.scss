@@ -6,6 +6,14 @@
   border-radius: 2px;
   position: relative;
 
+  &.outline {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.6);
+    }
+  }
+
   &.open {
     border-radius: 2px 2px 0 0;
   }
@@ -52,6 +60,29 @@
 
       > span {
         align-self: center;
+      }
+    }
+  }
+
+  &.block {
+    .color-control-content {
+      .bullet {
+        height: 100%;
+        padding: 0.5rem;
+      }
+
+      .color-border {
+        line-height: 0;
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .color-bar {
+        position: static;
+        width: 13px;
+        height: 13px;
+        display: inline-block;
+        margin-left: 0.25rem;
       }
     }
   }

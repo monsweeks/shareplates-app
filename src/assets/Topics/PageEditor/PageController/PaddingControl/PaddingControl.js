@@ -218,15 +218,17 @@ class PaddingControl extends React.Component {
   };
 
   render() {
-    const { className, active, dataTip } = this.props;
+    const { className, active, dataTip, outline, block } = this.props;
     const { open, paddingTop, paddingRight, paddingBottom, paddingLeft, paddingAll } = this.state;
 
     return (
       <div
         ref={this.control}
-        className={`padding-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
+        className={`padding-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''} ${
+          outline ? 'outline' : ''
+        } ${block ? 'block' : ''}`}
       >
-        <div className="padding-control-content" data-tip={dataTip}>
+        <div className="padding-control-content" data-tip={block ? '' : dataTip}>
           <div className="padding-content">
             <input
               className="direct-input"
@@ -259,7 +261,8 @@ class PaddingControl extends React.Component {
             }}
           >
             <span>
-              <i className="fal fa-angle-down" />
+              {block && <i className="fal fa-crosshairs" />}
+              {!block && <i className="fal fa-angle-down" />}
             </span>
           </div>
         </div>
@@ -460,6 +463,8 @@ PaddingControl.propTypes = {
   onApply: PropTypes.func,
   optionKey: PropTypes.string,
   dataTip: PropTypes.string,
+  outline: PropTypes.bool,
+  block: PropTypes.bool,
 };
 
 export default PaddingControl;

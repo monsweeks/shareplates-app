@@ -40,7 +40,7 @@ const tabs = [
   },
   {
     key: 'global-property',
-    name: '글로벌 속성',
+    name: '문서 속성',
   },
 ];
 
@@ -51,7 +51,7 @@ class PageController extends React.Component {
       selectedTab: 'insert',
       selectedItemId: null,
       lastProperties: {},
-      openLevelPropertiesPopup: false,
+      openLevelPropertiesPopup: true,
     };
 
     this.selectionChangeDebounced = debounce(this.onSelectionChange, 200);

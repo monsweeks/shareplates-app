@@ -64,14 +64,18 @@ class ColorControl extends React.Component {
       dataTip,
       clearColor,
       disableChildrenClickEvent,
+      outline,
+      block,
     } = this.props;
     const { open, color } = this.state;
 
     return (
       <div
         ref={this.control}
-        className={`color-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''}`}
-        data-tip={dataTip}
+        className={`color-control-wrapper ${className} ${active ? 'active' : 'in-active'} ${open ? 'open' : ''} ${
+          outline ? 'outline' : ''
+        } ${block ? 'block' : ''}`}
+        data-tip={block ? '' : dataTip}
       >
         <div className="color-control-content">
           <div
@@ -98,7 +102,8 @@ class ColorControl extends React.Component {
             }}
           >
             <span>
-              <i className="fal fa-angle-down" />
+              {block && <i className="fal fa-crosshairs" />}
+              {!block && <i className="fal fa-angle-down" />}
             </span>
           </div>
         </div>
@@ -172,7 +177,8 @@ class ColorControl extends React.Component {
 
 ColorControl.defaultProps = {
   className: '',
-  disableChildrenClickEvent : false,
+  disableChildrenClickEvent: false,
+  outline: false,
 };
 
 ColorControl.propTypes = {
@@ -187,7 +193,9 @@ ColorControl.propTypes = {
   lastColor: PropTypes.string,
   dataTip: PropTypes.string,
   clearColor: PropTypes.string,
-  disableChildrenClickEvent : PropTypes.bool,
+  disableChildrenClickEvent: PropTypes.bool,
+  outline: PropTypes.bool,
+  block: PropTypes.bool,
 };
 
 export default ColorControl;
