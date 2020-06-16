@@ -16,6 +16,7 @@ import BorderControl from '@/assets/Topics/PageEditor/PageController/BorderContr
 import SizeControl from '@/assets/Topics/PageEditor/PageController/SizeControl/SizeControl';
 import './PageController.scss';
 import LevelPropertiesPopup from '@/assets/Topics/PageEditor/PageController/LevelPropertiesPopup/LevelPropertiesPopup';
+import contentUtil from '@/utils/contentUtil';
 
 const tabs = [
   {
@@ -51,7 +52,7 @@ class PageController extends React.Component {
       selectedTab: 'insert',
       selectedItemId: null,
       lastProperties: {},
-      openLevelPropertiesPopup: true,
+      openLevelPropertiesPopup: false,
     };
 
     this.selectionChangeDebounced = debounce(this.onSelectionChange, 200);
@@ -114,31 +115,25 @@ class PageController extends React.Component {
     return defaultColor;
   };
 
-  getFontFamilyName = (list, fontFamily) => {
-    const font = list.find((info) => info.value === fontFamily);
-    if (font) {
-      return font.name;
+  getListText = (list, value, pageValue) => {
+    let item;
+    if (value === 'inherit') {
+      item = list.find((info) => info.value === pageValue);
+      if (item) {
+        return (
+          <span>
+            {item.name} <span className="global-property-mark">*</span>
+          </span>
+        );
+      }
     }
 
-    return fontFamily;
-  };
-
-  getFontSizeName = (list, fontSize) => {
-    const font = list.find((info) => info.value === fontSize);
-    if (font) {
-      return font.name;
-    }
-
-    return fontSize;
-  };
-
-  getListStyleName = (list, listStyle) => {
-    const item = list.find((info) => info.value === listStyle);
+    item = list.find((info) => info.value === value);
     if (item) {
       return item.name;
     }
 
-    return listStyle;
+    return value;
   };
 
   getSelectionStyleContent = (styleKey, styleValue) => {
@@ -384,6 +379,12 @@ class PageController extends React.Component {
     } = this.props;
     const { selectedTab, lastProperties, openLevelPropertiesPopup } = this.state;
 
+    const mergedPageProperties = contentUtil.getMergedPageProperties(
+      topicProperties,
+      chapterProperties,
+      pageProperties,
+    );
+
     const isTable = !!(item && item.name === 'Table');
     const isList = !!(item && item.name === 'List');
     const isImage = !!(item && item.name === 'Image');
@@ -603,9 +604,7 @@ class PageController extends React.Component {
                   value={selectionStyleValues.textDecorationStyle}
                   onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>
-                    {this.getFontFamilyName(TEXT_DECORATION_STYLES, selectionStyleValues.textDecorationStyle)}
-                  </span>
+                  <span>{this.getListText(TEXT_DECORATION_STYLES, selectionStyleValues.textDecorationStyle)}</span>
                 </SelectControl>
                 <ColorControl
                   dataTip={t('선 색상')}
@@ -637,7 +636,13 @@ class PageController extends React.Component {
                   value={selectionStyleValues.fontFamily}
                   onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>{this.getFontFamilyName(ITEM_FONT_FAMILIES, selectionStyleValues.fontFamily)}</span>
+                  <span>
+                    {this.getListText(
+                      ITEM_FONT_FAMILIES,
+                      selectionStyleValues.fontFamily,
+                      mergedPageProperties.fontFamily,
+                    )}
+                  </span>
                 </SelectControl>
                 <SelectControl
                   dataTip={t('폰트 크기')}
@@ -649,7 +654,7 @@ class PageController extends React.Component {
                   value={selectionStyleValues.fontSize}
                   onSelect={this.onChangeSelectionOrItemOption}
                 >
-                  <span>{this.getFontSizeName(ITEM_FONT_SIZES, selectionStyleValues.fontSize)}</span>
+                  <span>{this.getListText(ITEM_FONT_SIZES, selectionStyleValues.fontSize, mergedPageProperties.fontSize)}</span>
                 </SelectControl>
                 <Separator />
                 <ColorControl
@@ -1031,7 +1036,7 @@ class PageController extends React.Component {
                   value={itemOptions.listStyle}
                   onSelect={onChangeOption}
                 >
-                  <span>{this.getListStyleName(LIST_STYLES, itemOptions.listStyle)}</span>
+                  <span>{this.getListText(LIST_STYLES, itemOptions.listStyle)}</span>
                 </SelectControl>
                 <ButtonControl
                   active={isList && !Number.isNaN(itemOptions.indentLevel)}
