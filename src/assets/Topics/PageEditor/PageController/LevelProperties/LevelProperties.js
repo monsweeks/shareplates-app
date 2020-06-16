@@ -102,10 +102,13 @@ class LevelProperties extends React.PureComponent {
                 <div className="level-label">{t('폰트')}</div>
                 <div className="level-control">
                   {readOnly && (
-                    <div className="p-2">{this.getFontFamilyName(fontFamilies, properties.fontFamily)}&nbsp;</div>
+                    <div className="text-value">
+                      {this.getFontFamilyName(fontFamilies, properties.fontFamily)}&nbsp;
+                    </div>
                   )}
                   {!readOnly && (
                     <SelectControl
+                      block
                       dataTip={`${level} ${t('폰트')}`}
                       minWidth="120px"
                       height="140px"
@@ -123,9 +126,12 @@ class LevelProperties extends React.PureComponent {
               <div className="level-row">
                 <div className="level-label">{t('폰트 크기')}</div>
                 <div className="level-control">
-                  {readOnly && <div className="p-2">{this.getFontSizeName(fontSizes, properties.fontSize)}&nbsp;</div>}
+                  {readOnly && (
+                    <div className="text-value">{this.getFontSizeName(fontSizes, properties.fontSize)}&nbsp;</div>
+                  )}
                   {!readOnly && (
                     <SelectControl
+                      block
                       dataTip={`${level} ${t('기본 폰트 크기')}`}
                       minWidth="64px"
                       height="140px"
@@ -141,21 +147,24 @@ class LevelProperties extends React.PureComponent {
                 </div>
               </div>
               <div className="level-row">
-                <div className="level-label">{t('글자 색상')}</div>
+                <div className="level-label">{t('폰트 색상')}</div>
                 <div className="level-control">
                   {readOnly && (
-                    <span className="color-border">
-                      가
+                    <div className="color-value text-uppercase">
+                      {properties.color}
                       <span
                         className="color-bar"
                         style={{
                           backgroundColor: properties.color,
                         }}
                       />
-                    </span>
+                    </div>
                   )}
                   {!readOnly && (
                     <ColorControl
+                      outline
+                      disableChildrenClickEvent
+                      block
                       dataTip={`${level} ${t('기본 폰트 색상')}`}
                       colorPickerWidth="257px"
                       colorPickerHeight="200px"
@@ -181,18 +190,21 @@ class LevelProperties extends React.PureComponent {
                 <div className="level-label">{t('배경 색상')}</div>
                 <div className="level-control">
                   {readOnly && (
-                    <span className="color-border fill-color">
-                      <i className="fal fa-fill" />
+                    <div className="color-value text-uppercase">
+                      {properties.backgroundColor}
                       <span
                         className="color-bar"
                         style={{
                           backgroundColor: properties.backgroundColor,
                         }}
                       />
-                    </span>
+                    </div>
                   )}
                   {!readOnly && (
                     <ColorControl
+                      outline
+                      disableChildrenClickEvent
+                      block
                       dataTip={`${level} ${t('배경 색상')}`}
                       colorPickerWidth="257px"
                       colorPickerHeight="200px"
@@ -217,11 +229,13 @@ class LevelProperties extends React.PureComponent {
               <div className="level-row">
                 <div className="level-label">{t('페이지 여백')}</div>
                 <div className="level-control">
-                  {readOnly && <div className="p-1">{properties.padding}&nbsp;</div>}
+                  {readOnly && <div className="text-value">{properties.padding}&nbsp;</div>}
                   {!readOnly && (
                     <PaddingControl
                       dataTip={`${level} ${t('내부 간격')}`}
                       optionKey="padding"
+                      outline
+                      block
                       active={active}
                       value={properties.padding}
                       onApply={onChangeProperties}

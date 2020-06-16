@@ -42,21 +42,21 @@ const TOPIC_FONT_FAMILIES = JSON.parse(JSON.stringify(FONT_FAMILIES));
 const CHAPTER_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '토픽 폰트',
   },
 ].concat(FONT_FAMILIES);
 
 const PAGE_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '챕터 폰트',
   },
 ].concat(FONT_FAMILIES);
 
 const ITEM_FONT_FAMILIES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '문서 폰트',
   },
 ].concat(FONT_FAMILIES);
 
@@ -87,21 +87,21 @@ const TOPIC_FONT_SIZES = JSON.parse(JSON.stringify(FONT_SIZES));
 const CHAPTER_FONT_SIZES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '토픽 폰트 크기',
   },
 ].concat(FONT_SIZES);
 
 const PAGE_FONT_SIZES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '챕터 폰트 크기',
   },
 ].concat(FONT_SIZES);
 
 const ITEM_FONT_SIZES = [
   {
     value: 'inherit',
-    name: 'INHERIT',
+    name: '문서 폰트 크기',
   },
 ].concat(FONT_SIZES);
 

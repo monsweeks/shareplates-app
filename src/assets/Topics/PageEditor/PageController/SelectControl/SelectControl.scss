@@ -102,4 +102,19 @@
       }
     }
   }
+
+  &.block {
+    padding: 0.25rem;
+    font-size: 0.9rem;
+
+    .select-control-list {
+      top: 30px;
+    }
+
+    .select-control-content {
+      .select-content {
+        min-height: 21px;
+      }
+    }
+  }
 }

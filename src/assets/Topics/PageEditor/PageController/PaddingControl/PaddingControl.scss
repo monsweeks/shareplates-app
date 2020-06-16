@@ -24,6 +24,20 @@
     }
   }
 
+  &.outline {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.7);
+    }
+
+    input {
+      &.direct-input {
+        border: none;
+      }
+    }
+  }
+
   &.open {
     border-radius: 2px 2px 0 0;
   }
@@ -103,6 +117,34 @@
         &:hover {
           background-color: $gray-300;
         }
+      }
+    }
+  }
+
+  &.block {
+    width: 100%;
+    input.direct-input {
+      width: 100%;
+      padding: 0.5rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    &.active {
+      .direct-input {
+        &:hover {
+          border: none;
+        }
+
+        &:focus {
+          border: none;
+        }
+      }
+    }
+
+    .padding-control-content {
+      .bullet {
+        padding: 0.5rem;
       }
     }
   }
