@@ -110,6 +110,17 @@ const DIRECTIONS = [
   },
 ];
 
+const ROLE_CODES = [
+  {
+    key: 'SUPER_MAN',
+    value: '시스템 관리자',
+  },
+  {
+    key: 'MEMBER',
+    value: '사용자',
+  },
+];
+
 export {
   MESSAGE_CATEGORY,
   DEFAULT_INPUT_VALIDATION_MESSAGE,
@@ -118,4 +129,5 @@ export {
   DATETIME_FORMATS_MAP,
   ORDERS,
   DIRECTIONS,
+  ROLE_CODES,
 };

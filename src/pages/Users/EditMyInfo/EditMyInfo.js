@@ -22,7 +22,7 @@ import {
   Selector,
   SubLabel,
 } from '@/components';
-import { DATETIME_FORMATS } from '@/constants/constants';
+import { DATETIME_FORMATS, ROLE_CODES } from '@/constants/constants';
 import LANGUAGES from '@/languages/languages';
 import './EditMyInfo.scss';
 import { convertUser } from '@/pages/Users/util';
@@ -55,6 +55,7 @@ class EditMyInfo extends React.PureComponent {
     this.state = {
       user: {},
       iconType: 'avatar',
+      isSuperMan : false,
     };
   }
 
@@ -74,8 +75,9 @@ class EditMyInfo extends React.PureComponent {
         const next = convertUser(user);
 
         this.setState({
-          user: next|| {},
-          iconType : next && next.info.icon && next.info.icon.type ? next.info.icon.type : 'avatar'
+          user: next || {},
+          isSuperMan : next.roleCode === 'SUPER_MAN',
+          iconType: next && next.info.icon && next.info.icon.type ? next.info.icon.type : 'avatar',
         });
       },
       () => {
@@ -156,6 +158,7 @@ class EditMyInfo extends React.PureComponent {
 
     request.put('/api/users/my-info', next, (data) => {
       setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
+      this.getMyInfo();
     });
   };
 
@@ -167,11 +170,13 @@ class EditMyInfo extends React.PureComponent {
 
   render() {
     const { t } = this.props;
-    const { user, iconType } = this.state;
+    const { user, iconType, isSuperMan } = this.state;
 
     return (
       <RegisterLayout>
-        <PageTitle list={breadcrumbs} border>{t('내 정보 수정')}</PageTitle>
+        <PageTitle list={breadcrumbs} border>
+          {t('내 정보 수정')}
+        </PageTitle>
         <Form onSubmit={this.onSubmit} className="flex-grow-1 d-flex flex-column">
           <SubLabel>{t('label.email')}</SubLabel>
           <Description>
@@ -250,6 +255,27 @@ class EditMyInfo extends React.PureComponent {
               onClick={this.onChange('language')}
             />
           </FormGroup>
+          {isSuperMan && (
+            <>
+              <hr className="g-dashed mb-3" />
+              <SubLabel>{t('권한')}</SubLabel>
+              <Description>{t('시스템에서 사용자가 가지는 권한입니다.')}</Description>
+              <FormGroup>
+                <RadioButton items={ROLE_CODES} value={user.roleCode} outline onClick={this.onChange('roleCode')} />
+              </FormGroup>
+              <hr className="g-dashed mb-3" />
+              <SubLabel>{t('활성화 권한')}</SubLabel>
+              <Description>{t('현재 활성화된 사용자가 권한입니다.')}</Description>
+              <FormGroup>
+                <RadioButton
+                  items={ROLE_CODES}
+                  value={user.activeRoleCode}
+                  outline
+                  onClick={this.onChange('activeRoleCode')}
+                />
+              </FormGroup>
+            </>
+          )}
           <hr className="g-dashed mb-3" />
           <SubLabel>{t('가입일')}</SubLabel>
           <DetailValue className="flex-grow-1" uppercase border={false}>
