@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { CircleIcon, Link, RadioButton, UserIcon } from '@/components';
 import LANGUAGES from '@/languages/languages';
 import './ShortCutMenu.scss';
+import { UserPropTypes } from '@/proptypes';
 
 class ShortCutMenu extends React.PureComponent {
   render() {
@@ -39,6 +40,11 @@ class ShortCutMenu extends React.PureComponent {
             >
               <div className="hover-item" />
               {user && <UserIcon info={user.info} />}
+              {user.isAdmin && (
+                <div className="superman-mark">
+                  <i className="fad fa-medal" />
+                </div>
+              )}
             </div>
           )}
           {!(user && user.info) && (
@@ -98,17 +104,7 @@ ShortCutMenu.propTypes = {
   loggedIn: PropTypes.bool,
   language: PropTypes.string,
   onChangeLanguage: PropTypes.func,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.shape({
-      icon: PropTypes.shape({
-        type: PropTypes.string,
-        data: PropTypes.objectOf(PropTypes.any),
-      }),
-    }),
-  }),
+  user: UserPropTypes,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

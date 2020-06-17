@@ -36,6 +36,14 @@
         transition: all 0.1s;
       }
     }
+
+    .superman-mark {
+      color: $yellow;
+      display: inline;
+      position: absolute;
+      top : -15px;
+      left: 7px;
+    }
   }
 
   .separator {

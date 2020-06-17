@@ -13,7 +13,6 @@ import NewGrp from './Grps/NewGrp/NewGrp';
 import AccessCode from './Shares/AccessCode/AccessCode';
 import Share from './Shares/Share/Share';
 import ShareList from './Shares/ShareList/ShareList';
-
 // Topic
 import ChapterList from './Topics/Chapters/ChapterList/ChapterList';
 import Page from './Topics/Chapters/Pages/Page/Page';
@@ -27,6 +26,10 @@ import Join from './Users/Join/Join';
 import JoinSuccess from './Users/Join/Success/Success';
 import Login from './Users/Login/Login';
 import Register from './Users/Register/Register';
+// Admin
+import UserList from './Admin/UserList/UserList';
+import AdminMenu from './Admin/AdminMenu/AdminMenu';
+import AdminNoMatch from './Admin/AdminNoMatch/AdminNoMatch';
 
 export {
   // About
@@ -57,4 +60,8 @@ export {
   JoinSuccess,
   Login,
   Register,
+  // Admin
+  UserList,
+  AdminMenu,
+  AdminNoMatch,
 };

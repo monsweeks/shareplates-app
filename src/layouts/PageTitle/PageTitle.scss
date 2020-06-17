@@ -8,6 +8,7 @@
 
   @media (max-width: 576px) {
     border-radius: 0;
+    padding: 1rem 1rem 1rem;
   }
 
   &.has-border {
@@ -50,7 +51,9 @@
       top: 1px;
       white-space: nowrap;
       font-weight: bold;
-
+      @media (max-width: 576px) {
+        font-size: 1rem;
+      }
     }
   }
 

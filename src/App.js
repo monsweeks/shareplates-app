@@ -8,6 +8,7 @@ import Users from '@/pages/Users';
 import Topics from '@/pages/Topics';
 import Grps from '@/pages/Grps';
 import Shares from '@/pages/Shares';
+import Admin from '@/pages/Admin';
 import '@/App.scss';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/topics" component={Topics} />
           <Route path="/groups" component={Grps} />
           <Route path="/shares" component={Shares} />
+          <Route path="/admin" component={Admin} />
           <Route component={NoMatch} />
         </Switch>
         <Common />

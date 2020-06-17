@@ -1,0 +1,63 @@
+.admin-wrapper {
+  flex-grow: 1;
+  display: flex;
+  min-height: 100%;
+  padding: 0.5rem;
+
+  @media (max-width: 576px) {
+    padding: 0;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: $white;
+    > .admin-menu {
+      flex-grow: 0;
+      min-width: 160px;
+      border-right: 0rem solid $primary;
+    }
+
+    > .admin-content {
+      flex-grow: 1;
+      position: relative;
+      > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+
+    > div {
+
+      flex-direction: column;
+      > .admin-menu {
+        flex-grow: 0;
+        min-width: auto;
+
+        border-right: 0rem solid $primary;
+        display: flex;
+      }
+
+      > .admin-content {
+        flex-grow: 1;
+        position: relative;
+        > div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+
+  }
+
+}
