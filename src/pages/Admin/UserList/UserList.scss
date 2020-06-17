@@ -1,0 +1,130 @@
+.user-list-wrapper {
+  width: 100%;
+  height: 100%;
+
+  .count {
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  .user-list-table {
+    flex-grow: 1;
+    padding: 0 1rem;
+
+    @media (max-width: 576px) {
+      padding: 0 0.5rem;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    position: relative;
+    font-size: 0.8rem;
+
+    th {
+      position: sticky;
+      top: 0;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    td {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    th,
+    td {
+      &.id {
+        width: 60px;
+        text-align: right;
+      }
+
+      &.icon {
+        text-align: center;
+        width: 50px;
+      }
+
+      &.registered {
+        text-align: center;
+        width: 50px;
+      }
+
+      &.language {
+        text-align: center;
+        width: 50px;
+      }
+
+      &.name {
+        width: 120px;
+      }
+
+      &.datetime-format {
+        width: 180px;
+      }
+
+      &.role-code,
+      &.active-role-code {
+        text-align: center;
+        width: 70px;
+      }
+    }
+
+    td {
+      &.icon {
+        padding: 0;
+      }
+    }
+
+    span.user-icon {
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+    }
+  }
+
+  @media (max-width: 1240px) {
+    table {
+      .datetime-format {
+        display: none;
+      }
+
+      .language {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    table {
+      .icon {
+        display: none;
+      }
+
+      .registered {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .role-code,
+    .active-role-code {
+      display: none;
+    }
+
+    .id {
+      width: auto;
+    }
+
+    td {
+      &.email {
+        white-space: normal;
+        word-break: break-all;
+      }
+    }
+  }
+}

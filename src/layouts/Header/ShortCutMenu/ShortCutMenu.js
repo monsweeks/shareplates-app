@@ -40,7 +40,7 @@ class ShortCutMenu extends React.PureComponent {
             >
               <div className="hover-item" />
               {user && <UserIcon info={user.info} />}
-              {user.activeRoleCode === 'SUPER_MAN' && (
+              {user.isAdmin && (
                 <div className="superman-mark">
                   <i className="fad fa-medal" />
                 </div>

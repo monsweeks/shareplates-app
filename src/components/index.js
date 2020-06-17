@@ -9,6 +9,7 @@ import Row from 'reactstrap/es/Row';
 import Col from 'reactstrap/es/Col';
 import Nav from 'reactstrap/es/Nav';
 import NavItem from 'reactstrap/es/NavItem';
+import Table from 'reactstrap/es/Table';
 
 import Avatar from '@/components/Avatar/Avatar';
 import AvatarBuilder from '@/components/AvatarBuilder/AvatarBuilder';
@@ -54,6 +55,7 @@ export {
   Col,
   Nav,
   NavItem,
+  Table,
 
   Avatar,
   AvatarBuilder,

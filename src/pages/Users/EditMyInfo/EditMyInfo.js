@@ -55,7 +55,7 @@ class EditMyInfo extends React.PureComponent {
     this.state = {
       user: {},
       iconType: 'avatar',
-      isSuperMan : false,
+      isCanBeAdmin : false,
     };
   }
 
@@ -76,7 +76,7 @@ class EditMyInfo extends React.PureComponent {
 
         this.setState({
           user: next || {},
-          isSuperMan : next.roleCode === 'SUPER_MAN',
+          isCanBeAdmin : next.roleCode === 'SUPER_MAN',
           iconType: next && next.info.icon && next.info.icon.type ? next.info.icon.type : 'avatar',
         });
       },
@@ -170,7 +170,7 @@ class EditMyInfo extends React.PureComponent {
 
   render() {
     const { t } = this.props;
-    const { user, iconType, isSuperMan } = this.state;
+    const { user, iconType, isCanBeAdmin } = this.state;
 
     return (
       <RegisterLayout>
@@ -255,7 +255,7 @@ class EditMyInfo extends React.PureComponent {
               onClick={this.onChange('language')}
             />
           </FormGroup>
-          {isSuperMan && (
+          {isCanBeAdmin && (
             <>
               <hr className="g-dashed mb-3" />
               <SubLabel>{t('권한')}</SubLabel>

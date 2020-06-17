@@ -11,6 +11,7 @@ import ShortCutMenu from '@/layouts/Header/ShortCutMenu/ShortCutMenu';
 import MobileMenu from '@/layouts/Header/MobileMenu/MobileMenu';
 import QuickMenu from '@//layouts/Header/QuickMenu/QuickMenu';
 import './Header.scss';
+import { UserPropTypes } from '@/proptypes';
 
 class Header extends React.Component {
   constructor(props) {
@@ -62,6 +63,15 @@ class Header extends React.Component {
           to: '/groups',
           side: 'left',
           alias: '/groups',
+        },
+        {
+          key: 'admin',
+          icon: 'fad fa-medal',
+          text: 'label.systemManagement',
+          to: '/admin',
+          side: 'right',
+          alias: '/admin',
+          adminOnly: true,
         },
       ],
     };
@@ -121,10 +131,6 @@ class Header extends React.Component {
     });
   };
 
-  onSearch = () => {
-    console.log('search');
-  };
-
   logout = () => {
     const { history, setUserInfo: setUserInfoReducer } = this.props;
 
@@ -141,13 +147,14 @@ class Header extends React.Component {
 
     const ready = user !== null;
     const loggedIn = !!(user && user.id);
+    const userMenus = menus.filter((menu) => !(menu.adminOnly && !(user && user.isAdmin)));
 
     return (
       <header className="top-header-wrapper g-no-select">
         <div className="top-header-menu">
           <div className="left-menu-area text-left d-flex d-md-block pl-md-0">
             <Menu
-              menus={menus.filter((menu) => menu.side === 'left')}
+              menus={userMenus.filter((menu) => menu.side === 'left')}
               pathname={location.pathname}
               openMenu={openMenu}
               setOpen={this.setOpen}
@@ -160,7 +167,7 @@ class Header extends React.Component {
           </div>
           <div className="right-menu-area text-right pl-md-0">
             <div className="right-menu">
-              <Menu menus={menus.filter((menu) => menu.side === 'right')} pathname={location.pathname} />
+              <Menu menus={userMenus.filter((menu) => menu.side === 'right')} pathname={location.pathname} />
             </div>
             <div className="shortcut-menu">
               <ShortCutMenu
@@ -171,7 +178,6 @@ class Header extends React.Component {
                 onChangeLanguage={(language) => {
                   i18n.changeLanguage(language);
                 }}
-                onSearch={this.onSearch}
                 grps={grps}
                 user={user}
               />
@@ -229,11 +235,7 @@ const mapDispatchToProps = (dispatch) => {
 
 Header.propTypes = {
   i18n: PropTypes.objectOf(PropTypes.any),
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-  }),
+  user: UserPropTypes,
   grps: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

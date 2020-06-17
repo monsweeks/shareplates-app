@@ -52,14 +52,16 @@ class Menu extends React.PureComponent {
         )}
         {menus.map((menu) => {
           let alias = '';
-          if (pathname.indexOf('/pages') > -1) {
+          if (pathname.indexOf('/pages') === 0) {
             alias = '/pages';
-          } else if (pathname.indexOf('/chapters') > -1) {
+          } else if (pathname.indexOf('/chapters') === 0) {
             alias = '/chapters';
-          } else if (pathname.indexOf('/topics') > -1) {
+          } else if (pathname.indexOf('/topics') === 0) {
             alias = '/topics';
-          } else if (pathname.indexOf('/groups') > -1) {
+          } else if (pathname.indexOf('/groups') === 0) {
             alias = '/groups';
+          } else if (pathname.indexOf('/admin') === 0) {
+            alias = '/admin';
           } else if (pathname === '/') {
             alias = '/topics';
           }
@@ -78,7 +80,16 @@ class Menu extends React.PureComponent {
               enabled={enabled}
             >
               {menu.key === 'shares' && shareBadgeCount > 0 && (
-                <div className="share-badge-count">{shareBadgeCount > 99 ? <span><span>99</span><span className='plus-symbol'>+</span></span> : shareBadgeCount}</div>
+                <div className="share-badge-count">
+                  {shareBadgeCount > 99 ? (
+                    <span>
+                      <span>99</span>
+                      <span className="plus-symbol">+</span>
+                    </span>
+                  ) : (
+                    shareBadgeCount
+                  )}
+                </div>
               )}
               <div className="current-arrow">
                 <span

@@ -1,0 +1,54 @@
+.table th,
+.table td {
+  _line-height: 100%;
+}
+
+.table thead th {
+  border-top: none;
+  border-bottom: none;
+  background-color: $primary;
+  color: $white;
+
+  &:first-child {
+    border-radius: 5px 0 0 5px;
+  }
+
+  &:last-child {
+    border-radius: 0 5px 5px 0;
+  }
+
+  @media (max-width: 1240px) {
+
+    &:first-child {
+      border-radius: 0;
+    }
+
+    &:last-child {
+      border-radius: 0;
+    }
+
+  }
+}
+
+.table {
+  &.table-hover {
+    tbody {
+      tr {
+        cursor: pointer;
+
+        td {
+          border-top: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        &:first-child {
+          td {
+            border-top: none;
+          }
+        }
+      }
+    }
+    tr:hover {
+      background-color: $yellow;
+    }
+  }
+}

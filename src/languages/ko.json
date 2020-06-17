@@ -51,6 +51,7 @@
   "label.newTopic": "새 토픽",
   "label.newGrp": "새로운 그룹",
   "label.share": "공유",
+  "label.systemManagement": "시스템 관리",
 
   "label.searchByTopicName": "토픽 이름으로 검색",
   "label.searchByGrpName": "그룹 이름으로 검색",
