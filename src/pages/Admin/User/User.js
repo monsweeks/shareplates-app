@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { UserPropTypes } from '@/proptypes';
-import './UserList.scss';
+import './User.scss';
 import request from '@/utils/request';
 import { Table, UserIcon } from '@/components';
 import { convertUsers } from '@/pages/Users/util';
 import { PageTitle } from '@/layouts';
 
-class UserList extends React.Component {
+class User extends React.Component {
   init = false;
 
   constructor(props) {
@@ -45,7 +45,7 @@ class UserList extends React.Component {
   };
 
   render() {
-    const { t, history } = this.props;
+    const { t } = this.props;
     const { users } = this.state;
 
     return (
@@ -75,12 +75,7 @@ class UserList extends React.Component {
             <tbody>
               {users.map((user) => {
                 return (
-                  <tr
-                    key={user.id}
-                    onClick={() => {
-                      history.push(`/admin/users/${user.id}`);
-                    }}
-                  >
+                  <tr key={user.id}>
                     <td className="id">{user.id}</td>
                     <td className="icon">
                       <span className="user-icon">
@@ -113,7 +108,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-UserList.propTypes = {
+User.propTypes = {
   user: UserPropTypes,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -124,4 +119,4 @@ UserList.propTypes = {
   t: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(UserList)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(User)));

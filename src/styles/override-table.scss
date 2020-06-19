@@ -1,6 +1,6 @@
 .table th,
 .table td {
-  _line-height: 100%;
+  line-height: 120%;
 }
 
 .table thead th {
@@ -26,7 +26,6 @@
     &:last-child {
       border-radius: 0;
     }
-
   }
 }
 
@@ -50,5 +49,15 @@
     tr:hover {
       background-color: $yellow;
     }
+  }
+}
+
+.table.g-sticky {
+  th {
+    position: sticky;
+    top: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+    z-index: 2;
   }
 }

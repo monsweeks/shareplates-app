@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { AdminMenu, AdminNoMatch, UserList } from 'pages';
+import { AdminMenu, AdminNoMatch, UserList, User } from 'pages';
 import './index.scss';
 
 function Admin() {
@@ -13,6 +13,7 @@ function Admin() {
         <div className="admin-content">
           <div>
             <Switch>
+              <Route exact path="/admin/users/:userId" component={User} />
               <Route exact path="/admin/users" component={UserList} />
               <Route component={AdminNoMatch} />
             </Switch>
