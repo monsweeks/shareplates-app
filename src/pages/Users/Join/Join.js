@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { addMessage, setJoinEmail } from 'actions';
+import { setJoinEmail } from 'actions';
 import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import request from '@/utils/request';
 import siteImage from '@/images/sites';
@@ -13,6 +13,7 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { CenterBoxLayout } from '@/layouts';
 import { socialLogin } from '@/pages/Users/util';
 import './Join.scss';
+import dialog from '@/utils/dialog';
 
 class Join extends Component {
   constructor(props) {
@@ -64,10 +65,10 @@ class Join extends Component {
     e.preventDefault();
 
     const { user } = this.state;
-    const { t, history, addMessage: addMessageReducer } = this.props;
+    const { t, history } = this.props;
 
     if (user.get('passwordConfirm') !== user.get('password')) {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
+      dialog.setMessage(MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
       return;
     }
 
@@ -79,9 +80,9 @@ class Join extends Component {
   };
 
   onSocialLogin = (vendor) => {
-    const { t, addMessage: addMessageReducer } = this.props;
+    const { t } = this.props;
     socialLogin(vendor, () => {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+      dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
     });
   };
 
@@ -283,7 +284,6 @@ class Join extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setJoinEmail: (email) => dispatch(setJoinEmail(email)),
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
   };
 };
 
@@ -299,5 +299,4 @@ Join.propTypes = {
     push: PropTypes.func,
   }),
   setJoinEmail: PropTypes.func,
-  addMessage: PropTypes.func,
 };

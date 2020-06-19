@@ -20,10 +20,11 @@ class DateTime extends React.PureComponent {
   };
 
   render() {
-    const { value, className, formatType, dateTimeFormat } = this.props;
+    const { value, className, formatType, dateTimeFormat, nullValue } = this.props;
     return (
       <span className={`date-time-wrapper ${className}`}>
         {value && moment(value).format(this.getDateTimeFormat(formatType, dateTimeFormat))}
+        {!value && nullValue}
       </span>
     );
   }
@@ -50,6 +51,7 @@ DateTime.propTypes = {
   }),
   formatType: PropTypes.string,
   dateTimeFormat: PropTypes.string,
+  nullValue : PropTypes.string,
 };
 
 export default connect(mapStateToProps, undefined)(DateTime);

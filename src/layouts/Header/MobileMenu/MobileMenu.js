@@ -58,7 +58,7 @@ class MobileMenu extends React.PureComponent {
                     <li key={menu.text}>
                       <Link
                         underline={false}
-                        className={`d-inline-block menu-item ${enabled ? 'en' : 'dis'}`}
+                        className={`d-inline-block menu-item ${enabled ? '' : 'disabled'}`}
                         onClick={(e) => {
                           if (enabled) {
                             setOpen(false);

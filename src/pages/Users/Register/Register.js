@@ -4,12 +4,12 @@ import { Trans, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import PropTypes from 'prop-types';
-import { addMessage } from 'actions';
 import { Button, Col, Form, FormGroup, Input, Link, Row } from '@/components';
 import request from '@/utils/request';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { CenterBoxLayout } from '@/layouts';
 import './Register.scss';
+import dialog from '@/utils/dialog';
 
 class Register extends Component {
   constructor(props) {
@@ -53,10 +53,10 @@ class Register extends Component {
     e.preventDefault();
 
     const { user } = this.state;
-    const { t, history, addMessage: addMessageReducer } = this.props;
+    const { t, history } = this.props;
 
     if (user.get('passwordConfirm') !== user.get('password')) {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
+      dialog.setMessage(MESSAGE_CATEGORY.INFO, t('validation.badInput'), t('validation.notEqualPassword'));
       return;
     }
 
@@ -155,13 +155,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Register)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Register)));
 
 Register.defaultProps = {
   t: null,
@@ -176,6 +170,5 @@ Register.propTypes = {
   t: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
-  }),
-  addMessage: PropTypes.func,
+  })
 };

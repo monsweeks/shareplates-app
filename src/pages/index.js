@@ -28,6 +28,7 @@ import Login from './Users/Login/Login';
 import Register from './Users/Register/Register';
 // Admin
 import UserList from './Admin/UserList/UserList';
+import User from './Admin/User/User';
 import AdminMenu from './Admin/AdminMenu/AdminMenu';
 import AdminNoMatch from './Admin/AdminNoMatch/AdminNoMatch';
 
@@ -62,6 +63,7 @@ export {
   Register,
   // Admin
   UserList,
+  User,
   AdminMenu,
   AdminNoMatch,
 };

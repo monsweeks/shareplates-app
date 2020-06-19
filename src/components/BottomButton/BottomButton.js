@@ -14,22 +14,22 @@ class BottomButton extends React.PureComponent {
           <div>
             {onDelete && (
               <Button className="float-left" color="danger" onClick={onDelete}>
-                {t('button.delete')}
+                {t('label.button.delete')}
               </Button>
             )}
             {onCancel && (
               <Button className="ml-2" color="secondary" onClick={onCancel}>
-                {t('button.cancel')}
+                {t('label.button.cancel')}
               </Button>
             )}
             {onList && (
               <Button className="ml-2" color="secondary" onClick={onList}>
-                {t('button.list')}
+                {t('label.button.list')}
               </Button>
             )}
             {onEdit && (
               <Button type="submit" className="ml-2" color="primary" onClick={onEdit}>
-                {t('button.edit')}
+                {t('label.button.edit')}
               </Button>
             )}
             {onSave && (
@@ -75,7 +75,7 @@ class BottomButton extends React.PureComponent {
                 <span>
                   <i className="fal fa-trash-alt" />
                 </span>
-                <span>{t('button.delete')}</span>
+                <span>{t('label.button.delete')}</span>
               </Button>
             )}
             {onCancel && (
@@ -83,7 +83,7 @@ class BottomButton extends React.PureComponent {
                 <span>
                   <i className="fal fa-arrow-alt-left" />
                 </span>
-                <span>{t('button.cancel')}</span>
+                <span>{t('label.button.cancel')}</span>
               </Button>
             )}
             {onList && (
@@ -91,7 +91,7 @@ class BottomButton extends React.PureComponent {
                 <span>
                   <i className="fal fa-list-alt" />
                 </span>
-                <span>{t('button.list')}</span>
+                <span>{t('label.button.list')}</span>
               </Button>
             )}
             {onEdit && (
@@ -99,7 +99,7 @@ class BottomButton extends React.PureComponent {
                 <span>
                   <i className="fal fa-pencil-alt" />
                 </span>
-                <span>{t('button.edit')}</span>
+                <span>{t('label.button.edit')}</span>
               </Button>
             )}
             {onSave && (

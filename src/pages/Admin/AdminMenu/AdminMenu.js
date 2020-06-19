@@ -56,7 +56,7 @@ class AdminMenu extends React.PureComponent {
             return (
               <li
                 key={menu.key}
-                className={`${location.pathname === menu.key ? 'selected' : ''}`}
+                className={`${location.pathname.indexOf(menu.key) === 0 ? 'selected' : ''}`}
                 onClick={() => {
                   history.push(menu.key);
                 }}

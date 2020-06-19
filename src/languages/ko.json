@@ -2,16 +2,64 @@
   "en": "ENG",
   "ko": "한글",
 
-  "button.confirm": "확인",
-  "button.close": "닫기",
-  "button.resendEmail": "확인 메일 재발송",
-  "button.save": "저장",
-  "button.cancel": "취소",
-  "button.edit": "변경",
-  "button.list": "목록",
-  "button.delete": "삭제",
-  "button.goBack": "뒤로가기",
-  "button.goFirst": "첫 화면으로",
+
+  "label.menu.share": "시스템 관리",
+  "label.menu.topic": "토픽",
+  "label.menu.chapter": "챕터",
+  "label.menu.page": "페이지",
+  "label.menu.org": "그룹",
+  "label.menu.systemManagement": "시스템 관리",
+
+  "label.page.title.userInfoEdit": "사용자 정보 수정",
+
+  "label.breadcrumbs.systemManagement": "시스템 관리",
+  "label.breadcrumbs.userList": "사용자 목록",
+  "label.breadcrumbs.userInfo": "사용자 정보",
+
+  "label.button.confirm": "확인",
+  "label.button.save": "저장",
+  "label.button.cancel": "취소",
+  "label.button.edit": "변경",
+  "label.button.list": "목록",
+  "label.button.delete": "삭제",
+  "label.button.goBack": "뒤로가기",
+  "label.button.goFirst": "첫 화면으로",
+  "label.button.resendEmail": "확인 메일 재발송",
+
+  "label.avatar": "아바타",
+  "label.image": "이미지",
+  "label.name": "이름",
+  "label.dateFormat": "날짜 형식",
+  "label.userIcon": "사용자 아이콘",
+  "label.language": "언어",
+  "label.role": "권한",
+  "label.appliedRole": "적용된 권한",
+  "label.joinDate": "가입일",
+  "label.userList": "사용자 목록",
+  "label.personCount": "명",
+  "label.registration": "등록",
+  "label.id": "ID",
+  "label.icon": "아이콘",
+  "label.email": "이메일",
+
+  "label.dialog.title.dataDeleteWarning": "데이터 삭제 경고",
+  "msg.dialog.content.userDataDeleteWaring": "사용자의 정보와 사용자와 관련된 모든 정보와 히스토리가 삭제됩니다. 사용자 정보를 모두 삭제하시겠습니까?",
+
+
+  "msg.emailDesc": "가입된 사용자 이메일 정보입니다. 로그인 아이디로 사용되며, 변경할 수 없습니다.",
+  "msg.avatarDesc": "이미지를 직접 업로드하거나, 아바타를 만들어서 나를 표현할 수 있습니다.",
+  "msg.nameDesc": "사용자의 이름이나 닉네임입니다.",
+  "msg.dateFormatDesc": "날짜 및 시간 정보를 표시하는 형식을 선택합니다.",
+  "msg.languageDesc": "사용할 언어를 선택할 수 있습니다.",
+  "msg.roleDesc": "시스템에서 사용자가 가지는 권한입니다.",
+  "msg.appliedRoleDesc": "현재 활성화된 사용자가 권한입니다.",
+
+
+
+
+
+
+
 
   "label.topicList": "토픽 리스트",
   "label.grpList": "그룹 리스트",
@@ -20,8 +68,8 @@
   "label.page": "페이지",
   "label.memberJoin": "회원 가입",
   "label.here": "여기",
-  "label.email": "이메일",
-  "label.name": "이름",
+
+
   "label.password": "비밀번호",
   "label.passwordConfirm": "비밀번호 확인",
   "label.phoneNumber": "전화번호",
@@ -42,7 +90,7 @@
   "label.login": "로그인",
   "label.rememberEmail": "이메일 기억하기",
   "label.findAccountInfo": "아이디/비밀번호 찾기",
-  "label.icon": "아이콘",
+
   "label.desc": "설명",
   "label.privateTopic": "비공개 토픽",
   "label.topicAdmin": "토픽 관리자",
@@ -51,7 +99,7 @@
   "label.newTopic": "새 토픽",
   "label.newGrp": "새로운 그룹",
   "label.share": "공유",
-  "label.systemManagement": "시스템 관리",
+
 
   "label.searchByTopicName": "토픽 이름으로 검색",
   "label.searchByGrpName": "그룹 이름으로 검색",

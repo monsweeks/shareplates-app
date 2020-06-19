@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
@@ -16,6 +15,8 @@ import {
   TOPIC_FONT_SIZES,
 } from '@/assets/Topics/PageEditor/PageController/constants';
 import { convertUsers } from '@/pages/Users/util';
+import dialog from '@/utils/dialog';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class Topic extends Component {
   constructor(props) {
@@ -85,11 +86,14 @@ class Topic extends Component {
 
   onDelete = () => {
     const { topic } = this.state;
-    const { setConfirm: setConfirmReducer } = this.props;
-
-    setConfirmReducer(`${topic.name} 토픽을 정말 삭제하시겠습니까?`, () => {
-      this.deleteTopic(topic.id);
-    });
+    dialog.setConfirm(
+      MESSAGE_CATEGORY.WARNING,
+      '데이터가 삭제됩니다',
+      `${topic.name} 토픽을 정말 삭제하시겠습니까?`,
+      () => {
+        this.deleteTopic(topic.id);
+      },
+    );
   };
 
   onList = () => {
@@ -274,13 +278,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Topic)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Topic)));
 
 Topic.defaultProps = {
   t: null,
@@ -301,5 +299,4 @@ Topic.propTypes = {
       topicId: PropTypes.string,
     }),
   }),
-  setConfirm: PropTypes.func,
 };

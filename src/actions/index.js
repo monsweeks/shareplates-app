@@ -1,5 +1,5 @@
 export const SET_USER_AND_GRP = 'SET_USER_AND_GRP';
-export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const SET_MESSAGE = 'SET_MESSAGE';
 export const CLEAR_MESSAGE = 'CLEAR_ALL_MESSAGE';
 export const SET_SUPPORTED = 'SET_SUPPORTED';
 export const SET_LOADING = 'SET_LOADING';
@@ -30,13 +30,13 @@ export function setGrp(grpId) {
   };
 }
 
-export function addMessage(code, category, title, content) {
+export function setMessage(category, title, content, okHandler) {
   return {
-    type: ADD_MESSAGE,
-    code,
+    type: SET_MESSAGE,
     category,
     title,
     content,
+    okHandler,
   };
 }
 
@@ -60,10 +60,12 @@ export function setLoading(loading) {
   };
 }
 
-export function setConfirm(message, okHandler, noHandler) {
+export function setConfirm(category, title, content, okHandler, noHandler) {
   return {
     type: SET_CONFIRM,
-    message,
+    category,
+    title,
+    content,
     okHandler,
     noHandler,
   };

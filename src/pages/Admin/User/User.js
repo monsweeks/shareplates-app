@@ -2,42 +2,56 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { setUserInfo } from '@/actions';
-import { PageTitle, RegisterLayout } from '@/layouts';
+import { PageTitle } from '@/layouts';
 import { UserForm } from '@/assets';
-import { DATETIME_FORMATS } from '@/constants/constants';
+import { DATETIME_FORMATS, MESSAGE_CATEGORY } from '@/constants/constants';
 import { convertUser } from '@/pages/Users/util';
+import dialog from '@/utils/dialog';
 import common from '@/utils/common';
 
-const breadcrumbs = [
-  {
-    name: '내 정보',
-    to: '/users/my-info/edit',
-  },
-  {
-    name: '수정',
-    to: '/users/my-info',
-  },
-];
-
-class EditMyInfo extends React.PureComponent {
+class User extends React.PureComponent {
   constructor(props) {
+    const {
+      match: {
+        params: { userId },
+      },
+    } = props;
+
     super(props);
     this.state = {
       user: null,
-      isCanBeAdmin: false,
+      isCanBeAdmin: true,
+      userId,
     };
   }
 
   componentDidMount() {
-    this.getMyInfo();
+    const { userId } = this.state;
+    const { t } = this.props;
+    this.setState({
+      breadcrumbs: [
+        {
+          name: t('label.breadcrumbs.systemManagement'),
+          to: '/admin',
+        },
+        {
+          name: t('label.breadcrumbs.userList'),
+          to: '/admin/users',
+        },
+        {
+          name: t('label.breadcrumbs.userInfo'),
+          to: `/admin/users/${userId}`,
+        },
+      ],
+    });
+
+    this.getUserInfo(userId);
   }
 
-  getMyInfo = () => {
+  getUserInfo = (userId) => {
     request.get(
-      '/api/users/my-info',
+      `/api/users/${userId}`,
       null,
       (data) => {
         const { user } = data;
@@ -48,7 +62,6 @@ class EditMyInfo extends React.PureComponent {
 
         this.setState({
           user: next || {},
-          isCanBeAdmin: next.roleCode === 'SUPER_MAN',
         });
       },
       () => {
@@ -59,9 +72,19 @@ class EditMyInfo extends React.PureComponent {
     );
   };
 
-  onCancel = () => {
-    const { history } = this.props;
-    history.goBack();
+  deleteUserInfo = (userId) => {
+    const { t } = this.props;
+    dialog.setConfirm(
+      MESSAGE_CATEGORY.WARNING,
+      t('label.dialog.title.dataDeleteWarning'),
+      t('msg.dialog.content.userDataDeleteWaring'),
+      () => {
+        const { history } = this.props;
+        request.del(`/api/users/${userId}`, null, () => {
+          history.push('/admin/users');
+        });
+      },
+    );
   };
 
   onChange = (field) => (value) => {
@@ -116,49 +139,58 @@ class EditMyInfo extends React.PureComponent {
   onSubmit = (e) => {
     e.preventDefault();
     const { user } = this.state;
-    const { setUserInfo: setUserInfoReducer } = this.props;
     const next = { ...user };
     next.info = JSON.stringify(next.info);
 
-    request.put('/api/users/my-info', next, (data) => {
-      setUserInfoReducer(convertUser(data.user) || {}, data.grps, data.shareCount);
-      this.getMyInfo();
+    request.put(`/api/users/${user.id}`, next, (data) => {
+      this.setState({
+        user: convertUser(data.user),
+      });
     });
+  };
+
+  onDelete = () => {
+    const { userId } = this.state;
+    this.deleteUserInfo(userId);
+  };
+
+  onList = () => {
+    const { history } = this.props;
+    history.push('/admin/users');
   };
 
   render() {
     const { t } = this.props;
-    const { user, isCanBeAdmin } = this.state;
+    const { user, breadcrumbs, isCanBeAdmin } = this.state;
 
     return (
-      <RegisterLayout>
+      <div className="p-4 scrollbar w-100 h-100">
         <PageTitle list={breadcrumbs} border>
-          {t('내 정보 수정')}
+          {t('label.page.title.userInfoEdit')}
         </PageTitle>
         <UserForm
           isCanBeAdmin={isCanBeAdmin}
           user={user}
           onSubmit={this.onSubmit}
           onChange={this.onChange}
-          onCancel={this.onCancel}
+          onDelete={this.onDelete}
+          onList={this.onList}
         />
-      </RegisterLayout>
+      </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
-  };
-};
+export default withRouter(withTranslation()(User));
 
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(EditMyInfo)));
-
-EditMyInfo.propTypes = {
+User.propTypes = {
   t: PropTypes.func.isRequired,
-  setUserInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    goBack: PropTypes.func,
+    push: PropTypes.func,
+  }),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      userId: PropTypes.string,
+    }),
   }),
 };

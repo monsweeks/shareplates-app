@@ -28,6 +28,9 @@ import Input from '@/components/Input/Input';
 import Link from '@/components/Link/Link';
 import ListControlBar from '@/components/ListControlBar/ListControlBar';
 import Logo from '@/components/Logo/Logo';
+import MessageDialog from '@/components/MessageDialog/MessageDialog';
+import Overlay from '@/components/Overlay/Overlay';
+
 import P from '@/components/P/P';
 import PageIntro from '@/components/PageIntro/PageIntro';
 import Popup from '@/components/Popup/Popup';
@@ -56,7 +59,6 @@ export {
   Nav,
   NavItem,
   Table,
-
   Avatar,
   AvatarBuilder,
   BottomButton,
@@ -74,6 +76,8 @@ export {
   Link,
   ListControlBar,
   Logo,
+  MessageDialog,
+  Overlay,
   P,
   PageIntro,
   Popup,

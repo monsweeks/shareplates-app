@@ -4,19 +4,30 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { UserPropTypes } from '@/proptypes';
-import './UserList.scss';
 import request from '@/utils/request';
 import { Table, UserIcon } from '@/components';
 import { convertUsers } from '@/pages/Users/util';
 import { PageTitle } from '@/layouts';
+import './UserList.scss';
 
 class UserList extends React.Component {
   init = false;
 
   constructor(props) {
     super(props);
+    const { t } = props;
     this.state = {
       users: [],
+      breadcrumbs: [
+        {
+          name: t('label.breadcrumbs.systemManagement'),
+          to: '/admin',
+        },
+        {
+          name: t('label.breadcrumbs.userList'),
+          to: '/admin/users',
+        },
+      ],
     };
   }
 
@@ -45,37 +56,42 @@ class UserList extends React.Component {
   };
 
   render() {
-    const { t } = this.props;
-    const { users } = this.state;
+    const { t, history } = this.props;
+    const { users, breadcrumbs } = this.state;
 
     return (
       <div className="user-list-wrapper">
-        <PageTitle className="m-0">
-          {t('사용자 목록')}{' '}
+        <PageTitle className="m-0" list={breadcrumbs}>
+          {t('label.userList')}{' '}
           <span className="count">
             ({users.length}
-            {t('명')})
+            {t('label.personCount')})
           </span>
         </PageTitle>
         <div className="user-list-table scrollbar">
-          <Table hover>
+          <Table className="g-sticky" hover>
             <thead>
               <tr>
-                <th className="id">{t('ID')}</th>
-                <th className="icon">{t('아이콘')}</th>
-                <th className="email">{t('이메일')}</th>
-                <th className="name">{t('이름')}</th>
-                <th className="datetime-format">{t('날짜 형식')}</th>
-                <th className="language">{t('언어')}</th>
-                <th className="registered">{t('등록')}</th>
-                <th className="role-code">{t('권한')}</th>
-                <th className="active-role-code">{t('권한(A)')}</th>
+                <th className="id">{t('label.id')}</th>
+                <th className="icon">{t('label.icon')}</th>
+                <th className="email">{t('label.email')}</th>
+                <th className="name">{t('label.name')}</th>
+                <th className="datetime-format">{t('label.dateFormat')}</th>
+                <th className="language">{t('label.language')}</th>
+                <th className="registered">{t('label.registration')}</th>
+                <th className="role-code">{t('label.role')}</th>
+                <th className="active-role-code">{t('label.appliedRole')}</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => {
                 return (
-                  <tr key={user.id}>
+                  <tr
+                    key={user.id}
+                    onClick={() => {
+                      history.push(`/admin/users/${user.id}`);
+                    }}
+                  >
                     <td className="id">{user.id}</td>
                     <td className="icon">
                       <span className="user-icon">
@@ -88,7 +104,9 @@ class UserList extends React.Component {
                     <td className="language">{user.language}</td>
                     <td className="registered">{user.registered ? 'Y' : 'N'}</td>
                     <td className="role-code">{user.roleCode === 'SUPER_MAN' ? <i className="fad fa-medal" /> : ''}</td>
-                    <td className="active-role-code">{user.activeRoleCode === 'SUPER_MAN' ? <i className="fad fa-medal" /> : ''}</td>
+                    <td className="active-role-code">
+                      {user.activeRoleCode === 'SUPER_MAN' ? <i className="fad fa-medal" /> : ''}
+                    </td>
                   </tr>
                 );
               })}

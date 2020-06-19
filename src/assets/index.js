@@ -3,6 +3,8 @@ import UserManager from '@/assets/Common/UserManager/UserManager';
 import UserCard from '@/assets/Common/UserCard/UserCard';
 import UserSearchPopup from '@/assets/Common/UserSearchPopup/UserSearchPopup';
 import PageContent from '@/assets/Common/PageContent/PageContent';
+import UserForm from '@/assets/Common/UserForm/UserForm';
+
 // Grp
 import GrpForm from '@/assets/Grps/GrpForm/GrpForm';
 import GrpCard from '@/assets/Grps/GrpCard/GrpCard';
@@ -35,6 +37,7 @@ export {
   UserCard,
   UserSearchPopup,
   PageContent,
+  UserForm,
   // Grp
   GrpForm,
   GrpCard,

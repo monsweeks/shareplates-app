@@ -4,12 +4,12 @@ import { Trans, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import { addMessage } from 'actions';
 import { FullLayout } from '@/layouts';
 import { Button, Card, CardBody, CardHeader, Col, Container, Link, Logo, Row } from '@/components';
 import siteImage from '@/images/sites';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import './Success.scss';
+import dialog from '@/utils/dialog';
 
 const mailServers = [
   {
@@ -69,7 +69,6 @@ class Success extends React.PureComponent {
 
   render() {
     const { t, join } = this.props;
-    const { addMessage: addMessageReducer } = this.props;
     const mailLinkButton = this.getMailServerInfo(join.email);
 
     return (
@@ -92,15 +91,14 @@ class Success extends React.PureComponent {
                         <Button
                           color="primary"
                           onClick={() => {
-                            addMessageReducer(
-                              0,
+                            dialog.setMessage(
                               MESSAGE_CATEGORY.INFO,
                               t('message.waitPlease'),
                               t('message.notImplement'),
                             );
                           }}
                         >
-                          {t('button.resendEmail')}
+                          {t('label.button.resendEmail')}
                         </Button>
                       </Col>
                       {mailLinkButton && (
@@ -116,12 +114,7 @@ class Success extends React.PureComponent {
                         to="/users/login"
                         onClick={(e) => {
                           e.preventDefault();
-                          addMessageReducer(
-                            0,
-                            MESSAGE_CATEGORY.INFO,
-                            t('message.waitPlease'),
-                            t('message.notImplement'),
-                          );
+                          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
                         }}
                       >
                         {t('message.cannotEmailReceived')}
@@ -150,12 +143,7 @@ class Success extends React.PureComponent {
                         color="primary"
                         className="link-button g-icon-text-button"
                         onClick={() => {
-                          addMessageReducer(
-                            0,
-                            MESSAGE_CATEGORY.INFO,
-                            t('message.waitPlease'),
-                            t('message.notImplement'),
-                          );
+                          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
                         }}
                       >
                         <div>
@@ -189,12 +177,7 @@ class Success extends React.PureComponent {
                         color="primary"
                         className="link-button g-icon-text-button"
                         onClick={() => {
-                          addMessageReducer(
-                            0,
-                            MESSAGE_CATEGORY.INFO,
-                            t('message.waitPlease'),
-                            t('message.notImplement'),
-                          );
+                          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
                         }}
                       >
                         <div>
@@ -222,12 +205,7 @@ class Success extends React.PureComponent {
                         color="primary"
                         className="link-button g-icon-text-button"
                         onClick={() => {
-                          addMessageReducer(
-                            0,
-                            MESSAGE_CATEGORY.INFO,
-                            t('message.waitPlease'),
-                            t('message.notImplement'),
-                          );
+                          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
                         }}
                       >
                         <div>
@@ -249,19 +227,13 @@ class Success extends React.PureComponent {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-  };
-};
-
 const mapStateToProps = (state) => {
   return {
     join: state.user.join,
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Success)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Success)));
 
 Success.defaultProps = {
   t: null,
@@ -270,5 +242,4 @@ Success.defaultProps = {
 Success.propTypes = {
   t: PropTypes.func,
   join: PropTypes.objectOf(PropTypes.any),
-  addMessage: PropTypes.func,
 };

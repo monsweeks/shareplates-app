@@ -3,8 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addMessage } from 'actions';
 import request from '@/utils/request';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
@@ -27,6 +25,7 @@ import {
   TOPIC_FONT_SIZES,
 } from '@/assets/Topics/PageEditor/PageController/constants';
 import './TopicForm.scss';
+import dialog from '@/utils/dialog';
 
 const privateTopicValues = [
   {
@@ -185,11 +184,10 @@ class TopicForm extends Component {
     e.preventDefault();
 
     const { topic, existName } = this.state;
-    const { t, addMessage: addMessageReducer, onSave } = this.props;
+    const { t, onSave } = this.props;
 
     if (!topic.users || topic.users.length < 1) {
-      addMessageReducer(
-        0,
+      dialog.setMessage(
         MESSAGE_CATEGORY.INFO,
         t('validation.badInput'),
         t('최소 1명의 토픽 관리자는 지정되어야 합니다.'),
@@ -198,8 +196,7 @@ class TopicForm extends Component {
     }
 
     if (existName) {
-      addMessageReducer(
-        0,
+      dialog.setMessage(
         MESSAGE_CATEGORY.INFO,
         t('validation.badInput'),
         t('그룹에 동일한 이름의 토픽 이름이 존재합니다.'),
@@ -361,13 +358,7 @@ class TopicForm extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(TopicForm)));
+export default withRouter(withTranslation()(TopicForm));
 
 TopicForm.defaultProps = {
   t: null,
@@ -401,7 +392,6 @@ TopicForm.propTypes = {
       publicYn: PropTypes.bool,
     }),
   ),
-  addMessage: PropTypes.func,
   onSave: PropTypes.func,
   saveText: PropTypes.string,
   onCancel: PropTypes.func,

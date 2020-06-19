@@ -57,6 +57,14 @@
   src: url('./fonts/nanum/NanumGothicCoding-Regular.ttf');
 }
 
+@font-face {
+  font-family: 'MalgunGothic';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./fonts/malgun/MalgunGothic.eot');
+  src: url('./fonts/malgun/MalgunGothic.eot') format('embedded-opentype');
+}
+
 .for-reference {
   font-family: 'Righteous', cursive;
   font-family: 'Baloo Bhai', cursive;

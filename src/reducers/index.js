@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import {
-  ADD_MESSAGE,
   CLEAR_MESSAGE,
   SET_CONFIRM,
   SET_GRP_ID,
   SET_JOIN_EMAIL,
   SET_LOADING,
+  SET_MESSAGE,
   SET_SUPPORTED,
   SET_USER_AND_GRP,
 } from '../actions';
@@ -44,23 +44,25 @@ const user = (state = userState, action) => {
 };
 
 const messageState = {
-  messages: [],
+  category: null,
+  title: null,
+  content: null,
+  okHandler: null,
 };
 
 const message = (state = messageState, action) => {
-  const messages = state.messages.slice(0);
   switch (action.type) {
-    case ADD_MESSAGE:
-      messages.push({
+    case SET_MESSAGE:
+      return {
+        ...state,
         category: action.category,
         title: action.title,
         content: action.content,
-      });
-
-      return { ...state, messages };
+        okHandler: action.okHandler,
+      };
 
     case CLEAR_MESSAGE:
-      return { messages: [] };
+      return { category: null, title: null, content: null, okHandler: null };
 
     default:
       return state;
@@ -81,7 +83,9 @@ const loading = (state = loadingState, action) => {
 };
 
 const confirmState = {
-  message: null,
+  category: null,
+  title: null,
+  content: null,
   okHandler: null,
   noHandler: null,
 };
@@ -89,7 +93,14 @@ const confirmState = {
 const confirm = (state = confirmState, action) => {
   switch (action.type) {
     case SET_CONFIRM:
-      return { ...state, message: action.message, okHandler: action.okHandler, noHandler: action.noHandler };
+      return {
+        ...state,
+        category: action.category,
+        title: action.title,
+        content: action.content,
+        okHandler: action.okHandler,
+        noHandler: action.noHandler,
+      };
     default:
       return state;
   }
