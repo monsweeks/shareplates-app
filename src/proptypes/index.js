@@ -13,6 +13,7 @@ const UserPropTypes = PropTypes.shape({
   roleCode: PropTypes.string,
   activeRoleCode: PropTypes.string,
   isAdmin : PropTypes.bool,
+  creationDate : PropTypes.string,
 });
 
 const ContextPropTypes = PropTypes.shape({

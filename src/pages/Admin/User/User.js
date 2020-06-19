@@ -6,7 +6,6 @@ import request from '@/utils/request';
 import { PageTitle } from '@/layouts';
 import { UserForm } from '@/assets';
 import { DATETIME_FORMATS, MESSAGE_CATEGORY } from '@/constants/constants';
-import './User.scss';
 import { convertUser } from '@/pages/Users/util';
 import dialog from '@/utils/dialog';
 import common from '@/utils/common';
@@ -29,19 +28,19 @@ class User extends React.PureComponent {
 
   componentDidMount() {
     const { userId } = this.state;
-
+    const { t } = this.props;
     this.setState({
       breadcrumbs: [
         {
-          name: '시스템 관리',
+          name: t('label.breadcrumbs.systemManagement'),
           to: '/admin',
         },
         {
-          name: '사용자 목록',
+          name: t('label.breadcrumbs.userList'),
           to: '/admin/users',
         },
         {
-          name: '사용자 정보',
+          name: t('label.breadcrumbs.userInfo'),
           to: `/admin/users/${userId}`,
         },
       ],
@@ -74,10 +73,11 @@ class User extends React.PureComponent {
   };
 
   deleteUserInfo = (userId) => {
+    const { t } = this.props;
     dialog.setConfirm(
       MESSAGE_CATEGORY.WARNING,
-      '데이터 삭제 경고',
-      '사용자의 정보와 사용자와 관련된 모든 정보와 히스토리가 삭제됩니다. 사용자 정보를 모두 삭제하시겠습니까?',
+      t('label.dialog.title.dataDeleteWarning'),
+      t('msg.dialog.content.userDataDeleteWaring'),
       () => {
         const { history } = this.props;
         request.del(`/api/users/${userId}`, null, () => {
@@ -166,7 +166,7 @@ class User extends React.PureComponent {
     return (
       <div className="p-4 scrollbar w-100 h-100">
         <PageTitle list={breadcrumbs} border>
-          {t('사용자 정보 수정')}
+          {t('label.page.title.userInfoEdit')}
         </PageTitle>
         <UserForm
           isCanBeAdmin={isCanBeAdmin}

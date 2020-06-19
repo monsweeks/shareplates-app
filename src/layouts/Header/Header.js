@@ -24,7 +24,7 @@ class Header extends React.Component {
         {
           key: 'shares',
           icon: 'fal fa-broadcast-tower',
-          text: 'label.share',
+          text: 'label.menu.share',
           to: '/shares',
           side: 'left',
           alias: '/shares',
@@ -33,7 +33,7 @@ class Header extends React.Component {
         {
           key: 'topics',
           icon: 'fal fa-books',
-          text: 'label.topic',
+          text: 'label.menu.topic',
           to: '/topics',
           side: 'left',
           alias: '/topics',
@@ -41,7 +41,7 @@ class Header extends React.Component {
         {
           key: 'chapters',
           icon: 'fal fa-book',
-          text: 'label.chapter',
+          text: 'label.menu.chapter',
           to: '/chapters',
           side: 'left',
           activePropsKey: 'topicId',
@@ -50,7 +50,7 @@ class Header extends React.Component {
         {
           key: 'pages',
           icon: 'fal fa-clipboard',
-          text: 'label.page',
+          text: 'label.menu.page',
           to: '/pages',
           side: 'left',
           activePropsKey: 'chapterId',
@@ -59,7 +59,7 @@ class Header extends React.Component {
         {
           key: 'groups',
           icon: 'fal fa-building',
-          text: 'label.org',
+          text: 'label.menu.org',
           to: '/groups',
           side: 'left',
           alias: '/groups',
@@ -67,7 +67,7 @@ class Header extends React.Component {
         {
           key: 'admin',
           icon: 'fad fa-medal',
-          text: 'label.systemManagement',
+          text: 'label.menu.systemManagement',
           to: '/admin',
           side: 'right',
           alias: '/admin',

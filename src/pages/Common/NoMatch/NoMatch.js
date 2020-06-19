@@ -21,7 +21,7 @@ class NoMatch extends React.PureComponent {
               history.goBack();
             }}
           >
-            {t('button.goBack')}
+            {t('label.button.goBack')}
           </Button>
           <Button
             color="white"
@@ -29,7 +29,7 @@ class NoMatch extends React.PureComponent {
               history.push('/');
             }}
           >
-            {t('button.goFirst')}
+            {t('label.button.goFirst')}
           </Button>
         </div>
       </div>

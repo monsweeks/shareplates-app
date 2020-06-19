@@ -2,8 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import { setUserInfo } from '@/actions';
 import {
   AvatarBuilder,
   BottomButton,
@@ -22,36 +20,32 @@ import {
 } from '@/components';
 import { DATETIME_FORMATS, ROLE_CODES } from '@/constants/constants';
 import LANGUAGES from '@/languages/languages';
-import './UserForm.scss';
 import { UserPropTypes } from '@/proptypes';
-
-const tabs = [
-  {
-    key: 'avatar',
-    name: '아바타',
-  },
-  {
-    key: 'image',
-    name: '이미지',
-  },
-];
 
 class UserForm extends React.PureComponent {
   constructor(props) {
     super(props);
+    const { t } = props;
     this.state = {
       iconType: 'avatar',
       init: false,
+      tabs: [
+        {
+          key: 'avatar',
+          name: t('label.avatar'),
+        },
+        {
+          key: 'image',
+          name: t('label.image'),
+        },
+      ],
     };
   }
 
   static getDerivedStateFromProps(props, state) {
     if (!state.init && props.user) {
       return {
-        iconType:
-          props.user && props.user.info && props.user.info.icon && props.user.info.icon.type
-            ? props.user.info.icon.type
-            : 'avatar',
+        iconType: (props.user && props.user.info && props.user.info.icon && props.user.info.icon.type) || 'avatar',
         init: true,
       };
     }
@@ -59,29 +53,23 @@ class UserForm extends React.PureComponent {
     return null;
   }
 
-  changeTab = (iconType) => {
-    this.setState({
-      iconType,
-    });
-  };
-
   render() {
-    const { t, onSubmit, user, onChange, onList, isCanBeAdmin, onDelete, onCancel } = this.props;
-    const { iconType } = this.state;
+    const { t } = this.props;
+    const { user, isCanBeAdmin } = this.props;
+    const { onSubmit, onChange, onList, onDelete, onCancel } = this.props;
+    const { iconType, tabs } = this.state;
 
     return (
       <Form onSubmit={onSubmit} className="flex-grow-1 d-flex flex-column">
         {user && (
           <>
             <SubLabel>{t('label.email')}</SubLabel>
-            <Description>
-              {t('가입된 사용자 이메일 정보입니다. 로그인 아이디로 사용되며, 변경할 수 없습니다.')}
-            </Description>
+            <Description>{t('msg.emailDesc')}</Description>
             <DetailValue uppercase border={false}>
               {user.email}
             </DetailValue>
-            <SubLabel>{t('사용자 아이콘')}</SubLabel>
-            <Description>{t('이미지를 직접 업로드하거나, 아바타를 만들어서 나를 표현할 수 있습니다.')}</Description>
+            <SubLabel>{t('label.userIcon')}</SubLabel>
+            <Description>{t('msg.avatarDesc')}</Description>
             <FormGroup>
               <div className="g-tabs mt-2">
                 <Nav className="tabs" tabs>
@@ -91,7 +79,9 @@ class UserForm extends React.PureComponent {
                         key={tab.key}
                         className={iconType === tab.key ? 'focus' : ''}
                         onClick={() => {
-                          this.changeTab(tab.key);
+                          this.setState({
+                            iconType: tab.key,
+                          });
                         }}
                       >
                         {tab.name}
@@ -107,7 +97,7 @@ class UserForm extends React.PureComponent {
             </FormGroup>
             <hr className="g-dashed mb-3" />
             <SubLabel>{t('label.name')}</SubLabel>
-            <Description>{t('SHAREPLATES에서 사용되는 사용자의 별명이나, 이름입니다.')}</Description>
+            <Description>{t('msg.nameDesc')}</Description>
             <FormGroup>
               <Input
                 label={t('label.name')}
@@ -121,8 +111,8 @@ class UserForm extends React.PureComponent {
               />
             </FormGroup>
             <hr className="g-dashed mb-3" />
-            <SubLabel>{t('날짜 형식')}</SubLabel>
-            <Description>{t('날짜 형식의 데이터를 표현할 때 사용되는 날짜 형식을 선택합니다.')}</Description>
+            <SubLabel>{t('label.dateFormat')}</SubLabel>
+            <Description>{t('msg.dateFormatDesc')}</Description>
             <FormGroup>
               <Selector
                 outline
@@ -132,8 +122,8 @@ class UserForm extends React.PureComponent {
               />
             </FormGroup>
             <hr className="g-dashed mb-3" />
-            <SubLabel>{t('언어')}</SubLabel>
-            <Description>{t('사용할 언어를 선택할 수 있습니다.')}</Description>
+            <SubLabel>{t('label.language')}</SubLabel>
+            <Description>{t('msg.languageDesc')}</Description>
             <FormGroup>
               <RadioButton
                 items={Object.keys(LANGUAGES)
@@ -153,14 +143,14 @@ class UserForm extends React.PureComponent {
             {isCanBeAdmin && (
               <>
                 <hr className="g-dashed mb-3" />
-                <SubLabel>{t('권한')}</SubLabel>
-                <Description>{t('시스템에서 사용자가 가지는 권한입니다.')}</Description>
+                <SubLabel>{t('label.role')}</SubLabel>
+                <Description>{t('msg.roleDesc')}</Description>
                 <FormGroup>
                   <RadioButton items={ROLE_CODES} value={user.roleCode} outline onClick={onChange('roleCode')} />
                 </FormGroup>
                 <hr className="g-dashed mb-3" />
-                <SubLabel>{t('활성화 권한')}</SubLabel>
-                <Description>{t('현재 활성화된 사용자가 권한입니다.')}</Description>
+                <SubLabel>{t('label.appliedRole')}</SubLabel>
+                <Description>{t('msg.appliedRoleDesc')}</Description>
                 <FormGroup>
                   <RadioButton
                     items={ROLE_CODES}
@@ -172,7 +162,7 @@ class UserForm extends React.PureComponent {
               </>
             )}
             <hr className="g-dashed mb-3" />
-            <SubLabel>{t('가입일')}</SubLabel>
+            <SubLabel>{t('label.joinDate')}</SubLabel>
             <DetailValue className="flex-grow-1" uppercase border={false}>
               <DateTime value={user.creationDate} dateTimeFormat={user.dateTimeFormat} nullValue="N/A" />
             </DetailValue>
@@ -184,23 +174,17 @@ class UserForm extends React.PureComponent {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(UserForm)));
+export default withRouter(withTranslation()(UserForm));
 
 UserForm.propTypes = {
   t: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
   user: UserPropTypes,
   isCanBeAdmin: PropTypes.bool,
+  onSubmit: PropTypes.func,
+  onChange: PropTypes.func,
   onDelete: PropTypes.func,
   onList: PropTypes.func,
   onCancel: PropTypes.func,

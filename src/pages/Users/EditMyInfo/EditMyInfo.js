@@ -8,7 +8,6 @@ import { setUserInfo } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { UserForm } from '@/assets';
 import { DATETIME_FORMATS } from '@/constants/constants';
-import './EditMyInfo.scss';
 import { convertUser } from '@/pages/Users/util';
 import common from '@/utils/common';
 

@@ -98,7 +98,7 @@ class Success extends React.PureComponent {
                             );
                           }}
                         >
-                          {t('button.resendEmail')}
+                          {t('label.button.resendEmail')}
                         </Button>
                       </Col>
                       {mailLinkButton && (
