@@ -5,22 +5,13 @@ import { Button, Card, CardBody, CardHeader, Col, FormGroup, Link, RadioButton, 
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import LANGUAGES from '@/languages/languages';
-import { addMessage } from '@/actions';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import './QuickMenu.scss';
+import dialog from '@/utils/dialog';
 
 class QuickMenu extends React.Component {
   render() {
-    const {
-      logout,
-      t,
-      user,
-      addMessage: addMessageReducer,
-      openQuickMenu,
-      language,
-      onChangeLanguage,
-      setOpenQuickMenu,
-    } = this.props;
+    const { logout, t, user, openQuickMenu, language, onChangeLanguage, setOpenQuickMenu } = this.props;
 
     return (
       <div className={`quick-menu-wrapper ${openQuickMenu ? 'd-block' : 'd-none'}`}>
@@ -38,9 +29,7 @@ class QuickMenu extends React.Component {
           <Card className="g-border-normal border-0 rounded-sm">
             <CardHeader className="g-border-normal p-3 bg-white rounded-sm border-0">
               <div className="user-info">
-                <div className="user-icon">
-                  {user && <UserIcon info={user.info} />}
-                </div>
+                <div className="user-icon">{user && <UserIcon info={user.info} />}</div>
                 <div className="user-text">
                   <div className="name">{user && user.name}</div>
                   <div className="email">{user && user.email}</div>
@@ -98,7 +87,7 @@ class QuickMenu extends React.Component {
                     to="/"
                     onClick={(e) => {
                       e.preventDefault();
-                      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+                      dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
                     }}
                   >
                     <i className="fal fa-stars" /> {t('튜토리얼')}
@@ -147,12 +136,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-  };
-};
-
 QuickMenu.propTypes = {
   t: PropTypes.func,
   user: PropTypes.shape({
@@ -169,7 +152,6 @@ QuickMenu.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }),
-  addMessage: PropTypes.func,
   openQuickMenu: PropTypes.bool,
   setOpenQuickMenu: PropTypes.func,
   language: PropTypes.string,
@@ -177,4 +159,4 @@ QuickMenu.propTypes = {
   logout: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(QuickMenu)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(QuickMenu)));

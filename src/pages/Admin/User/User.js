@@ -2,121 +2,195 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import { UserPropTypes } from '@/proptypes';
-import './User.scss';
 import request from '@/utils/request';
-import { Table, UserIcon } from '@/components';
-import { convertUsers } from '@/pages/Users/util';
 import { PageTitle } from '@/layouts';
+import { UserForm } from '@/assets';
+import { DATETIME_FORMATS, MESSAGE_CATEGORY } from '@/constants/constants';
+import './User.scss';
+import { convertUser } from '@/pages/Users/util';
+import dialog from '@/utils/dialog';
+import common from '@/utils/common';
 
-class User extends React.Component {
-  init = false;
-
+class User extends React.PureComponent {
   constructor(props) {
+    const {
+      match: {
+        params: { userId },
+      },
+    } = props;
+
     super(props);
     this.state = {
-      users: [],
+      user: null,
+      isCanBeAdmin: true,
+      userId,
     };
   }
 
   componentDidMount() {
-    const { user } = this.props;
-    if (!this.init && user && user.isAdmin) {
-      this.init = true;
-      this.getUsers();
-    }
+    const { userId } = this.state;
+
+    this.setState({
+      breadcrumbs: [
+        {
+          name: '시스템 관리',
+          to: '/admin',
+        },
+        {
+          name: '사용자 목록',
+          to: '/admin/users',
+        },
+        {
+          name: '사용자 정보',
+          to: `/admin/users/${userId}`,
+        },
+      ],
+    });
+
+    this.getUserInfo(userId);
   }
 
-  componentDidUpdate() {
-    const { user } = this.props;
-    if (!this.init && user && user.isAdmin) {
-      this.init = true;
-      this.getUsers();
-    }
-  }
+  getUserInfo = (userId) => {
+    request.get(
+      `/api/users/${userId}`,
+      null,
+      (data) => {
+        const { user } = data;
+        if (user && !user.dateTimeFormat) user.dateTimeFormat = DATETIME_FORMATS[0].key;
+        if (user && !user.language) user.language = 'ko';
 
-  getUsers = () => {
-    request.get('/api/users', null, (data) => {
+        const next = convertUser(user);
+
+        this.setState({
+          user: next || {},
+        });
+      },
+      () => {
+        this.setState({
+          user: {},
+        });
+      },
+    );
+  };
+
+  deleteUserInfo = (userId) => {
+    dialog.setConfirm(
+      MESSAGE_CATEGORY.WARNING,
+      '데이터 삭제 경고',
+      '사용자의 정보와 사용자와 관련된 모든 정보와 히스토리가 삭제됩니다. 사용자 정보를 모두 삭제하시겠습니까?',
+      () => {
+        const { history } = this.props;
+        request.del(`/api/users/${userId}`, null, () => {
+          history.push('/admin/users');
+        });
+      },
+    );
+  };
+
+  onChange = (field) => (value) => {
+    if (field === 'file') {
+      const {
+        user: { id },
+      } = this.state;
+
+      const formData = new FormData();
+      formData.append('file', value);
+      formData.append('name', value.name);
+      formData.append('size', value.size);
+      formData.append('type', common.getFileType(value));
+
+      request.post(`/api/users/${id}/image`, formData, (data) => {
+        const { user } = this.state;
+        const obj = {};
+        obj.info = {
+          icon: {
+            type: 'image',
+            data: {
+              id: data.id,
+              uuid: data.uuid,
+            },
+          },
+        };
+
+        this.setState({
+          user: { ...user, ...obj },
+        });
+      });
+    } else if (field === 'avatar') {
+      const { user } = this.state;
+      const next = { ...user };
+      next.info.icon.type = 'avatar';
+      next.info.icon.data = value;
+
       this.setState({
-        users: convertUsers(data.userList),
+        user: next,
+      });
+    } else {
+      const { user } = this.state;
+      const obj = {};
+      obj[field] = value;
+
+      this.setState({
+        user: { ...user, ...obj },
+      });
+    }
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { user } = this.state;
+    const next = { ...user };
+    next.info = JSON.stringify(next.info);
+
+    request.put(`/api/users/${user.id}`, next, (data) => {
+      this.setState({
+        user: convertUser(data.user),
       });
     });
   };
 
+  onDelete = () => {
+    const { userId } = this.state;
+    this.deleteUserInfo(userId);
+  };
+
+  onList = () => {
+    const { history } = this.props;
+    history.push('/admin/users');
+  };
+
   render() {
     const { t } = this.props;
-    const { users } = this.state;
+    const { user, breadcrumbs, isCanBeAdmin } = this.state;
 
     return (
-      <div className="user-list-wrapper">
-        <PageTitle className="m-0">
-          {t('사용자 목록')}{' '}
-          <span className="count">
-            ({users.length}
-            {t('명')})
-          </span>
+      <div className="p-4 scrollbar w-100 h-100">
+        <PageTitle list={breadcrumbs} border>
+          {t('사용자 정보 수정')}
         </PageTitle>
-        <div className="user-list-table scrollbar">
-          <Table className="g-sticky" hover>
-            <thead>
-              <tr>
-                <th className="id">{t('ID')}</th>
-                <th className="icon">{t('아이콘')}</th>
-                <th className="email">{t('이메일')}</th>
-                <th className="name">{t('이름')}</th>
-                <th className="datetime-format">{t('날짜 형식')}</th>
-                <th className="language">{t('언어')}</th>
-                <th className="registered">{t('등록')}</th>
-                <th className="role-code">{t('권한')}</th>
-                <th className="active-role-code">{t('권한(A)')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => {
-                return (
-                  <tr key={user.id}>
-                    <td className="id">{user.id}</td>
-                    <td className="icon">
-                      <span className="user-icon">
-                        <UserIcon info={user.info} />
-                      </span>
-                    </td>
-                    <td className="email">{user.email}</td>
-                    <td className="name">{user.name}</td>
-                    <td className="datetime-format">{user.dateTimeFormat}</td>
-                    <td className="language">{user.language}</td>
-                    <td className="registered">{user.registered ? 'Y' : 'N'}</td>
-                    <td className="role-code">{user.roleCode === 'SUPER_MAN' ? <i className="fad fa-medal" /> : ''}</td>
-                    <td className="active-role-code">
-                      {user.activeRoleCode === 'SUPER_MAN' ? <i className="fad fa-medal" /> : ''}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </div>
+        <UserForm
+          isCanBeAdmin={isCanBeAdmin}
+          user={user}
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
+          onDelete={this.onDelete}
+          onList={this.onList}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user.user,
-  };
-};
+export default withRouter(withTranslation()(User));
 
 User.propTypes = {
-  user: UserPropTypes,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-  }),
+  t: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  t: PropTypes.func,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      userId: PropTypes.string,
+    }),
+  }),
 };
-
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(User)));

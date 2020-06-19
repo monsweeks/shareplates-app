@@ -10,10 +10,11 @@ import { MESSAGE_CATEGORY } from '@/constants/constants';
 import siteImage from '@/images/sites';
 import request from '@/utils/request';
 import storage from '@/utils/storage';
-import { addMessage, setUserInfo } from '@/actions';
+import { setUserInfo } from '@/actions';
 import { CenterBoxLayout } from '@/layouts';
 import { convertUser, socialLogin } from '../util';
 import './Login.scss';
+import dialog from '@/utils/dialog';
 
 class Login extends React.PureComponent {
   constructor(props) {
@@ -101,9 +102,9 @@ class Login extends React.PureComponent {
   };
 
   onSocialLogin = (vendor) => {
-    const { t, addMessage: addMessageReducer } = this.props;
+    const { t } = this.props;
     socialLogin(vendor, () => {
-      addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
+      dialog.setMessage(MESSAGE_CATEGORY.INFO, t('message.waitPlease'), t('message.notImplement'));
     });
   };
 
@@ -297,7 +298,6 @@ class Login extends React.PureComponent {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
@@ -306,7 +306,6 @@ export default withRouter(withTranslation()(connect(undefined, mapDispatchToProp
 
 Login.propTypes = {
   t: PropTypes.func.isRequired,
-  addMessage: PropTypes.func.isRequired,
   setUserInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

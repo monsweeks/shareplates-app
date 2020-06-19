@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { setConfirm } from '@/actions';
 import { Button } from '@/components';
 import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
 import './ShareStandByPopup.scss';
@@ -73,12 +72,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
 ShareStandByPopup.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
@@ -100,4 +93,4 @@ ShareStandByPopup.propTypes = {
   exitShare: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareStandByPopup)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareStandByPopup)));

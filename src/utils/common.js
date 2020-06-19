@@ -25,9 +25,20 @@ function setOptions(history, pathname, options, isPush) {
   }
 }
 
+function getFileType (file) {
+  if (!/^image\//.test(file.type)) {
+    return 'image';
+  }
+  if (!/^video\//.test(file.type)) {
+    return 'video';
+  }
+  return 'file';
+};
+
 const common = {
   getOptions,
   setOptions,
+  getFileType,
 };
 
 export default common;

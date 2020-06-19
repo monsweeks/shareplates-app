@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import request from '@/utils/request';
-import { addMessage, setUserInfo } from '@/actions';
+import { setUserInfo } from '@/actions';
 import { PageTitle, RegisterLayout } from '@/layouts';
 import { UserForm } from '@/assets';
 import { DATETIME_FORMATS } from '@/constants/constants';
 import './EditMyInfo.scss';
 import { convertUser } from '@/pages/Users/util';
+import common from '@/utils/common';
 
 const breadcrumbs = [
   {
@@ -27,6 +28,7 @@ class EditMyInfo extends React.PureComponent {
     super(props);
     this.state = {
       user: null,
+      isCanBeAdmin: false,
     };
   }
 
@@ -47,6 +49,7 @@ class EditMyInfo extends React.PureComponent {
 
         this.setState({
           user: next || {},
+          isCanBeAdmin: next.roleCode === 'SUPER_MAN',
         });
       },
       () => {
@@ -57,65 +60,58 @@ class EditMyInfo extends React.PureComponent {
     );
   };
 
+  onCancel = () => {
+    const { history } = this.props;
+    history.goBack();
+  };
+
   onChange = (field) => (value) => {
-    const { user } = this.state;
-    const obj = {};
-    obj[field] = value;
+    if (field === 'file') {
+      const {
+        user: { id },
+      } = this.state;
 
-    this.setState({
-      user: { ...user, ...obj },
-    });
-  };
+      const formData = new FormData();
+      formData.append('file', value);
+      formData.append('name', value.name);
+      formData.append('size', value.size);
+      formData.append('type', common.getFileType(value));
 
-  onChangeAvatar = (value) => {
-    const { user } = this.state;
-    const next = { ...user };
-    next.info.icon.type = 'avatar';
-    next.info.icon.data = value;
+      request.post(`/api/users/${id}/image`, formData, (data) => {
+        const { user } = this.state;
+        const obj = {};
+        obj.info = {
+          icon: {
+            type: 'image',
+            data: {
+              id: data.id,
+              uuid: data.uuid,
+            },
+          },
+        };
 
-    this.setState({
-      user: next,
-    });
-  };
+        this.setState({
+          user: { ...user, ...obj },
+        });
+      });
+    } else if (field === 'avatar') {
+      const { user } = this.state;
+      const next = { ...user };
+      next.info.icon.type = 'avatar';
+      next.info.icon.data = value;
 
-  getFileType = (file) => {
-    if (!/^image\//.test(file.type)) {
-      return 'image';
-    }
-    if (!/^video\//.test(file.type)) {
-      return 'video';
-    }
-    return 'file';
-  };
-
-  onChangeFile = (file) => {
-    const {
-      user: { id },
-    } = this.state;
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', file.name);
-    formData.append('size', file.size);
-    formData.append('type', this.getFileType(file));
-
-    request.post(`/api/users/${id}/image`, formData, (data) => {
+      this.setState({
+        user: next,
+      });
+    } else {
       const { user } = this.state;
       const obj = {};
-      obj.info = {
-        icon: {
-          type: 'image',
-          data: {
-            id: data.id,
-            uuid: data.uuid,
-          },
-        },
-      };
+      obj[field] = value;
 
       this.setState({
         user: { ...user, ...obj },
       });
-    });
+    }
   };
 
   onSubmit = (e) => {
@@ -133,7 +129,7 @@ class EditMyInfo extends React.PureComponent {
 
   render() {
     const { t } = this.props;
-    const { user } = this.state;
+    const { user, isCanBeAdmin } = this.state;
 
     return (
       <RegisterLayout>
@@ -141,11 +137,11 @@ class EditMyInfo extends React.PureComponent {
           {t('내 정보 수정')}
         </PageTitle>
         <UserForm
+          isCanBeAdmin={isCanBeAdmin}
           user={user}
           onSubmit={this.onSubmit}
           onChange={this.onChange}
-          onChangeFile={this.onChangeFile}
-          onChangeAvatar={this.onChangeAvatar}
+          onCancel={this.onCancel}
         />
       </RegisterLayout>
     );
@@ -154,7 +150,6 @@ class EditMyInfo extends React.PureComponent {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
@@ -165,6 +160,6 @@ EditMyInfo.propTypes = {
   t: PropTypes.func.isRequired,
   setUserInfo: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func,
+    goBack: PropTypes.func,
   }),
 };

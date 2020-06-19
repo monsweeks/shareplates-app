@@ -6,6 +6,7 @@ import { PageContent } from '@/assets';
 import { getSetting } from '@/assets/Topics/PageEditor/PageContentItems';
 import request from '@/utils/request';
 import './PageEditor.scss';
+import common from '@/utils/common';
 
 const defaultContent = {
   items: [],
@@ -563,16 +564,6 @@ class PageEditor extends React.Component {
     }
   };
 
-  getFileType = (file) => {
-    if (!/^image\//.test(file.type)) {
-      return 'image';
-    }
-    if (!/^video\//.test(file.type)) {
-      return 'video';
-    }
-    return 'file';
-  };
-
   onChangeFile = (file, itemId) => {
     const { topicId, chapterId, pageId } = this.props;
     const { selectedItemId, content } = this.state;
@@ -581,7 +572,7 @@ class PageEditor extends React.Component {
     formData.append('file', file);
     formData.append('name', file.name);
     formData.append('size', file.size);
-    formData.append('type', this.getFileType(file));
+    formData.append('type', common.getFileType(file));
 
     request.post(`/api/topics/${topicId}/chapters/${chapterId}/pages/${pageId}/file`, formData, (data) => {
       if (itemId || selectedItemId) {

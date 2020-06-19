@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Prompt, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, EmptyMessage } from '@/components';
 
 import request from '@/utils/request';
 import { PageCardLayoutList, PageEditor, PageEditorShortKeyInfo, PageListTopMenu } from '@/assets';
-import { setConfirm } from '@/actions';
 import { DEFAULT_PAGE_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 import './Page.scss';
+import dialog from '@/utils/dialog';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class Page extends React.Component {
   pageEditorRef = React.createRef();
@@ -95,7 +95,6 @@ class Page extends React.Component {
 
   onKeyDown = (e) => {
     const { selectedPageId, selectedPageList, showShortKeyGuide } = this.state;
-    const { setConfirm: setConfirmReducer } = this.props;
 
     if (e.ctrlKey && e.key === 's') {
       e.preventDefault();
@@ -111,7 +110,7 @@ class Page extends React.Component {
     }
 
     if (this.pageListMouseHover && selectedPageId && e.key === 'Delete') {
-      setConfirmReducer('페이지를 삭제하시겠습니까?', () => {
+      dialog.setConfirm(MESSAGE_CATEGORY.WARNING, '데이터 삭제 경고', '페이지를 삭제하시겠습니까?', () => {
         this.deletePage(selectedPageId);
       });
     }
@@ -185,7 +184,6 @@ class Page extends React.Component {
   };
 
   setSelectedPageId = (selectedPageId) => {
-    const { setConfirm: setConfirmReducer } = this.props;
     const { selectedPageId: currentSelectedPageId, pages, selectedPageList } = this.state;
 
     if (currentSelectedPageId === selectedPageId) {
@@ -200,14 +198,19 @@ class Page extends React.Component {
     const next = pages.slice(0);
     const page = next.find((p) => p.id === currentSelectedPageId);
     if (page && page.dirty) {
-      setConfirmReducer('변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지를 불러오시겠습니까?', () => {
-        page.dirty = false;
-        this.setState({
-          selectedPageId,
-          pages: next,
-          selectedPageList: !selectedPageId,
-        });
-      });
+      dialog.setConfirm(
+        MESSAGE_CATEGORY.WARNING,
+        '데이터가 저장되지 않았습니다',
+        '변경된 페이지 내용이 저장되지 않았습니다. 그래도 다른 페이지를 불러오시겠습니까?',
+        () => {
+          page.dirty = false;
+          this.setState({
+            selectedPageId,
+            pages: next,
+            selectedPageList: !selectedPageId,
+          });
+        },
+      );
     } else {
       this.setState({
         selectedPageId,
@@ -536,12 +539,6 @@ class Page extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
 Page.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -553,7 +550,6 @@ Page.propTypes = {
       chapterId: PropTypes.string,
     }),
   }),
-  setConfirm: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(undefined, mapDispatchToProps)(Page)));
+export default withRouter(withTranslation()(Page));

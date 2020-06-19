@@ -10,6 +10,17 @@ import { Table, UserIcon } from '@/components';
 import { convertUsers } from '@/pages/Users/util';
 import { PageTitle } from '@/layouts';
 
+const breadcrumbs = [
+  {
+    name: '시스템 관리',
+    to: '/admin',
+  },
+  {
+    name: '사용자 목록',
+    to: '/admin/users',
+  },
+];
+
 class UserList extends React.Component {
   init = false;
 
@@ -50,7 +61,7 @@ class UserList extends React.Component {
 
     return (
       <div className="user-list-wrapper">
-        <PageTitle className="m-0">
+        <PageTitle className="m-0" list={breadcrumbs}>
           {t('사용자 목록')}{' '}
           <span className="count">
             ({users.length}

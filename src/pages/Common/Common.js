@@ -2,11 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage, clearMessage, setConfirm, setUserInfo } from 'actions';
+import { setUserInfo } from 'actions';
 import ReactTooltip from 'react-tooltip';
 import PropTypes from 'prop-types';
-import { Button, Logo } from '@/components';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
+import { Logo, MessageDialog } from '@/components';
 import request from '@/utils/request';
 import './Common.scss';
 import { convertUser } from '@/pages/Users/util';
@@ -93,93 +92,30 @@ class Common extends React.Component {
     );
   };
 
-  getMessageCategoryIcon = (category) => {
-    switch (category) {
-      case MESSAGE_CATEGORY.ERROR: {
-        return <i className="fas fa-exclamation-circle" />;
-      }
-
-      case MESSAGE_CATEGORY.WARNING: {
-        return <i className="fal fa-exclamation-circle" />;
-      }
-
-      case MESSAGE_CATEGORY.INFO: {
-        return <i className="fal fa-info-circle" />;
-      }
-
-      default: {
-        return <i className="fal fa-info-circle" />;
-      }
-    }
-  };
-
   render() {
-    const { messages, loading, t, confirm } = this.props;
-    const { setConfirm: setConfirmReducer } = this.props;
+    const { message, loading, confirm } = this.props;
     const { showLoading } = this.state;
 
     return (
       <div className="common-wrapper">
-        {messages && messages.length > 0 && (
-          <div className="g-overlay">
-            <div>
-              <div className="common-message">
-                <div className={`message-category ${messages[0].category}`}>
-                  {this.getMessageCategoryIcon(messages[0].category)}
-                </div>
-                <div className="message-title">{messages[0].title}</div>
-                <div className="message-message">{messages[0].content}</div>
-                <div className="message-buttons">
-                  <Button
-                    className="px-4 mx-1"
-                    color="primary"
-                    onClick={() => {
-                      // eslint-disable-next-line react/destructuring-assignment
-                      this.props.clearMessage();
-                    }}
-                  >
-                    {t('button.confirm')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+        {message && message.content && (
+          <MessageDialog
+            type="message"
+            category={message.category}
+            title={message.title}
+            message={message.content}
+            okHandler={message.okHandler}
+          />
         )}
-        {confirm && confirm.message && (
-          <div className="g-overlay">
-            <div>
-              <div className="common-message">
-                <div className="message-title">확인</div>
-                <div className="message-message">{confirm.message}</div>
-                <div className="message-buttons">
-                  <Button
-                    className="px-4 mx-1"
-                    color="primary"
-                    onClick={() => {
-                      if (confirm && confirm.okHandler) {
-                        confirm.okHandler();
-                      }
-                      setConfirmReducer(null, null, null);
-                    }}
-                  >
-                    {t('button.confirm')}
-                  </Button>
-                  <Button
-                    className="px-4 mx-1"
-                    color="primary"
-                    onClick={() => {
-                      if (confirm && confirm.noHandler) {
-                        confirm.noHandler();
-                      }
-                      setConfirmReducer(null, null, null);
-                    }}
-                  >
-                    {t('button.cancel')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+        {confirm && confirm.content && (
+          <MessageDialog
+            type="confirm"
+            category={confirm.category}
+            title={confirm.title}
+            message={confirm.content}
+            okHandler={confirm.okHandler}
+            noHandler={confirm.noHandler}
+          />
         )}
         {(loading || showLoading) && (
           <div className={`g-overlay ${showLoading ? 'show-loading' : 'hide-loading'}`}>
@@ -198,7 +134,7 @@ class Common extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    messages: state.message.messages,
+    message: state.message,
     loading: state.loading.loading,
     user: state.user.user,
     confirm: state.confirm,
@@ -207,29 +143,27 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearMessage: () => dispatch(clearMessage()),
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
   };
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Common)));
 
-Common.defaultProps = {
-  messages: [],
-};
-
 Common.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.any),
+  message: PropTypes.shape({
+    category: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.string,
+    okHandler: PropTypes.func,
+  }),
   confirm: PropTypes.shape({
-    message: PropTypes.string,
+    category: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.string,
     okHandler: PropTypes.func,
     noHandler: PropTypes.func,
   }),
   loading: PropTypes.bool,
-  t: PropTypes.func,
-  clearMessage: PropTypes.func,
   setUserInfo: PropTypes.func,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -240,5 +174,4 @@ Common.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
   }),
-  setConfirm: PropTypes.func,
 };

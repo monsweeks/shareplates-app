@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setConfirm } from 'actions';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { BottomButton, Description, DetailValue, EmptyMessage, SubLabel } from '@/components';
 import { UserManager } from '@/assets';
 import { convertUsers } from '@/pages/Users/util';
+import dialog from '@/utils/dialog';
 
 class Grp extends Component {
   constructor(props) {
@@ -73,8 +73,8 @@ class Grp extends Component {
 
   onDelete = () => {
     const { grp } = this.state;
-    const { setConfirm: setConfirmReducer } = this.props;
-    setConfirmReducer(`${grp.name} 그룹을 정말 삭제하시겠습니까?`, () => {
+
+    dialog.setConfirm('데이터 삭제 확인', `${grp.name} 그룹을 정말 삭제하시겠습니까?`, () => {
       this.deleteGrp(grp.id);
     });
   };
@@ -166,13 +166,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Grp)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Grp)));
 
 Grp.defaultProps = {
   t: null,
@@ -193,5 +187,4 @@ Grp.propTypes = {
       grpId: PropTypes.string,
     }),
   }),
-  setConfirm: PropTypes.func,
 };

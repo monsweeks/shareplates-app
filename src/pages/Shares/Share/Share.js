@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { addMessage } from 'actions';
 import request from '@/utils/request';
-import { setConfirm } from '@/actions';
 import { Button, EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import {
@@ -19,6 +17,7 @@ import {
 import './Share.scss';
 import { convertUser, convertUsers } from '@/pages/Users/util';
 import { Header } from '@/layouts';
+import dialog from '@/utils/dialog';
 
 class Share extends React.Component {
   constructor(props) {
@@ -97,14 +96,13 @@ class Share extends React.Component {
         this.getPages(shareId, data.share.currentChapterId);
       },
       (error, response) => {
-        const { t, history, addMessage: addMessageReducer } = this.props;
+        const { t, history } = this.props;
 
         if (response.data.code === 'SHARE_NOT_EXISTS_SHARE') {
           this.setState({
             init: true,
           });
-          addMessageReducer(
-            0,
+          dialog.setMessage(
             MESSAGE_CATEGORY.INFO,
             t('토픽에 참여할 수 없습니다'),
             t('공유가 종료된 토픽이거나, 찾을 수 없는 토픽입니다.'),
@@ -113,12 +111,12 @@ class Share extends React.Component {
           history.push(`/shares/${shareId}/code`);
         } else if (response.data.code === 'SHARE_BANNED_USER') {
           history.push('/shares');
-          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('접속 오류'), response.data.message);
+          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('접속 오류'), response.data.message);
         } else {
           this.setState({
             init: true,
           });
-          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('요청이 올바르지 않습니다.'), response.data.message);
+          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('요청이 올바르지 않습니다.'), response.data.message);
         }
       },
     );
@@ -273,14 +271,14 @@ class Share extends React.Component {
 
   onMessage = (msg) => {
     const { type, data } = msg;
-    const { t, history, addMessage: addMessageReducer } = this.props;
+    const { t, history } = this.props;
 
     console.log(type, data);
 
     switch (type) {
       case 'SHARE_CLOSED': {
         history.push('/shares');
-        addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('공유가 종료되어 화면이 이동되었습니다.'));
+        dialog.setMessage(MESSAGE_CATEGORY.INFO, t('공유 종료'), t('공유가 종료되어 화면이 이동되었습니다.'));
         break;
       }
 
@@ -347,7 +345,7 @@ class Share extends React.Component {
 
         if (data.userId === user.id) {
           history.push('/shares');
-          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
+          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
         }
 
         break;
@@ -383,7 +381,7 @@ class Share extends React.Component {
 
         if (data.userId === user.id) {
           history.push('/shares');
-          addMessageReducer(0, MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
+          dialog.setMessage(MESSAGE_CATEGORY.INFO, t('공유 종료'), t('관리자에 의해서 토픽에서 퇴장되었습니다.'));
         }
 
         break;
@@ -461,7 +459,7 @@ class Share extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, setConfirm, user, location, history } = this.props;
+    const { t, user, location, history } = this.props;
 
     const {
       // eslint-disable-next-line no-unused-vars,no-shadow
@@ -643,13 +641,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
-  };
-};
-
 Share.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -671,8 +662,6 @@ Share.propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }),
-  setConfirm: PropTypes.func,
-  addMessage: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Share)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Share)));

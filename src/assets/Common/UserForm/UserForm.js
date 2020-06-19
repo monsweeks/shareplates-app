@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { addMessage, setUserInfo } from '@/actions';
+import { setUserInfo } from '@/actions';
 import {
   AvatarBuilder,
   BottomButton,
@@ -41,7 +41,6 @@ class UserForm extends React.PureComponent {
     super(props);
     this.state = {
       iconType: 'avatar',
-      isCanBeAdmin: false,
       init: false,
     };
   }
@@ -49,7 +48,6 @@ class UserForm extends React.PureComponent {
   static getDerivedStateFromProps(props, state) {
     if (!state.init && props.user) {
       return {
-        isCanBeAdmin: props.user.roleCode === 'SUPER_MAN',
         iconType:
           props.user && props.user.info && props.user.info.icon && props.user.info.icon.type
             ? props.user.info.icon.type
@@ -68,8 +66,8 @@ class UserForm extends React.PureComponent {
   };
 
   render() {
-    const { t, onSubmit, user, onChange, onChangeFile, onChangeAvatar } = this.props;
-    const { iconType, isCanBeAdmin } = this.state;
+    const { t, onSubmit, user, onChange, onList, isCanBeAdmin, onDelete, onCancel } = this.props;
+    const { iconType } = this.state;
 
     return (
       <Form onSubmit={onSubmit} className="flex-grow-1 d-flex flex-column">
@@ -102,8 +100,8 @@ class UserForm extends React.PureComponent {
                   })}
                 </Nav>
                 <div className="g-tabs-content">
-                  {iconType === 'image' && <ImageBuilder info={user.info} onChangeFile={onChangeFile} />}
-                  {iconType === 'avatar' && <AvatarBuilder info={user.info} onChange={onChangeAvatar} />}
+                  {iconType === 'image' && <ImageBuilder info={user.info} onChangeFile={onChange('file')} />}
+                  {iconType === 'avatar' && <AvatarBuilder info={user.info} onChange={onChange('avatar')} />}
                 </div>
               </div>
             </FormGroup>
@@ -176,9 +174,9 @@ class UserForm extends React.PureComponent {
             <hr className="g-dashed mb-3" />
             <SubLabel>{t('가입일')}</SubLabel>
             <DetailValue className="flex-grow-1" uppercase border={false}>
-              <DateTime value={user.creationDate} dateTimeFormat={user.dateTimeFormat} />
+              <DateTime value={user.creationDate} dateTimeFormat={user.dateTimeFormat} nullValue="N/A" />
             </DetailValue>
-            <BottomButton onList={() => {}} onEdit={() => {}} />
+            <BottomButton onDelete={onDelete} onList={onList} onSave={() => {}} onCancel={onCancel} />
           </>
         )}
       </Form>
@@ -188,7 +186,6 @@ class UserForm extends React.PureComponent {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addMessage: (code, category, title, content) => dispatch(addMessage(code, category, title, content)),
     setUserInfo: (user, grps, shareCount) => dispatch(setUserInfo(user, grps, shareCount)),
   };
 };
@@ -203,6 +200,8 @@ UserForm.propTypes = {
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
   user: UserPropTypes,
-  onChangeFile: PropTypes.func,
-  onChangeAvatar: PropTypes.func,
+  isCanBeAdmin: PropTypes.bool,
+  onDelete: PropTypes.func,
+  onList: PropTypes.func,
+  onCancel: PropTypes.func,
 };

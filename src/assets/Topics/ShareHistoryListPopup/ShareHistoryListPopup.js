@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import { setConfirm } from '@/actions';
 import { Button, DateTime, EmptyMessage } from '@/components';
 import request from '@/utils/request';
 import './ShareHistoryListPopup.scss';
+import dialog from '@/utils/dialog';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 class ShareHistoryListPopup extends React.Component {
   constructor(props) {
@@ -21,9 +21,7 @@ class ShareHistoryListPopup extends React.Component {
   };
 
   deleteShare = (shareId) => {
-    const { setConfirm: setConfirmReducer } = this.props;
-
-    setConfirmReducer('공유 이력을 정말 삭제하시겠습니까?', () => {
+    dialog.setConfirm(MESSAGE_CATEGORY.WARNING, '데이터 삭제 경고', '공유 이력을 정말 삭제하시겠습니까?', () => {
       request.del(`/api/shares/${shareId}`, {}, (data) => {
         const { deleteShare } = this.props;
         deleteShare(data);
@@ -145,12 +143,6 @@ class ShareHistoryListPopup extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
 ShareHistoryListPopup.propTypes = {
   t: PropTypes.func,
   shares: PropTypes.arrayOf(
@@ -170,7 +162,6 @@ ShareHistoryListPopup.propTypes = {
   openShare: PropTypes.func,
   deleteShare: PropTypes.func,
   topicId: PropTypes.number,
-  setConfirm: PropTypes.func,
 };
 
-export default withTranslation()(connect(undefined, mapDispatchToProps)(ShareHistoryListPopup));
+export default withTranslation()(ShareHistoryListPopup);

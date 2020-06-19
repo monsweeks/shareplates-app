@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { setConfirm } from '@/actions';
 import {
   Button,
   Col,
@@ -22,6 +21,8 @@ import {
 } from '@/components';
 import request from '@/utils/request';
 import './ShareEditorPopup.scss';
+import dialog from '@/utils/dialog';
+import { MESSAGE_CATEGORY } from '@/constants/constants';
 
 const privateYnValues = [
   {
@@ -353,10 +354,14 @@ class ShareEditorPopup extends React.Component {
                     <Button
                       color="danger"
                       onClick={() => {
-                        const { setConfirm: setConfirmReducer } = this.props;
-                        setConfirmReducer('지금 공유중인 토픽을 중지하시겠습니까?', () => {
-                          setStatusChange(shareId);
-                        });
+                        dialog.setConfirm(
+                          MESSAGE_CATEGORY.WARNING,
+                          '공유 중지 확인',
+                          '지금 공유중인 토픽을 중지하시겠습니까?',
+                          () => {
+                            setStatusChange(shareId);
+                          },
+                        );
                       }}
                     >
                       {t('공유를 중지합니다')}
@@ -394,12 +399,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setConfirm: (message, okHandler, noHandle) => dispatch(setConfirm(message, okHandler, noHandle)),
-  };
-};
-
 ShareEditorPopup.propTypes = {
   t: PropTypes.func,
   topicId: PropTypes.number,
@@ -411,11 +410,10 @@ ShareEditorPopup.propTypes = {
   }),
   setOpen: PropTypes.func,
   setStatusChange: PropTypes.func,
-  setConfirm: PropTypes.func,
   onChangeShare: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ShareEditorPopup)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareEditorPopup)));

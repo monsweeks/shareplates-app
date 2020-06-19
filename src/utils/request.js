@@ -1,8 +1,9 @@
 import axios from 'axios';
 import store from 'store';
-import { addMessage, setLoading, setUserInfo } from 'actions';
+import { setLoading, setUserInfo } from 'actions';
 import i18n from 'i18next';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import dialog from '@/utils/dialog';
 
 const local = ['localhost', '127.0.0.1', '192.168.39.3'].some((d) => d === window.location.hostname);
 
@@ -40,7 +41,7 @@ function processSuccess(response, successHandler) {
       successHandler(response.data);
     } catch (e) {
       console.error(e);
-      store.dispatch(addMessage(null, MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
+      store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
     }
   }
 }
@@ -55,7 +56,7 @@ function processError(error, failHandler) {
   }
 
   if (!error.response || !error.response.status) {
-    store.dispatch(addMessage(900, MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
+    store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
   } else if (failHandler && typeof failHandler === 'function') {
     failHandler(error, error.response);
   } else if (error && error.response) {
@@ -68,8 +69,7 @@ function processError(error, failHandler) {
           error.response.data.errors.length > 0
         ) {
           store.dispatch(
-            addMessage(
-              error.response.status,
+            dialog.setMessage(
               MESSAGE_CATEGORY.ERROR,
               '요청이 올바르지 않습니다.',
               `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
@@ -77,8 +77,7 @@ function processError(error, failHandler) {
           );
         } else {
           store.dispatch(
-            addMessage(
-              error.response.status,
+            dialog.setMessage(
               MESSAGE_CATEGORY.ERROR,
               '요청이 올바르지 않습니다.',
               error.response && error.response.data && error.response.data.message,
@@ -96,8 +95,7 @@ function processError(error, failHandler) {
         store.dispatch(setUserInfo({}, grps, user.shareCount));
 
         store.dispatch(
-          addMessage(
-            error.response.status,
+          dialog.setMessage(
             MESSAGE_CATEGORY.ERROR,
             '인증 실패',
             error.response && error.response.data && error.response.data.message,
@@ -107,21 +105,13 @@ function processError(error, failHandler) {
       }
 
       case 404: {
-        store.dispatch(
-          addMessage(
-            error.response.status,
-            MESSAGE_CATEGORY.ERROR,
-            '404 NOT FOUND',
-            i18n.t('message.resourceNotFount'),
-          ),
-        );
+        store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('message.resourceNotFount')));
         break;
       }
 
       case 409: {
         store.dispatch(
-          addMessage(
-            error.response.status,
+          dialog.setMessage(
             MESSAGE_CATEGORY.ERROR,
             '요청이 올바르지 않습니다.',
             error.response && error.response.data && error.response.data.message,
@@ -132,8 +122,7 @@ function processError(error, failHandler) {
 
       default: {
         store.dispatch(
-          addMessage(
-            error.response.status,
+          dialog.setMessage(
             MESSAGE_CATEGORY.ERROR,
             '오류',
             error.response && error.response.data && error.response.data.message,
@@ -143,7 +132,7 @@ function processError(error, failHandler) {
       }
     }
   } else {
-    store.dispatch(addMessage(500, MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'));
+    store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'));
   }
 }
 
