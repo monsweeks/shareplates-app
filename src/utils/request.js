@@ -41,7 +41,7 @@ function processSuccess(response, successHandler) {
       successHandler(response.data);
     } catch (e) {
       console.error(e);
-      store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.'));
+      dialog.setMessage(MESSAGE_CATEGORY.ERROR, '동작 오류', '스크립트 동작 중 오류가 발생했습니다.');
     }
   }
 }
@@ -56,7 +56,7 @@ function processError(error, failHandler) {
   }
 
   if (!error.response || !error.response.status) {
-    store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError')));
+    dialog.setMessage(MESSAGE_CATEGORY.ERROR, 'NETWORK ERROR', i18n.t('message.networkError'));
   } else if (failHandler && typeof failHandler === 'function') {
     failHandler(error, error.response);
   } else if (error && error.response) {
@@ -68,20 +68,16 @@ function processError(error, failHandler) {
           error.response.data.errors &&
           error.response.data.errors.length > 0
         ) {
-          store.dispatch(
-            dialog.setMessage(
-              MESSAGE_CATEGORY.ERROR,
-              '요청이 올바르지 않습니다.',
-              `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
-            ),
+          dialog.setMessage(
+            MESSAGE_CATEGORY.ERROR,
+            '요청이 올바르지 않습니다.',
+            `${error.response.data.errors[0].field.toUpperCase()} : ${error.response.data.errors[0].defaultMessage}`,
           );
         } else {
-          store.dispatch(
-            dialog.setMessage(
-              MESSAGE_CATEGORY.ERROR,
-              '요청이 올바르지 않습니다.',
-              error.response && error.response.data && error.response.data.message,
-            ),
+          dialog.setMessage(
+            MESSAGE_CATEGORY.ERROR,
+            '요청이 올바르지 않습니다.',
+            error.response && error.response.data && error.response.data.message,
           );
         }
 
@@ -94,45 +90,41 @@ function processError(error, failHandler) {
         const grps = user.grps ? user.grps.filter((org) => org.publicYn) : [];
         store.dispatch(setUserInfo({}, grps, user.shareCount));
 
-        store.dispatch(
-          dialog.setMessage(
-            MESSAGE_CATEGORY.ERROR,
-            '인증 실패',
-            error.response && error.response.data && error.response.data.message,
-          ),
+        dialog.setMessage(
+          MESSAGE_CATEGORY.ERROR,
+          '인증 실패',
+          error.response && error.response.data && error.response.data.message,
         );
+
         break;
       }
 
       case 404: {
-        store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('message.resourceNotFount')));
+        dialog.setMessage(MESSAGE_CATEGORY.ERROR, '404 NOT FOUND', i18n.t('message.resourceNotFount'));
         break;
       }
 
       case 409: {
-        store.dispatch(
-          dialog.setMessage(
-            MESSAGE_CATEGORY.ERROR,
-            '요청이 올바르지 않습니다.',
-            error.response && error.response.data && error.response.data.message,
-          ),
+        dialog.setMessage(
+          MESSAGE_CATEGORY.ERROR,
+          '요청이 올바르지 않습니다.',
+          error.response && error.response.data && error.response.data.message,
         );
         break;
       }
 
       default: {
-        store.dispatch(
-          dialog.setMessage(
-            MESSAGE_CATEGORY.ERROR,
-            '오류',
-            error.response && error.response.data && error.response.data.message,
-          ),
+        dialog.setMessage(
+          MESSAGE_CATEGORY.ERROR,
+          '오류',
+          error.response && error.response.data && error.response.data.message,
         );
+
         break;
       }
     }
   } else {
-    store.dispatch(dialog.setMessage(MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.'));
+    dialog.setMessage(MESSAGE_CATEGORY.ERROR, '오류', '알 수 없는 오류가 발생했습니다.');
   }
 }
 

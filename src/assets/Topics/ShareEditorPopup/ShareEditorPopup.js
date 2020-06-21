@@ -93,6 +93,8 @@ class ShareEditorPopup extends React.Component {
 
     if (data.share) {
       next = { ...data.share };
+      next.accessCode = data.accessCode.code;
+      next.accessCodeId = data.accessCode.id;
     } else {
       next = { ...share };
       next.name = data.topic.name;

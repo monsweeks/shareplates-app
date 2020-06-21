@@ -1,0 +1,85 @@
+.share-history-list-wrapper {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .share-list-content {
+    flex-grow: 1;
+    position: relative;
+
+    .share-list {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      table {
+        vertical-align: middle;
+        font-size: 0.8rem;
+
+        th,
+        td {
+          vertical-align: middle;
+        }
+        .started-yn,
+        .open-yn {
+          width: 80px;
+          text-align: center;
+        }
+
+        .private-yn {
+          text-align: center;
+          width: 80px;
+        }
+
+        .last-open-date {
+          text-align: center;
+          width: 140px;
+        }
+
+        .manager-icon {
+          padding: 0;
+          width: 30px;
+          text-align: center;
+          span.user-icon {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+          }
+        }
+
+        .manager {
+          width: 120px;
+        }
+
+        .user-count {
+          text-align: center;
+          width: 80px;
+        }
+
+        .duration {
+          width: 140px;
+        }
+
+        .current-info {
+          text-align: left;
+          vertical-align: middle;
+          padding: 0 0.5rem;
+          line-height: 100%;
+          width: 100px;
+
+          > div {
+            line-height: 100%;
+            &:first-child {
+              margin-bottom: 0.125rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

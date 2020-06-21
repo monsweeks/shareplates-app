@@ -18,6 +18,7 @@ import CheckBoxInput from '@/components/CheckBoxInput/CheckBoxInput';
 import CircleIcon from '@/components/CircleIcon/CircleIcon';
 import CopySpan from '@/components/CopySpan/CopySpan';
 import DateTime from '@/components/DateTime/DateTime';
+import DateDuration from '@/components/DateDuration/DateDuration';
 import Description from '@/components/Description/Description';
 import DetailValue from '@/components/DetailValue/DetailValue';
 import EmptyMessage from '@/components/EmptyMessage/EmptyMessage';
@@ -66,6 +67,7 @@ export {
   CircleIcon,
   CopySpan,
   DateTime,
+  DateDuration,
   Description,
   DetailValue,
   EmptyMessage,

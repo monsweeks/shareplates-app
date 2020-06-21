@@ -132,6 +132,10 @@
   background-color: $yellow;
 }
 
+.bg-gray {
+  background-color: $gray-500;
+}
+
 .g-overlay {
   position: fixed;
   left: 0;
@@ -170,3 +174,5 @@
 .scrollbar {
   overflow-y: auto;
 }
+
+

@@ -4,11 +4,11 @@ import './Tabs.scss';
 
 class Tabs extends React.PureComponent {
   render() {
-    const { className, tabTitle, tabs, tab, onChange } = this.props;
+    const { className, tabTitle, tabs, tab, onChange, left, buttonStyle } = this.props;
 
     return (
-      <div className={`tabs-wrapper ${className}`}>
-        <div className="sub-title">{tabTitle}</div>
+      <div className={`tabs-wrapper ${className} ${left ? 'left' : ''} ${buttonStyle ? 'button-style' : ''}`}>
+        {tabTitle && <div className="sub-title">{tabTitle}</div>}
         {tabs.map((item) => {
           return (
             <div
@@ -29,6 +29,8 @@ class Tabs extends React.PureComponent {
 
 Tabs.defaultProps = {
   className: '',
+  left: false,
+  buttonStyle: false,
 };
 
 Tabs.propTypes = {
@@ -42,6 +44,8 @@ Tabs.propTypes = {
   tab: PropTypes.string,
   tabTitle: PropTypes.string,
   onChange: PropTypes.func,
+  left: PropTypes.bool,
+  buttonStyle: PropTypes.bool,
 };
 
 export default Tabs;
