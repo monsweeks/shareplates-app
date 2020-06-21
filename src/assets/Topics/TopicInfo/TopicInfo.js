@@ -18,7 +18,7 @@ class TopicInfo extends React.PureComponent {
     const { onList, onDelete, onEdit } = this.props;
 
     return (
-      <>
+      <div className='topic-info-wrapper'>
         <SubLabel>{t('그룹')}</SubLabel>
         <Description>{t('message.selectGrpForTopic')}</Description>
         <DetailValue upppercase>{topic.grpName}</DetailValue>
@@ -123,7 +123,7 @@ class TopicInfo extends React.PureComponent {
         <Description>{t('message.topicUserDesc')}</Description>
         <UserManager className="pt-2 px-2" users={topic.users} />
         <BottomButton className="text-right mt-3" onList={onList} onDelete={onDelete} onEdit={onEdit} />
-      </>
+      </div>
     );
   }
 }

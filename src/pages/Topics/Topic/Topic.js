@@ -7,7 +7,6 @@ import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
 import { EmptyMessage, Tabs } from '@/components';
 import { ShareHistoryList, TopicInfo } from '@/assets';
-import './Topic.scss';
 import { DEFAULT_TOPIC_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 import { convertUsers } from '@/pages/Users/util';
 import dialog from '@/utils/dialog';
@@ -32,7 +31,7 @@ class Topic extends Component {
       topic: null,
       shares: null,
       isAdmin: null,
-      tab: 'share-history',
+      tab: 'topic-info',
     };
   }
 

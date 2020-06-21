@@ -123,7 +123,6 @@ class ShareEditorPopup extends React.Component {
       `/api/shares/${shareId}/info`,
       null,
       (data) => {
-        console.log(data);
         this.setData(data);
       },
       null,
@@ -136,7 +135,6 @@ class ShareEditorPopup extends React.Component {
       `/api/shares/topics/${topicId}`,
       null,
       (data) => {
-        console.log(data);
         this.setData(data);
       },
       null,

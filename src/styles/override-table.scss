@@ -18,7 +18,6 @@
   }
 
   @media (max-width: 1240px) {
-
     &:first-child {
       border-radius: 0;
     }
@@ -36,13 +35,7 @@
         cursor: pointer;
 
         td {
-          border-top: 1px solid rgba(0, 0, 0, 0.25);
-        }
-
-        &:first-child {
-          td {
-            border-top: none;
-          }
+          border-bottom: 1px solid rgba(0, 0, 0, 0.25);
         }
       }
     }
