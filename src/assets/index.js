@@ -4,7 +4,6 @@ import UserCard from '@/assets/Common/UserCard/UserCard';
 import UserSearchPopup from '@/assets/Common/UserSearchPopup/UserSearchPopup';
 import PageContent from '@/assets/Common/PageContent/PageContent';
 import UserForm from '@/assets/Common/UserForm/UserForm';
-
 // Grp
 import GrpForm from '@/assets/Grps/GrpForm/GrpForm';
 import GrpCard from '@/assets/Grps/GrpCard/GrpCard';
@@ -29,7 +28,8 @@ import PageCard from '@/assets/Topics/PageCard/PageCard';
 import TopicCard from '@/assets/Topics/TopicCard/TopicCard';
 import FormLevelProperties from '@/assets/Topics/FormLevelProperties/FormLevelProperties';
 import PageEditorShortKeyInfo from '@/assets/Topics/PageEditorShortKeyInfo/PageEditorShortKeyInfo';
-
+import TopicInfo from '@/assets/Topics/TopicInfo/TopicInfo';
+import ShareHistoryList from '@/assets/Topics/ShareHistoryList/ShareHistoryList';
 
 export {
   // Common
@@ -62,5 +62,6 @@ export {
   TopicCard,
   FormLevelProperties,
   PageEditorShortKeyInfo,
-
+  TopicInfo,
+  ShareHistoryList,
 };

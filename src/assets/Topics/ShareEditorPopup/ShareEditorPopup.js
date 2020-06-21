@@ -93,6 +93,8 @@ class ShareEditorPopup extends React.Component {
 
     if (data.share) {
       next = { ...data.share };
+      next.accessCode = data.accessCode.code;
+      next.accessCodeId = data.accessCode.id;
     } else {
       next = { ...share };
       next.name = data.topic.name;
@@ -121,6 +123,7 @@ class ShareEditorPopup extends React.Component {
       `/api/shares/${shareId}/info`,
       null,
       (data) => {
+        console.log(data);
         this.setData(data);
       },
       null,
@@ -133,6 +136,7 @@ class ShareEditorPopup extends React.Component {
       `/api/shares/topics/${topicId}`,
       null,
       (data) => {
+        console.log(data);
         this.setData(data);
       },
       null,
