@@ -17,15 +17,17 @@ class Popup extends React.PureComponent {
   }
 
   render() {
-    const { className, open, children, title, setOpen } = this.props;
+    const { className, open, children, title, setOpen, full } = this.props;
 
     return (
-      <div className={`popup-wrapper g-overlay scrollbar ${className} ${open ? 'd-flex' : 'd-none'}`}>
+      <div
+        className={`popup-wrapper g-overlay scrollbar ${className} ${open ? 'd-flex' : 'd-none'} ${full ? 'full' : ''}`}
+      >
         <div>
           {title && <div className="popup-title">{title}</div>}
           {setOpen && (
             <Button
-              size='sm'
+              size="sm"
               color="black"
               className="close-popup-button g-circle-icon-button"
               onClick={() => {
@@ -47,6 +49,7 @@ class Popup extends React.PureComponent {
 Popup.defaultProps = {
   className: '',
   title: '',
+  full: false,
 };
 
 Popup.propTypes = {
@@ -55,6 +58,7 @@ Popup.propTypes = {
   className: PropTypes.string,
   open: PropTypes.bool,
   setOpen: PropTypes.func,
+  full: PropTypes.bool,
 };
 
 export default withTranslation()(Popup);

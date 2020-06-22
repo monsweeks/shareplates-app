@@ -5,6 +5,7 @@ import ReactTimeAgo from 'react-time-ago';
 import moment from 'moment';
 import { Button, Card, CardBody, UserIcon } from '@/components';
 import './ShareCard.scss';
+import { SharePropTypes } from '@/proptypes';
 
 const tabs = ['main', 'admin', 'current'];
 
@@ -20,6 +21,7 @@ class ShareCard extends React.PureComponent {
   render() {
     const { className, share, onConfigClick, onCardClick, t } = this.props;
     const { tab } = this.state;
+    const lastBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0 ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1] : {};
 
     return (
       <Card className={`share-card-wrapper g-no-select ${className}`}>
@@ -50,7 +52,7 @@ class ShareCard extends React.PureComponent {
                       <div className="name">{t('참여중')}</div>
                     </div>
                     <div className="open-time">
-                      <ReactTimeAgo date={moment(share.lastOpenDate).valueOf()} /> 시작
+                      <ReactTimeAgo date={moment(lastBucket.openDate).valueOf()} /> 시작
                     </div>
                   </div>
                 </div>
@@ -134,28 +136,7 @@ ShareCard.defaultProps = {
 };
 
 ShareCard.propTypes = {
-  share: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    privateYn: PropTypes.bool,
-    currentChapterTitle: PropTypes.string,
-    currentPageTitle: PropTypes.string,
-    lastOpenDate: PropTypes.string,
-    topicId: PropTypes.number,
-    topicName: PropTypes.string,
-    adminUserEmail: PropTypes.string,
-    adminUserName: PropTypes.string,
-    adminUserInfo: PropTypes.shape({
-      icon: PropTypes.shape({
-        type: PropTypes.string,
-        data: PropTypes.objectOf(PropTypes.any),
-      }),
-    }),
-    startedYn: PropTypes.bool,
-    accessCode: PropTypes.string,
-    onLineUserCount: PropTypes.number,
-    offLineUserCount: PropTypes.number,
-  }),
+  share: SharePropTypes,
   t: PropTypes.func,
   className: PropTypes.string,
   onConfigClick: PropTypes.func,

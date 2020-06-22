@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { DetailLayout, PageTitle } from '@/layouts';
-import { EmptyMessage, Tabs } from '@/components';
-import { ShareHistoryList, TopicInfo } from '@/assets';
+import { EmptyMessage, Popup, Tabs } from '@/components';
+import { ShareHistoryList, ShareStatPopup, TopicInfo } from '@/assets';
 import { DEFAULT_TOPIC_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
 import { convertUsers } from '@/pages/Users/util';
 import dialog from '@/utils/dialog';
@@ -27,11 +27,19 @@ class Topic extends Component {
   constructor(props) {
     super(props);
 
+    const {
+      match: {
+        params: { topicId },
+      },
+    } = this.props;
+
     this.state = {
       topic: null,
       shares: null,
       isAdmin: null,
       tab: 'topic-info',
+      shareId: null,
+      topicId: Number(topicId),
     };
   }
 
@@ -46,12 +54,7 @@ class Topic extends Component {
   }
 
   componentDidMount() {
-    const {
-      match: {
-        params: { topicId },
-      },
-    } = this.props;
-
+    const { topicId } = this.state;
     this.getTopic(topicId);
     this.getShares(topicId);
   }
@@ -118,24 +121,21 @@ class Topic extends Component {
   };
 
   onEdit = () => {
-    const {
-      match: {
-        params: { topicId },
-      },
-    } = this.props;
+    const { topicId } = this.state;
     const { history } = this.props;
 
     history.push(`/topics/${topicId}/edit`);
   };
 
+  closePopup = () => {
+    this.setState({
+      shareId: null,
+    });
+  };
+
   render() {
-    const {
-      match: {
-        params: { topicId },
-      },
-    } = this.props;
     const { t } = this.props;
-    const { topic, isAdmin, tab, shares } = this.state;
+    const { topic, isAdmin, tab, shares, shareId, topicId } = this.state;
 
     return (
       <DetailLayout className="topic-wrapper" margin={false}>
@@ -189,7 +189,22 @@ class Topic extends Component {
                 onEdit={isAdmin ? this.onEdit : null}
               />
             )}
-            {tab === 'share-history' && <ShareHistoryList shares={shares} onList={this.onList} />}
+            {tab === 'share-history' && (
+              <ShareHistoryList
+                shares={shares}
+                onList={this.onList}
+                onClick={(id) => {
+                  this.setState({
+                    shareId: id,
+                  });
+                }}
+              />
+            )}
+            {shareId && (
+              <Popup title="공유 정보" open={!!shareId} setOpen={this.closePopup}>
+                <ShareStatPopup topic={topic} shareId={shareId} setOpen={this.closePopup} />
+              </Popup>
+            )}
           </>
         )}
       </DetailLayout>

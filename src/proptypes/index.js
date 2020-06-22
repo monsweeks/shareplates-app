@@ -32,18 +32,26 @@ const ContextPropTypes = PropTypes.shape({
 const SharePropTypes = PropTypes.shape({
   id: PropTypes.number,
   name: PropTypes.string,
+  memo: PropTypes.string,
   privateYn: PropTypes.bool,
   openYn: PropTypes.bool,
   startedYn: PropTypes.bool,
+  adminUserId: PropTypes.number,
+  adminUserEmail: PropTypes.string,
   adminUserInfo: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]),
   adminUserName: PropTypes.string,
   offLineUserCount: PropTypes.number,
   onLineUserCount: PropTypes.number,
   currentChapterTitle: PropTypes.string,
   currentPageTitle: PropTypes.string,
-  lastOpenDate: PropTypes.string,
-  lastCloseDate: PropTypes.string,
-  shareDuration: PropTypes.number,
+  shareTimeBuckets: PropTypes.arrayOf(
+    PropTypes.shape({
+      openDate: PropTypes.string,
+      closeDate: PropTypes.string,
+    }),
+  ),
+  shareUsers: PropTypes.arrayOf(PropTypes.shape(PropTypes.any)),
+  topicName: PropTypes.string,
 });
 
 export { UserPropTypes, TopicPropTypes, ContextPropTypes, SharePropTypes };

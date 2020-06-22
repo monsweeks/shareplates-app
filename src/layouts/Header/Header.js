@@ -149,8 +149,6 @@ class Header extends React.Component {
     const loggedIn = !!(user && user.id);
     const userMenus = menus.filter((menu) => !(menu.adminOnly && !(user && user.isAdmin)));
 
-    console.log(userMenus);
-
     return (
       <header className="top-header-wrapper g-no-select">
         <div className="top-header-menu">
