@@ -1,0 +1,28 @@
+.share-progress-graph-wrapper {
+  svg {
+    overflow: visible;
+
+    .tick {
+      stroke-dasharray: 2, 2;
+
+      line {
+        opacity: 0.8;
+      }
+    }
+
+    .line-joined {
+      stroke : darken($primary, 10%);
+      stroke-width: 3px;
+      opacity: 0.7;
+    }
+
+    .area-focus {
+      fill : lighten($primary, 15%);
+      opacity: 0.7;
+    }
+
+    .domain {
+      display: none;
+    }
+  }
+}

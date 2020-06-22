@@ -7,6 +7,7 @@ import { Button, DateDuration, DateTime, EmptyMessage, Table, UserIcon } from '@
 import request from '@/utils/request';
 import './ShareStatPopup.scss';
 import { convertUsers } from '@/pages/Users/util';
+import { ShareProgressGraph } from '@/assets';
 
 class ShareStatPopup extends React.Component {
   constructor(props) {
@@ -22,6 +23,8 @@ class ShareStatPopup extends React.Component {
       },
       accessCode: {},
       shareTimeBucketId: null,
+      shareGraphData: [],
+      totalUserCount: 0,
     };
   }
 
@@ -56,21 +59,62 @@ class ShareStatPopup extends React.Component {
     const next = { ...data };
     next.share.shareUsers = convertUsers(data.share.shareUsers);
     const { shareTimeBuckets } = next.share;
-    this.setState({
-      accessCode: next.accessCode,
-      share: next.share,
-      shareTimeBucketId: shareTimeBuckets && shareTimeBuckets.length > 0 ? shareTimeBuckets[0].id : null,
-    });
+    const shareTimeBucketId = shareTimeBuckets && shareTimeBuckets.length > 0 ? shareTimeBuckets[0].id : null;
+    this.setState(
+      {
+        accessCode: next.accessCode,
+        share: next.share,
+        shareTimeBucketId,
+      },
+      () => {
+        if (shareTimeBucketId) {
+          this.getShareTimeBucketData(shareTimeBucketId);
+        }
+      },
+    );
+  };
+
+  getSampleData = (openDate, closeDate, max) => {
+    const m = 1000 * 60;
+    const start = Math.floor(new Date(openDate).getTime() / m) * m;
+    const end = Math.floor(new Date(closeDate).getTime() / m) * m;
+    let interval = (end - start) / 5;
+    if (interval < m) {
+      interval = m;
+    }
+
+    interval = Math.floor(interval / m) * m;
+
+    const list = [];
+
+    const min = max * 0.5;
+    for (let time = start; time < end; time += interval) {
+      const v = Math.floor(min + Math.random() * (max - min));
+      list.push({
+        time,
+        joined: v,
+        focus: v - Math.floor(Math.random() * (max * 0.2)),
+        socket: Math.floor(min + Math.random() * (max - min)),
+      });
+    }
+
+    return list;
   };
 
   getShareTimeBucketData = (shareTimeBucketId) => {
+    const { share } = this.state;
+    const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
+    const maxPerson = Math.ceil(10 + Math.random() * 30);
+
     this.setState({
       shareTimeBucketId,
+      shareGraphData: this.getSampleData(openDate, closeDate, maxPerson),
+      totalUserCount: maxPerson,
     });
   };
 
   render() {
-    const { share, accessCode, shareTimeBucketId } = this.state;
+    const { share, accessCode, shareTimeBucketId, shareGraphData, totalUserCount } = this.state;
     const { t, user, setOpen } = this.props;
 
     return (
@@ -172,7 +216,9 @@ class ShareStatPopup extends React.Component {
                 <span>타임라인</span>
               </div>
               <div className="timeline-graph">
-                <div />
+                <div>
+                  <ShareProgressGraph list={shareGraphData} max={totalUserCount} />
+                </div>
               </div>
               <div className="sub-title">
                 <span>참여자 정보</span>
@@ -206,7 +252,7 @@ class ShareStatPopup extends React.Component {
                                   {u.shareRoleCode === 'ADMIN' ? <i className="fad fa-medal" /> : ''}
                                 </td>
                                 <td className="ban-yn">
-                                  {!u.banYn ? (
+                                  {u.banYn ? (
                                     <span className="g-tag text-uppercase bg-danger text-white">banned</span>
                                   ) : (
                                     ''
