@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { BottomButton, DateDuration, DateTime, EmptyMessage, Table, UserIcon } from '@/components';
+import { BottomButton, DateDuration, DateTime, EmptyMessage, Table } from '@/components';
 import { SharePropTypes } from '@/proptypes';
 import './ShareHistoryList.scss';
 
@@ -9,6 +9,7 @@ class ShareHistoryList extends React.PureComponent {
   render() {
     const { t, shares } = this.props;
     const { onList, onClick } = this.props;
+
     return (
       <div className="share-history-list-wrapper">
         <div className="share-list-content">
@@ -34,7 +35,6 @@ class ShareHistoryList extends React.PureComponent {
                     <th className="name">{t('이름')}</th>
                     <th className="open-yn">{t('열림')}</th>
                     <th className="started-yn">{t('진행중')}</th>
-                    <th className="manager-icon"> </th>
                     <th className="manager">{t('관리자')}</th>
                     <th className="user-count">{t('참여 인원')}</th>
                     <th className="current-info">{t('현재 페이지')}</th>
@@ -45,6 +45,10 @@ class ShareHistoryList extends React.PureComponent {
                 </thead>
                 <tbody>
                   {shares.map((share) => {
+                    const lastBucket =
+                      share.shareTimeBuckets && share.shareTimeBuckets.length > 0
+                        ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1]
+                        : {};
                     return (
                       <tr
                         key={share.id}
@@ -70,11 +74,6 @@ class ShareHistoryList extends React.PureComponent {
                             <span className="g-tag text-uppercase bg-gray text-white">STOP</span>
                           )}
                         </td>
-                        <td className="manager-icon">
-                          <span className="user-icon">
-                            <UserIcon info={JSON.parse(share.adminUserInfo)} />
-                          </span>
-                        </td>
                         <td className="manager">{share.adminUserName}</td>
                         <td className="user-count">{share.offLineUserCount + share.onLineUserCount}명</td>
                         <td className="current-info">
@@ -89,10 +88,10 @@ class ShareHistoryList extends React.PureComponent {
                           )}
                         </td>
                         <td className="last-open-date">
-                          <DateTime value={share.lastOpenDate} />
+                          <DateTime value={lastBucket.openDate} />
                         </td>
                         <td className="duration">
-                          <DateDuration value={share.shareDuration} />
+                          <DateDuration startValue={lastBucket.openDate} endValue={lastBucket.closeDate} />
                         </td>
                       </tr>
                     );

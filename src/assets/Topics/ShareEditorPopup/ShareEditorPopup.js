@@ -198,6 +198,7 @@ class ShareEditorPopup extends React.Component {
   render() {
     const { share, topic, chapters, pages } = this.state;
     const { t, user, setOpen, setStatusChange, shareId } = this.props;
+    const lastBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0 ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1] : {};
 
     return (
       <div className="share-editor-popup-wrapper">
@@ -241,14 +242,14 @@ class ShareEditorPopup extends React.Component {
                   data={`http://www.mindplates.com/shares/codes/${share.accessCode}`}
                 />
               </P>
-              {share.lastOpenDate && (
+              {lastBucket.openDate && (
                 <>
                   <hr className="g-dashed mb-3" />
                   <SubLabel bold size="sm">
                     {t('마지막 공유 일시')}
                   </SubLabel>
                   <P className="bg-white mb-2">
-                    <DateTime value={share.lastOpenDate} /> - <DateTime value={share.lastCloseDate} />
+                    <DateTime value={lastBucket.openDate} /> - <DateTime value={lastBucket.closeDate} />
                   </P>
                   <hr className="d-block d-lg-none g-dashed mb-3" />
                 </>

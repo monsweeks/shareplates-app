@@ -6,6 +6,7 @@ import request from '@/utils/request';
 import './ShareHistoryListPopup.scss';
 import dialog from '@/utils/dialog';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
+import { SharePropTypes } from '@/proptypes';
 
 class ShareHistoryListPopup extends React.Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class ShareHistoryListPopup extends React.Component {
                     <div className="control" />
                   </li>
                   {shares.map((info) => {
+                    const lastBucket = info.shareTimeBuckets && info.shareTimeBuckets.length > 0 ? info.shareTimeBuckets[info.shareTimeBuckets.length - 1] : {};
                     return (
                       <li key={info.id}>
                         <div className="name">{info.name}</div>
@@ -69,10 +71,10 @@ class ShareHistoryListPopup extends React.Component {
                         </div>
                         <div className="private-yn">{info.privateYn ? '엑세스 코드' : '누구나 참여'}</div>
                         <div className="open-date">
-                          <DateTime value={info.lastOpenDate} />
+                          <DateTime value={lastBucket.openDate} />
                         </div>
                         <div className="close-date">
-                          <DateTime value={info.lastCloseDate} />
+                          <DateTime value={lastBucket.closeDate} />
                         </div>
                         <div className="control">
                           {info.openYn && (
@@ -145,18 +147,7 @@ class ShareHistoryListPopup extends React.Component {
 
 ShareHistoryListPopup.propTypes = {
   t: PropTypes.func,
-  shares: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      privateYn: PropTypes.bool,
-      openYn: PropTypes.bool,
-      currentChapterTitle: PropTypes.string,
-      currentPageTitle: PropTypes.string,
-      lastOpenDate: PropTypes.string,
-      lastCloseDate: PropTypes.string,
-    }),
-  ),
+  shares: PropTypes.arrayOf(SharePropTypes),
   setOpen: PropTypes.func,
   changeShare: PropTypes.func,
   openShare: PropTypes.func,

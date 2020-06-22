@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, DateTime, P, Table, UserIcon } from '@/components';
+import { Button, DateDuration, DateTime, Table, UserIcon } from '@/components';
 import request from '@/utils/request';
 import './ShareStatPopup.scss';
 import { convertUsers } from '@/pages/Users/util';
@@ -34,7 +34,6 @@ class ShareStatPopup extends React.Component {
       `/api/shares/${shareId}/detail`,
       null,
       (data) => {
-        console.log(data);
         this.setData(data);
       },
       null,
@@ -76,12 +75,29 @@ class ShareStatPopup extends React.Component {
                 </div>
                 <div className="share-time-table">
                   <div>
-                    {share.lastOpenDate && (
-                      <>
-                        <P className="bg-white mb-2">
-                          <DateTime value={share.lastOpenDate} /> - <DateTime value={share.lastCloseDate} />
-                        </P>
-                      </>
+                    {share.shareTimeBuckets && share.shareTimeBuckets.length > 0 && (
+                      <Table className="g-sticky">
+                        <thead>
+                          <tr>
+                            <th className="open-date">{t('시작')}</th>
+                            <th className="close-date">{t('종료')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {share.shareTimeBuckets.map((bucket) => {
+                            return (
+                              <tr key={bucket.id}>
+                                <td className="open-date">
+                                  <DateTime value={bucket.openDate} />
+                                </td>
+                                <td className="open-date">
+                                  <DateDuration startValue={bucket.openDate} endValue={bucket.closeDate} />
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
                     )}
                   </div>
                 </div>
@@ -140,7 +156,7 @@ class ShareStatPopup extends React.Component {
                   <Table className="g-sticky">
                     <thead>
                       <tr>
-                        <th className="icon"> </th>
+                        <th className="icon">&nbsp;</th>
                         <th className="email">{t('label.email')}</th>
                         <th className="name">{t('label.name')}</th>
                         <th className="share-role-code">{t('관리자')}</th>
@@ -188,7 +204,7 @@ class ShareStatPopup extends React.Component {
               setOpen(false);
             }}
           >
-            {t('취소')}
+            {t('닫기')}
           </Button>
         </div>
       </div>
