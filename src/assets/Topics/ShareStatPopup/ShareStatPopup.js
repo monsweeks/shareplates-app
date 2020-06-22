@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, DateDuration, DateTime, Table, UserIcon } from '@/components';
+import { Button, DateDuration, DateTime, EmptyMessage, Table, UserIcon } from '@/components';
 import request from '@/utils/request';
 import './ShareStatPopup.scss';
 import { convertUsers } from '@/pages/Users/util';
@@ -21,6 +21,7 @@ class ShareStatPopup extends React.Component {
         currentPageId: null,
       },
       accessCode: {},
+      shareTimeBucketId: null,
     };
   }
 
@@ -54,14 +55,22 @@ class ShareStatPopup extends React.Component {
   setData = (data) => {
     const next = { ...data };
     next.share.shareUsers = convertUsers(data.share.shareUsers);
+    const { shareTimeBuckets } = next.share;
     this.setState({
       accessCode: next.accessCode,
       share: next.share,
+      shareTimeBucketId: shareTimeBuckets && shareTimeBuckets.length > 0 ? shareTimeBuckets[0].id : null,
+    });
+  };
+
+  getShareTimeBucketData = (shareTimeBucketId) => {
+    this.setState({
+      shareTimeBucketId,
     });
   };
 
   render() {
-    const { share, accessCode } = this.state;
+    const { share, accessCode, shareTimeBucketId } = this.state;
     const { t, user, setOpen } = this.props;
 
     return (
@@ -76,22 +85,29 @@ class ShareStatPopup extends React.Component {
                 <div className="share-time-table">
                   <div>
                     {share.shareTimeBuckets && share.shareTimeBuckets.length > 0 && (
-                      <Table className="g-sticky">
-                        <thead>
-                          <tr>
-                            <th className="open-date">{t('시작')}</th>
-                            <th className="close-date">{t('종료')}</th>
-                          </tr>
-                        </thead>
+                      <Table hover>
                         <tbody>
                           {share.shareTimeBuckets.map((bucket) => {
                             return (
-                              <tr key={bucket.id}>
+                              <tr
+                                key={bucket.id}
+                                className={`${shareTimeBucketId === bucket.id ? 'selected' : ''}`}
+                                onClick={() => {
+                                  this.getShareTimeBucketData(bucket.id);
+                                }}
+                              >
                                 <td className="open-date">
                                   <DateTime value={bucket.openDate} />
                                 </td>
-                                <td className="open-date">
-                                  <DateDuration startValue={bucket.openDate} endValue={bucket.closeDate} />
+                                <td className="duration">
+                                  {bucket.closeDate && (
+                                    <DateDuration
+                                      className="bg-primary text-white g-tag"
+                                      icon={<i className="fal fa-clock" />}
+                                      startValue={bucket.openDate}
+                                      endValue={bucket.closeDate}
+                                    />
+                                  )}
                                 </td>
                               </tr>
                             );
@@ -105,7 +121,7 @@ class ShareStatPopup extends React.Component {
                   <span>공유 정보</span>
                 </div>
                 <div className="share-info-table">
-                  <Table className="info-table">
+                  <Table className="g-info-table">
                     <tbody>
                       <tr>
                         <th>{t('공유 관리자')}</th>
@@ -127,12 +143,22 @@ class ShareStatPopup extends React.Component {
                         <td>{share.memo}</td>
                       </tr>
                       <tr>
-                        <th>{t('참여 방법')}</th>
+                        <th>{t('상태')}</th>
                         <td>
                           {share.privateYn ? (
                             <span className="g-tag text-uppercase bg-danger text-white">private</span>
                           ) : (
                             <span className="g-tag text-uppercase bg-success text-white">public</span>
+                          )}
+                          {share.openYn ? (
+                            <span className="g-tag text-uppercase bg-success text-white ml-2">OPENED</span>
+                          ) : (
+                            <span className="g-tag text-uppercase bg-gray text-white ml-2">CLOSED</span>
+                          )}
+                          {share.startedYn ? (
+                            <span className="g-tag text-uppercase bg-success text-white ml-2">STARTED</span>
+                          ) : (
+                            <span className="g-tag text-uppercase bg-gray text-white  ml-2">STOPPED</span>
                           )}
                         </td>
                       </tr>
@@ -153,43 +179,58 @@ class ShareStatPopup extends React.Component {
               </div>
               <div className="share-user-list scrollbar">
                 <div>
-                  <Table className="g-sticky">
-                    <thead>
-                      <tr>
-                        <th className="icon">&nbsp;</th>
-                        <th className="email">{t('label.email')}</th>
-                        <th className="name">{t('label.name')}</th>
-                        <th className="share-role-code">{t('관리자')}</th>
-                        <th className="ban-yn">{t('추방')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {share.shareUsers &&
-                        share.shareUsers.map((u) => {
-                          return (
-                            <tr key={u.id}>
-                              <td className="icon">
-                                <span className="user-icon">
-                                  <UserIcon info={u.info} />
-                                </span>
-                              </td>
-                              <td className="email">{u.email}</td>
-                              <td className="name">{u.name}</td>
-                              <td className="share-role-code">
-                                {u.shareRoleCode === 'ADMIN' ? <i className="fad fa-medal" /> : ''}
-                              </td>
-                              <td className="name">
-                                {!u.banYn ? (
-                                  <span className="g-tag text-uppercase bg-danger text-white">banned</span>
-                                ) : (
-                                  ''
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </Table>
+                  {share.shareUsers && share.shareUsers.length > 0 && (
+                    <Table className="g-sticky">
+                      <thead>
+                        <tr>
+                          <th className="icon">&nbsp;</th>
+                          <th className="email">{t('label.email')}</th>
+                          <th className="name">{t('label.name')}</th>
+                          <th className="share-role-code">{t('관리자')}</th>
+                          <th className="ban-yn">{t('추방')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {share.shareUsers &&
+                          share.shareUsers.map((u) => {
+                            return (
+                              <tr key={u.id}>
+                                <td className="icon">
+                                  <span className="user-icon">
+                                    <UserIcon info={u.info} />
+                                  </span>
+                                </td>
+                                <td className="email">{u.email}</td>
+                                <td className="name">{u.name}</td>
+                                <td className="share-role-code">
+                                  {u.shareRoleCode === 'ADMIN' ? <i className="fad fa-medal" /> : ''}
+                                </td>
+                                <td className="ban-yn">
+                                  {!u.banYn ? (
+                                    <span className="g-tag text-uppercase bg-danger text-white">banned</span>
+                                  ) : (
+                                    ''
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </Table>
+                  )}
+                  {!(share.shareUsers && share.shareUsers.length > 0) && (
+                    <EmptyMessage
+                      className="h-100 h5 bg-white"
+                      message={
+                        <div>
+                          <div className="h1">
+                            <i className="fal fa-exclamation-circle" />
+                          </div>
+                          <div>{t('참여자 정보가 없습니다')}</div>
+                        </div>
+                      }
+                    />
+                  )}
                 </div>
               </div>
             </div>
