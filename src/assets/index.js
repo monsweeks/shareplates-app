@@ -31,6 +31,7 @@ import PageEditorShortKeyInfo from '@/assets/Topics/PageEditorShortKeyInfo/PageE
 import TopicInfo from '@/assets/Topics/TopicInfo/TopicInfo';
 import ShareHistoryList from '@/assets/Topics/ShareHistoryList/ShareHistoryList';
 import ShareStatPopup from '@/assets/Topics/ShareStatPopup/ShareStatPopup';
+import ShareProgressGraph from '@/assets/Topics/ShareProgressGraph/ShareProgressGraph';
 
 export {
   // Common
@@ -66,4 +67,5 @@ export {
   TopicInfo,
   ShareHistoryList,
   ShareStatPopup,
+  ShareProgressGraph,
 };

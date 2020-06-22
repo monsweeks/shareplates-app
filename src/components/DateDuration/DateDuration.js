@@ -23,9 +23,10 @@ class DateDuration extends React.PureComponent {
   };
 
   render() {
-    const { value, startValue, endValue, className, nullValue } = this.props;
+    const { value, startValue, endValue, className, nullValue, icon } = this.props;
     return (
       <span className={`date-time-wrapper ${className}`}>
+        {icon && <span className='mr-1'>{icon}</span>}
         {(value || (startValue && endValue)) && this.getDuration(value, endValue, startValue)}
         {!(value || (startValue && endValue)) && nullValue}
       </span>
@@ -47,6 +48,7 @@ DateDuration.propTypes = {
   nullValue: PropTypes.string,
   value: PropTypes.number,
   t: PropTypes.func,
+  icon : PropTypes.node,
 };
 
 export default withTranslation()(DateDuration);
