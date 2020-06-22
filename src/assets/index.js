@@ -30,6 +30,7 @@ import FormLevelProperties from '@/assets/Topics/FormLevelProperties/FormLevelPr
 import PageEditorShortKeyInfo from '@/assets/Topics/PageEditorShortKeyInfo/PageEditorShortKeyInfo';
 import TopicInfo from '@/assets/Topics/TopicInfo/TopicInfo';
 import ShareHistoryList from '@/assets/Topics/ShareHistoryList/ShareHistoryList';
+import ShareStatPopup from '@/assets/Topics/ShareStatPopup/ShareStatPopup';
 
 export {
   // Common
@@ -64,4 +65,5 @@ export {
   PageEditorShortKeyInfo,
   TopicInfo,
   ShareHistoryList,
+  ShareStatPopup,
 };

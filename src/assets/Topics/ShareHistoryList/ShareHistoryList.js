@@ -7,10 +7,8 @@ import './ShareHistoryList.scss';
 
 class ShareHistoryList extends React.PureComponent {
   render() {
-    const { t, shares, onList } = this.props;
-
-    console.log(shares);
-
+    const { t, shares } = this.props;
+    const { onList, onClick } = this.props;
     return (
       <div className="share-history-list-wrapper">
         <div className="share-list-content">
@@ -32,6 +30,7 @@ class ShareHistoryList extends React.PureComponent {
               <Table className="g-sticky" hover>
                 <thead>
                   <tr>
+                    <th className="id">{t('ID')}</th>
                     <th className="name">{t('이름')}</th>
                     <th className="open-yn">{t('열림')}</th>
                     <th className="started-yn">{t('진행중')}</th>
@@ -50,12 +49,27 @@ class ShareHistoryList extends React.PureComponent {
                       <tr
                         key={share.id}
                         onClick={() => {
-                          // history.push(`/admin/users/${user.id}`);
+                          if (onClick) {
+                            onClick(share.id);
+                          }
                         }}
                       >
+                        <td className="id">{share.id}</td>
                         <td className="name">{share.name}</td>
-                        <td className="open-yn">{share.openYn ? <span className="g-tag text-uppercase bg-success text-white">OPEN</span> : <span className="g-tag text-uppercase bg-gray text-white">CLOSE</span>}</td>
-                        <td className="started-yn">{share.startedYn ? <span className="g-tag text-uppercase bg-success text-white">START</span> : <span className="g-tag text-uppercase bg-gray text-white">STOP</span>}</td>
+                        <td className="open-yn">
+                          {share.openYn ? (
+                            <span className="g-tag text-uppercase bg-success text-white">OPEN</span>
+                          ) : (
+                            <span className="g-tag text-uppercase bg-gray text-white">CLOSE</span>
+                          )}
+                        </td>
+                        <td className="started-yn">
+                          {share.startedYn ? (
+                            <span className="g-tag text-uppercase bg-success text-white">START</span>
+                          ) : (
+                            <span className="g-tag text-uppercase bg-gray text-white">STOP</span>
+                          )}
+                        </td>
                         <td className="manager-icon">
                           <span className="user-icon">
                             <UserIcon info={JSON.parse(share.adminUserInfo)} />
@@ -96,8 +110,9 @@ class ShareHistoryList extends React.PureComponent {
 
 ShareHistoryList.propTypes = {
   t: PropTypes.func,
-  onList: PropTypes.func,
   shares: PropTypes.arrayOf(SharePropTypes),
+  onList: PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 export default withTranslation()(ShareHistoryList);
