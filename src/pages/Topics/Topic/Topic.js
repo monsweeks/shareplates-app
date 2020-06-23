@@ -46,7 +46,7 @@ class Topic extends Component {
   static getDerivedStateFromProps(props, state) {
     if (state.isAdmin === null && props.user && state.topic) {
       return {
-        isAdmin: props.user.isAdmin,
+        isAdmin: state.topic.users.findIndex((u) => u.id === props.user.id) > -1 || props.user.isAdmin,
       };
     }
 
@@ -229,7 +229,7 @@ Topic.propTypes = {
     id: PropTypes.number,
     email: PropTypes.string,
     name: PropTypes.string,
-    isAdmin: PropTypes.bool
+    isAdmin: PropTypes.bool,
   }),
   t: PropTypes.func,
   history: PropTypes.shape({
