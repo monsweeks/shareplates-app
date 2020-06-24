@@ -1,7 +1,9 @@
 .level-properties-popup-wrapper {
+
   > div {
     max-width: 1200px;
     margin: 0 auto;
+    background-color: $white;
 
     @media (max-width: 1240px) {
       max-width: none;

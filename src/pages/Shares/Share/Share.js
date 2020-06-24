@@ -4,10 +4,11 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
-import { Button, EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
+import { EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
+import { MESSAGE_CATEGORY, SCREEN_TYPE } from '@/constants/constants';
 import {
   PageContent,
+  ScreenTypeSelector,
   ShareNavigator,
   ShareSideMenu,
   ShareSidePopup,
@@ -43,6 +44,8 @@ class Share extends React.Component {
       fullScreen: false,
       openUserPopup: false,
       init: false,
+      screenType: SCREEN_TYPE.WEB,
+      openScreenSelector: false,
     };
   }
 
@@ -82,15 +85,18 @@ class Share extends React.Component {
             });
           }
 
+        const isAdmin = data.share.adminUserId === user.id;
+
         this.setState({
           topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
-          isAdmin: data.share.adminUserId === user.id,
+          isAdmin,
           users: convertUsers(data.users),
           init: true,
+          openScreenSelector: isAdmin,
         });
 
         this.getPages(shareId, data.share.currentChapterId);
@@ -234,6 +240,13 @@ class Share extends React.Component {
     const { shareId, isAdmin } = this.state;
     if (isAdmin) {
       request.put(`/api/shares/${shareId}/contents/users/${userId}/kickOut`, null, () => {});
+    }
+  };
+
+  registerScreenType = (screenType) => {
+    const { shareId, isAdmin } = this.state;
+    if (this.clientRef && isAdmin) {
+      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/screenType`, screenType);
     }
   };
 
@@ -401,6 +414,15 @@ class Share extends React.Component {
         break;
       }
 
+      case 'SCREEN_TYPE_REGISTERED': {
+        this.setState({
+          openScreenSelector: false,
+          screenType: data.screenType,
+        });
+
+        break;
+      }
+
       default: {
         break;
       }
@@ -480,6 +502,9 @@ class Share extends React.Component {
       openUserPopup,
       init,
     } = this.state;
+
+    const { screenType, openScreenSelector } = this.state;
+    console.log(screenType);
 
     return (
       <div className="content-viewer-wrapper">
@@ -604,15 +629,7 @@ class Share extends React.Component {
                 </ShareSidePopup>
               )}
             </div>
-            <div className="screen-type d-none" onClick={() => {}}>
-              <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
-              <div>
-                <Button color="primary">프리젠테이션 스크린</Button>
-                <Button color="primary">웹 페이지</Button>
-                <Button color="primary">컨트롤러</Button>
-              </div>
-            </div>
-            {!share.startedYn && (
+            {!openScreenSelector && !share.startedYn && (
               <Popup open>
                 <ShareStandByPopup
                   users={users}
@@ -628,6 +645,19 @@ class Share extends React.Component {
                 />
               </Popup>
             )}
+            <Popup open={openScreenSelector}>
+              <ScreenTypeSelector
+                onSelect={(value) => {
+                  this.registerScreenType(value);
+                  /*
+                  this.setState({
+                    openScreenSelector: false,
+                    screenType: value,
+                  });
+                  */
+                }}
+              />
+            </Popup>
           </>
         )}
       </div>
