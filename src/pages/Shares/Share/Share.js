@@ -527,7 +527,7 @@ class Share extends React.Component {
         {share && share.id && (
           <>
             <SocketClient
-              topics={[`/sub/share-room/${shareId}`]}
+              topics={[`/sub/share-room/${shareId}`, `/user/sub/share-room/${shareId}`]}
               onMessage={this.onMessage}
               onConnect={() => {
                 this.joinShare(shareId);
