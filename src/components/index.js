@@ -46,6 +46,8 @@ import Tabs from '@/components/Tabs/Tabs';
 import TextArea from '@/components/TextArea/TextArea';
 import TopLogo from '@/components/TopLogo/TopLogo';
 import UserIcon from '@/components/UserIcon/UserIcon';
+import FlexOverflowSection from '@/components/FlexOverflowSection/FlexOverflowSection';
+
 
 export {
   Button,
@@ -94,4 +96,5 @@ export {
   TextArea,
   TopLogo,
   UserIcon,
+  FlexOverflowSection,
 };

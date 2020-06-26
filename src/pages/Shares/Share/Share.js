@@ -32,6 +32,7 @@ class Share extends React.Component {
     this.state = {
       shareId: Number(shareId),
       share: {},
+      accessCode : {},
       chapters: [],
       pages: [],
       currentChapterId: null,
@@ -82,6 +83,7 @@ class Share extends React.Component {
           // topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
+          accessCode : data.accessCode,
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
           isAdmin,
@@ -383,6 +385,7 @@ class Share extends React.Component {
       users,
       isOpenUserPopup,
       init,
+      accessCode,
     } = this.state;
 
     const { screenType, openScreenSelector } = this.state;
@@ -487,6 +490,7 @@ class Share extends React.Component {
             {!openScreenSelector && !share.startedYn && (
               <ShareStandByPopup
                 screenType={screenType}
+                accessCode={accessCode}
                 users={users}
                 share={share}
                 isAdmin={isAdmin}

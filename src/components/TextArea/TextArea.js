@@ -59,6 +59,7 @@ class TextArea extends React.Component {
       required,
       type,
       t,
+      height,
       // eslint-disable-next-line react/prop-types
       tReady,
       simple,
@@ -75,6 +76,9 @@ class TextArea extends React.Component {
         } ${simple ? 'simple' : ''}`}
         onClick={() => {
           if (this.control.current) this.control.current.focus();
+        }}
+        style={{
+          height,
         }}
       >
         <div className="input-info">
@@ -101,6 +105,9 @@ class TextArea extends React.Component {
           }}
           value={value}
           required={required}
+          style={{
+            height : height || 'auto'
+          }}
         >
           {value}
         </textarea>
@@ -121,6 +128,7 @@ TextArea.defaultProps = {
   required: false,
   type: 'text',
   simple: false,
+  height: '',
 };
 
 TextArea.propTypes = {
@@ -137,6 +145,7 @@ TextArea.propTypes = {
   customInputValidationMessage: PropTypes.objectOf(PropTypes.any),
   externalValidationMessage: PropTypes.string,
   simple: PropTypes.bool,
+  height: PropTypes.string,
 };
 
 export default withTranslation()(TextArea);
