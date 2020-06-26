@@ -7,7 +7,7 @@ import './ShareStandByUserCard.scss';
 
 class ShareStandByUserCard extends React.PureComponent {
   render() {
-    const { user, message, className, isAdmin } = this.props;
+    const { user, message, className, isAdmin, hideMessage } = this.props;
 
     return (
       <Card className={`share-stand-by-user-card-wrapper ${className} ${user.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
@@ -22,8 +22,8 @@ class ShareStandByUserCard extends React.PureComponent {
             )}
             {user.status !== 'ONLINE' && (
               <span className="status">
-                  <span>OFFLINE</span>
-                </span>
+                <span>OFFLINE</span>
+              </span>
             )}
             <div className="user-info">
               <div className="user-icon">
@@ -33,16 +33,11 @@ class ShareStandByUserCard extends React.PureComponent {
                 <span>{user.name}</span>
               </div>
             </div>
-            <div className="chat">
-              <div className="bullet">
-                <span />
+            {!hideMessage && (
+              <div className="chat">
+                <div className="message">{message}</div>
               </div>
-              <div className="message">
-                <div>
-                  <div className="message-span scrollbar"><div>{message}</div></div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </CardBody>
       </Card>
@@ -82,6 +77,7 @@ ShareStandByUserCard.propTypes = {
   isAdmin: PropTypes.bool,
   className: PropTypes.string,
   message: PropTypes.string,
+  hideMessage: PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(ShareStandByUserCard));

@@ -4,7 +4,8 @@ $icon-size: 50px;
   border-radius: 2px;
   border: none !important;
   background-color: transparent !important;
-  _box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
+  display: inline-block !important;
+  margin: 0 0.25rem;
 
   &.OFFLINE {
     _background-color: $gray-400;
@@ -20,29 +21,31 @@ $icon-size: 50px;
 
   .status {
     position: absolute;
-    top: 0;
+    top: 35px;
     right: 0;
     text-align: center;
     height: 16px;
     vertical-align: top;
     line-height: 100%;
-    display: none;
+    width: 100%;
 
     > span {
-      font-size: 11px;
+      font-size: 10px;
       padding: 2px 4px;
+      background-color: #333;
+      color: $white;
+      border-radius: 2px;
     }
-    display: none;
   }
 
   .crown-icon {
     position: absolute;
-    top: 4px;
+    top: -10px;
     left: 0;
     color: $black;
     border-radius: 50%;
-    text-align: left;
-    padding-left: 23px;
+    width: 100%;
+    text-align: center;
 
     > span {
       text-align: center;
@@ -61,35 +64,36 @@ $icon-size: 50px;
   .user-info {
     text-align: center;
     flex-grow: 0;
-    padding: 0.75rem 0;
+    padding: 0;
 
     .user-icon {
-      padding: 0 10px;
+      padding: 0 1rem;
       > div {
         display: inline-block;
         width: $icon-size;
         height: $icon-size;
+        box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
       }
     }
 
     .user-name {
       text-align: center;
       white-space: nowrap;
-      overflow-x: hidden;
       text-overflow: ellipsis;
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      width: 70px;
+      width: 100%;
+      margin-top: 0.125rem;
+      overflow: visible;
 
       > span {
         display: inline-block;
-        padding: 2px 8px 3px;
+        padding: 4px 8px;
         line-height: 100%;
         border-radius: 2px;
         position: relative;
         font-size: 12px;
         background-color: $yellow;
+        box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1);
       }
     }
 
@@ -109,60 +113,28 @@ $icon-size: 50px;
   &.OFFLINE {
     .user-name {
       > span {
-        background-color: $gray-600;
+        background-color: transparent;
       }
     }
   }
 
   .chat {
-    flex-grow: 1;
-    position: relative;
     align-self: baseline;
-    height: 100%;
-    display: flex;
-
-    > div.bullet {
-      flex-grow: 0;
-      display: flex;
-      > span {
-        display: inline-block;
-        width: 5px;
-        height: 5px;
-        background-color: $white;
-        align-self: center;
-        transform: rotate(45deg);
-        position: relative;
-        left: 2px;
-      }
-    }
+    position: absolute;
+    bottom: 80px;
+    width: 100%;
 
     > div.message {
-      flex-grow: 1;
+      background-color: $white;
+      border-radius: 5px;
+      padding: 0.25rem 0.5rem;
+      display: inline-block;
+      align-self: center;
       position: relative;
-      > div {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        text-align: left;
-        display: flex;
-
-        > div {
-          display: inline-block;
-          padding: 0 0.25rem 0 0;
-          align-self: center;
-          position: relative;
-          overflow-y: auto;
-          max-height: 100%;
-
-          > div {
-            background-color: $white;
-            border-radius: 5px;
-            padding: 0.25rem 0.5rem;
-          }
-        }
-      }
+      overflow-y: auto;
+      max-height: 100%;
+      white-space: pre-wrap;
+      max-height: 50px;
     }
   }
 }

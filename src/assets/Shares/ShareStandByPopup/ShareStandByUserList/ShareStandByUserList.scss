@@ -8,41 +8,16 @@ $icon-size: 60px;
   height: 100%;
   align-self: center;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .admin-user {
-    padding: 0;
-    text-align: center;
-    min-width: 220px;
-    flex-grow: 0;
-
-    @media (max-width: 768px) {
-      margin-bottom: 1rem;
-    }
-
-    @media (max-width: 576px) {
-      padding: 0;
-    }
-  }
-
-  .member-user {
+  > .user-list {
     text-align: center;
     flex-grow: 1;
     position: relative;
+    display: flex;
 
-    @media (max-width: 576px) {
-      padding: 0;
-
-      .row {
-        margin: 0;
-
-        .col {
-          padding: 0;
-        }
-      }
+    > div {
+      align-self: center;
+      width: 100%;
+      padding: 1rem 2rem;
     }
   }
 

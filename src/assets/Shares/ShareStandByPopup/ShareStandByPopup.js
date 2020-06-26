@@ -12,6 +12,14 @@ import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
 
 class ShareStandByPopup extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isOpenChatMessage: true,
+    };
+  }
+
   render() {
     const {
       share,
@@ -27,6 +35,8 @@ class ShareStandByPopup extends React.PureComponent {
       t,
       messages,
     } = this.props;
+
+    const { isOpenChatMessage } = this.state;
 
     return (
       <Popup open full>
@@ -75,55 +85,74 @@ class ShareStandByPopup extends React.PureComponent {
           )}
           {screenType === SCREEN_TYPE.WEB && (
             <div className="web">
-              <div className="title">
+              <div className="name">
                 <div>
-                  <span>{share.name}</span>
+                  <span className="text">{share.name}</span>
+                  <span className="chat-icon">
+                    <Button
+                      color="white"
+                      onClick={() => {
+                        this.setState({
+                          isOpenChatMessage: !isOpenChatMessage,
+                        });
+                      }}
+                    >
+                      <i className="fal fa-comment-dots" />
+                    </Button>
+                  </span>
                 </div>
-              </div>
-              <div className="share-status">
-                <span>{t('토픽이 아직 시작되지 않았습니다.')}</span>
               </div>
               <div className="share-ready-content">
+                <div className="p-4 h5 mb-0">
+                  {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
+                </div>
+                <div className="user-count">
+                  <span>{users.length}</span>
+                </div>
                 <div className="user-info-list">
                   <FlexOverflowSection>
-                    <ShareStandByUserList users={users} user={user} />
+                    <ShareStandByUserList hideMessage users={users} user={user} />
                   </FlexOverflowSection>
                 </div>
-                <div className="chat-list">
-                  <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />
+                <div className="admin-control">
+                  <div>
+                    <div>
+                      <Button color="primary" onClick={exitShare}>
+                        <i className="fal fa-sign-out-alt" />
+                      </Button>
+                      <div>
+                        <span>나가기</span>
+                      </div>
+                    </div>
+                    {isAdmin && (
+                      <>
+                        <div>
+                          <Button color="danger" className="stop" onClick={closeShare}>
+                            <i className="fas fa-stop" />
+                          </Button>
+                          <div>
+                            <span>종료</span>
+                          </div>
+                        </div>
+                        <div>
+                          <Button color="primary" className="start" onClick={startShare}>
+                            <i className="fas fa-play" />
+                          </Button>
+                          <div>
+                            <span>시작</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="admin-control">
-                <div>
-                  <div>
-                    <Button onClick={exitShare}>
-                      <i className="fal fa-sign-out-alt" />
-                    </Button>
-                    <div>
-                      <span>나가기</span>
-                    </div>
-                  </div>
-                  {isAdmin && (
-                    <>
-                      <div>
-                        <Button className="stop" onClick={closeShare}>
-                          <i className="fas fa-stop" />
-                        </Button>
-                        <div>
-                          <span>종료</span>
-                        </div>
-                      </div>
-                      <div>
-                        <Button className="start" onClick={startShare}>
-                          <i className="fas fa-play" />
-                        </Button>
-                        <div>
-                          <span>시작</span>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
+            </div>
+          )}
+          {isOpenChatMessage && (
+            <div className="chat-list">
+              <div>
+                <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />
               </div>
             </div>
           )}
