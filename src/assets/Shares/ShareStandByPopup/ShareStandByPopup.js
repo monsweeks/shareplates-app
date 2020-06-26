@@ -16,7 +16,7 @@ class ShareStandByPopup extends React.PureComponent {
     super(props);
 
     this.state = {
-      isOpenChatMessage: true,
+      isOpenChatMessage: false,
     };
   }
 
@@ -43,9 +43,9 @@ class ShareStandByPopup extends React.PureComponent {
         <div className="share-stand-by-popup-wrapper">
           {screenType === SCREEN_TYPE.PROJECTOR && (
             <div className="projector">
-              <div className="title">
+              <div className="name">
                 <div>
-                  <span>{share.name}</span>
+                  <span className="text">{share.name}</span>
                 </div>
               </div>
               <div className="address">
@@ -61,20 +61,24 @@ class ShareStandByPopup extends React.PureComponent {
                   </div>
                 </div>
               </div>
-              <div className="user-info">
-                <div className="user-count">
-                  <div>
-                    <span className="number">{users.length}</span>
-                    <div className="mt-1">참여</div>
-                  </div>
+              <div className="user-count">
+                <div>
+                  <span className="number">{users.length}</span>
                 </div>
+              </div>
+              <div className="user-info">
                 <div className="user-list">
                   <FlexOverflowSection overflowX>
                     <div className="user-icon-list">
                       <div>
                         {users &&
                           users.map((u) => {
-                            return <div className="user-icon">{user && <UserIcon info={u.info} />}</div>;
+                            return (
+                              <div>
+                                <div className="user-icon">{user && <UserIcon info={u.info} />}</div>
+                                <div className="user-name">{u.name}</div>
+                              </div>
+                            );
                           })}
                       </div>
                     </div>
@@ -149,7 +153,7 @@ class ShareStandByPopup extends React.PureComponent {
               </div>
             </div>
           )}
-          {isOpenChatMessage && (
+          {isOpenChatMessage && screenType === SCREEN_TYPE.WEB && (
             <div className="chat-list">
               <div>
                 <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />

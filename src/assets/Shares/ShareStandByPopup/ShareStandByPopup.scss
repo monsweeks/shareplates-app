@@ -3,8 +3,6 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  _background-color: $white;
-  _background-color: $primary;
 
   > div {
     .name {
@@ -55,11 +53,16 @@
     flex-direction: column;
     height: 100%;
 
+    > .name {
+      background-color: $sea-blue;
+    }
+
     .address {
       flex-grow: 1;
       display: flex;
       align-self: center;
       width: 100%;
+      background-color: $primary;
 
       > div {
         align-self: center;
@@ -74,6 +77,9 @@
         width: 100%;
         color: $white;
         font-size: 1.1rem;
+        @media (max-width: 576px) {
+          font-size: 1rem;
+        }
 
         &.or {
           margin-top: 2rem;
@@ -94,6 +100,9 @@
           border: none;
           outline: none;
           font-size: 1.4rem;
+          @media (max-width: 576px) {
+            font-size: 1.2rem;
+          }
           font-family: LGSmHaB, sans-serif;
           padding: 0.5rem;
           border-radius: 2px;
@@ -106,12 +115,17 @@
       .address-url {
         font-size: 1.4rem;
 
+        @media (max-width: 576px) {
+          font-size: 1.1rem;
+        }
+
         > span {
           padding: 0.5rem;
           font-family: LGSmHaB, sans-serif;
           border-radius: 2px;
           text-transform: uppercase;
           color: $white;
+          word-break: break-all;
         }
       }
 
@@ -122,21 +136,19 @@
       }
     }
 
-    .user-info {
+    .user-count {
       flex-grow: 0;
-      min-height: 30%;
-      background-color: $secondary;
-      color: $white;
       display: flex;
-      flex-direction: row;
+      align-self: center;
+      padding: 0;
+      white-space: nowrap;
+      background-color: $primary;
+      width: 100%;
+      text-align: center;
 
-      > .user-count {
-        flex-grow: 0;
-        display: flex;
-        align-self: center;
-        padding: 0 2rem;
-        white-space: nowrap;
-
+      > div {
+        width: 100%;
+        text-align: center;
         .number {
           display: inline-block;
           width: 40px;
@@ -147,8 +159,22 @@
           font-family: 'Baloo Bhai', cursive;
           font-size: 20px;
           border-radius: 50%;
-          padding-top: 5px;
+          padding-top: 6px;
+          position: relative;
+          top: 20px;
         }
+      }
+    }
+
+    .user-info {
+      flex-grow: 0;
+      min-height: 120px;
+      background-color: $white;
+      display: flex;
+      flex-direction: row;
+      border-radius: 0 0 10px 10px;
+      @media (max-width: 576px) {
+        border-radius: 0;
       }
 
       > .user-list {
@@ -165,6 +191,10 @@
 
           > div {
             align-self: center;
+
+            > div {
+              display: inline-block;
+            }
           }
 
           div.user-icon {
@@ -174,6 +204,10 @@
             margin: 0 1rem;
             border-radius: 50%;
             box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+          }
+
+          div.user-name {
+            font-size: 0.7rem;
           }
         }
       }
