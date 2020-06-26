@@ -20,6 +20,11 @@ class ShareStandByUserCard extends React.PureComponent {
                 </span>
               </div>
             )}
+            {user.status !== 'ONLINE' && (
+              <span className="status">
+                  <span>OFFLINE</span>
+                </span>
+            )}
             <div className="user-info">
               <div className="user-icon">
                 <div>{user && <UserIcon info={user.info} />}</div>
@@ -29,14 +34,14 @@ class ShareStandByUserCard extends React.PureComponent {
               </div>
             </div>
             <div className="chat">
-              <div className="message">
-                <div className="scrollbar h-100 w-100">{message}</div>
+              <div className="bullet">
+                <span />
               </div>
-              {user.status !== 'ONLINE' && (
-                <span className="status">
-                  <span>OFFLINE</span>
-                </span>
-              )}
+              <div className="message">
+                <div>
+                  <div className="message-span scrollbar"><div>{message}</div></div>
+                </div>
+              </div>
             </div>
           </div>
         </CardBody>
