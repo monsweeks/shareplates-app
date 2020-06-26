@@ -10,6 +10,7 @@ import { MESSAGE_CATEGORY, SCREEN_TYPE } from '@/constants/constants';
 import {
   PageContent,
   ScreenTypeSelector,
+  ShareController,
   ShareHeader,
   ShareSidePopup,
   ShareSideUserPopup,
@@ -42,7 +43,7 @@ class Share extends React.Component {
       users: [],
       isOpenUserPopup: false,
       init: false,
-      screenType: SCREEN_TYPE.WEB,
+      screenType: SCREEN_TYPE.CONTROLLER, // TODO
       openScreenSelector: false,
       messages: [],
     };
@@ -94,7 +95,8 @@ class Share extends React.Component {
           isAdmin,
           users: convertUsers(data.users),
           init: true,
-          openScreenSelector: isAdmin,
+          // TODO
+          openScreenSelector: false,
           messages: data.messages,
         });
 
@@ -355,7 +357,7 @@ class Share extends React.Component {
 
           const message = {
             message: data.message,
-            creationDate : new Date(),
+            creationDate: new Date(),
             user: next[userIndex],
           };
           nextMessages.push(message);
@@ -437,73 +439,78 @@ class Share extends React.Component {
                 this.clientRef = client;
               }}
             />
-            <ShareHeader
-              isAdmin={isAdmin}
-              share={share}
-              chapters={chapters}
-              pages={pages}
-              currentChapterId={currentChapterId}
-              currentPageId={currentPageId}
-              isOpenUserPopup={isOpenUserPopup}
-              setChapter={this.setChapter}
-              setPage={this.setPage}
-              stopShare={() => {
-                messageClient.stopShare(shareId);
-              }}
-              setOpenUserPopup={this.setOpenUserPopup}
-            />
-            <div className="content">
-              {share.startedYn && currentPage && (
-                <PageContent
-                  content={JSON.parse(currentPage.content)}
-                  setPageContent={this.setPageContent}
-                  onLayoutChange={this.onLayoutChange}
-                  setSelectedItem={this.setSelectedItem}
-                  onChangeValue={this.onChangeValue}
-                  setEditing={this.setEditing}
-                  movePage={this.movePage}
+            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && <ShareController />}
+            {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
+              <>
+                <ShareHeader
+                  isAdmin={isAdmin}
+                  share={share}
+                  chapters={chapters}
+                  pages={pages}
+                  currentChapterId={currentChapterId}
+                  currentPageId={currentPageId}
+                  isOpenUserPopup={isOpenUserPopup}
+                  setChapter={this.setChapter}
+                  setPage={this.setPage}
+                  stopShare={() => {
+                    messageClient.stopShare(shareId);
+                  }}
+                  setOpenUserPopup={this.setOpenUserPopup}
                 />
-              )}
-              {share.startedYn && !currentPage && (
-                <div className="empty-page">
-                  <EmptyMessage
-                    className="h5"
-                    message={
-                      <div>
-                        <div>{t('선택된 컨텐츠가 없습니다')}</div>
-                      </div>
-                    }
-                  />
+                <div className="content">
+                  {share.startedYn && currentPage && (
+                    <PageContent
+                      content={JSON.parse(currentPage.content)}
+                      setPageContent={this.setPageContent}
+                      onLayoutChange={this.onLayoutChange}
+                      setSelectedItem={this.setSelectedItem}
+                      onChangeValue={this.onChangeValue}
+                      setEditing={this.setEditing}
+                      movePage={this.movePage}
+                    />
+                  )}
+                  {share.startedYn && !currentPage && (
+                    <div className="empty-page">
+                      <EmptyMessage
+                        className="h5"
+                        message={
+                          <div>
+                            <div>{t('선택된 컨텐츠가 없습니다')}</div>
+                          </div>
+                        }
+                      />
+                    </div>
+                  )}
+                  {isOpenUserPopup && (
+                    <ShareSidePopup
+                      name="user-popup"
+                      className="open-user-popup"
+                      title={`참여중인 사용자 (${
+                        users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length
+                      }/${users.filter((u) => !u.banYn).length})`}
+                      arrowRight={isAdmin ? '126px' : '110px'}
+                      setOpen={this.setOpenUserPopup}
+                    >
+                      <ShareSideUserPopup
+                        user={user}
+                        users={users}
+                        banUser={(userId) => {
+                          messageClient.banUser(shareId, userId);
+                        }}
+                        kickOutUser={(userId) => {
+                          messageClient.kickOutUser(shareId, userId);
+                        }}
+                        allowUser={(userId) => {
+                          messageClient.allowUser(shareId, userId);
+                        }}
+                        isAdmin={isAdmin}
+                      />
+                    </ShareSidePopup>
+                  )}
                 </div>
-              )}
-              {isOpenUserPopup && (
-                <ShareSidePopup
-                  name="user-popup"
-                  className="open-user-popup"
-                  title={`참여중인 사용자 (${
-                    users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length
-                  }/${users.filter((u) => !u.banYn).length})`}
-                  arrowRight={isAdmin ? '126px' : '110px'}
-                  setOpen={this.setOpenUserPopup}
-                >
-                  <ShareSideUserPopup
-                    user={user}
-                    users={users}
-                    banUser={(userId) => {
-                      messageClient.banUser(shareId, userId);
-                    }}
-                    kickOutUser={(userId) => {
-                      messageClient.kickOutUser(shareId, userId);
-                    }}
-                    allowUser={(userId) => {
-                      messageClient.allowUser(shareId, userId);
-                    }}
-                    isAdmin={isAdmin}
-                  />
-                </ShareSidePopup>
-              )}
-            </div>
-            {!openScreenSelector && !share.startedYn && (
+              </>
+            )}
+            {(!openScreenSelector || !isAdmin) && !share.startedYn && screenType !== SCREEN_TYPE.CONTROLLER && (
               <ShareStandByPopup
                 screenType={screenType}
                 accessCode={accessCode}
@@ -526,7 +533,7 @@ class Share extends React.Component {
                 }}
               />
             )}
-            {openScreenSelector && (
+            {isAdmin && openScreenSelector && (
               <ScreenTypeSelector
                 onSelect={(value) => {
                   messageClient.registerScreenType(this.clientRef, shareId, value);

@@ -17,7 +17,7 @@ import ShareUserCard from '@/assets/Shares/ShareUserCard/ShareUserCard';
 import ScreenTypeSelector from '@/assets/Shares/ScreenTypeSelector/ScreenTypeSelector';
 import ShareHeader from '@/assets/Shares/ShareHeader/ShareHeader';
 import ChatManager from '@/assets/Shares/ChatManager/ChatManager';
-
+import ShareController from '@/assets/Shares/ShareController/ShareController';
 
 // Topic
 import TopicForm from '@/assets/Topics/TopicForm/TopicForm';
@@ -58,6 +58,7 @@ export {
   ScreenTypeSelector,
   ShareHeader,
   ChatManager,
+  ShareController,
   // Topic
   TopicForm,
   ChapterCardLayoutList,
