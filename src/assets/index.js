@@ -15,6 +15,8 @@ import ShareSideUserPopup from '@/assets/Shares/ShareSideUserPopup/ShareSideUser
 import ShareStandByPopup from '@/assets/Shares/ShareStandByPopup/ShareStandByPopup';
 import ShareUserCard from '@/assets/Shares/ShareUserCard/ShareUserCard';
 import ScreenTypeSelector from '@/assets/Shares/ScreenTypeSelector/ScreenTypeSelector';
+import ShareHeader from '@/assets/Shares/ShareHeader/ShareHeader';
+
 
 // Topic
 import TopicForm from '@/assets/Topics/TopicForm/TopicForm';
@@ -53,6 +55,7 @@ export {
   ShareStandByPopup,
   ShareUserCard,
   ScreenTypeSelector,
+  ShareHeader,
   // Topic
   TopicForm,
   ChapterCardLayoutList,

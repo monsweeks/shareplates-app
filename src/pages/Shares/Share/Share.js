@@ -4,13 +4,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
-import { EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
+import messageClient from './client';
+import { EmptyMessage, SocketClient } from '@/components';
 import { MESSAGE_CATEGORY, SCREEN_TYPE } from '@/constants/constants';
 import {
   PageContent,
   ScreenTypeSelector,
-  ShareNavigator,
-  ShareSideMenu,
+  ShareHeader,
   ShareSidePopup,
   ShareSideUserPopup,
   ShareStandByPopup,
@@ -30,7 +30,6 @@ class Share extends React.Component {
     } = this.props;
 
     this.state = {
-      topic: {},
       shareId: Number(shareId),
       share: {},
       chapters: [],
@@ -40,9 +39,7 @@ class Share extends React.Component {
       currentPage: null,
       isAdmin: false,
       users: [],
-      hideShareNavigator: false,
-      fullScreen: false,
-      openUserPopup: false,
+      isOpenUserPopup: false,
       init: false,
       screenType: SCREEN_TYPE.WEB,
       openScreenSelector: false,
@@ -65,12 +62,6 @@ class Share extends React.Component {
     }
   }
 
-  joinShare = (shareId) => {
-    if (this.clientRef) {
-      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
-    }
-  };
-
   getShare = (shareId) => {
     request.get(
       `/api/shares/${shareId}/contents`,
@@ -88,7 +79,7 @@ class Share extends React.Component {
         const isAdmin = data.share.adminUserId === user.id;
 
         this.setState({
-          topic: data.topic,
+          // topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
           currentChapterId: data.share.currentChapterId,
@@ -201,55 +192,6 @@ class Share extends React.Component {
     this.getPages(shareId, chapterId, null, setFirstPage, setLastPage);
   };
 
-  startShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/start`, null, () => {});
-    }
-  };
-
-  stopShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/stop`, null, () => {});
-    }
-  };
-
-  closeShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/close`, null, () => {});
-    }
-  };
-
-  banUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/ban`, null, () => {});
-    }
-  };
-
-  allowUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/allow`, null, () => {});
-    }
-  };
-
-  kickOutUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/kickOut`, null, () => {});
-    }
-  };
-
-  registerScreenType = (screenType) => {
-    const { shareId, isAdmin } = this.state;
-    if (this.clientRef && isAdmin) {
-      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/screenType`, screenType);
-    }
-  };
-
   movePage = (isNext) => {
     const { pages, chapters, currentChapterId, currentPageId } = this.state;
     const currentPageIndex = pages.findIndex((page) => page.id === currentPageId);
@@ -275,11 +217,6 @@ class Share extends React.Component {
     } else {
       this.setPage(pages[currentPageIndex - 1].id);
     }
-  };
-
-  sendReadyChat = (message) => {
-    const { shareId } = this.state;
-    request.post(`/api/shares/${shareId}/contents/chats/ready`, { message }, () => {}, null, true);
   };
 
   onMessage = (msg) => {
@@ -414,64 +351,16 @@ class Share extends React.Component {
         break;
       }
 
-      case 'SCREEN_TYPE_REGISTERED': {
-        this.setState({
-          openScreenSelector: false,
-          screenType: data.screenType,
-        });
-
-        break;
-      }
-
       default: {
         break;
       }
     }
   };
 
-  setHideShareNavigator = (value) => {
-    this.setState({
-      hideShareNavigator: value,
-    });
-  };
-
-  setFullScreen = (value) => {
-    const elem = document.documentElement;
-    if (value) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    }
-
-    if (!value) {
-      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      }
-    }
-
-    this.setState({
-      fullScreen: value,
-    });
-  };
-
   setOpenUserPopup = (value) => {
     this.setState(
       {
-        openUserPopup: value,
+        isOpenUserPopup: value,
       },
       () => {
         window.dispatchEvent(new Event('resize'));
@@ -480,15 +369,10 @@ class Share extends React.Component {
   };
 
   render() {
-    // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, user, location, history } = this.props;
+    const { t, user, history } = this.props;
 
     const {
-      // eslint-disable-next-line no-unused-vars,no-shadow
-      topic,
-      // eslint-disable-next-line no-unused-vars,no-shadow
       shareId,
-      // eslint-disable-next-line no-unused-vars,no-shadow
       share,
       chapters,
       pages,
@@ -497,14 +381,11 @@ class Share extends React.Component {
       currentPage,
       isAdmin,
       users,
-      hideShareNavigator,
-      fullScreen,
-      openUserPopup,
+      isOpenUserPopup,
       init,
     } = this.state;
 
     const { screenType, openScreenSelector } = this.state;
-    console.log(screenType);
 
     return (
       <div className="content-viewer-wrapper">
@@ -530,60 +411,28 @@ class Share extends React.Component {
               topics={[`/sub/share-room/${shareId}`, `/user/sub/share-room/${shareId}`]}
               onMessage={this.onMessage}
               onConnect={() => {
-                this.joinShare(shareId);
+                messageClient.joinShare(this.clientRef, shareId);
               }}
               onDisconnect={() => {}}
               setRef={(client) => {
                 this.clientRef = client;
               }}
             />
-            <div className={`viewer-top g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
-              <div>
-                <div className="logo-area">
-                  <TopLogo />
-                </div>
-                <div className="menu">
-                  {chapters.length > 0 && (
-                    <>
-                      <ShareNavigator
-                        className="chapters-menu"
-                        list={chapters}
-                        selectedId={currentChapterId}
-                        onClick={this.setChapter}
-                        onPrevClick={this.setChapter}
-                        onNextClick={this.setChapter}
-                      />
-                      <ShareNavigator
-                        className="pages-menu"
-                        list={pages}
-                        selectedId={currentPageId}
-                        onClick={this.setPage}
-                        onPrevClick={this.setPage}
-                        onNextClick={this.setPage}
-                      />
-                    </>
-                  )}
-                  {chapters.length < 1 && (
-                    <div className="no-menu">
-                      <div>작성된 컨텐츠가 없습니다</div>
-                    </div>
-                  )}
-                </div>
-                <div className="side-menu">
-                  <ShareSideMenu
-                    share={share}
-                    isAdmin={isAdmin}
-                    stopShare={this.stopShare}
-                    hideShareNavigator={hideShareNavigator}
-                    setHideShareNavigator={this.setHideShareNavigator}
-                    fullScreen={fullScreen}
-                    setFullScreen={this.setFullScreen}
-                    openUserPopup={openUserPopup}
-                    setOpenUserPopup={this.setOpenUserPopup}
-                  />
-                </div>
-              </div>
-            </div>
+            <ShareHeader
+              isAdmin={isAdmin}
+              share={share}
+              chapters={chapters}
+              pages={pages}
+              currentChapterId={currentChapterId}
+              currentPageId={currentPageId}
+              isOpenUserPopup={isOpenUserPopup}
+              setChapter={this.setChapter}
+              setPage={this.setPage}
+              stopShare={() => {
+                messageClient.stopShare(shareId);
+              }}
+              setOpenUserPopup={this.setOpenUserPopup}
+            />
             <div className="content">
               {share.startedYn && currentPage && (
                 <PageContent
@@ -608,7 +457,7 @@ class Share extends React.Component {
                   />
                 </div>
               )}
-              {openUserPopup && (
+              {isOpenUserPopup && (
                 <ShareSidePopup
                   name="user-popup"
                   className="open-user-popup"
@@ -621,43 +470,52 @@ class Share extends React.Component {
                   <ShareSideUserPopup
                     user={user}
                     users={users}
-                    banUser={this.banUser}
-                    kickOutUser={this.kickOutUser}
-                    allowUser={this.allowUser}
+                    banUser={(userId) => {
+                      messageClient.banUser(shareId, userId);
+                    }}
+                    kickOutUser={(userId) => {
+                      messageClient.kickOutUser(shareId, userId);
+                    }}
+                    allowUser={(userId) => {
+                      messageClient.allowUser(shareId, userId);
+                    }}
                     isAdmin={isAdmin}
                   />
                 </ShareSidePopup>
               )}
             </div>
             {!openScreenSelector && !share.startedYn && (
-              <Popup open>
-                <ShareStandByPopup
-                  users={users}
-                  share={share}
-                  isAdmin={isAdmin}
-                  user={user}
-                  sendReadyChat={this.sendReadyChat}
-                  startShare={this.startShare}
-                  closeShare={this.closeShare}
-                  exitShare={() => {
-                    history.push('/shares');
-                  }}
-                />
-              </Popup>
+              <ShareStandByPopup
+                screenType={screenType}
+                users={users}
+                share={share}
+                isAdmin={isAdmin}
+                user={user}
+                sendReadyChat={(message) => {
+                  messageClient.sendReadyChat(shareId, message);
+                }}
+                startShare={() => {
+                  messageClient.startShare(shareId);
+                }}
+                closeShare={() => {
+                  messageClient.closeShare(shareId);
+                }}
+                exitShare={() => {
+                  history.push('/shares');
+                }}
+              />
             )}
-            <Popup open={openScreenSelector}>
+            {openScreenSelector && (
               <ScreenTypeSelector
                 onSelect={(value) => {
-                  this.registerScreenType(value);
-                  /*
+                  messageClient.registerScreenType(this.clientRef, shareId, value);
                   this.setState({
                     openScreenSelector: false,
                     screenType: value,
                   });
-                  */
                 }}
               />
-            </Popup>
+            )}
           </>
         )}
       </div>
@@ -687,10 +545,6 @@ Share.propTypes = {
       topicId: PropTypes.string,
       chapterId: PropTypes.string,
     }),
-  }),
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
   }),
 };
 

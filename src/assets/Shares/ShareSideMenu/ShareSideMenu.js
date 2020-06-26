@@ -16,7 +16,7 @@ class ShareSideMenu extends React.PureComponent {
     const { stopShare } = this.props;
     const { hideShareNavigator, setHideShareNavigator } = this.props;
     const { fullScreen, setFullScreen } = this.props;
-    const { openUserPopup, setOpenUserPopup } = this.props;
+    const { isOpenUserPopup, setOpenUserPopup } = this.props;
 
     return (
       <div className="share-side-menu-wrapper">
@@ -44,9 +44,9 @@ class ShareSideMenu extends React.PureComponent {
           <i className="fal fa-expand" />
         </span>
         <span
-          className={`on-off-button ${openUserPopup ? 'on' : 'off'}`}
+          className={`on-off-button ${isOpenUserPopup ? 'on' : 'off'}`}
           onClick={() => {
-            setOpenUserPopup(!openUserPopup);
+            setOpenUserPopup(!isOpenUserPopup);
           }}
         >
           <span className="on-off" />
@@ -94,7 +94,7 @@ ShareSideMenu.propTypes = {
   setHideShareNavigator: PropTypes.func,
   fullScreen: PropTypes.bool,
   setFullScreen: PropTypes.func,
-  openUserPopup: PropTypes.bool,
+  isOpenUserPopup: PropTypes.bool,
   setOpenUserPopup: PropTypes.func,
 };
 
