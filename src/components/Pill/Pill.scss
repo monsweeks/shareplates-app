@@ -1,0 +1,23 @@
+.pill-wrapper {
+  display: inline-block;
+  font-size: 0.8rem;
+  line-height: 0;
+  > span {
+    display: inline-block;
+    padding: 0.125rem 0.25rem;
+    line-height: 100%;
+    min-width: 25px;
+    text-align: center;
+
+    &:first-child {
+      background-color: $success;
+      color: $white;
+      border-radius: 4px 0 0 4px;
+    }
+
+    &:last-child {
+      background-color: $gray-300;
+      border-radius: 0 4px 4px 0;
+    }
+  }
+}

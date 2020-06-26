@@ -439,7 +439,7 @@ class Share extends React.Component {
                 this.clientRef = client;
               }}
             />
-            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && <ShareController />}
+            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && <ShareController share={share} />}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
               <>
                 <ShareHeader

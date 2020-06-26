@@ -36,8 +36,7 @@
   > .controller-content {
     flex-grow: 1;
     display: flex;
-    color: $white;
-    font-size: 2rem;
+
     position: relative;
 
     > div {
@@ -51,19 +50,51 @@
       > div.content-layout {
         width: 400%;
         height: 100%;
-        text-align: center;
         display: flex;
         position: relative;
         left: -100%;
         transition: left 0.3s;
 
         > div {
-          text-align: center;
           align-self: center;
           width: 100%;
           height: 100%;
+          padding: 0.5rem;
+          font-size: 0.8rem;
+
+          .label {
+            color: $gray-600;
+          }
+
+          .value {
+            font-size: 0.9rem;
+          }
+
+          .line {
+            display: flex;
+            flex-direction: row;
+            padding: 0.5rem 0;
+
+            > .label {
+              padding: 0 0.5rem;
+            }
+
+            > .label,
+            > .separator {
+              flex-grow: 0;
+              align-self: center;
+            }
+
+            > .value {
+              flex-grow: 1;
+              align-self: center;
+            }
+          }
         }
       }
     }
+  }
+
+  .status-layout {
   }
 }
