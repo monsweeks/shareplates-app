@@ -162,7 +162,7 @@
     flex-direction: column;
     height: 100%;
 
-    .title {
+    > .title {
       flex-grow: 0;
       display: flex;
       text-align: center;
@@ -216,44 +216,6 @@
         box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-
-        > .title {
-          padding: 0.75rem 1rem;
-          width: 100%;
-          flex-grow: 0;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
-          > div {
-            color: $black;
-          }
-        }
-
-        > .chat-content {
-          flex-grow: 1;
-        }
-
-        .chat-control {
-          flex-grow: 0;
-          display: flex;
-          flex-direction: row;
-
-          background-color: $light;
-          border-radius: 0 0 2px 2px;
-          .input-control {
-            flex-grow: 1;
-            padding: 0.5rem 0 0.5rem 0.5rem;
-          }
-
-          .button-control {
-            flex-grow: 0;
-            padding: 0.5rem;
-            align-self: center;
-
-            button {
-              height: 50px;
-            }
-          }
-        }
       }
     }
 

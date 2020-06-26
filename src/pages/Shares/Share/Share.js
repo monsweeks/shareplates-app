@@ -32,7 +32,7 @@ class Share extends React.Component {
     this.state = {
       shareId: Number(shareId),
       share: {},
-      accessCode : {},
+      accessCode: {},
       chapters: [],
       pages: [],
       currentChapterId: null,
@@ -44,6 +44,7 @@ class Share extends React.Component {
       init: false,
       screenType: SCREEN_TYPE.WEB,
       openScreenSelector: false,
+      messages: [],
     };
   }
 
@@ -79,17 +80,22 @@ class Share extends React.Component {
 
         const isAdmin = data.share.adminUserId === user.id;
 
+        data.messages.forEach((m) => {
+          m.user = convertUser(m.user);
+        });
+
         this.setState({
           // topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
-          accessCode : data.accessCode,
+          accessCode: data.accessCode,
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
           isAdmin,
           users: convertUsers(data.users),
           init: true,
           openScreenSelector: isAdmin,
+          messages: data.messages,
         });
 
         this.getPages(shareId, data.share.currentChapterId);
@@ -340,13 +346,23 @@ class Share extends React.Component {
       }
 
       case 'CHAT_MESSAGE': {
-        const { users } = this.state;
+        const { users, messages } = this.state;
         const next = users.slice(0);
+        const nextMessages = messages.slice(0);
         const userIndex = next.findIndex((user) => user.id === data.senderId);
         if (userIndex > -1) {
           next[userIndex].message = data.message;
+
+          const message = {
+            message: data.message,
+            creationDate : new Date(),
+            user: next[userIndex],
+          };
+          nextMessages.push(message);
+
           this.setState({
             users: next,
+            messages: nextMessages,
           });
         }
 
@@ -388,7 +404,7 @@ class Share extends React.Component {
       accessCode,
     } = this.state;
 
-    const { screenType, openScreenSelector } = this.state;
+    const { screenType, openScreenSelector, messages } = this.state;
 
     return (
       <div className="content-viewer-wrapper">
@@ -495,6 +511,7 @@ class Share extends React.Component {
                 share={share}
                 isAdmin={isAdmin}
                 user={user}
+                messages={messages}
                 sendReadyChat={(message) => {
                   messageClient.sendReadyChat(shareId, message);
                 }}

@@ -3,22 +3,15 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, FlexOverflowSection, Popup, TextArea, UserIcon } from '@/components';
+import { Button, FlexOverflowSection, Popup, UserIcon } from '@/components';
+import { ChatManager } from '@/assets';
 import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
 
 import { SCREEN_TYPE } from '@/constants/constants';
 import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
 
-class ShareStandByPopup extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      message: '',
-    };
-  }
-
+class ShareStandByPopup extends React.PureComponent {
   render() {
     const {
       share,
@@ -32,9 +25,8 @@ class ShareStandByPopup extends React.Component {
       screenType,
       accessCode,
       t,
+      messages,
     } = this.props;
-
-    const { message } = this.state;
 
     return (
       <Popup open full>
@@ -98,37 +90,7 @@ class ShareStandByPopup extends React.Component {
                   </FlexOverflowSection>
                 </div>
                 <div className="chat-list">
-                  <div className="title">
-                    <div>{t('메세지')}</div>
-                  </div>
-                  <div className="chat-content">&nbsp;</div>
-                  <div className="chat-control">
-                    <div className="input-control">
-                      <TextArea
-                        height="50px"
-                        className="p-0"
-                        onChange={(value) => {
-                          this.setState({
-                            message: value,
-                          });
-                        }}
-                        value={message}
-                      />
-                    </div>
-                    <div className="button-control">
-                      <Button
-                        color="primary"
-                        onClick={() => {
-                          sendReadyChat(message);
-                          this.setState({
-                            message: '',
-                          });
-                        }}
-                      >
-                        {t('전송')}
-                      </Button>
-                    </div>
-                  </div>
+                  <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />
                 </div>
               </div>
               <div className="admin-control">
@@ -202,6 +164,7 @@ ShareStandByPopup.propTypes = {
   accessCode: PropTypes.shape({
     code: PropTypes.string,
   }),
+  messages: PropTypes.arrayOf(PropTypes.any),
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareStandByPopup)));
