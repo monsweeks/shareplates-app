@@ -52,7 +52,7 @@ class ShareStandByPopup extends React.PureComponent {
                 <div>
                   <div className="message">{t('공유 메뉴에서 아래 엑세스 코드를 입력하거나')}</div>
                   <div className="access-code-input">
-                    <input type="text" value={accessCode.code} />
+                    <input type="text" value={accessCode.code} readOnly />
                   </div>
                   <div className="message or">{t('또는')}</div>
                   <div className="message">아래 URL을 통해 토픽에 참여할 수 있습니다.</div>
@@ -74,7 +74,7 @@ class ShareStandByPopup extends React.PureComponent {
                         {users &&
                           users.map((u) => {
                             return (
-                              <div>
+                              <div key={u.id}>
                                 <div className="user-icon">{user && <UserIcon info={u.info} />}</div>
                                 <div className="user-name">{u.name}</div>
                               </div>

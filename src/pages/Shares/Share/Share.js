@@ -43,7 +43,7 @@ class Share extends React.Component {
       users: [],
       isOpenUserPopup: false,
       init: false,
-      screenType: SCREEN_TYPE.CONTROLLER, // TODO
+      screenType: SCREEN_TYPE.WEB,
       openScreenSelector: false,
       messages: [],
     };
@@ -95,8 +95,7 @@ class Share extends React.Component {
           isAdmin,
           users: convertUsers(data.users),
           init: true,
-          // TODO
-          openScreenSelector: false,
+          openScreenSelector: isAdmin,
           messages: data.messages,
         });
 
@@ -357,7 +356,7 @@ class Share extends React.Component {
 
           const message = {
             message: data.message,
-            creationDate: new Date(),
+            creationDate: String(new Date()),
             user: next[userIndex],
           };
           nextMessages.push(message);
@@ -439,7 +438,39 @@ class Share extends React.Component {
                 this.clientRef = client;
               }}
             />
-            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && <ShareController share={share} />}
+            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && (
+              <ShareController
+                share={share}
+                users={users}
+                isAdmin={isAdmin}
+                startShare={() => {
+                  messageClient.startShare(shareId);
+                }}
+                closeShare={() => {
+                  messageClient.closeShare(shareId);
+                }}
+                stopShare={() => {
+                  messageClient.stopShare(shareId);
+                }}
+                exitShare={() => {
+                  history.push('/shares');
+                }}
+                banUser={(userId) => {
+                  messageClient.banUser(shareId, userId);
+                }}
+                kickOutUser={(userId) => {
+                  messageClient.kickOutUser(shareId, userId);
+                }}
+                allowUser={(userId) => {
+                  messageClient.allowUser(shareId, userId);
+                }}
+                messages={messages}
+                user={user}
+                sendReadyChat={(message) => {
+                  messageClient.sendReadyChat(shareId, message);
+                }}
+              />
+            )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
               <>
                 <ShareHeader

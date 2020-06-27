@@ -35,15 +35,17 @@ class ChatManager extends React.Component {
   };
 
   render() {
-    const { user, sendReadyChat, t, messages } = this.props;
-
+    const { t, className } = this.props;
+    const { user, sendReadyChat, messages, boxShadow, showTitle, flatChatControl } = this.props;
     const { message } = this.state;
 
     return (
-      <div className="chat-manager-wrapper">
-        <div className="title">
-          <div>{t('메세지')}</div>
-        </div>
+      <div className={`chat-manager-wrapper ${className} ${boxShadow ? '' : 'no-box-shadow'}`}>
+        {showTitle && (
+          <div className="title">
+            <div>{t('메세지')}</div>
+          </div>
+        )}
         <div className="chat-content">
           <FlexOverflowSection
             onRef={
@@ -74,7 +76,7 @@ class ChatManager extends React.Component {
             </div>
           </FlexOverflowSection>
         </div>
-        <div className="chat-control">
+        <div className={`chat-control ${flatChatControl ? 'flat' : ''}`}>
           <div className="input-control">
             <TextArea
               height="50px"
@@ -112,7 +114,15 @@ const mapStateToProps = (state) => {
   };
 };
 
+ChatManager.defaultProps = {
+  className: '',
+  boxShadow: true,
+  showTitle: true,
+  flatChatControl: false,
+};
+
 ChatManager.propTypes = {
+  className: PropTypes.string,
   t: PropTypes.func,
   user: PropTypes.shape({
     id: PropTypes.number,
@@ -121,6 +131,9 @@ ChatManager.propTypes = {
   }),
   sendReadyChat: PropTypes.func,
   messages: PropTypes.arrayOf(PropTypes.any),
+  boxShadow: PropTypes.bool,
+  showTitle: PropTypes.bool,
+  flatChatControl: PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ChatManager)));

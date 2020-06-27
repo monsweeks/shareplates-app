@@ -45,7 +45,6 @@ class MessageDialog extends React.PureComponent {
             <div>
               {(noHandler || type === 'confirm') && (
                 <Button
-                  size="sm"
                   className="px-4 mx-1"
                   color="secondary"
                   onClick={() => {
@@ -66,7 +65,6 @@ class MessageDialog extends React.PureComponent {
               <Button
                 className="px-4 mx-1"
                 color="primary"
-                size="sm"
                 onClick={() => {
                   if (okHandler) {
                     okHandler();
