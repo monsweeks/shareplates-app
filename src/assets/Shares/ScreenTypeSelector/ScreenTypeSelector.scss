@@ -1,0 +1,128 @@
+.screen-type-selector-wrapper {
+  width: 510px;
+  margin: 0 auto;
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+
+  .intro-msg {
+    font-size: 1.2rem;
+
+    @media (max-width: 576px) {
+      font-size: 1rem;
+    }
+  }
+
+  .buttons {
+    height: 120px;
+    display: flex;
+    position: relative;
+
+    @media (max-width: 576px) {
+      display: block;
+      height: auto;
+    }
+
+    > div {
+      flex: 1 1 0;
+      margin: 0 5px;
+
+      > button {
+        .icon {
+          font-size: 1.6rem;
+
+          @media (max-width: 576px) {
+            position: relative;
+            top: -10px;
+            font-size: 1.4rem;
+          }
+        }
+
+        .text {
+          font-size: 1rem;
+          @media (max-width: 576px) {
+            position: relative;
+            top: -15px;
+          }
+        }
+      }
+
+      @media (max-width: 576px) {
+        flex: none;
+        height: 120px;
+        margin-bottom: 1rem;
+        position: relative;
+      }
+
+      .desc {
+        position: absolute;
+        white-space: nowrap;
+        left: 5px;
+        bottom: -40px;
+        background-color: $white;
+        width: calc(100% - 10px);
+        padding: 4px;
+        opacity: 0;
+        transition: all 0.3s;
+
+        @media (max-width: 576px) {
+          left: 0;
+          opacity: 1;
+          bottom: 0;
+          width: 100%;
+          background-color: transparent;
+          color: $white;
+          font-size: 0.75rem;
+          white-space: normal;
+        }
+      }
+
+      .line {
+        height: 20px;
+        width: 2px;
+        background-color: $primary;
+        position: absolute;
+        bottom: -11px;
+        opacity: 0;
+        transition: all 0.3s;
+
+        @media (max-width: 576px) {
+          display: none;
+        }
+
+        &.projector {
+          left: 257px;
+        }
+
+        &.web {
+          left: 85px;
+        }
+
+        &.controller {
+          left: 425px;
+        }
+
+        > .ball {
+          width: 6px;
+          height: 6px;
+          background-color: $primary;
+          border-radius: 50%;
+          position: absolute;
+          left: -2px;
+          top: 0;
+        }
+      }
+
+      @media (min-width: 576px) {
+        &:hover {
+          .desc,
+          .line {
+            opacity: 1;
+            transition: all 0.3s;
+          }
+        }
+      }
+    }
+  }
+}

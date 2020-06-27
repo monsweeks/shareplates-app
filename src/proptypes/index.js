@@ -50,7 +50,7 @@ const SharePropTypes = PropTypes.shape({
       closeDate: PropTypes.string,
     }),
   ),
-  shareUsers: PropTypes.arrayOf(PropTypes.shape(PropTypes.any)),
+  shareUsers: PropTypes.arrayOf(PropTypes.any),
   topicName: PropTypes.string,
 });
 

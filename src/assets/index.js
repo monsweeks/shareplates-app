@@ -14,6 +14,11 @@ import ShareSidePopup from '@/assets/Shares/ShareSidePopup/ShareSidePopup';
 import ShareSideUserPopup from '@/assets/Shares/ShareSideUserPopup/ShareSideUserPopup';
 import ShareStandByPopup from '@/assets/Shares/ShareStandByPopup/ShareStandByPopup';
 import ShareUserCard from '@/assets/Shares/ShareUserCard/ShareUserCard';
+import ScreenTypeSelector from '@/assets/Shares/ScreenTypeSelector/ScreenTypeSelector';
+import ShareHeader from '@/assets/Shares/ShareHeader/ShareHeader';
+import ChatManager from '@/assets/Shares/ChatManager/ChatManager';
+import ShareController from '@/assets/Shares/ShareController/ShareController';
+
 // Topic
 import TopicForm from '@/assets/Topics/TopicForm/TopicForm';
 import ChapterCardLayoutList from '@/assets/Topics/ChapterCardLayoutList/ChapterCardLayoutList';
@@ -50,6 +55,10 @@ export {
   ShareSideUserPopup,
   ShareStandByPopup,
   ShareUserCard,
+  ScreenTypeSelector,
+  ShareHeader,
+  ChatManager,
+  ShareController,
   // Topic
   TopicForm,
   ChapterCardLayoutList,

@@ -1,64 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { withTranslation } from 'react-i18next';
-import { Col, EmptyMessage, Row } from '@/components';
 import ShareStandByUserCard from './ShareStandByUserCard/ShareStandByUserCard';
 import './ShareStandByUserList.scss';
 
 class ShareStandByUserList extends React.PureComponent {
   render() {
-    const { user: currentUser, t, className, users } = this.props;
-    const members = users.filter((u) => u.shareRoleCode === 'MEMBER');
-    const { sendReadyChat } = this.props;
+    const { className, users, hideMessage } = this.props;
 
     return (
       <div className={`${className} share-stand-by-user-list-wrapper`}>
-        <div className="admin-user">
-          {users
-            .filter((u) => u.shareRoleCode === 'ADMIN')
-            .map((user) => {
-              return (
-                <ShareStandByUserCard
-                  key={user.id}
-                  currentUser={currentUser}
-                  user={user}
-                  sendReadyChat={sendReadyChat}
-                  isAdmin
-                />
-              );
-            })}
-        </div>
-        {members.length > 0 && (
-          <div className="member-user scrollbar">
+        {users.length > 0 && (
+          <div className="user-list">
             <div>
-              <Row>
-                {members.map((user) => {
+              {users
+                .filter((u) => u.shareRoleCode === 'ADMIN')
+                .map((user) => {
                   return (
-                    <Col className="col" xl={3} lg={4} md={6} sm={6} xs={12} key={user.id}>
-                      <ShareStandByUserCard
-                        key={user.id}
-                        currentUser={currentUser}
-                        user={user}
-                        sendReadyChat={sendReadyChat}
-                      />
-                    </Col>
+                    <ShareStandByUserCard
+                      key={user.id}
+                      hideMessage={hideMessage}
+                      user={user}
+                      message={user.message}
+                      isAdmin
+                    />
                   );
                 })}
-              </Row>
+              {users
+                .filter((u) => u.shareRoleCode === 'MEMBER')
+                .map((user) => {
+                  return (
+                    <ShareStandByUserCard key={user.id} hideMessage={hideMessage} user={user} message={user.message} />
+                  );
+                })}
             </div>
-          </div>
-        )}
-        {members.length < 1 && (
-          <div className="member-empty">
-            <EmptyMessage
-              className="h5"
-              message={
-                <div>
-                  <div>{t('참여 중인 사용자가 없습니다.')}</div>
-                </div>
-              }
-            />
           </div>
         )}
       </div>
@@ -80,14 +54,8 @@ ShareStandByUserList.propTypes = {
       message: PropTypes.string,
     }),
   ),
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-  }),
-  t: PropTypes.func,
   className: PropTypes.string,
-  sendReadyChat: PropTypes.func,
+  hideMessage: PropTypes.bool,
 };
 
-export default withRouter(withTranslation()(ShareStandByUserList));
+export default ShareStandByUserList;

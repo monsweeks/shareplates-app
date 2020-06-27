@@ -1,174 +1,336 @@
 .share-stand-by-popup-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
-  height: 600px;
+  height: 100%;
 
-  @media (max-height: 740px) {
-    height: 600px;
-  }
-
-  @media (max-height: 650px) {
-    height: 500px;
-  }
-
-  @media (max-height: 550px) {
-    height: 400px;
-  }
-
-  @media (max-height: 450px) {
-    height: 100%;
-  }
-
-  .top {
-    display: flex;
-    position: relative;
-    flex-grow: 0;
-
-    @media (max-width: 992px) {
-      flex-direction: column;
-    }
-
-    .share-info {
-      flex-grow: 1;
-      padding: 2rem 0;
-      text-align: center;
-      border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
-
-      @media (max-width: 992px) {
-        padding: 1rem 0;
-      }
-
-      @media (max-width: 768px) {
-        padding: 1rem 0 1rem;
-      }
-
-      .connect-url {
-        font-family: Righteous;
-        text-transform: uppercase;
-        padding: 0 1rem;
-
-        > span {
-          display: inline-block;
-          line-height: 100%;
-          color: $black;
-          font-size: 28px;
-
-          @media (max-width: 768px) {
-            font-size: 20px;
-            word-break: break-all;
-          }
-
-          @media (max-width: 576px) {
-            font-size: 16px;
-          }
-        }
-      }
-
-      .connect-message {
-        @media (max-width: 768px) {
-          font-size: 12px;
-        }
-      }
-
-      .user-message {
-        margin-top: 0.5rem;
-        > span {
-          display: inline-block;
-          background-color: $primary;
-          line-height: 100%;
-          padding: 4px 8px;
-          color: $white;
-          border-radius: 5px;
-        }
-      }
-    }
-
-    .admin-control {
-      padding: 0 2rem;
+  > div {
+    .name {
       flex-grow: 0;
-      align-self: center;
-      position: absolute;
-      top: 32px;
-      right: 0;
+      display: flex;
+      text-align: center;
+      padding: 1rem;
+      background-color: $primary;
+      border-radius: 10px 10px 0 0;
 
-      @media (max-width: 992px) {
-        position: static;
-        width: 100%;
-        text-align: center;
-        margin-top: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        margin-bottom: 0;
+      @media (max-width: 576px) {
+        border-radius: 0;
       }
 
       > div {
-        display: inline-block;
-        margin: 0 5px;
+        align-self: center;
+        width: 100%;
+        text-align: center;
+        color: $white;
+        position: relative;
 
-        button {
+        > span.text {
           display: inline-block;
-          width: 40px;
-          height: 40px;
-          color: $white;
-          background-color: $primary;
-          border-radius: 50%;
-          font-size: 20px;
-          text-align: center;
-          padding-top: 7px;
-          border: none;
-
-          &:hover {
-            background-color: $yellow;
-            color: $black;
-          }
-
-          &.start {
-            > i {
-              position: relative;
-              left: 2px;
-            }
-          }
-
-          &.stop {
-            > i {
-              position: relative;
-              left: -1px;
-            }
-          }
+          padding: 0.25rem 1rem;
+          font-size: 1.4rem;
+          border-bottom: 1px solid $white;
         }
 
-        > div {
-          font-size: 12px;
+        > span.chat-icon {
+          position: absolute;
+          right: 0;
+
+          > button {
+            font-size: 1.4rem;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            padding: 2px 0 0;
+          }
         }
       }
     }
   }
 
-  .user-count {
-    display: inline-block;
-    line-height: 100%;
-    font-size: 12px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+  .projector {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-    > span {
-      display: inline-block;
-      border-radius: 3px;
-      padding: 3px 5px 2px;
-      background-color: $white;
-      border: 1px solid rgba(0, 0, 0, 0.2);
+    > .name {
+      background-color: $sea-blue;
     }
 
-    @media (max-width: 768px) {
-      top: -27px;
-      left: 0;
+    .address {
+      flex-grow: 1;
+      display: flex;
+      align-self: center;
       width: 100%;
+      background-color: $primary;
 
-      > span {
+      > div {
+        align-self: center;
+        width: 100%;
+        > div {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .message {
+        text-align: center;
+        width: 100%;
+        color: $white;
+        font-size: 1.1rem;
+        @media (max-width: 576px) {
+          font-size: 1rem;
+        }
+
+        &.or {
+          margin-top: 2rem;
+          margin-bottom: 2rem;
+        }
+      }
+
+      .access-code-input {
+        align-self: center;
+        width: 100%;
+        margin: 0 auto;
+        line-height: 0;
+        border-radius: 0;
+        position: relative;
+        max-width: 300px;
+
+        > input {
+          border: none;
+          outline: none;
+          font-size: 1.4rem;
+          @media (max-width: 576px) {
+            font-size: 1.2rem;
+          }
+          font-family: LGSmHaB, sans-serif;
+          padding: 0.5rem;
+          border-radius: 2px;
+          text-align: center;
+          width: 100%;
+          letter-spacing: 4px;
+        }
+      }
+
+      .address-url {
+        font-size: 1.4rem;
+
+        @media (max-width: 576px) {
+          font-size: 1.1rem;
+        }
+
+        > span {
+          padding: 0.5rem;
+          font-family: LGSmHaB, sans-serif;
+          border-radius: 2px;
+          text-transform: uppercase;
+          color: $white;
+          word-break: break-all;
+        }
+      }
+
+      > div {
+        align-self: center;
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    .user-count {
+      flex-grow: 0;
+      display: flex;
+      align-self: center;
+      padding: 0;
+      white-space: nowrap;
+      background-color: $primary;
+      width: 100%;
+      text-align: center;
+
+      > div {
+        width: 100%;
+        text-align: center;
+        .number {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          background-color: $yellow;
+          color: $black;
+          text-align: center;
+          font-family: 'Baloo Bhai', cursive;
+          font-size: 20px;
+          border-radius: 50%;
+          padding-top: 6px;
+          position: relative;
+          top: 20px;
+        }
+      }
+    }
+
+    .user-info {
+      flex-grow: 0;
+      min-height: 120px;
+      background-color: $white;
+      display: flex;
+      flex-direction: row;
+      border-radius: 0 0 10px 10px;
+      @media (max-width: 576px) {
+        border-radius: 0;
+      }
+
+      > .user-list {
+        flex-grow: 1;
+        display: flex;
+        align-self: center;
+        width: 100%;
+        height: 100%;
+
+        .user-icon-list {
+          white-space: nowrap;
+          height: 100%;
+          display: flex;
+
+          > div {
+            align-self: center;
+
+            > div {
+              display: inline-block;
+            }
+          }
+
+          div.user-icon {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin: 0 1rem;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+          }
+
+          div.user-name {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
+
+  .web {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .share-ready-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      _background-color: $light;
+      background-color: $white;
+      border-radius: 0 0 10px 10px;
+      @media (max-width: 576px) {
+        border-radius: 0;
+      }
+
+      > .user-count {
+        > span {
+          position: relative;
+          display: inline-block;
+          font-family: 'Baloo Bhai', cursive;
+          font-size: 2rem;
+          line-height: 100%;
+          width: 50px;
+          height: 50px;
+          background-color: $yellow;
+          text-align: center;
+          padding-top: 10px;
+          border-radius: 50%;
+          box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      > .user-info-list {
+        flex-grow: 1;
+        display: flex;
+      }
+
+      .admin-control {
+        flex-grow: 0;
+        align-self: center;
+        padding: 0 1rem 1rem;
+        width: 100%;
+
+        > div {
+          _border-top: 1px dashed rgba(0, 0, 0, 0.3);
+          background-color: $white;
+          padding: 1rem 1rem 0.5rem;
+          border-radius: 10px;
+
+          width: 100%;
+          > div {
+            display: inline-block;
+            padding: 0 1rem;
+
+            button {
+              display: inline-block;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              font-size: 16px;
+              text-align: center;
+              padding: 0;
+              box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.2);
+
+              &.start {
+                > i {
+                  position: relative;
+                  left: 2px;
+                }
+              }
+            }
+
+            > div {
+              font-size: 0.7rem;
+              margin-top: 0.25rem;
+              text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  > .chat-list {
+    position: absolute;
+    right: 0;
+    top: 73px;
+    width: 400px;
+    height: calc(100% - 73px);
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 992px) {
+      width: 500px;
+      right: auto;
+      margin: 0 calc((100% - 500px) / 2);
+    }
+
+    @media (max-width: 576px) {
+      width: 100%;
+      left: 0;
+      margin: 0;
+    }
+
+    > div {
+      padding: 1rem;
+      height: 100%;
+      display: flex;
+      @media (max-width: 576px) {
+        padding: 0;
+      }
+      > div {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        @media (max-width: 576px) {
+          border: none;
+        }
       }
     }
   }

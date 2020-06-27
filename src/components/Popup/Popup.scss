@@ -3,7 +3,6 @@
   overflow-y: auto;
   > div {
     max-width: 1400px;
-    background-color: $white;
     margin: 0 auto;
     border-radius: 1px;
     position: relative;
@@ -55,8 +54,18 @@
   &.full {
     > div {
       height: calc(100% - 40px);
-      margin: 20px auto;
-      background-color: $white;
+      max-width: none;
+      margin: 20px;
+
+      > .popup-content {
+        width: 100%;
+        height: 100%;
+      }
+
+      @media (max-width: 576px) {
+        height: 100%;
+        margin: 0;
+      }
     }
   }
 }

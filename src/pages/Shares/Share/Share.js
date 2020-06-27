@@ -4,12 +4,14 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import request from '@/utils/request';
-import { Button, EmptyMessage, Popup, SocketClient, TopLogo } from '@/components';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
+import messageClient from './client';
+import { EmptyMessage, SocketClient } from '@/components';
+import { MESSAGE_CATEGORY, SCREEN_TYPE } from '@/constants/constants';
 import {
   PageContent,
-  ShareNavigator,
-  ShareSideMenu,
+  ScreenTypeSelector,
+  ShareController,
+  ShareHeader,
   ShareSidePopup,
   ShareSideUserPopup,
   ShareStandByPopup,
@@ -29,9 +31,9 @@ class Share extends React.Component {
     } = this.props;
 
     this.state = {
-      topic: {},
       shareId: Number(shareId),
       share: {},
+      accessCode: {},
       chapters: [],
       pages: [],
       currentChapterId: null,
@@ -39,10 +41,11 @@ class Share extends React.Component {
       currentPage: null,
       isAdmin: false,
       users: [],
-      hideShareNavigator: false,
-      fullScreen: false,
-      openUserPopup: false,
+      isOpenUserPopup: false,
       init: false,
+      screenType: SCREEN_TYPE.WEB,
+      openScreenSelector: false,
+      messages: [],
     };
   }
 
@@ -62,12 +65,6 @@ class Share extends React.Component {
     }
   }
 
-  joinShare = (shareId) => {
-    if (this.clientRef) {
-      this.clientRef.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
-    }
-  };
-
   getShare = (shareId) => {
     request.get(
       `/api/shares/${shareId}/contents`,
@@ -82,15 +79,24 @@ class Share extends React.Component {
             });
           }
 
+        const isAdmin = data.share.adminUserId === user.id;
+
+        data.messages.forEach((m) => {
+          m.user = convertUser(m.user);
+        });
+
         this.setState({
-          topic: data.topic,
+          // topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
+          accessCode: data.accessCode,
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
-          isAdmin: data.share.adminUserId === user.id,
+          isAdmin,
           users: convertUsers(data.users),
           init: true,
+          openScreenSelector: isAdmin,
+          messages: data.messages,
         });
 
         this.getPages(shareId, data.share.currentChapterId);
@@ -195,48 +201,6 @@ class Share extends React.Component {
     this.getPages(shareId, chapterId, null, setFirstPage, setLastPage);
   };
 
-  startShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/start`, null, () => {});
-    }
-  };
-
-  stopShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/stop`, null, () => {});
-    }
-  };
-
-  closeShare = () => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/close`, null, () => {});
-    }
-  };
-
-  banUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/ban`, null, () => {});
-    }
-  };
-
-  allowUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/allow`, null, () => {});
-    }
-  };
-
-  kickOutUser = (userId) => {
-    const { shareId, isAdmin } = this.state;
-    if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/users/${userId}/kickOut`, null, () => {});
-    }
-  };
-
   movePage = (isNext) => {
     const { pages, chapters, currentChapterId, currentPageId } = this.state;
     const currentPageIndex = pages.findIndex((page) => page.id === currentPageId);
@@ -262,11 +226,6 @@ class Share extends React.Component {
     } else {
       this.setPage(pages[currentPageIndex - 1].id);
     }
-  };
-
-  sendReadyChat = (message) => {
-    const { shareId } = this.state;
-    request.post(`/api/shares/${shareId}/contents/chats/ready`, { message }, () => {}, null, true);
   };
 
   onMessage = (msg) => {
@@ -388,13 +347,23 @@ class Share extends React.Component {
       }
 
       case 'CHAT_MESSAGE': {
-        const { users } = this.state;
+        const { users, messages } = this.state;
         const next = users.slice(0);
+        const nextMessages = messages.slice(0);
         const userIndex = next.findIndex((user) => user.id === data.senderId);
         if (userIndex > -1) {
           next[userIndex].message = data.message;
+
+          const message = {
+            message: data.message,
+            creationDate: String(new Date()),
+            user: next[userIndex],
+          };
+          nextMessages.push(message);
+
           this.setState({
             users: next,
+            messages: nextMessages,
           });
         }
 
@@ -407,49 +376,10 @@ class Share extends React.Component {
     }
   };
 
-  setHideShareNavigator = (value) => {
-    this.setState({
-      hideShareNavigator: value,
-    });
-  };
-
-  setFullScreen = (value) => {
-    const elem = document.documentElement;
-    if (value) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    }
-
-    if (!value) {
-      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      }
-    }
-
-    this.setState({
-      fullScreen: value,
-    });
-  };
-
   setOpenUserPopup = (value) => {
     this.setState(
       {
-        openUserPopup: value,
+        isOpenUserPopup: value,
       },
       () => {
         window.dispatchEvent(new Event('resize'));
@@ -458,15 +388,10 @@ class Share extends React.Component {
   };
 
   render() {
-    // eslint-disable-next-line no-unused-vars,no-shadow
-    const { t, user, location, history } = this.props;
+    const { t, user, history } = this.props;
 
     const {
-      // eslint-disable-next-line no-unused-vars,no-shadow
-      topic,
-      // eslint-disable-next-line no-unused-vars,no-shadow
       shareId,
-      // eslint-disable-next-line no-unused-vars,no-shadow
       share,
       chapters,
       pages,
@@ -475,11 +400,12 @@ class Share extends React.Component {
       currentPage,
       isAdmin,
       users,
-      hideShareNavigator,
-      fullScreen,
-      openUserPopup,
+      isOpenUserPopup,
       init,
+      accessCode,
     } = this.state;
+
+    const { screenType, openScreenSelector, messages } = this.state;
 
     return (
       <div className="content-viewer-wrapper">
@@ -502,131 +428,152 @@ class Share extends React.Component {
         {share && share.id && (
           <>
             <SocketClient
-              topics={[`/sub/share-room/${shareId}`]}
+              topics={[`/sub/share-room/${shareId}`, `/user/sub/share-room/${shareId}`]}
               onMessage={this.onMessage}
               onConnect={() => {
-                this.joinShare(shareId);
+                messageClient.joinShare(this.clientRef, shareId);
               }}
               onDisconnect={() => {}}
               setRef={(client) => {
                 this.clientRef = client;
               }}
             />
-            <div className={`viewer-top g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
-              <div>
-                <div className="logo-area">
-                  <TopLogo />
-                </div>
-                <div className="menu">
-                  {chapters.length > 0 && (
-                    <>
-                      <ShareNavigator
-                        className="chapters-menu"
-                        list={chapters}
-                        selectedId={currentChapterId}
-                        onClick={this.setChapter}
-                        onPrevClick={this.setChapter}
-                        onNextClick={this.setChapter}
-                      />
-                      <ShareNavigator
-                        className="pages-menu"
-                        list={pages}
-                        selectedId={currentPageId}
-                        onClick={this.setPage}
-                        onPrevClick={this.setPage}
-                        onNextClick={this.setPage}
-                      />
-                    </>
+            {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && (
+              <ShareController
+                share={share}
+                users={users}
+                isAdmin={isAdmin}
+                startShare={() => {
+                  messageClient.startShare(shareId);
+                }}
+                closeShare={() => {
+                  messageClient.closeShare(shareId);
+                }}
+                stopShare={() => {
+                  messageClient.stopShare(shareId);
+                }}
+                exitShare={() => {
+                  history.push('/shares');
+                }}
+                banUser={(userId) => {
+                  messageClient.banUser(shareId, userId);
+                }}
+                kickOutUser={(userId) => {
+                  messageClient.kickOutUser(shareId, userId);
+                }}
+                allowUser={(userId) => {
+                  messageClient.allowUser(shareId, userId);
+                }}
+                messages={messages}
+                user={user}
+                sendReadyChat={(message) => {
+                  messageClient.sendReadyChat(shareId, message);
+                }}
+              />
+            )}
+            {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
+              <>
+                <ShareHeader
+                  isAdmin={isAdmin}
+                  share={share}
+                  chapters={chapters}
+                  pages={pages}
+                  currentChapterId={currentChapterId}
+                  currentPageId={currentPageId}
+                  isOpenUserPopup={isOpenUserPopup}
+                  setChapter={this.setChapter}
+                  setPage={this.setPage}
+                  stopShare={() => {
+                    messageClient.stopShare(shareId);
+                  }}
+                  setOpenUserPopup={this.setOpenUserPopup}
+                />
+                <div className="content">
+                  {share.startedYn && currentPage && (
+                    <PageContent
+                      content={JSON.parse(currentPage.content)}
+                      setPageContent={this.setPageContent}
+                      onLayoutChange={this.onLayoutChange}
+                      setSelectedItem={this.setSelectedItem}
+                      onChangeValue={this.onChangeValue}
+                      setEditing={this.setEditing}
+                      movePage={this.movePage}
+                    />
                   )}
-                  {chapters.length < 1 && (
-                    <div className="no-menu">
-                      <div>작성된 컨텐츠가 없습니다</div>
+                  {share.startedYn && !currentPage && (
+                    <div className="empty-page">
+                      <EmptyMessage
+                        className="h5"
+                        message={
+                          <div>
+                            <div>{t('선택된 컨텐츠가 없습니다')}</div>
+                          </div>
+                        }
+                      />
                     </div>
                   )}
+                  {isOpenUserPopup && (
+                    <ShareSidePopup
+                      name="user-popup"
+                      className="open-user-popup"
+                      title={`참여중인 사용자 (${
+                        users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length
+                      }/${users.filter((u) => !u.banYn).length})`}
+                      arrowRight={isAdmin ? '126px' : '110px'}
+                      setOpen={this.setOpenUserPopup}
+                    >
+                      <ShareSideUserPopup
+                        user={user}
+                        users={users}
+                        banUser={(userId) => {
+                          messageClient.banUser(shareId, userId);
+                        }}
+                        kickOutUser={(userId) => {
+                          messageClient.kickOutUser(shareId, userId);
+                        }}
+                        allowUser={(userId) => {
+                          messageClient.allowUser(shareId, userId);
+                        }}
+                        isAdmin={isAdmin}
+                      />
+                    </ShareSidePopup>
+                  )}
                 </div>
-                <div className="side-menu">
-                  <ShareSideMenu
-                    share={share}
-                    isAdmin={isAdmin}
-                    stopShare={this.stopShare}
-                    hideShareNavigator={hideShareNavigator}
-                    setHideShareNavigator={this.setHideShareNavigator}
-                    fullScreen={fullScreen}
-                    setFullScreen={this.setFullScreen}
-                    openUserPopup={openUserPopup}
-                    setOpenUserPopup={this.setOpenUserPopup}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="content">
-              {share.startedYn && currentPage && (
-                <PageContent
-                  content={JSON.parse(currentPage.content)}
-                  setPageContent={this.setPageContent}
-                  onLayoutChange={this.onLayoutChange}
-                  setSelectedItem={this.setSelectedItem}
-                  onChangeValue={this.onChangeValue}
-                  setEditing={this.setEditing}
-                  movePage={this.movePage}
-                />
-              )}
-              {share.startedYn && !currentPage && (
-                <div className="empty-page">
-                  <EmptyMessage
-                    className="h5"
-                    message={
-                      <div>
-                        <div>{t('선택된 컨텐츠가 없습니다')}</div>
-                      </div>
-                    }
-                  />
-                </div>
-              )}
-              {openUserPopup && (
-                <ShareSidePopup
-                  name="user-popup"
-                  className="open-user-popup"
-                  title={`참여중인 사용자 (${
-                    users.filter((u) => !u.banYn).filter((u) => u.status === 'ONLINE').length
-                  }/${users.filter((u) => !u.banYn).length})`}
-                  arrowRight={isAdmin ? '126px' : '110px'}
-                  setOpen={this.setOpenUserPopup}
-                >
-                  <ShareSideUserPopup
-                    user={user}
-                    users={users}
-                    banUser={this.banUser}
-                    kickOutUser={this.kickOutUser}
-                    allowUser={this.allowUser}
-                    isAdmin={isAdmin}
-                  />
-                </ShareSidePopup>
-              )}
-            </div>
-            <div className="screen-type d-none" onClick={() => {}}>
-              <div className="mb-2">이 스크린의 타입을 선택해주세요</div>
-              <div>
-                <Button color="primary">프리젠테이션 스크린</Button>
-                <Button color="primary">웹 페이지</Button>
-                <Button color="primary">컨트롤러</Button>
-              </div>
-            </div>
-            {!share.startedYn && (
-              <Popup open>
-                <ShareStandByPopup
-                  users={users}
-                  share={share}
-                  isAdmin={isAdmin}
-                  user={user}
-                  sendReadyChat={this.sendReadyChat}
-                  startShare={this.startShare}
-                  closeShare={this.closeShare}
-                  exitShare={() => {
-                    history.push('/shares');
-                  }}
-                />
-              </Popup>
+              </>
+            )}
+            {(!openScreenSelector || !isAdmin) && !share.startedYn && screenType !== SCREEN_TYPE.CONTROLLER && (
+              <ShareStandByPopup
+                screenType={screenType}
+                accessCode={accessCode}
+                users={users}
+                share={share}
+                isAdmin={isAdmin}
+                user={user}
+                messages={messages}
+                sendReadyChat={(message) => {
+                  messageClient.sendReadyChat(shareId, message);
+                }}
+                startShare={() => {
+                  messageClient.startShare(shareId);
+                }}
+                closeShare={() => {
+                  messageClient.closeShare(shareId);
+                }}
+                exitShare={() => {
+                  history.push('/shares');
+                }}
+              />
+            )}
+            {isAdmin && openScreenSelector && (
+              <ScreenTypeSelector
+                onSelect={(value) => {
+                  messageClient.registerScreenType(this.clientRef, shareId, value);
+                  this.setState({
+                    openScreenSelector: false,
+                    screenType: value,
+                  });
+                }}
+              />
             )}
           </>
         )}
@@ -657,10 +604,6 @@ Share.propTypes = {
       topicId: PropTypes.string,
       chapterId: PropTypes.string,
     }),
-  }),
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
   }),
 };
 

@@ -1,0 +1,146 @@
+.chat-manager-wrapper {
+  flex-grow: 0;
+  width: 100%;
+  background-color: $white;
+  border-radius: 2px;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &.no-box-shadow {
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
+
+  > .title {
+    padding: 0.75rem 1rem;
+    width: 100%;
+    flex-grow: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+    > div {
+      color: $black;
+    }
+  }
+
+  > .chat-content {
+    flex-grow: 1;
+    display: flex;
+    background-color: $gray-300;
+
+    .chat-item {
+      &:first-child {
+        margin-top: 0.5rem;
+      }
+
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 0.5rem;
+
+      .user-icon {
+        min-width: 60px;
+        height: 60px;
+        flex: 0;
+        padding: 0.5rem;
+      }
+
+      .message {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0 0.5rem;
+        text-align: left;
+
+        > .user-name {
+          font-size: 0.75rem;
+        }
+
+        > .message-content {
+          > span {
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
+            background-color: $white;
+            display: inline-block;
+            white-space: pre-wrap;
+            word-break: break-all;
+          }
+        }
+
+        > .creation-date {
+          text-align: left;
+          font-size: 0.7rem;
+        }
+      }
+
+      &.my-message {
+        flex-direction: row-reverse;
+
+        .message {
+          > .user-name {
+            text-align: right;
+          }
+
+          > .message-content {
+            text-align: right;
+
+            > span {
+              text-align: left;
+            }
+          }
+
+          > .creation-date {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  .chat-control {
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: $light;
+    border-radius: 0 0 2px 2px;
+
+    &.chat-control {
+      background-color: transparent;
+      margin-top: 0.5rem;
+    }
+
+    .input-control {
+      flex-grow: 1;
+      padding: 0.5rem 0 0.5rem 0.5rem;
+    }
+
+    .button-control {
+      flex-grow: 0;
+      padding: 0.5rem;
+      align-self: center;
+
+      &.chat-control {
+        padding: 0.5rem 0;
+      }
+
+      button {
+        height: 50px;
+      }
+    }
+
+    &.chat-control {
+      .input-control {
+        padding: 0;
+      }
+
+      .button-control {
+        padding: 0 0 0 0.5rem;
+      }
+    }
+  }
+}

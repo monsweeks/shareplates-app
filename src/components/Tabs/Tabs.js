@@ -4,7 +4,7 @@ import './Tabs.scss';
 
 class Tabs extends React.PureComponent {
   render() {
-    const { className, tabTitle, tabs, tab, onChange, left, buttonStyle } = this.props;
+    const { className, tabTitle, tabs, tab, onChange, left, buttonStyle, tabColor } = this.props;
 
     return (
       <div className={`tabs-wrapper ${className} ${left ? 'left' : ''} ${buttonStyle ? 'button-style' : ''}`}>
@@ -14,6 +14,9 @@ class Tabs extends React.PureComponent {
             <div
               key={item.value}
               className={`tab-item ${item.value === tab ? 'selected' : ''}`}
+              style={{
+                backgroundColor : tabColor
+              }}
               onClick={() => {
                 onChange(item.value);
               }}
@@ -31,6 +34,7 @@ Tabs.defaultProps = {
   className: '',
   left: false,
   buttonStyle: false,
+  tabColor : ''
 };
 
 Tabs.propTypes = {
@@ -46,6 +50,7 @@ Tabs.propTypes = {
   onChange: PropTypes.func,
   left: PropTypes.bool,
   buttonStyle: PropTypes.bool,
+  tabColor : PropTypes.string,
 };
 
 export default Tabs;

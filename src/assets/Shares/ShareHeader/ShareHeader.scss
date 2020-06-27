@@ -1,0 +1,72 @@
+.share-header-wrapper {
+  flex-grow: 0;
+  display: block;
+  vertical-align: top;
+  height: 60px;
+  transition: 0.3s all;
+
+  > div {
+    height: 60px;
+    background-color: $secondary;
+  }
+
+  &.hide {
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 70px;
+    transition: 0.3s all;
+    transition-delay: 0.2s;
+
+    &:hover {
+      top: 0;
+      height: 60px;
+      transition: 0.3s all;
+    }
+  }
+
+  .logo-area {
+    display: inline-block;
+    padding: 5px 0;
+    width: 120px;
+  }
+
+  .side-menu {
+    width: 280px;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    color: $white;
+    padding: 16px 1rem;
+    text-align: center;
+  }
+
+  .menu {
+    display: inline-block;
+    width: calc(100% - 400px);
+    vertical-align: top;
+    padding: 4px 0;
+
+    .chapters-menu {
+      margin-bottom: 4px;
+    }
+
+    .chapters {
+      margin-bottom: 4px;
+    }
+
+    .no-menu {
+      color: $white;
+      height: 52px;
+      display: flex;
+
+      > div {
+        flex-grow: 1;
+        align-self: center;
+        padding: 0 1rem;
+      }
+    }
+  }
+}
