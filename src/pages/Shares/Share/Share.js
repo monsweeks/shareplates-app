@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { debounce } from 'lodash';
 import request from '@/utils/request';
 import messageClient from './client';
 import { EmptyMessage, SocketClient } from '@/components';
@@ -22,6 +23,8 @@ import { Header } from '@/layouts';
 import dialog from '@/utils/dialog';
 
 class Share extends React.Component {
+  contentViewer = React.createRef();
+
   constructor(props) {
     super(props);
     const {
@@ -37,7 +40,7 @@ class Share extends React.Component {
       accessCode: {},
       chapters: [],
       pages: [],
-      chapterPageList : [],
+      chapterPageList: [],
       currentChapterId: null,
       currentPageId: null,
       currentPage: null,
@@ -49,7 +52,10 @@ class Share extends React.Component {
       // screenType: SCREEN_TYPE.CONTROLLER,
       openScreenSelector: false,
       messages: [],
+      projectorScrollInfo: {},
     };
+
+    this.onScrollDebounced = debounce(this.sendScrollInfo, 300);
   }
 
   componentDidMount() {
@@ -58,15 +64,63 @@ class Share extends React.Component {
     if (user && !init) {
       this.getShare(shareId);
     }
+
+    document.addEventListener('scroll', this.onScroll);
   }
 
-  componentDidUpdate() {
-    const { shareId, share, init } = this.state;
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.onScroll);
+    this.onScrollDebounced.cancel();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { shareId, share, init, currentPageId, screenType } = this.state;
     const { user } = this.props;
     if (user && share.id !== shareId && !init) {
       this.getShare(shareId);
     }
+
+    if (screenType === SCREEN_TYPE.PROJECTOR && currentPageId !== prevState.currentPageId) {
+      this.onScroll();
+    }
   }
+
+  onScroll = () => {
+    const { screenType } = this.state;
+
+    if (screenType === SCREEN_TYPE.PROJECTOR) {
+      const windowHeight = window.innerHeight;
+      const contentViewerHeight =
+        this.contentViewer && this.contentViewer.current && this.contentViewer.current.clientHeight;
+      this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
+    }
+  };
+
+  sendScrollInfo = (windowHeight, contentViewerHeight, scrollTop) => {
+    const { shareId, isAdmin } = this.state;
+
+    if (isAdmin) {
+      request.put(
+        `/api/shares/${shareId}/contents/scroll`,
+        {
+          windowHeight,
+          contentViewerHeight,
+          scrollTop,
+        },
+        null,
+        null,
+        true,
+      );
+    }
+  };
+
+  sendMoveScroll = (dir) => {
+    const { shareId, isAdmin } = this.state;
+
+    if (isAdmin) {
+      request.put(`/api/shares/${shareId}/contents/scroll/${dir}`, null, null, null, true);
+    }
+  };
 
   getShare = (shareId) => {
     request.get(
@@ -95,8 +149,11 @@ class Share extends React.Component {
           m.user = convertUser(m.user);
         });
 
+        const { topic } = data;
+        topic.content = JSON.parse(topic.content);
+
         this.setState({
-          topic: data.topic,
+          topic,
           chapters: data.chapters || [],
           share: data.share,
           accessCode: data.accessCode,
@@ -240,13 +297,64 @@ class Share extends React.Component {
     }
   };
 
+  moveScroll = (dir) => {
+    const windowHeight = window.innerHeight;
+    const contentViewerHeight =
+      this.contentViewer && this.contentViewer.current && this.contentViewer.current.clientHeight;
+    const scrollTotalSize = contentViewerHeight - windowHeight;
+    const scrollTotalTick = scrollTotalSize / 5;
+    const { scrollTop } = document.documentElement;
+
+    if (scrollTotalSize < 0) {
+      return;
+    }
+
+    if (dir === 'up' && scrollTop > 0) {
+      let nextScrollTop = scrollTop - scrollTotalTick;
+      if (nextScrollTop < 0) {
+        nextScrollTop = 0;
+      }
+
+      document.documentElement.scrollTop = nextScrollTop;
+    }
+
+    if (dir === 'down' && scrollTop < scrollTotalSize) {
+      let nextScrollTop = scrollTop + scrollTotalTick;
+      if (nextScrollTop > scrollTotalSize) {
+        nextScrollTop = scrollTotalSize;
+      }
+
+      document.documentElement.scrollTop = nextScrollTop;
+    }
+  };
+
   onMessage = (msg) => {
     const { type, data } = msg;
     const { t, history } = this.props;
+    const { screenType } = this.state;
 
     console.log(type, data);
 
     switch (type) {
+      case 'SCROLL_INFO_CHANGED': {
+        this.setState({
+          projectorScrollInfo: data.scrollInfo,
+        });
+        break;
+      }
+
+      case 'MOVE_SCROLL': {
+        this.moveScroll(data.dir);
+        break;
+      }
+
+      case 'SCREEN_TYPE_REGISTERED': {
+        if (screenType === SCREEN_TYPE.PROJECTOR) {
+          this.onScroll();
+        }
+        break;
+      }
+
       case 'SHARE_CLOSED': {
         history.push('/shares');
         dialog.setMessage(MESSAGE_CATEGORY.INFO, t('공유 종료'), t('공유가 종료되어 화면이 이동되었습니다.'));
@@ -419,10 +527,10 @@ class Share extends React.Component {
       accessCode,
     } = this.state;
 
-    const { screenType, openScreenSelector, messages } = this.state;
+    const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
 
     return (
-      <div className="content-viewer-wrapper">
+      <div className="content-viewer-wrapper" ref={this.contentViewer}>
         {!(share && share.id) && (
           <>
             <Header />
@@ -488,6 +596,8 @@ class Share extends React.Component {
                 currentChapterId={currentChapterId}
                 currentPageId={currentPageId}
                 movePage={this.movePage}
+                projectorScrollInfo={projectorScrollInfo}
+                sendMoveScroll={this.sendMoveScroll}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -587,10 +697,15 @@ class Share extends React.Component {
               <ScreenTypeSelector
                 onSelect={(value) => {
                   messageClient.registerScreenType(this.clientRef, shareId, value);
-                  this.setState({
-                    openScreenSelector: false,
-                    screenType: value,
-                  });
+                  this.setState(
+                    {
+                      openScreenSelector: false,
+                      screenType: value,
+                    },
+                    () => {
+                      this.onScroll();
+                    },
+                  );
                 }}
               />
             )}

@@ -87,7 +87,7 @@ class ShareController extends React.PureComponent {
   };
 
   onMoveSwiped = (e) => {
-    const { movePage } = this.props;
+    const { movePage, sendMoveScroll } = this.props;
 
     this.omitEvent = true;
     if (e.dir === 'Left') {
@@ -96,6 +96,14 @@ class ShareController extends React.PureComponent {
 
     if (e.dir === 'Right') {
       movePage(false);
+    }
+
+    if (e.dir === 'Up') {
+      sendMoveScroll('up');
+    }
+
+    if (e.dir === 'Down') {
+      sendMoveScroll('down');
     }
 
     this.setState({
@@ -142,6 +150,7 @@ class ShareController extends React.PureComponent {
       chapterPageList,
       currentChapterId,
       currentPageId,
+      projectorScrollInfo,
     } = this.props;
 
     const {
@@ -154,25 +163,18 @@ class ShareController extends React.PureComponent {
       kickOutUser,
       allowUser,
       movePage,
+      sendMoveScroll,
     } = this.props;
     const { startedYn } = share;
 
     const { tab, userChatTab, swipingDir } = this.state;
     const index = tabs.findIndex((d) => d.value === tab);
 
-    console.log(topic);
-    console.log(share);
-    console.log(chapterPageList);
-    console.log(currentChapterId, currentPageId);
-
     const totalPageCount = topic.pageCount;
     const currentSeq = this.getCurrentPageSequence(chapterPageList, currentChapterId, currentPageId);
 
     const currentChapter = chapterPageList.find((chapter) => chapter.id === currentChapterId);
     const currentPage = currentChapter.pages.find((page) => page.id === currentPageId);
-
-    console.log(currentSeq / totalPageCount);
-
     return (
       <div className={`share-controller-wrapper ${className}`}>
         <div className="top pl-2">
@@ -409,7 +411,12 @@ class ShareController extends React.PureComponent {
                         </div>
                         <div className="chapter-list">
                           {chapterPageList.map((chapter) => {
-                            return <div className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />;
+                            return (
+                              <div
+                                key={chapter.id}
+                                className={`${currentChapterId === chapter.id ? 'selected' : ''}`}
+                              />
+                            );
                           })}
                         </div>
                         <div className="line pb-0">
@@ -422,7 +429,7 @@ class ShareController extends React.PureComponent {
                         <div className="page-list">
                           {currentChapter &&
                             currentChapter.pages.map((page) => {
-                              return <div className={`${currentPageId === page.id ? 'selected' : ''}`} />;
+                              return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
                             })}
                         </div>
                       </CardBody>
@@ -444,7 +451,47 @@ class ShareController extends React.PureComponent {
                           >
                             <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-left`} />
                           </Button>
-                          <div className="scroll-controller">스크롤</div>
+                          <div className="scroll-controller">
+                            <Button
+                              className="flex-grow-0"
+                              color="transparent"
+                              onClick={() => {
+                                sendMoveScroll('up');
+                              }}
+                            >
+                              <i className={`${swipingDir === 'Up' ? 'swiping' : ''} fal fa-chevron-up`} />
+                            </Button>
+                            <div>
+                              <div>
+                                <div>
+                                  <div
+                                    className="window"
+                                    style={{
+                                      height: `${(projectorScrollInfo.windowHeight /
+                                        projectorScrollInfo.contentViewerHeight) *
+                                        100}%`,
+                                      top: `${(projectorScrollInfo.scrollTop /
+                                        projectorScrollInfo.contentViewerHeight) *
+                                        100}%`,
+                                    }}
+                                  >
+                                    <div>
+                                      <span className="g-tag bg-primary text-white">스크린</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              className="flex-grow-0"
+                              color="transparent"
+                              onClick={() => {
+                                sendMoveScroll('down');
+                              }}
+                            >
+                              <i className={`${swipingDir === 'Down' ? 'swiping' : ''} fal fa-chevron-down`} />
+                            </Button>
+                          </div>
                           <Button
                             color="transparent"
                             onClick={() => {
@@ -532,6 +579,12 @@ ShareController.propTypes = {
   currentChapterId: PropTypes.number,
   currentPageId: PropTypes.number,
   movePage: PropTypes.func,
+  projectorScrollInfo: PropTypes.shape({
+    windowHeight: PropTypes.number,
+    contentViewerHeight: PropTypes.number,
+    scrollTop: PropTypes.number,
+  }),
+  sendMoveScroll: PropTypes.func,
 };
 
 export default withTranslation()(ShareController);
