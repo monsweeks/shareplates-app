@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Swipeable } from 'react-swipeable';
+import numeral from 'numeral';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, Pill, RadioButton, Tabs } from '@/components';
 import './ShareController.scss';
-import { SharePropTypes, UserPropTypes } from '@/proptypes';
+import { SharePropTypes, TopicPropTypes, UserPropTypes } from '@/proptypes';
 import dialog from '@/utils/dialog';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
 import { ChatManager, ShareUserCard } from '@/assets';
@@ -15,12 +16,12 @@ const tabs = [
     name: '진행 관리',
   },
   {
-    value: 'pointer',
-    name: '포인터',
-  },
-  {
     value: 'process',
     name: '진행',
+  },
+  {
+    value: 'pointer',
+    name: '포인터',
   },
   {
     value: 'users',
@@ -40,16 +41,24 @@ const userChatTabs = [
 ];
 
 class ShareController extends React.PureComponent {
+  omitEvent = false;
+
   constructor(props) {
     super(props);
 
     this.state = {
-      tab: 'status',
+      tab: 'process',
       userChatTab: 'user',
+      swipingDir: numeral,
     };
   }
 
   onSwiped = (e) => {
+    if (this.omitEvent) {
+      this.omitEvent = false;
+      return;
+    }
+
     const { tab } = this.state;
     const index = tabs.findIndex((d) => d.value === tab);
     if (e.dir === 'Right') {
@@ -77,14 +86,92 @@ class ShareController extends React.PureComponent {
     }
   };
 
+  onMoveSwiped = (e) => {
+    const { movePage } = this.props;
+
+    this.omitEvent = true;
+    if (e.dir === 'Left') {
+      movePage(true);
+    }
+
+    if (e.dir === 'Right') {
+      movePage(false);
+    }
+
+    this.setState({
+      swipingDir: null,
+    });
+  };
+
+  onMoveSwiping = (e) => {
+    const { swipingDir } = this.state;
+    if (swipingDir !== e.dir) {
+      this.setState({
+        swipingDir: e.dir,
+      });
+    }
+  };
+
+  getCurrentPageSequence = (chapterPageList, chaterId, pageId) => {
+    let seq = 0;
+    if (chapterPageList) {
+      for (let i = 0; i < chapterPageList.length; i += 1) {
+        const chapter = chapterPageList[i];
+        if (chapter.id === chaterId) {
+          if (chapter.pages) {
+            seq += 1 + chapter.pages.findIndex((page) => page.id === pageId);
+          }
+          break;
+        }
+        seq += chapter.pages.length;
+      }
+    }
+
+    return seq;
+  };
+
   render() {
     const { className, t } = this.props;
-    const { share, users, isAdmin, messages, user } = this.props;
-    const { startShare, closeShare, exitShare, stopShare, sendReadyChat, banUser, kickOutUser, allowUser } = this.props;
+    const {
+      topic,
+      share,
+      users,
+      isAdmin,
+      messages,
+      user,
+      chapterPageList,
+      currentChapterId,
+      currentPageId,
+    } = this.props;
+
+    const {
+      startShare,
+      closeShare,
+      exitShare,
+      stopShare,
+      sendReadyChat,
+      banUser,
+      kickOutUser,
+      allowUser,
+      movePage,
+    } = this.props;
     const { startedYn } = share;
 
-    const { tab, userChatTab } = this.state;
+    const { tab, userChatTab, swipingDir } = this.state;
     const index = tabs.findIndex((d) => d.value === tab);
+
+    console.log(topic);
+    console.log(share);
+    console.log(chapterPageList);
+    console.log(currentChapterId, currentPageId);
+
+    const totalPageCount = topic.pageCount;
+    const currentSeq = this.getCurrentPageSequence(chapterPageList, currentChapterId, currentPageId);
+
+    const currentChapter = chapterPageList.find((chapter) => chapter.id === currentChapterId);
+    const currentPage = currentChapter.pages.find((page) => page.id === currentPageId);
+
+    console.log(currentSeq / totalPageCount);
 
     return (
       <div className={`share-controller-wrapper ${className}`}>
@@ -278,8 +365,135 @@ class ShareController extends React.PureComponent {
                   )}
                 </div>
               </div>
+              <div>
+                <div className="scrollbar">
+                  <div className="process-layout">
+                    <Card className="border-0 rounded-sm flex-grow-0">
+                      <CardBody className="py-0">
+                        <div className="line">
+                          <div className="label text-left">{t('진행율')}</div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value text-right position-relative">
+                            <div className="bar">
+                              <div
+                                style={{
+                                  width: `${(currentSeq / totalPageCount) * 100}%`,
+                                }}
+                              />
+                            </div>
+                            <span className="position-relative px-2">
+                              {numeral(currentSeq / totalPageCount).format('0.00%')}
+                            </span>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
+                      <CardBody>
+                        <div>
+                          <div className="label">{t('집중도')}</div>
+                          <h3 className="text-center m-0">95%</h3>
+                        </div>
+                      </CardBody>
+                    </Card>
+                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
+                      <CardBody>
+                        <div className="line pb-0">
+                          <div className="label">{t('현재 챕터')}</div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value px-2">{currentChapter.title}</div>
+                        </div>
+                        <div className="chapter-list">
+                          {chapterPageList.map((chapter) => {
+                            return <div className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />;
+                          })}
+                        </div>
+                        <div className="line pb-0">
+                          <div className="label">{t('현재 페이지')}</div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value px-2">{currentPage.title}</div>
+                        </div>
+                        <div className="page-list">
+                          {currentChapter &&
+                            currentChapter.pages.map((page) => {
+                              return <div className={`${currentPageId === page.id ? 'selected' : ''}`} />;
+                            })}
+                        </div>
+                      </CardBody>
+                    </Card>
+                    <Card className="border-0 rounded-sm flex-grow-1 mt-2">
+                      <CardBody className="h-100 d-flex flex-column p-0">
+                        <Swipeable
+                          className="move-swipeable"
+                          onSwiped={this.onMoveSwiped}
+                          onSwiping={this.onMoveSwiping}
+                          preventDefaultTouchmoveEvent={false}
+                          trackTouch
+                        >
+                          <Button
+                            color="transparent"
+                            onClick={() => {
+                              movePage(false);
+                            }}
+                          >
+                            <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-left`} />
+                          </Button>
+                          <div className="scroll-controller">스크롤</div>
+                          <Button
+                            color="transparent"
+                            onClick={() => {
+                              movePage(true);
+                            }}
+                          >
+                            <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-right`} />
+                          </Button>
+                        </Swipeable>
+                      </CardBody>
+                    </Card>
+                  </div>
+                </div>
+                <div className="bottom-fixed-menu">
+                  {isAdmin && (
+                    <>
+                      <Button
+                        color="transparent"
+                        onClick={() => {
+                          movePage(false);
+                        }}
+                      >
+                        <i className="fal fa-chevron-left" />
+                        <div>
+                          <span>이전 페이지</span>
+                        </div>
+                        <div className="separator">
+                          <div />
+                        </div>
+                      </Button>
+                      <Button
+                        color="transparent"
+                        onClick={() => {
+                          movePage(true);
+                        }}
+                      >
+                        <i className="fal fa-chevron-right" />
+                        <div>
+                          <span>다음 페이지</span>
+                        </div>
+                        <div className="separator">
+                          <div />
+                        </div>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
               <div>포인터</div>
-              <div>프로세스</div>
               <div>사용자</div>
             </div>
           </div>
@@ -295,6 +509,7 @@ ShareController.defaultProps = {
 
 ShareController.propTypes = {
   className: PropTypes.string,
+  topic: TopicPropTypes,
   share: SharePropTypes,
   users: PropTypes.arrayOf(UserPropTypes),
   isAdmin: PropTypes.bool,
@@ -313,6 +528,10 @@ ShareController.propTypes = {
   banUser: PropTypes.func,
   kickOutUser: PropTypes.func,
   allowUser: PropTypes.func,
+  chapterPageList: PropTypes.arrayOf(PropTypes.any),
+  currentChapterId: PropTypes.number,
+  currentPageId: PropTypes.number,
+  movePage: PropTypes.func,
 };
 
 export default withTranslation()(ShareController);

@@ -31,11 +31,13 @@ class Share extends React.Component {
     } = this.props;
 
     this.state = {
+      topic: {},
       shareId: Number(shareId),
       share: {},
       accessCode: {},
       chapters: [],
       pages: [],
+      chapterPageList : [],
       currentChapterId: null,
       currentPageId: null,
       currentPage: null,
@@ -44,6 +46,7 @@ class Share extends React.Component {
       isOpenUserPopup: false,
       init: false,
       screenType: SCREEN_TYPE.WEB,
+      // screenType: SCREEN_TYPE.CONTROLLER,
       openScreenSelector: false,
       messages: [],
     };
@@ -72,12 +75,19 @@ class Share extends React.Component {
       (data) => {
         const { user } = this.props;
 
-        if (data.access)
-          if (data && data.chapters) {
-            data.chapters.sort((a, b) => {
+        if (data && data.chapters) {
+          data.chapters.sort((a, b) => {
+            return a.orderNo - b.order;
+          });
+        }
+
+        if (data && data.chapterPageList) {
+          data.chapterPageList.forEach((chapter) => {
+            chapter.pages.sort((a, b) => {
               return a.orderNo - b.order;
             });
-          }
+          });
+        }
 
         const isAdmin = data.share.adminUserId === user.id;
 
@@ -86,16 +96,18 @@ class Share extends React.Component {
         });
 
         this.setState({
-          // topic: data.topic,
+          topic: data.topic,
           chapters: data.chapters || [],
           share: data.share,
           accessCode: data.accessCode,
           currentChapterId: data.share.currentChapterId,
           currentPageId: data.share.currentPageId,
+          chapterPageList: data.chapterPageList,
           isAdmin,
           users: convertUsers(data.users),
           init: true,
           openScreenSelector: isAdmin,
+          // openScreenSelector: false,
           messages: data.messages,
         });
 
@@ -391,10 +403,12 @@ class Share extends React.Component {
     const { t, user, history } = this.props;
 
     const {
+      topic,
       shareId,
       share,
       chapters,
       pages,
+      chapterPageList,
       currentChapterId,
       currentPageId,
       currentPage,
@@ -440,6 +454,7 @@ class Share extends React.Component {
             />
             {isAdmin && screenType === SCREEN_TYPE.CONTROLLER && (
               <ShareController
+                topic={topic}
                 share={share}
                 users={users}
                 isAdmin={isAdmin}
@@ -469,6 +484,10 @@ class Share extends React.Component {
                 sendReadyChat={(message) => {
                   messageClient.sendReadyChat(shareId, message);
                 }}
+                chapterPageList={chapterPageList}
+                currentChapterId={currentChapterId}
+                currentPageId={currentPageId}
+                movePage={this.movePage}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (

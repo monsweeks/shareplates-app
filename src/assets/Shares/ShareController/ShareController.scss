@@ -118,10 +118,6 @@
             flex-direction: row;
             padding: 0.5rem 0;
 
-            > .label {
-              padding: 0 0.5rem;
-            }
-
             > .label,
             > .separator {
               flex-grow: 0;
@@ -144,15 +140,81 @@
 
     .user-list {
       position: absolute;
-      top : 0;
-      left : 0;
-      right : 0;
+      top: 0;
+      left: 0;
+      right: 0;
       bottom: 0;
 
       .user-card:first-child {
-        border-top: 1px solid rgba(0,0,0,0.3) !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.3) !important;
+      }
+    }
+  }
+
+  .process-layout {
+    display: flex;
+    flex-direction: column;
+    .bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $light;
+      border-radius: 2px;
+
+      > div {
+        right: 0;
+        height: 100%;
+        background-color: $yellow;
+        display: inline-block;
+        border-radius: 2px;
+      }
+    }
+
+    .chapter-list,
+    .page-list {
+      height: 10px;
+      display: flex;
+      flex-direction: row;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      > div {
+        background-color: $light;
+        flex: 1 1 0;
+        border-left: 1px solid rgba(0, 0, 0, 0.3);
+
+        &:first-child {
+          border-left: none;
+        }
+
+        &.selected {
+          background-color: $yellow;
+        }
+      }
+    }
+
+    .move-swipeable {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+
+      button {
+        font-size: 3rem;
+        flex-grow: 0;
+        padding: 1rem;
       }
 
+      .scroll-controller {
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      .swiping {
+        color: $yellow;
+        transition: color 0.3s;
+      }
     }
   }
 }
