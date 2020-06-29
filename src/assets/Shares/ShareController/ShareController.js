@@ -13,7 +13,7 @@ import { ChatManager, ShareUserCard } from '@/assets';
 const tabs = [
   {
     value: 'status',
-    name: '진행 관리',
+    name: '관리',
   },
   {
     value: 'process',
@@ -90,11 +90,11 @@ class ShareController extends React.PureComponent {
     const { movePage, sendMoveScroll } = this.props;
 
     this.omitEvent = true;
-    if (e.dir === 'Left') {
+    if (e.dir === 'Right') {
       movePage(true);
     }
 
-    if (e.dir === 'Right') {
+    if (e.dir === 'Left') {
       movePage(false);
     }
 
@@ -175,6 +175,7 @@ class ShareController extends React.PureComponent {
 
     const currentChapter = chapterPageList.find((chapter) => chapter.id === currentChapterId);
     const currentPage = currentChapter.pages.find((page) => page.id === currentPageId);
+
     return (
       <div className={`share-controller-wrapper ${className}`}>
         <div className="top pl-2">
@@ -199,7 +200,7 @@ class ShareController extends React.PureComponent {
             tabColor="transparent"
           />
         </div>
-        <Swipeable className="controller-content swipeable" onSwiped={this.onSwiped}>
+        <Swipeable className="controller-content swipeable" onSwiped={this.onSwiped} delta={50}>
           <div>
             <div
               className="content-layout"
@@ -211,15 +212,15 @@ class ShareController extends React.PureComponent {
                 <div className="scrollbar">
                   <div className="status-layout">
                     <Card className="border-0 rounded-sm flex-grow-0">
-                      <CardBody className="py-0">
-                        <div className="line">
+                      <CardBody>
+                        <div className="line py-0">
                           <div className="label">{t('공유 상태')}</div>
                           <div className="separator">
                             <div />
                           </div>
                           <div className="value text-right">
                             <RadioButton
-                              outline
+                              size="sm"
                               items={[
                                 {
                                   key: false,
@@ -243,11 +244,7 @@ class ShareController extends React.PureComponent {
                             />
                           </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                    <Card className="border-0 rounded-sm mt-2  flex-grow-0">
-                      <CardBody className="py-0">
-                        <div className="line">
+                        <div className="line pb-0">
                           <div className="label">현재 참여인원</div>
                           <div className="separator">
                             <div />
@@ -268,7 +265,7 @@ class ShareController extends React.PureComponent {
                       </CardBody>
                     </Card>
                     <Card className="border-0 rounded-sm mt-2 flex-grow-1">
-                      <CardBody className="h-100 d-flex flex-column">
+                      <CardBody className="h-100 d-flex flex-column p-2">
                         <Tabs
                           className="tabs border-0 pt-0  flex-grow-0"
                           left
@@ -373,66 +370,99 @@ class ShareController extends React.PureComponent {
                 <div className="scrollbar">
                   <div className="process-layout">
                     <Card className="border-0 rounded-sm flex-grow-0">
-                      <CardBody className="py-0">
-                        <div className="line">
-                          <div className="label text-left">{t('진행율')}</div>
+                      <CardBody>
+                        <div className="process-percentage">
+                          <div>
+                            <div className="label">{t('진행율')}</div>
+                            <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
+                            <div
+                              className="bar"
+                              style={{
+                                height: `${(currentSeq / totalPageCount) * 100}%`,
+                              }}
+                            />
+                          </div>
                           <div className="separator">
                             <div />
                           </div>
-                          <div className="value text-right position-relative">
-                            <div className="bar">
-                              <div
-                                style={{
-                                  width: `${(currentSeq / totalPageCount) * 100}%`,
-                                }}
-                              />
+                          <div>
+                            <div className="label">{t('집중도')}</div>
+                            <div className="percentage">{numeral(70.44 / 100).format('0.00%')}</div>
+                            <div
+                              className="bar"
+                              style={{
+                                height: `${(70.44 / 100) * 100}%`,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
+                      <CardBody>
+                        <div className="line py-0">
+                          <div className="label chapter-page-label">
+                            <span>{t('현재 위치')}</span>
+                          </div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value chapter-page-title">
+                            <div>
+                              <div>
+                                {currentChapter.title}
+                                {currentChapter.title}
+                                {currentChapter.title}
+                                {currentChapter.title}
+                              </div>
+                              <div>
+                                <i className="fal fa-chevron-right" /> {currentPage.title}
+                              </div>
+                              <div className="popup-button">
+                                <span>
+                                  <i className="fal fa-window" />
+                                </span>
+                              </div>
                             </div>
-                            <span className="position-relative px-2">
-                              {numeral(currentSeq / totalPageCount).format('0.00%')}
-                            </span>
                           </div>
                         </div>
-                      </CardBody>
-                    </Card>
-                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
-                      <CardBody>
-                        <div>
-                          <div className="label">{t('집중도')}</div>
-                          <h3 className="text-center m-0">95%</h3>
-                        </div>
-                      </CardBody>
-                    </Card>
-                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
-                      <CardBody>
-                        <div className="line pb-0">
-                          <div className="label">{t('현재 챕터')}</div>
+                        <div className="line py-0">
+                          <div className="label chapter-page-label">
+                            <span>{t('챕터')}</span>
+                          </div>
                           <div className="separator">
                             <div />
                           </div>
-                          <div className="value px-2">{currentChapter.title}</div>
+                          <div className="value text-right">
+                            <div className="chapter-list">
+                              {chapterPageList.map((chapter) => {
+                                return (
+                                  <div
+                                    key={chapter.id}
+                                    className={`${currentChapterId === chapter.id ? 'selected' : ''}`}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
-                        <div className="chapter-list">
-                          {chapterPageList.map((chapter) => {
-                            return (
-                              <div
-                                key={chapter.id}
-                                className={`${currentChapterId === chapter.id ? 'selected' : ''}`}
-                              />
-                            );
-                          })}
-                        </div>
-                        <div className="line pb-0">
-                          <div className="label">{t('현재 페이지')}</div>
+                        <div className="line py-0">
+                          <div className="label chapter-page-label">
+                            <span>{t('페이지')}</span>
+                          </div>
                           <div className="separator">
                             <div />
                           </div>
-                          <div className="value px-2">{currentPage.title}</div>
-                        </div>
-                        <div className="page-list">
-                          {currentChapter &&
-                            currentChapter.pages.map((page) => {
-                              return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
-                            })}
+                          <div className="value text-right">
+                            <div className="page-list">
+                              {currentChapter &&
+                                currentChapter.pages.map((page) => {
+                                  return (
+                                    <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />
+                                  );
+                                })}
+                            </div>
+                          </div>
                         </div>
                       </CardBody>
                     </Card>
@@ -442,20 +472,19 @@ class ShareController extends React.PureComponent {
                           className="move-swipeable"
                           onSwiped={this.onMoveSwiped}
                           onSwiping={this.onMoveSwiping}
-                          preventDefaultTouchmoveEvent={false}
-                          trackTouch
+                          delta={50}
                         >
                           <Button
-                            color="transparent"
+                            color="transparent g-no-focus"
                             onClick={() => {
                               movePage(false);
                             }}
                           >
-                            <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-left`} />
+                            <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-left`} />
                           </Button>
                           <div className="scroll-controller">
                             <Button
-                              className="flex-grow-0"
+                              className="flex-grow-0 g-no-focus"
                               color="transparent"
                               onClick={() => {
                                 sendMoveScroll('up');
@@ -465,27 +494,36 @@ class ShareController extends React.PureComponent {
                             </Button>
                             <div>
                               <div>
-                                <div>
-                                  <div
-                                    className="window"
-                                    style={{
-                                      height: `${(projectorScrollInfo.windowHeight /
-                                        projectorScrollInfo.contentViewerHeight) *
-                                        100}%`,
-                                      top: `${(projectorScrollInfo.scrollTop /
-                                        projectorScrollInfo.contentViewerHeight) *
-                                        100}%`,
-                                    }}
-                                  >
-                                    <div>
-                                      <span className="g-tag bg-primary text-white">스크린</span>
+                                <div className="rounded">
+                                  {projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight && (
+                                    <div
+                                      className="window"
+                                      style={{
+                                        height: `${(projectorScrollInfo.windowHeight /
+                                          projectorScrollInfo.contentViewerHeight) *
+                                          100}%`,
+                                        top: `${(projectorScrollInfo.scrollTop /
+                                          projectorScrollInfo.contentViewerHeight) *
+                                          100}%`,
+                                      }}
+                                    >
+                                      <div>
+                                        <span className="g-tag bg-primary text-white">스크린</span>
+                                      </div>
                                     </div>
-                                  </div>
+                                  )}
+                                  {!(projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight) && (
+                                    <div className="h-100 w-100 d-flex">
+                                      <div className="align-self-center w-100 text-center ">
+                                        {t('연결된 프로젝터 타입이 없습니다')}
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             <Button
-                              className="flex-grow-0"
+                              className="flex-grow-0 g-no-focus"
                               color="transparent"
                               onClick={() => {
                                 sendMoveScroll('down');
@@ -495,12 +533,12 @@ class ShareController extends React.PureComponent {
                             </Button>
                           </div>
                           <Button
-                            color="transparent"
+                            color="transparent g-no-focus"
                             onClick={() => {
                               movePage(true);
                             }}
                           >
-                            <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-right`} />
+                            <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-right`} />
                           </Button>
                         </Swipeable>
                       </CardBody>

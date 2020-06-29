@@ -44,7 +44,7 @@ class SearchBar extends React.Component {
                 })}
                 value={grpId}
                 onChange={onChangeGrp}
-                minWidth="120px"
+                minWidth="100px"
               />
             </div>
           )}
