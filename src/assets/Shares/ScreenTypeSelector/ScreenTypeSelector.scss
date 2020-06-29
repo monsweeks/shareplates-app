@@ -1,6 +1,14 @@
+.screen-type-selector-popup {
+  @media (max-width: 576px) {
+    background-color: $white !important;
+  }
+}
 .screen-type-selector-wrapper {
-  width: 510px;
+  width: 550px;
   margin: 0 auto;
+  background-color: $white;
+  padding: 2rem 2rem 4rem;
+  border-radius: 5px;
 
   @media (max-width: 576px) {
     width: 100%;
@@ -28,30 +36,30 @@
       flex: 1 1 0;
       margin: 0 5px;
 
+      @media (max-width: 576px) {
+        padding: 0 1rem;
+      }
+
       > button {
+        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+
         .icon {
           font-size: 1.6rem;
 
           @media (max-width: 576px) {
-            position: relative;
-            top: -10px;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
           }
         }
 
         .text {
           font-size: 1rem;
-          @media (max-width: 576px) {
-            position: relative;
-            top: -15px;
-          }
         }
       }
 
       @media (max-width: 576px) {
         flex: none;
-        height: 120px;
-        margin-bottom: 1rem;
+        height: 90px;
+        margin-bottom: 3rem;
         position: relative;
       }
 
@@ -62,62 +70,25 @@
         bottom: -40px;
         background-color: $white;
         width: calc(100% - 10px);
-        padding: 4px;
+        padding: 0.25rem 1rem;
         opacity: 0;
         transition: all 0.3s;
 
         @media (max-width: 576px) {
           left: 0;
           opacity: 1;
-          bottom: 0;
+          bottom: auto;
+          top: 88px;
           width: 100%;
           background-color: transparent;
-          color: $white;
           font-size: 0.75rem;
           white-space: normal;
         }
       }
 
-      .line {
-        height: 20px;
-        width: 2px;
-        background-color: $primary;
-        position: absolute;
-        bottom: -11px;
-        opacity: 0;
-        transition: all 0.3s;
-
-        @media (max-width: 576px) {
-          display: none;
-        }
-
-        &.projector {
-          left: 257px;
-        }
-
-        &.web {
-          left: 85px;
-        }
-
-        &.controller {
-          left: 425px;
-        }
-
-        > .ball {
-          width: 6px;
-          height: 6px;
-          background-color: $primary;
-          border-radius: 50%;
-          position: absolute;
-          left: -2px;
-          top: 0;
-        }
-      }
-
       @media (min-width: 576px) {
         &:hover {
-          .desc,
-          .line {
+          .desc {
             opacity: 1;
             transition: all 0.3s;
           }

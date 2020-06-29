@@ -51,14 +51,6 @@
       flex: 1;
       text-align: left;
       margin-right: 0.5rem;
-
-      @media (max-width: 992px) {
-        margin-right: 0;
-      }
-
-      @media (max-width: 768px) {
-        padding-right: 0.5rem;
-      }
     }
 
     .options {
@@ -67,6 +59,7 @@
       display: block;
       border-radius: 3px;
       border-radius: 3px;
+      position: relative;
 
       .arrow {
         position: absolute;
@@ -115,7 +108,7 @@
           top: 45px;
           background-color: $white;
           padding: 1rem;
-          z-index: 12;
+          z-index: 14;
 
           .arrow {
             display: block;

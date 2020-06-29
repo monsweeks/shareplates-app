@@ -92,7 +92,9 @@ class Share extends React.Component {
       const windowHeight = window.innerHeight;
       const contentViewerHeight =
         this.contentViewer && this.contentViewer.current && this.contentViewer.current.clientHeight;
-      this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
+      if (windowHeight && contentViewerHeight) {
+        this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
+      }
     }
   };
 

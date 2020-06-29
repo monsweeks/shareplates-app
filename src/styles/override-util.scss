@@ -179,4 +179,13 @@
   overflow-y: auto;
 }
 
+.g-no-focus {
+  &:hover {
+    background-color: inherit !important;
+  }
 
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
