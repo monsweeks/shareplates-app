@@ -24,8 +24,8 @@ const tabs = [
     name: '포인터',
   },
   {
-    value: 'users',
-    name: '사용자',
+    value: 'function',
+    name: '기능',
   },
 ];
 
