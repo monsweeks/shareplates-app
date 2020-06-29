@@ -29,11 +29,15 @@ function sendReadyChat(shareId, message) {
 }
 
 function joinShare(socketClient, shareId) {
-  socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
+  if (socketClient && socketClient.state && socketClient.state.connected) {
+    socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/join`);
+  }
 }
 
 function registerScreenType(socketClient, shareId, screenType) {
-  socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/screenType`, screenType);
+  if (socketClient && socketClient.state && socketClient.state.connected) {
+    socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/screenType`, screenType);
+  }
 }
 
 const messageClient = {

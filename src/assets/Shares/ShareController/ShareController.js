@@ -301,14 +301,16 @@ class ShareController extends React.PureComponent {
                             </div>
                           )}
                           {userChatTab === 'chat' && (
-                            <ChatManager
-                              messages={messages}
-                              user={user}
-                              sendReadyChat={sendReadyChat}
-                              boxShadow={false}
-                              showTitle={false}
-                              flatChatControl
-                            />
+                            <div className="chat-manager">
+                              <ChatManager
+                                messages={messages}
+                                user={user}
+                                sendReadyChat={sendReadyChat}
+                                boxShadow={false}
+                                showTitle={false}
+                                flatChatControl
+                              />
+                            </div>
                           )}
                         </div>
                       </CardBody>
