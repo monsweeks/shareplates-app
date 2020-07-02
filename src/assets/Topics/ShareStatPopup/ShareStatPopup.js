@@ -101,10 +101,27 @@ class ShareStatPopup extends React.Component {
     return list;
   };
 
+  getData = (shareId, startDate, endDate) => {
+    request.get(`/api/stats/shares/${shareId}`, {
+      startDate,
+      endDate
+    }, (data) => {
+      console.log(data);
+    });
+  };
+
   getShareTimeBucketData = (shareTimeBucketId) => {
     const { share } = this.state;
     const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
     const maxPerson = Math.ceil(10 + Math.random() * 30);
+
+    const condition = {
+      shareId : share.id,
+      startDate : openDate,
+      endDate : closeDate,
+    };
+    console.log(condition);
+    console.log(this.getData(share.id, openDate, closeDate));
 
     this.setState({
       shareTimeBucketId,
