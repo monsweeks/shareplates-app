@@ -40,6 +40,12 @@ function registerScreenType(socketClient, shareId, screenType) {
   }
 }
 
+function focusChange(socketClient, shareId, focus) {
+  if (socketClient && socketClient.state && socketClient.state.connected) {
+    socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/focus`, focus);
+  }
+}
+
 const messageClient = {
   closeShare,
   startShare,
@@ -50,6 +56,7 @@ const messageClient = {
   sendReadyChat,
   joinShare,
   registerScreenType,
+  focusChange,
 };
 
 export default messageClient;

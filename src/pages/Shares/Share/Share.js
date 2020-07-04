@@ -22,6 +22,8 @@ import { convertUser, convertUsers } from '@/pages/Users/util';
 import { Header } from '@/layouts';
 import dialog from '@/utils/dialog';
 
+const detectBrowserFocus = false;
+
 class Share extends React.Component {
   contentViewer = React.createRef();
 
@@ -56,6 +58,7 @@ class Share extends React.Component {
     };
 
     this.onScrollDebounced = debounce(this.sendScrollInfo, 300);
+    this.sendFocusChangeDebounced = debounce(this.sendFocusChange, 300);
   }
 
   componentDidMount() {
@@ -66,11 +69,23 @@ class Share extends React.Component {
     }
 
     document.addEventListener('scroll', this.onScroll);
+    if (detectBrowserFocus) {
+      window.addEventListener('focus', this.onFocus);
+      window.addEventListener('blur', this.onFocus);
+    }
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
   }
 
   componentWillUnmount() {
     document.removeEventListener('scroll', this.onScroll);
+    if (detectBrowserFocus) {
+      window.removeEventListener('focus', this.onFocus);
+      window.removeEventListener('blur', this.onFocus);
+    }
+
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     this.onScrollDebounced.cancel();
+    this.sendFocusChangeDebounced.cancel();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,6 +100,16 @@ class Share extends React.Component {
     }
   }
 
+  onVisibilityChange = () => {
+    this.sendFocusChangeDebounced(document.visibilityState === 'visible');
+  };
+
+  onFocus = (e) => {
+    if (detectBrowserFocus) {
+      this.sendFocusChangeDebounced(e.type === 'focus');
+    }
+  };
+
   onScroll = () => {
     const { screenType } = this.state;
 
@@ -96,6 +121,11 @@ class Share extends React.Component {
         this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
       }
     }
+  };
+
+  sendFocusChange = (focus) => {
+    const { shareId } = this.state;
+    messageClient.focusChange(this.clientRef, shareId, focus);
   };
 
   sendScrollInfo = (windowHeight, contentViewerHeight, scrollTop) => {
@@ -402,6 +432,21 @@ class Share extends React.Component {
           });
         } else {
           next[userIndex] = convertUser(data.user);
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'USER_FOCUS_CHANGE': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((user) => user.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].focusYn = data.focus;
           this.setState({
             users: next,
           });

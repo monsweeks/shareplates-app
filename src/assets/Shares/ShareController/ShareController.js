@@ -176,6 +176,12 @@ class ShareController extends React.PureComponent {
     const currentChapter = chapterPageList.find((chapter) => chapter.id === currentChapterId);
     const currentPage = currentChapter.pages.find((page) => page.id === currentPageId);
 
+    const noBannedUsers = users.filter((u) => !u.banYn);
+    const onlineUserCount = noBannedUsers.filter((u) => u.status === 'ONLINE').length;
+    const offlineUserCount = noBannedUsers.filter((u) => u.status === 'OFFLINE').length;
+    const totalUserCount = noBannedUsers.length;
+    const focusUserCount = noBannedUsers.filter((u) => u.focusYn).length;
+
     return (
       <div className={`share-controller-wrapper ${className}`}>
         <div className="top pl-2">
@@ -250,16 +256,8 @@ class ShareController extends React.PureComponent {
                             <div />
                           </div>
                           <div className="value text-right">
-                            <Pill
-                              className="mr-2"
-                              label="ONLINE"
-                              value={users.filter((u) => u.status === 'ONLINE').length}
-                            />
-                            <Pill
-                              label="OFFLINE"
-                              labelClassName="bg-danger"
-                              value={users.filter((u) => u.status === 'OFFLINE').length}
-                            />
+                            <Pill className="mr-2" label="ONLINE" value={onlineUserCount} />
+                            <Pill label="OFFLINE" labelClassName="bg-danger" value={offlineUserCount} />
                           </div>
                         </div>
                       </CardBody>
@@ -372,9 +370,12 @@ class ShareController extends React.PureComponent {
                     <Card className="border-0 rounded-sm flex-grow-0">
                       <CardBody>
                         <div className="process-percentage">
-                          <div>
+                          <div className="process-bg">
                             <div className="label">{t('진행율')}</div>
                             <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
+                            <div className="percentage-data">
+                              ({currentSeq}/{totalPageCount})
+                            </div>
                             <div
                               className="bar"
                               style={{
@@ -385,13 +386,34 @@ class ShareController extends React.PureComponent {
                           <div className="separator">
                             <div />
                           </div>
-                          <div>
-                            <div className="label">{t('집중도')}</div>
-                            <div className="percentage">{numeral(70.44 / 100).format('0.00%')}</div>
+                          <div className="process-bg">
+                            <div className="label">{t('온라인')}</div>
+                            <div className="percentage">
+                              {numeral(onlineUserCount / totalUserCount).format('0.00%')}
+                            </div>
+                            <div className="percentage-data">
+                              ({onlineUserCount}/{totalUserCount})
+                            </div>
                             <div
                               className="bar"
                               style={{
-                                height: `${(70.44 / 100) * 100}%`,
+                                height: `${(onlineUserCount / totalUserCount) * 100}%`,
+                              }}
+                            />
+                          </div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="process-bg">
+                            <div className="label">{t('집중도')}</div>
+                            <div className="percentage">{numeral(focusUserCount / totalUserCount).format('0.00%')}</div>
+                            <div className="percentage-data">
+                              ({focusUserCount}/{totalUserCount})
+                            </div>
+                            <div
+                              className="bar"
+                              style={{
+                                height: `${(focusUserCount / totalUserCount) * 100}%`,
                               }}
                             />
                           </div>
@@ -549,6 +571,7 @@ class ShareController extends React.PureComponent {
                   {isAdmin && (
                     <>
                       <Button
+                        className="g-no-focus"
                         color="transparent"
                         onClick={() => {
                           movePage(false);
@@ -563,6 +586,7 @@ class ShareController extends React.PureComponent {
                         </div>
                       </Button>
                       <Button
+                        className="g-no-focus"
                         color="transparent"
                         onClick={() => {
                           movePage(true);

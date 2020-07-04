@@ -186,10 +186,15 @@
         flex: 1 1 0;
         text-align: center;
         position: relative;
+
+        &.process-bg {
+          background-color: $light;
+        }
+
         &.separator {
           flex: 0;
           width: 1px;
-          margin: 0 1rem;
+          margin: 0 0.5rem;
           min-width: 1px;
           padding: 0;
           > div {
@@ -202,13 +207,23 @@
         .label {
           position: relative;
           z-index: 1;
+          padding: 0.5rem 0;
         }
 
         .percentage {
-          font-size: 1.4rem;
-          padding: 0.5rem 0;
+          font-size: 1.1rem;
+          padding: 0 0;
           position: relative;
           z-index: 1;
+          line-height: 100%;
+          margin-bottom: 0.25rem;
+        }
+
+        .percentage-data {
+          position: relative;
+          z-index: 1;
+          margin-bottom: 0.25rem;
+          font-size: 0.8rem;
         }
 
         .bar {
