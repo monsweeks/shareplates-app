@@ -257,10 +257,10 @@
         overflow: hidden;
 
         > div {
-          width: calc((100% - 20px) / 2);
+          max-width: calc((100% - 20px) / 2);
           display: inline-block;
           white-space: nowrap;
-          overflow-x: hidden;
+          overflow: hidden;
           text-overflow: ellipsis;
           box-sizing: border-box;
 

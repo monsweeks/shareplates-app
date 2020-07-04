@@ -431,14 +431,9 @@ class ShareController extends React.PureComponent {
                           </div>
                           <div className="value chapter-page-title">
                             <div>
+                              <div>{currentChapter.title}</div>
                               <div>
-                                {currentChapter.title}
-                                {currentChapter.title}
-                                {currentChapter.title}
-                                {currentChapter.title}
-                              </div>
-                              <div>
-                                <i className="fal fa-chevron-right" /> {currentPage.title}
+                                <i className="fal fa-chevron-right mx-2" />{currentPage.title}
                               </div>
                               <div className="popup-button">
                                 <span>
