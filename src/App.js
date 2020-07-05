@@ -20,7 +20,7 @@ function App() {
       </Switch>
       <article className="app-content">
         <Switch>
-          <Route exact path="/" component={Topics} />
+          <Route exact path="/" component={Shares} />
           <Route path="/users" component={Users} />
           <Route path="/about" component={About} />
           <Route path="/topics" component={Topics} />

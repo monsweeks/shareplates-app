@@ -63,7 +63,7 @@ class Menu extends React.PureComponent {
           } else if (pathname.indexOf('/admin') === 0) {
             alias = '/admin';
           } else if (pathname === '/') {
-            alias = '/topics';
+            alias = '/shares';
           }
 
           const enabled = !!(!menu.activePropsKey || (menu.activePropsKey && activePropsKeys[menu.activePropsKey]));

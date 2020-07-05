@@ -17,10 +17,12 @@ const viewTypes = [
   {
     key: 'accessCode',
     value: '엑세스 코드로 참여',
+    icon : <i className="fal fa-code" />
   },
   {
     key: 'list',
     value: '공개 토픽 리스트',
+    icon : <i className="fal fa-list"/>
   },
 ];
 

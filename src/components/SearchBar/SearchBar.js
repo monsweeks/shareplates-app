@@ -25,8 +25,23 @@ class SearchBar extends React.Component {
       <div className={`search-bar-wrapper g-no-select ${className}`}>
         <div>
           {onChangeViewType && (
-            <div className="view-type-col">
+            <div className="view-type-col d-none d-md-block">
               <RadioButton outline items={viewTypes} value={viewType} onClick={onChangeViewType} />
+            </div>
+          )}
+          {onChangeViewType && (
+            <div className="view-type-col d-sm-block d-md-none">
+              <RadioButton
+                outline
+                items={viewTypes.map((item) => {
+                  return {
+                    key: item.key,
+                    value: item.icon,
+                  };
+                })}
+                value={viewType}
+                onClick={onChangeViewType}
+              />
             </div>
           )}
           {onChangeGrp && (

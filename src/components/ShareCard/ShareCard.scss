@@ -5,181 +5,150 @@
   position: relative;
   vertical-align: top;
 
+  .card-body {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding: 0 !important;
+    position: relative;
+
+    > div {
+      align-self: center;
+      vertical-align: middle;
+      width: 100%;
+    }
+  }
+
+  .open-time {
+    position: absolute;
+    bottom: 3px;
+    right: 16px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    text-align: right;
+
+    i {
+      margin-right: 3px;
+    }
+  }
+
   .title {
+    position: relative;
     .share-name {
       flex: 0;
-      padding: 1.25rem 0.25rem 0.5rem;
-      font-size: 1.4rem;
+      padding: 1.5rem 1.5rem 0;
+      font-size: 1.2rem;
       font-weight: bold;
       font-family: LGSmHaB, sans-serif;
       margin: 0;
       line-height: 100%;
-      _background-color: $light;
-      _background-color: $light;
+    }
+
+    .config-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
     }
   }
 
-  .slide-content {
-    background-color: $light;
-    overflow: hidden;
-    .slide-content-viewer {
-      height: 100px;
-      white-space: normal;
-      width: 300%;
-      position: relative;
-      transition: all 0.3s;
-      vertical-align: top;
+  .tag-info {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    display: inline-block;
+    text-align: left;
+    > span {
+      font-size: 0.7rem;
+      border-radius: 3px;
 
-      > div {
-        vertical-align: top;
+      &.short-icon,
+      &.user-count {
+        border: none;
+        font-size: 0.7rem;
         display: inline-block;
-        width: calc(100% / 3);
-        height: 100%;
-      }
+        width: 20px;
+        height: 20px;
+        background-color: $gray-300;
+        border-radius: 50%;
+        text-align: center;
+        padding: 3px 0 0;
+        margin-right: 3px;
 
-      .main {
-        > div {
-          display: flex;
-          flex-direction: row;
-          height: 100%;
-
-          > div {
-            align-self: center;
-            flex-grow: 1;
-            padding-bottom: 10px;
-
-            .current-count {
-              margin-bottom: 0.25rem;
-              .count {
-                font-size: 0.8rem;
-                font-family: LGSmHaB, sans-serif;
-              }
-
-              .name {
-                font-size: 0.7rem;
-              }
-            }
-
-            .open-time {
-              text-transform: uppercase;
-              font-size: 0.7rem;
-            }
+        &.status {
+          i.fa-play {
+            position: relative;
+            left: 1px;
           }
         }
-      }
 
-      .admin {
-        padding: 0;
-        .admin-user {
-          display: flex;
-          flex-direction: row;
-
-          .icon {
-            width: 120px;
-            height: 100px;
-            padding: 10px 20px;
-            flex-grow: 0;
-            > div {
-              width: 100%;
-              height: 100%;
-            }
-          }
-
-          .info {
-            flex-grow: 1;
-            align-self: center;
-            text-align: left;
-
-            .label {
-              font-size: 0.7rem;
-            }
-
-            .name {
-              font-family: LGSmHaB, sans-serif;
-              font-size: 1.2rem;
-            }
-
-            .email {
-              font-family: 'Baloo Bhai', sans-serif;
-              font-size: 0.8rem;
-              display: none;
-            }
-          }
+        &.user-count {
+          width: auto;
+          background-color: transparent;
+          font-family: 'Baloo Bhai', cursive;
+          font-size: 0.9rem;
+          box-shadow: none;
+          margin-left: 5px;
         }
-      }
 
-      .current {
-        > div {
-          display: flex;
-          flex-direction: row;
-          height: 100%;
-          align-self: center;
-
-          > div {
-            align-self: center;
-            flex-grow: 1;
-            padding: 0 20px;
-
-            .label {
-              font-size: 0.7rem;
-            }
-
-            .topic {
-              font-size: 1rem;
-              font-family: LGSmHaB, sans-serif;
-              line-height: 100%;
-              margin-bottom: 0.25rem;
-
-              &:before {
-                content: '<';
-              }
-
-              &:after {
-                content: '>';
-              }
-            }
-
-            .value {
-              line-height: 100%;
-              font-size: 1rem;
-              font-family: LGSmHaB, sans-serif;
-              margin-bottom: 0.25rem;
-            }
-          }
+        &.joined,
+        &.started,
+        &.has-joined-user {
+          background-color: $orange;
+          color: $white;
         }
       }
     }
+  }
 
-    .slide-buttons {
-      position: absolute;
-      bottom: 50px;
+  .topic-name {
+    margin-top: 0.125rem;
+    position: relative;
+    > span {
+      font-size: 0.7rem;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 3px;
+    }
+  }
+
+  .description {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    > div {
+      background-color: $light;
+      padding: 0;
+      height: 50px;
+      position: relative;
       width: 100%;
-      left: 0;
-      line-height: 0;
-      padding: 0.5rem 0;
-      background-color: transparent;
-      button {
-        width: 10px;
-        height: 10px;
-        padding: 0;
-        border-radius: 50%;
-        margin: 0 3px;
-
-        &.selected {
-          background-color: $yellow;
-
-          &:hover {
-            background-color: darken($yellow, 5%);
-          }
+      overflow-y: auto;
+      > div {
+        display: flex;
+        > div {
+          align-self: center;
+          padding: 0.5rem;
+          flex: 1;
         }
       }
     }
   }
 
   .bottom-buttons {
-    padding: 0.75rem 0.25rem 0.75rem;
+    padding: 0 1rem 1.5rem;
+
     > button {
-      margin: 0 0.125rem;
+      padding: 0.5rem 2.5rem;
+      border-radius: 2px;
+      width: 100%;
+      border: none;
+
+      .icon {
+        font-size: 1.4rem;
+        line-height: 100%;
+      }
+      .text {
+        margin-top: 0.25rem;
+        font-size: 0.9rem;
+        line-height: 100%;
+      }
     }
   }
 
@@ -207,25 +176,6 @@
       padding: 2px 6px;
       font-family: 'Baloo Bhai', cursive;
       border-radius: 0 0 3px 3px;
-    }
-  }
-
-  .status {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-  }
-
-  .card-body {
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    padding: 0 !important;
-
-    > div {
-      align-self: center;
-      vertical-align: middle;
-      width: 100%;
     }
   }
 }
