@@ -57,6 +57,8 @@
     left: 8px;
     display: inline-block;
     text-align: left;
+    z-index: 2;
+    width: auto !important;
     > span {
       font-size: 0.7rem;
       border-radius: 3px;
