@@ -672,7 +672,6 @@ class Share extends React.Component {
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
-                options={options}
                 setOption={this.setOption}
               />
             )}
