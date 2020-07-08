@@ -91,9 +91,6 @@ class ShareController extends React.PureComponent {
       currentChapterId,
       currentPageId,
       projectorScrollInfo,
-    } = this.props;
-
-    const {
       startShare,
       closeShare,
       exitShare,
@@ -121,7 +118,7 @@ class ShareController extends React.PureComponent {
             />
           </div>
           <Tabs
-            className="tabs border-0"
+            className="tabs border-0 py-0"
             left
             tabs={tabs}
             tab={tab}

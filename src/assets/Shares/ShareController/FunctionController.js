@@ -11,8 +11,8 @@ class FunctionController extends React.PureComponent {
     return (
       <div className={`${className} function-controller-wrapper`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent bg-gray-300 py-2 d-flex flex-column">
-            <Card className="border-0 flex-grow-0 mb-2">
+          <div className="g-attach-parent bg-gray-400 d-flex flex-column">
+            <Card className="border-0 flex-grow-0 mb-1">
               <CardBody>
                 <div className="line py-0 mb-3">
                   <div className="label">{t('상단 메뉴')}</div>

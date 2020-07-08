@@ -11,7 +11,7 @@ class PointerController extends React.PureComponent {
     return (
       <div className={`${className} pointer-controller-wrapper`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent pointer-layout-layout bg-gray-300 py-2 d-flex flex-column">
+          <div className="g-attach-parent pointer-layout-layout bg-gray-400 d-flex flex-column">
             <Card className="border-0 flex-grow-1">
               <CardBody />
             </Card>

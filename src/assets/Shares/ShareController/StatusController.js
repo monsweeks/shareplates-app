@@ -44,8 +44,8 @@ class StatusController extends React.PureComponent {
     return (
       <div className={`${className} status-controller-wrapper`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent status-layout bg-gray-300 py-2 d-flex flex-column">
-            <Card className="border-0 flex-grow-0">
+          <div className="g-attach-parent status-layout bg-gray-400 d-flex flex-column">
+            <Card className="border-0 flex-grow-0 mb-1">
               <CardBody>
                 <div className="line py-0">
                   <div className="label">{t('공유 상태')}</div>
@@ -90,7 +90,7 @@ class StatusController extends React.PureComponent {
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 mt-2 flex-grow-1">
+            <Card className="border-0 flex-grow-1">
               <CardBody className="h-100 d-flex flex-column p-2">
                 <Tabs
                   className="tabs border-0 pt-0  flex-grow-0"
@@ -140,7 +140,7 @@ class StatusController extends React.PureComponent {
             </Card>
           </div>
         </div>
-        <div className="bottom-fixed-menu flex-grow-0 d-flex flex-row bg-black">
+        <div className="flex-grow-0 d-flex flex-row bg-black">
           <Button className="g-no-focus flex-fill p-3 text-warning" color="transparent" onClick={exitShare}>
             <i className="fal fa-sign-out-alt" />
             <div>

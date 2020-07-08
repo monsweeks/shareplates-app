@@ -90,8 +90,8 @@ class ProgressController extends React.PureComponent {
     return (
       <div className={`progress-controller-wrapper ${className}`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent process-layout bg-gray-300 py-2 d-flex flex-column">
-            <Card className="border-0 flex-grow-0">
+          <div className="g-attach-parent process-layout bg-gray-400 d-flex flex-column">
+            <Card className="border-0 flex-grow-0 mb-1">
               <CardBody>
                 <div className="process-percentage">
                   <div className="process-bg">
@@ -142,7 +142,7 @@ class ProgressController extends React.PureComponent {
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 flex-grow-0 mt-2">
+            <Card className="border-0 flex-grow-0 mb-1">
               <CardBody>
                 <div className="line py-0">
                   <div className="label chapter-page-label">
@@ -201,7 +201,7 @@ class ProgressController extends React.PureComponent {
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 flex-grow-1 mt-2">
+            <Card className="border-0 flex-grow-1">
               <CardBody className="h-100 d-flex flex-column p-0">
                 <Swipeable
                   className="move-swipeable"
