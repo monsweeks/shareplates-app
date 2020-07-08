@@ -1,5 +1,5 @@
 .progress-controller-wrapper {
-  .process-percentage {
+  .focus-percentage {
     display: flex;
     flex-direction: row;
 
@@ -9,31 +9,32 @@
       position: relative;
 
       &.process-bg {
-        background-color: $light;
-      }
+        display: flex;
+        flex-direction: row;
 
-      &.separator {
-        flex: 0;
-        width: 1px;
-        margin: 0 0.5rem;
-        min-width: 1px;
-        padding: 0;
-        > div {
-          width: 100%;
-          height: 100%;
-          border-right: 1px dashed rgba(0, 0, 0, 0.2);
+        > .left {
+          flex-grow: 1;
+        }
+
+        > .right {
+          flex-grow: 0;
+          min-width: 20px;
+          position: relative;
+          background-color: $gray-300;
         }
       }
 
       .label {
         position: relative;
         z-index: 1;
-        padding: 0.5rem 0;
+        margin-top: 0.5rem;
+        margin-bottom: 0.25rem;
+        font-size: 1.2rem;
+        line-height: 100%;
       }
 
       .percentage {
-        font-size: 1.1rem;
-        padding: 0 0;
+        font-size: 0.9rem;
         position: relative;
         z-index: 1;
         line-height: 100%;
@@ -43,8 +44,9 @@
       .percentage-data {
         position: relative;
         z-index: 1;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
         font-size: 0.8rem;
+        line-height: 100%;
       }
 
       .bar {
@@ -56,6 +58,46 @@
         background-color: $yellow;
         border-radius: 2px 2px 0 0;
         transition: height 0.5s;
+      }
+    }
+  }
+
+  .current-info {
+    text-align: center;
+    font-size: 0.9rem;
+    > div {
+      display: inline-block;
+      max-width: 50%;
+      white-space: nowrap;
+    }
+  }
+
+  .current-map {
+    .chapter-list,
+    .page-list {
+      height: 10px;
+      display: flex;
+      flex-direction: row;
+      > div {
+        background-color: $gray-300;
+        flex: 1 1 0;
+        border-left: 1px solid rgba(0, 0, 0, 0.4);
+        border-top: 1px solid rgba(0, 0, 0, 0.4);
+
+        &:last-child {
+          border-right: 1px solid rgba(0, 0, 0, 0.4);
+        }
+
+        &.selected {
+          background-color: $yellow;
+          background-color: $green;
+        }
+      }
+    }
+
+    .page-list {
+      > div {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
       }
     }
   }
@@ -84,45 +126,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         box-sizing: border-box;
-
-        &.popup-button {
-          position: absolute;
-          top: -10px;
-          right: -4px;
-          width: 20px;
-          height: 20px;
-          text-align: center;
-          background-color: $primary;
-          color: $white;
-          display: inline-block;
-          padding: 4px 0 0;
-          border-radius: 3px;
-        }
-      }
-    }
-  }
-
-  .chapter-list,
-  .page-list {
-    height: 10px;
-    display: flex;
-    flex-direction: row;
-    > div {
-      background-color: $gray-400;
-      flex: 1 1 0;
-      border-left: 1px solid rgba(0, 0, 0, 0.2);
-
-      &:first-child {
-        border-left: none;
-        border-radius: 3px 0 0 3px;
-      }
-
-      &:last-child {
-        border-radius: 0 3px 3px 0;
-      }
-
-      &.selected {
-        background-color: $yellow;
       }
     }
   }
@@ -138,6 +141,7 @@
       flex-grow: 0;
       padding: 0 1rem;
       line-height: 100%;
+      color: $gray-600;
     }
 
     .scroll-controller {

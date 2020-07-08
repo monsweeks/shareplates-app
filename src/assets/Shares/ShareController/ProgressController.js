@@ -92,112 +92,93 @@ class ProgressController extends React.PureComponent {
         <div className="flex-grow-1 position-relative">
           <div className="g-attach-parent process-layout bg-gray-400 d-flex flex-column">
             <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody>
-                <div className="process-percentage">
+              <CardBody className="p-2">
+                <div className="focus-percentage">
                   <div className="process-bg">
-                    <div className="label">{t('진행율')}</div>
-                    <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
-                    <div className="percentage-data">
-                      ({currentSeq}/{totalPageCount})
+                    <div className="left">
+                      <div className="label">
+                        <i className="fas fa-map-marker-alt" />
+                      </div>
+                      <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
+                      <div className="percentage-data">
+                        ({currentSeq}/{totalPageCount})
+                      </div>
                     </div>
-                    <div
-                      className="bar"
-                      style={{
-                        height: `${(currentSeq / totalPageCount) * 100}%`,
-                      }}
-                    />
-                  </div>
-                  <div className="separator">
-                    <div />
-                  </div>
-                  <div className="process-bg">
-                    <div className="label">{t('온라인')}</div>
-                    <div className="percentage">{numeral(onlineUserCount / totalUserCount).format('0.00%')}</div>
-                    <div className="percentage-data">
-                      ({onlineUserCount}/{totalUserCount})
+                    <div className="right">
+                      <div
+                        className="bar"
+                        style={{
+                          height: `${(currentSeq / totalPageCount) * 100}%`,
+                        }}
+                      />
                     </div>
-                    <div
-                      className="bar"
-                      style={{
-                        height: `${(onlineUserCount / totalUserCount) * 100}%`,
-                      }}
-                    />
-                  </div>
-                  <div className="separator">
-                    <div />
                   </div>
                   <div className="process-bg">
-                    <div className="label">{t('집중도')}</div>
-                    <div className="percentage">{numeral(focusUserCount / totalUserCount).format('0.00%')}</div>
-                    <div className="percentage-data">
-                      ({focusUserCount}/{totalUserCount})
+                    <div className="left">
+                      <div className="label">
+                        <i className="fal fa-wifi" />
+                      </div>
+                      <div className="percentage">{numeral(onlineUserCount / totalUserCount).format('0.00%')}</div>
+                      <div className="percentage-data">
+                        ({onlineUserCount}/{totalUserCount})
+                      </div>
                     </div>
-                    <div
-                      className="bar"
-                      style={{
-                        height: `${(focusUserCount / totalUserCount) * 100}%`,
-                      }}
-                    />
+                    <div className="right">
+                      <div
+                        className="bar"
+                        style={{
+                          height: `${(onlineUserCount / totalUserCount) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="process-bg">
+                    <div className="left">
+                      <div className="label">
+                        <i className="fas fa-eye" />
+                      </div>
+                      <div className="percentage">{numeral(focusUserCount / totalUserCount).format('0.00%')}</div>
+                      <div className="percentage-data">
+                        ({focusUserCount}/{totalUserCount})
+                      </div>
+                    </div>
+                    <div className="right">
+                      <div
+                        className="bar"
+                        style={{
+                          height: `${(focusUserCount / totalUserCount) * 100}%`,
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </CardBody>
             </Card>
             <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody>
-                <div className="line py-0">
-                  <div className="label chapter-page-label">
-                    <span>{t('현재 위치')}</span>
-                  </div>
-                  <div className="separator">
-                    <div />
-                  </div>
-                  <div className="value chapter-page-title">
-                    <div>
-                      <div>{currentChapter.title}</div>
-                      <div>
-                        <i className="fal fa-chevron-right mx-2" />
-                        {currentPage.title}
-                      </div>
-                      <div className="popup-button">
-                        <span>
-                          <i className="fal fa-window" />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+              <CardBody className='pb-2'>
+                <div className="current-info mb-2">
+                  <div>{currentChapter.title} </div>
+                  <div> / {currentPage.title}</div>
                 </div>
-                <div className="line py-0">
-                  <div className="label chapter-page-label">
-                    <span>{t('챕터')}</span>
+                <div className="current-map mb-2">
+                  <div className="chapter-list">
+                    {chapterPageList.map((chapter) => {
+                      return (
+                        <div key={chapter.id} className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />
+                      );
+                    })}
                   </div>
-                  <div className="separator">
-                    <div />
-                  </div>
-                  <div className="value text-right">
-                    <div className="chapter-list">
-                      {chapterPageList.map((chapter) => {
-                        return (
-                          <div key={chapter.id} className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />
-                        );
+                  <div className="page-list">
+                    {currentChapter &&
+                      currentChapter.pages.map((page) => {
+                        return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
                       })}
-                    </div>
                   </div>
                 </div>
-                <div className="line py-0">
-                  <div className="label chapter-page-label">
-                    <span>{t('페이지')}</span>
-                  </div>
-                  <div className="separator">
-                    <div />
-                  </div>
-                  <div className="value text-right">
-                    <div className="page-list">
-                      {currentChapter &&
-                        currentChapter.pages.map((page) => {
-                          return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
-                        })}
-                    </div>
-                  </div>
+                <div className="text-center">
+                  <Button color="primary" className="g-circle-icon-button">
+                    <i className="fal fa-directions" />
+                  </Button>
                 </div>
               </CardBody>
             </Card>
