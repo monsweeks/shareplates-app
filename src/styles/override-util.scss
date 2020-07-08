@@ -140,6 +140,14 @@
   background-color: $gray-300;
 }
 
+.bg-gray-400 {
+  background-color: $gray-400;
+}
+
+.bg-gray-500 {
+  background-color: $gray-500;
+}
+
 .g-overlay {
   position: fixed;
   left: 0;
@@ -171,6 +179,10 @@
   color: $black;
 }
 
+.bg-black {
+  background-color: #333;
+}
+
 .pointer-cursor {
   cursor: pointer;
 }
@@ -188,4 +200,12 @@
     outline: none !important;
     box-shadow: none !important;
   }
+}
+
+.g-attach-parent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

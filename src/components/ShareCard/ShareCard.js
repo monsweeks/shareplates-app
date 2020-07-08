@@ -3,25 +3,30 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import ReactTimeAgo from 'react-time-ago';
 import moment from 'moment';
-import { Button, Card, CardBody, UserIcon } from '@/components';
-import './ShareCard.scss';
+import ReactTooltip from 'react-tooltip';
+import { Button, Card, CardBody } from '@/components';
 import { SharePropTypes } from '@/proptypes';
-
-const tabs = ['main', 'admin', 'current'];
+import './ShareCard.scss';
 
 class ShareCard extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    ReactTooltip.rebuild();
+  }
 
-    this.state = {
-      tab: 'main',
-    };
+  componentDidUpdate() {
+    ReactTooltip.rebuild();
   }
 
   render() {
     const { className, share, onConfigClick, onCardClick, t } = this.props;
-    const { tab } = this.state;
-    const lastBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0 ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1] : {};
+    const lastBucket =
+      share.shareTimeBuckets && share.shareTimeBuckets.length > 0
+        ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1]
+        : {};
+    const joinedAdminUser = share.shareUsers.find(
+      (shareUser) => shareUser.shareRoleCode === 'ADMIN' && shareUser.status === 'ONLINE',
+    );
+    const totalUserCount = share.onLineUserCount + share.offLineUserCount;
 
     return (
       <Card className={`share-card-wrapper g-no-select ${className}`}>
@@ -31,71 +36,58 @@ class ShareCard extends React.PureComponent {
               <span className="tag">private</span>
             </div>
           )}
-          <span className="tag status">{share.startedYn ? t('진행중') : t('대기중')}</span>
+          <div className="open-time">
+            <span className={`short-icon short-icon-icon ${totalUserCount > 0 ? 'has-joined-user' : ''}`}>
+              <i className="fal fa-clock" />
+            </span>
+            <ReactTimeAgo date={moment(lastBucket.openDate).valueOf()} />
+          </div>
+          <div className="tag-info">
+            <span
+              data-tip={t('매니저가 참여중입니다')}
+              className={`short-icon admin-join ${joinedAdminUser ? 'joined' : ''}`}
+            >
+              <i className="fal fa-head-side" />
+            </span>
+            <span
+              data-tip={share.startedYn ? t('공유 진행중') : t('공유 준비중')}
+              className={`short-icon status  ${share.startedYn ? 'started' : ''}`}
+            >
+              {share.startedYn && <i className="fal fa-play" />}
+              {!share.startedYn && <i className="fal fa-pause" />}
+            </span>
+            <span
+              data-tip={`${totalUserCount}${t('명의 사용자가 참여중입니다.')}`}
+              className={`short-icon user-count-icon ${totalUserCount > 0 ? 'has-joined-user' : ''}`}
+            >
+              <i className="fas fa-street-view" />
+            </span>
+            <span className="user-count">{totalUserCount}</span>
+          </div>
           <div className="title">
             <div className="share-name">{share.name}</div>
+            {onConfigClick && (
+              <Button
+                className="config-button g-circle-icon-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onConfigClick(share.topicId, share.id);
+                }}
+                size="sm"
+                color="white"
+              >
+                <i className="fal fa-cog" />
+              </Button>
+            )}
           </div>
-          <div className="slide-content">
-            <div
-              className="slide-content-viewer"
-              style={{
-                left: `${tabs.findIndex((key) => key === tab) * -100}%`,
-              }}
-            >
-              <div className="main">
-                <div>
-                  <div>
-                    <div className="current-count">
-                      <div className="count">
-                        {share.onLineUserCount} / {share.onLineUserCount + share.offLineUserCount} {t('명')}
-                      </div>
-                      <div className="name">{t('참여중')}</div>
-                    </div>
-                    <div className="open-time">
-                      <ReactTimeAgo date={moment(lastBucket.openDate).valueOf()} /> 시작
-                    </div>
-                  </div>
-                </div>
+          <div className="topic-name">
+            <span className="g-tag">{share.topicName}</span>
+          </div>
+          <div className="description">
+            <div className="scrollbar">
+              <div className="g-attach-parent">
+                <div>{share.description}</div>
               </div>
-              <div className="admin">
-                <div className="admin-user">
-                  <div className="icon">
-                    <div>{share.adminUserInfo && <UserIcon info={share.adminUserInfo} />}</div>
-                  </div>
-                  <div className="info">
-                    <div className="label">어드민</div>
-                    <div className="name">{share.adminUserName}</div>
-                    <div className="email">{share.adminUserEmail}</div>
-                  </div>
-                </div>
-              </div>
-              <div className="current">
-                <div>
-                  <div>
-                    <div className="topic">{share.topicName}</div>
-                    <div className="value">
-                      {share.currentChapterTitle} / {share.currentPageTitle}
-                    </div>
-                    <div className="label">진행중</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="slide-buttons">
-              {tabs.map((key) => {
-                return (
-                  <Button
-                    key={key}
-                    color="gray"
-                    className={`${tab === key ? 'selected' : ''}`}
-                    onClick={() => {
-                      this.setState({
-                        tab: key,
-                      });
-                    }}
-                  />
-                );
-              })}
             </div>
           </div>
           <div className="bottom-buttons">
@@ -105,23 +97,12 @@ class ShareCard extends React.PureComponent {
               }}
               size="sm"
               color="white"
-              outline
             >
-              참여
+              <div className="icon">
+                <i className="fal fa-broadcast-tower" />
+              </div>
+              <div className="text">{t('참여')}</div>
             </Button>
-            {onConfigClick && (
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onConfigClick(share.topicId, share.id);
-                }}
-                size="sm"
-                color="white"
-                outline
-              >
-                관리
-              </Button>
-            )}
           </div>
         </CardBody>
       </Card>

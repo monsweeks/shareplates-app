@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody, UserIcon } from '@/components';
 import './ShareUserCard.scss';
+import { UserPropTypes } from '@/proptypes';
 
 class ShareUserCard extends React.PureComponent {
   render() {
@@ -29,9 +30,7 @@ class ShareUserCard extends React.PureComponent {
               </div>
             )}
             <div className="user-icon">
-              <div>
-                {user && <UserIcon info={user.info} />}
-              </div>
+              <div>{user && <UserIcon info={user.info} />}</div>
             </div>
             <div className="user-name">
               <span>{user.name}</span>
@@ -73,8 +72,13 @@ class ShareUserCard extends React.PureComponent {
               </div>
             )}
 
-            <div className={`user-status ${user.status}`}>
-              <span>{user.status}</span>
+            <div className='status-tags'>
+              <div className={`user-status ${user.status}`}>
+                <span>{user.status}</span>
+              </div>
+              <div className={`user-focus ${user.focusYn ? 'focus' : 'out-focus'}`}>
+                <span>{user.focusYn ? 'focus' : 'out-focus'}</span>
+              </div>
             </div>
           </div>
         </CardBody>
@@ -88,20 +92,7 @@ ShareUserCard.defaultProps = {
 };
 
 ShareUserCard.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-    info: PropTypes.shape({
-      icon: PropTypes.shape({
-        type: PropTypes.string,
-        data: PropTypes.objectOf(PropTypes.any),
-      }),
-    }),
-    status: PropTypes.string,
-    message: PropTypes.string,
-    banYn: PropTypes.bool,
-  }),
+  user: UserPropTypes,
   currentUser: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,

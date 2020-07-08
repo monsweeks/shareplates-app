@@ -42,6 +42,7 @@ class ShareEditorPopup extends React.Component {
       share: {
         id: null,
         name: '',
+        description : '',
         memo: '',
         privateYn: false,
         currentChapterId: null,
@@ -277,6 +278,23 @@ class ShareEditorPopup extends React.Component {
                   }}
                   simple
                   border
+                  componentClassName="border-primary"
+                />
+              </FormGroup>
+              <hr className="g-dashed mb-3" />
+              <SubLabel bold size="sm">
+                {t('설명')}
+              </SubLabel>
+              <Description>{t('토픽에 대한 설명을 입력합니다.')}</Description>
+              <FormGroup>
+                <TextArea
+                  label={t('설명')}
+                  placeholderMessage={t('message.topicDescDesc')}
+                  value={share.description}
+                  onChange={(value) => {
+                    this.onChange('description', value);
+                  }}
+                  simple
                   componentClassName="border-primary"
                 />
               </FormGroup>

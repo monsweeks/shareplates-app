@@ -22,6 +22,8 @@ import { convertUser, convertUsers } from '@/pages/Users/util';
 import { Header } from '@/layouts';
 import dialog from '@/utils/dialog';
 
+const detectBrowserFocus = false;
+
 class Share extends React.Component {
   contentViewer = React.createRef();
 
@@ -53,9 +55,14 @@ class Share extends React.Component {
       openScreenSelector: false,
       messages: [],
       projectorScrollInfo: {},
+      options: {
+        hideShareNavigator: false,
+        fullScreen: false,
+      },
     };
 
-    this.onScrollDebounced = debounce(this.sendScrollInfo, 300);
+    this.onScrollDebounced = debounce(messageClient.sendScrollInfo, 300);
+    this.sendFocusChangeDebounced = debounce(this.sendFocusChange, 300);
   }
 
   componentDidMount() {
@@ -66,11 +73,23 @@ class Share extends React.Component {
     }
 
     document.addEventListener('scroll', this.onScroll);
+    if (detectBrowserFocus) {
+      window.addEventListener('focus', this.onFocus);
+      window.addEventListener('blur', this.onFocus);
+    }
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
   }
 
   componentWillUnmount() {
     document.removeEventListener('scroll', this.onScroll);
+    if (detectBrowserFocus) {
+      window.removeEventListener('focus', this.onFocus);
+      window.removeEventListener('blur', this.onFocus);
+    }
+
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     this.onScrollDebounced.cancel();
+    this.sendFocusChangeDebounced.cancel();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,42 +104,39 @@ class Share extends React.Component {
     }
   }
 
+  onVisibilityChange = () => {
+    this.sendFocusChangeDebounced(document.visibilityState === 'visible');
+  };
+
+  onFocus = (e) => {
+    if (detectBrowserFocus) {
+      this.sendFocusChangeDebounced(e.type === 'focus');
+    }
+  };
+
   onScroll = () => {
-    const { screenType } = this.state;
+    const { shareId, screenType } = this.state;
 
     if (screenType === SCREEN_TYPE.PROJECTOR) {
       const windowHeight = window.innerHeight;
       const contentViewerHeight =
         this.contentViewer && this.contentViewer.current && this.contentViewer.current.clientHeight;
       if (windowHeight && contentViewerHeight) {
-        this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
+        this.onScrollDebounced(shareId, windowHeight, contentViewerHeight, document.documentElement.scrollTop);
       }
     }
   };
 
-  sendScrollInfo = (windowHeight, contentViewerHeight, scrollTop) => {
-    const { shareId, isAdmin } = this.state;
-
-    if (isAdmin) {
-      request.put(
-        `/api/shares/${shareId}/contents/scroll`,
-        {
-          windowHeight,
-          contentViewerHeight,
-          scrollTop,
-        },
-        null,
-        null,
-        true,
-      );
-    }
+  sendFocusChange = (focus) => {
+    const { shareId } = this.state;
+    messageClient.focusChange(this.clientRef, shareId, focus);
   };
 
   sendMoveScroll = (dir) => {
     const { shareId, isAdmin } = this.state;
 
     if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/scroll/${dir}`, null, null, null, true);
+      messageClient.sendMoveScroll(shareId, dir);
     }
   };
 
@@ -352,6 +368,12 @@ class Share extends React.Component {
 
       case 'SCREEN_TYPE_REGISTERED': {
         if (screenType === SCREEN_TYPE.PROJECTOR) {
+          this.setState({
+            options: {
+              hideShareNavigator: true,
+              fullScreen: false,
+            },
+          });
           this.onScroll();
         }
         break;
@@ -402,6 +424,21 @@ class Share extends React.Component {
           });
         } else {
           next[userIndex] = convertUser(data.user);
+          this.setState({
+            users: next,
+          });
+        }
+
+        break;
+      }
+
+      case 'USER_FOCUS_CHANGE': {
+        const { users } = this.state;
+        const next = users.slice(0);
+        const userIndex = next.findIndex((user) => user.id === data.userId);
+
+        if (userIndex > -1) {
+          next[userIndex].focusYn = data.focus;
           this.setState({
             users: next,
           });
@@ -492,6 +529,22 @@ class Share extends React.Component {
         break;
       }
 
+      case 'OPTION_CHANGE': {
+        const { options } = this.state;
+        const next = { ...options };
+        next[data.optionKey] = data.optionValue;
+
+        console.log(next);
+
+        if (screenType === SCREEN_TYPE.PROJECTOR) {
+          this.setState({
+            options: next,
+          });
+        }
+
+        break;
+      }
+
       default: {
         break;
       }
@@ -507,6 +560,24 @@ class Share extends React.Component {
         window.dispatchEvent(new Event('resize'));
       },
     );
+  };
+
+  setOption = (key, value) => {
+    const { screenType, shareId, options } = this.state;
+    const next = {
+      ...options,
+    };
+    next[key] = value;
+
+    this.setState({
+      options: next,
+    });
+
+    console.log(shareId, key, value);
+
+    if (screenType === SCREEN_TYPE.CONTROLLER) {
+      messageClient.sendOption(shareId, key, value);
+    }
   };
 
   render() {
@@ -527,6 +598,7 @@ class Share extends React.Component {
       isOpenUserPopup,
       init,
       accessCode,
+      options,
     } = this.state;
 
     const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
@@ -600,6 +672,7 @@ class Share extends React.Component {
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
+                setOption={this.setOption}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -618,6 +691,8 @@ class Share extends React.Component {
                     messageClient.stopShare(shareId);
                   }}
                   setOpenUserPopup={this.setOpenUserPopup}
+                  options={options}
+                  setOption={this.setOption}
                 />
                 <div className="content">
                   {share.startedYn && currentPage && (

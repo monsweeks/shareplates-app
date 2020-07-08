@@ -40,6 +40,43 @@ function registerScreenType(socketClient, shareId, screenType) {
   }
 }
 
+function focusChange(socketClient, shareId, focus) {
+  if (socketClient && socketClient.state && socketClient.state.connected) {
+    socketClient.sendMessage(`/pub/api/shares/${shareId}/contents/focus`, focus);
+  }
+}
+
+function sendScrollInfo(shareId, windowHeight, contentViewerHeight, scrollTop) {
+  request.put(
+    `/api/shares/${shareId}/contents/scroll`,
+    {
+      windowHeight,
+      contentViewerHeight,
+      scrollTop,
+    },
+    null,
+    null,
+    true,
+  );
+}
+
+function sendOption(shareId, optionKey, optionValue) {
+  request.put(
+    `/api/shares/${shareId}/contents/option`,
+    {
+      optionKey,
+      optionValue,
+    },
+    null,
+    null,
+    true,
+  );
+}
+
+function sendMoveScroll(shareId, dir) {
+  request.put(`/api/shares/${shareId}/contents/scroll/${dir}`, null, null, null, true);
+}
+
 const messageClient = {
   closeShare,
   startShare,
@@ -50,6 +87,10 @@ const messageClient = {
   sendReadyChat,
   joinShare,
   registerScreenType,
+  focusChange,
+  sendScrollInfo,
+  sendMoveScroll,
+  sendOption,
 };
 
 export default messageClient;

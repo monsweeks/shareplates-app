@@ -190,23 +190,23 @@ class List extends React.PureComponent {
                           this.clickedCell.focus();
                           this.clickedCell = null;
                         }, 200);
-                      }
 
-                      if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
-                        setChildSelectedInfo(item.id, [inx], 'click');
-                      } else if (e.ctrlKey) {
-                        setChildSelectedInfo(item.id, [inx], 'ctrl');
-                      } else if (e.altKey) {
-                        setChildSelectedInfo(item.id, [inx], 'alt');
-                      } else if (e.shiftKey) {
-                        if (childSelectedList && childSelectedList.length > 0) {
-                          const selectedList = [];
-                          for (let i = Number(childSelectedList[0]); i <= inx; i += 1) {
-                            selectedList.push([i]);
-                          }
-                          setChildSelectedInfo(item.id, selectedList, 'shift');
-                        } else {
+                        if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
                           setChildSelectedInfo(item.id, [inx], 'click');
+                        } else if (e.ctrlKey) {
+                          setChildSelectedInfo(item.id, [inx], 'ctrl');
+                        } else if (e.altKey) {
+                          setChildSelectedInfo(item.id, [inx], 'alt');
+                        } else if (e.shiftKey) {
+                          if (childSelectedList && childSelectedList.length > 0) {
+                            const selectedList = [];
+                            for (let i = Number(childSelectedList[0]); i <= inx; i += 1) {
+                              selectedList.push([i]);
+                            }
+                            setChildSelectedInfo(item.id, selectedList, 'shift');
+                          } else {
+                            setChildSelectedInfo(item.id, [inx], 'click');
+                          }
                         }
                       }
                     }}
@@ -286,10 +286,10 @@ const item = {
     wrapperHeightUnit: 'px',
     listStyle: 'inherit',
     indentLevel: 0,
-    fontWeight : 'inherit',
-    textDecorationLine : 'none',
-    textDecorationStyle : 'solid',
-    textDecorationColor : '#333333',
+    fontWeight: 'inherit',
+    textDecorationLine: 'none',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#333333',
   },
 };
 

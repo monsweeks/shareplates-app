@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { debounce } from 'lodash';
 import { TopLogo } from '@/components';
 import { ShareNavigator, ShareSideMenu } from '@/assets';
 import { SharePropTypes } from '@/proptypes';
@@ -11,60 +12,74 @@ import './ShareHeader.scss';
 class ShareHeader extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      hideShareNavigator: false,
-      fullScreen: false,
-    };
+    this.fullScreenDebounced = debounce(this.setFullScreen, 300);
   }
 
-  setHideShareNavigator = (value) => {
-    this.setState({
-      hideShareNavigator: value,
-    });
-  };
+  componentWillUnmount() {
+    this.fullScreenDebounced.cancel();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { options } = this.props;
+    if (options.fullScreen && prevProps.options.fullScreen !== options.fullScreen) {
+      this.fullScreenDebounced(true);
+    }
+
+    if (!options.fullScreen && prevProps.options.fullScreen !== options.fullScreen) {
+      this.fullScreenDebounced(false);
+    }
+  }
 
   setFullScreen = (value) => {
     const elem = document.documentElement;
-    if (value) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    }
-
-    if (!value) {
-      if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
+    try {
+      if (value) {
+        if (elem.requestFullscreen) {
+          const promise = elem.requestFullscreen();
+          promise.catch(() => {});
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
         }
       }
-    }
 
-    this.setState({
-      fullScreen: value,
-    });
+      if (!value) {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   render() {
-    const { share, chapters, pages, currentChapterId, currentPageId, isAdmin, isOpenUserPopup } = this.props;
+    const {
+      share,
+      chapters,
+      pages,
+      currentChapterId,
+      currentPageId,
+      isAdmin,
+      isOpenUserPopup,
+      options,
+      setOption,
+    } = this.props;
     const { stopShare, setChapter, setPage, setOpenUserPopup } = this.props;
 
-    const { hideShareNavigator, fullScreen } = this.state;
-
     return (
-      <div className={`share-header-wrapper  g-no-select ${hideShareNavigator ? 'hide' : ''}`}>
+      <div className={`share-header-wrapper  g-no-select ${options.hideShareNavigator ? 'hide' : ''}`}>
         <div>
           <div className="logo-area">
             <TopLogo />
@@ -101,10 +116,14 @@ class ShareHeader extends React.Component {
               share={share}
               isAdmin={isAdmin}
               stopShare={stopShare}
-              hideShareNavigator={hideShareNavigator}
-              setHideShareNavigator={this.setHideShareNavigator}
-              fullScreen={fullScreen}
-              setFullScreen={this.setFullScreen}
+              hideShareNavigator={options.hideShareNavigator}
+              setHideShareNavigator={(value) => {
+                setOption('hideShareNavigator', value);
+              }}
+              fullScreen={options.fullScreen}
+              setFullScreen={(value) => {
+                setOption('fullScreen', value);
+              }}
               isOpenUserPopup={isOpenUserPopup}
               setOpenUserPopup={setOpenUserPopup}
             />
@@ -146,6 +165,11 @@ ShareHeader.propTypes = {
   setPage: PropTypes.func,
   stopShare: PropTypes.func,
   setOpenUserPopup: PropTypes.func,
+  options: PropTypes.shape({
+    hideShareNavigator: PropTypes.bool,
+    fullScreen: PropTypes.bool,
+  }),
+  setOption: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareHeader)));

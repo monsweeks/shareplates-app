@@ -14,6 +14,7 @@ const UserPropTypes = PropTypes.shape({
   activeRoleCode: PropTypes.string,
   isAdmin: PropTypes.bool,
   creationDate: PropTypes.string,
+  focusYn: PropTypes.bool,
 });
 
 const TopicPropTypes = PropTypes.shape({

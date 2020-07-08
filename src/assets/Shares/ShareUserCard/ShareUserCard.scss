@@ -115,25 +115,30 @@ $icon-size: 40px;
     }
   }
 
-  .user-status {
+  .status-tags {
     flex-grow: 0;
     align-self: center;
     padding: 0 0.5rem;
     line-height: 100%;
-    > span {
-      display: inline-block;
-      font-size: 10px;
-      width: 45px;
-      text-align: center;
-      background-color: $primary;
-      color: $white;
-      border-radius: 2px;
-    }
 
-    &.OFFLINE {
+    > div {
       > span {
-        background-color: $danger;
+        display: inline-block;
+        font-size: 10px;
+        width: 65px;
+        text-align: center;
+        background-color: $primary;
         color: $white;
+        border-radius: 2px;
+        text-transform: uppercase;
+      }
+
+      &.out-focus,
+      &.OFFLINE {
+        > span {
+          background-color: $danger;
+          color: $white;
+        }
       }
     }
   }
