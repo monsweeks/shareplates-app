@@ -2,6 +2,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
   > .top {
     background-color: $white;
     flex-grow: 0;
@@ -75,10 +76,12 @@
               left: 0;
               right: 0;
               bottom: 0;
-              padding: 0.5rem;
+              padding: 0.5rem 0;
               width: 100%;
               height: 100%;
               background-color: $gray-300;
+              display: flex;
+              flex-direction: column;
             }
           }
 
@@ -107,7 +110,8 @@
           }
 
           .card {
-            box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.1);
+            box-shadow: none;
+            border-radius: 0;
           }
 
           .label {
@@ -142,9 +146,6 @@
   }
 
   .status-layout {
-    display: flex;
-    flex-direction: column;
-
     .chat-manager {
       position: absolute;
       top: 0;
@@ -175,9 +176,6 @@
   }
 
   .process-layout {
-    display: flex;
-    flex-direction: column;
-
     .process-percentage {
       display: flex;
       flex-direction: row;

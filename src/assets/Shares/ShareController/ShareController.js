@@ -164,6 +164,8 @@ class ShareController extends React.PureComponent {
       allowUser,
       movePage,
       sendMoveScroll,
+      options,
+      setOption,
     } = this.props;
     const { startedYn } = share;
 
@@ -181,6 +183,8 @@ class ShareController extends React.PureComponent {
     const offlineUserCount = noBannedUsers.filter((u) => u.status === 'OFFLINE').length;
     const totalUserCount = noBannedUsers.length;
     const focusUserCount = noBannedUsers.filter((u) => u.focusYn).length;
+
+    console.log(options);
 
     return (
       <div className={`share-controller-wrapper ${className}`}>
@@ -217,7 +221,7 @@ class ShareController extends React.PureComponent {
               <div>
                 <div className="scrollbar">
                   <div className="status-layout">
-                    <Card className="border-0 rounded-sm flex-grow-0">
+                    <Card className="border-0 flex-grow-0">
                       <CardBody>
                         <div className="line py-0">
                           <div className="label">{t('공유 상태')}</div>
@@ -262,7 +266,7 @@ class ShareController extends React.PureComponent {
                         </div>
                       </CardBody>
                     </Card>
-                    <Card className="border-0 rounded-sm mt-2 flex-grow-1">
+                    <Card className="border-0 mt-2 flex-grow-1">
                       <CardBody className="h-100 d-flex flex-column p-2">
                         <Tabs
                           className="tabs border-0 pt-0  flex-grow-0"
@@ -367,7 +371,7 @@ class ShareController extends React.PureComponent {
               <div>
                 <div className="scrollbar">
                   <div className="process-layout">
-                    <Card className="border-0 rounded-sm flex-grow-0">
+                    <Card className="border-0 flex-grow-0">
                       <CardBody>
                         <div className="process-percentage">
                           <div className="process-bg">
@@ -420,7 +424,7 @@ class ShareController extends React.PureComponent {
                         </div>
                       </CardBody>
                     </Card>
-                    <Card className="border-0 rounded-sm flex-grow-0 mt-2">
+                    <Card className="border-0 flex-grow-0 mt-2">
                       <CardBody>
                         <div className="line py-0">
                           <div className="label chapter-page-label">
@@ -433,7 +437,8 @@ class ShareController extends React.PureComponent {
                             <div>
                               <div>{currentChapter.title}</div>
                               <div>
-                                <i className="fal fa-chevron-right mx-2" />{currentPage.title}
+                                <i className="fal fa-chevron-right mx-2" />
+                                {currentPage.title}
                               </div>
                               <div className="popup-button">
                                 <span>
@@ -483,7 +488,7 @@ class ShareController extends React.PureComponent {
                         </div>
                       </CardBody>
                     </Card>
-                    <Card className="border-0 rounded-sm flex-grow-1 mt-2">
+                    <Card className="border-0 flex-grow-1 mt-2">
                       <CardBody className="h-100 d-flex flex-column p-0">
                         <Swipeable
                           className="move-swipeable"
@@ -599,8 +604,82 @@ class ShareController extends React.PureComponent {
                   )}
                 </div>
               </div>
-              <div>포인터</div>
-              <div>사용자</div>
+              <div>
+                <div className="scrollbar">
+                  <div className="pointer-layout">
+                    <Card className="border-0 flex-grow-1">
+                      <CardBody />
+                    </Card>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="scrollbar">
+                  <div className="function-layout">
+                    <Card className="border-0 flex-grow-0 mb-2">
+                      <CardBody>
+                        <div className="line py-0 mb-3">
+                          <div className="label">{t('상단 메뉴')}</div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value text-right">
+                            <Button
+                              className="mr-2"
+                              size="sm"
+                              color="primary"
+                              onClick={() => {
+                                setOption('hideShareNavigator', true);
+                              }}
+                            >
+                              숨김
+                            </Button>
+                            <Button
+                              size="sm"
+                              color="primary"
+                              onClick={() => {
+                                setOption('hideShareNavigator', false);
+                              }}
+                            >
+                              보임
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="line py-0">
+                          <div className="label">{t('풀스크린')}</div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div className="value text-right">
+                            <Button
+                              className="mr-2"
+                              size="sm"
+                              color="primary"
+                              onClick={() => {
+                                setOption('fullScreen', false);
+                              }}
+                            >
+                              윈도우 화면
+                            </Button>
+                            <Button
+                              size="sm"
+                              color="primary"
+                              onClick={() => {
+                                setOption('fullScreen', true);
+                              }}
+                            >
+                              전체 화면
+                            </Button>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                    <Card className="border-0 flex-grow-1">
+                      <CardBody />
+                    </Card>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </Swipeable>
@@ -644,6 +723,11 @@ ShareController.propTypes = {
     scrollTop: PropTypes.number,
   }),
   sendMoveScroll: PropTypes.func,
+  options: PropTypes.shape({
+    hideShareNavigator: PropTypes.bool,
+    fullScreen: PropTypes.bool,
+  }),
+  setOption: PropTypes.func,
 };
 
 export default withTranslation()(ShareController);

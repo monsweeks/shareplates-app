@@ -107,7 +107,6 @@ class Table extends React.PureComponent {
         {...item}
         style={last}
         onClick={() => {
-
           if (clearTextSelection) {
             clearTextSelection();
           }
@@ -181,25 +180,25 @@ class Table extends React.PureComponent {
                                   this.clickedCell.focus();
                                   this.clickedCell = null;
                                 }, 200);
-                              }
 
-                              if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
-                                setChildSelectedInfo(item.id, [inx, jnx], 'click');
-                              } else if (e.ctrlKey) {
-                                setChildSelectedInfo(item.id, [inx, jnx], 'ctrl');
-                              } else if (e.altKey) {
-                                setChildSelectedInfo(item.id, [inx, jnx], 'alt');
-                              } else if (e.shiftKey) {
-                                if (childSelectedList && childSelectedList.length > 0) {
-                                  const selectedList = [];
-                                  for (let i = childSelectedList[0][0]; i <= inx; i += 1) {
-                                    for (let j = childSelectedList[0][1]; j <= jnx; j += 1) {
-                                      selectedList.push([i, j]);
-                                    }
-                                  }
-                                  setChildSelectedInfo(item.id, selectedList, 'shift');
-                                } else {
+                                if (!e.altKey && !e.ctrlKey && !e.shiftKey) {
                                   setChildSelectedInfo(item.id, [inx, jnx], 'click');
+                                } else if (e.ctrlKey) {
+                                  setChildSelectedInfo(item.id, [inx, jnx], 'ctrl');
+                                } else if (e.altKey) {
+                                  setChildSelectedInfo(item.id, [inx, jnx], 'alt');
+                                } else if (e.shiftKey) {
+                                  if (childSelectedList && childSelectedList.length > 0) {
+                                    const selectedList = [];
+                                    for (let i = childSelectedList[0][0]; i <= inx; i += 1) {
+                                      for (let j = childSelectedList[0][1]; j <= jnx; j += 1) {
+                                        selectedList.push([i, j]);
+                                      }
+                                    }
+                                    setChildSelectedInfo(item.id, selectedList, 'shift');
+                                  } else {
+                                    setChildSelectedInfo(item.id, [inx, jnx], 'click');
+                                  }
                                 }
                               }
                             }}
@@ -238,7 +237,7 @@ Table.propTypes = {
   setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
-  clearTextSelection : PropTypes.func,
+  clearTextSelection: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
@@ -279,10 +278,10 @@ const headerCell = {
     widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
-    fontWeight : 'inherit',
+    fontWeight: 'inherit',
     textDecorationLine: 'none',
-    textDecorationStyle : 'solid',
-    textDecorationColor : '#333333',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#333333',
   },
 };
 
@@ -301,10 +300,10 @@ const contentCell = {
     widthUnit: '%',
     wrapperHeight: 'auto',
     wrapperHeightUnit: 'px',
-    fontWeight : 'inherit',
+    fontWeight: 'inherit',
     textDecorationLine: 'none',
-    textDecorationStyle : 'solid',
-    textDecorationColor : '#333333',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#333333',
   },
 };
 

@@ -11,6 +11,14 @@ import Shares from '@/pages/Shares';
 import Admin from '@/pages/Admin';
 import '@/App.scss';
 
+// 편집 기능 개선 필요
+// 스타일 저장 & 로딩 기능 (카테고리, 이름으로 많이 저장 활용할 수 있도록)
+// Ctrl-Z, Ctrl-Y 취소/복원 기능
+// 이미지, 텍스트 등을 한줄에 여러개 넣을 수 있도록
+// 코드 삽입할 수 있도록
+// 컴포넌트 복사 & 붙여넣기
+// 페이지 복사 & 붙여넣기
+
 function App() {
   return (
     <div className="app-wrapper">

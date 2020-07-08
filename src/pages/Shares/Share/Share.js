@@ -55,9 +55,13 @@ class Share extends React.Component {
       openScreenSelector: false,
       messages: [],
       projectorScrollInfo: {},
+      options: {
+        hideShareNavigator: false,
+        fullScreen: false,
+      },
     };
 
-    this.onScrollDebounced = debounce(this.sendScrollInfo, 300);
+    this.onScrollDebounced = debounce(messageClient.sendScrollInfo, 300);
     this.sendFocusChangeDebounced = debounce(this.sendFocusChange, 300);
   }
 
@@ -111,14 +115,14 @@ class Share extends React.Component {
   };
 
   onScroll = () => {
-    const { screenType } = this.state;
+    const { shareId, screenType } = this.state;
 
     if (screenType === SCREEN_TYPE.PROJECTOR) {
       const windowHeight = window.innerHeight;
       const contentViewerHeight =
         this.contentViewer && this.contentViewer.current && this.contentViewer.current.clientHeight;
       if (windowHeight && contentViewerHeight) {
-        this.onScrollDebounced(windowHeight, contentViewerHeight, document.documentElement.scrollTop);
+        this.onScrollDebounced(shareId, windowHeight, contentViewerHeight, document.documentElement.scrollTop);
       }
     }
   };
@@ -128,29 +132,11 @@ class Share extends React.Component {
     messageClient.focusChange(this.clientRef, shareId, focus);
   };
 
-  sendScrollInfo = (windowHeight, contentViewerHeight, scrollTop) => {
-    const { shareId, isAdmin } = this.state;
-
-    if (isAdmin) {
-      request.put(
-        `/api/shares/${shareId}/contents/scroll`,
-        {
-          windowHeight,
-          contentViewerHeight,
-          scrollTop,
-        },
-        null,
-        null,
-        true,
-      );
-    }
-  };
-
   sendMoveScroll = (dir) => {
     const { shareId, isAdmin } = this.state;
 
     if (isAdmin) {
-      request.put(`/api/shares/${shareId}/contents/scroll/${dir}`, null, null, null, true);
+      messageClient.sendMoveScroll(shareId, dir);
     }
   };
 
@@ -382,6 +368,12 @@ class Share extends React.Component {
 
       case 'SCREEN_TYPE_REGISTERED': {
         if (screenType === SCREEN_TYPE.PROJECTOR) {
+          this.setState({
+            options: {
+              hideShareNavigator: true,
+              fullScreen: false,
+            },
+          });
           this.onScroll();
         }
         break;
@@ -537,6 +529,22 @@ class Share extends React.Component {
         break;
       }
 
+      case 'OPTION_CHANGE': {
+        const { options } = this.state;
+        const next = { ...options };
+        next[data.optionKey] = data.optionValue;
+
+        console.log(next);
+
+        if (screenType === SCREEN_TYPE.PROJECTOR) {
+          this.setState({
+            options: next,
+          });
+        }
+
+        break;
+      }
+
       default: {
         break;
       }
@@ -552,6 +560,24 @@ class Share extends React.Component {
         window.dispatchEvent(new Event('resize'));
       },
     );
+  };
+
+  setOption = (key, value) => {
+    const { screenType, shareId, options } = this.state;
+    const next = {
+      ...options,
+    };
+    next[key] = value;
+
+    this.setState({
+      options: next,
+    });
+
+    console.log(shareId, key, value);
+
+    if (screenType === SCREEN_TYPE.CONTROLLER) {
+      messageClient.sendOption(shareId, key, value);
+    }
   };
 
   render() {
@@ -572,6 +598,7 @@ class Share extends React.Component {
       isOpenUserPopup,
       init,
       accessCode,
+      options,
     } = this.state;
 
     const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
@@ -645,6 +672,8 @@ class Share extends React.Component {
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
+                options={options}
+                setOption={this.setOption}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -663,6 +692,8 @@ class Share extends React.Component {
                     messageClient.stopShare(shareId);
                   }}
                   setOpenUserPopup={this.setOpenUserPopup}
+                  options={options}
+                  setOption={this.setOption}
                 />
                 <div className="content">
                   {share.startedYn && currentPage && (
