@@ -32,7 +32,8 @@ function socialLogin(vendor, noImplementSite) {
     }
 
     case 'google': {
-      window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?scope=email&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://mindplates.com:30000/oauth/google/token&client_id=766766390358-u4v4i9huft470ol689enfi9mq3gppbs6.apps.googleusercontent.com`;
+      window.location.href =
+        'https://accounts.google.com/o/oauth2/v2/auth?scope=email&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://mindplates.com:30000/oauth/google/token&client_id=766766390358-u4v4i9huft470ol689enfi9mq3gppbs6.apps.googleusercontent.com';
       break;
     }
 
@@ -44,7 +45,7 @@ function socialLogin(vendor, noImplementSite) {
 
 function convertInfo(info) {
   let next = info;
-  if (info && typeof(info) === 'string') {
+  if (info && typeof info === 'string') {
     next = JSON.parse(info);
     if (!(next.icon && next.icon.type)) {
       next = {
@@ -61,7 +62,7 @@ function convertInfo(info) {
 
 function convertUser(user) {
   const next = user;
-  if (user && user.info && typeof(user.info) === 'string') {
+  if (user && user.info && typeof user.info === 'string') {
     next.info = JSON.parse(user.info);
     if (!(next.info.icon && next.info.icon.type)) {
       next.info = {
@@ -87,13 +88,12 @@ function convertUsers(users) {
 
 function serializeUser(user) {
   const next = user;
-  if (user && user.info && typeof(user.info) === 'object') {
+  if (user && user.info && typeof user.info === 'object') {
     next.info = JSON.stringify(user.info);
   }
 
   return next;
 }
-
 
 function serializeUsers(users) {
   const next = users.slice(0);
