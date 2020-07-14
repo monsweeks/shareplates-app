@@ -21,8 +21,15 @@ class Login extends React.PureComponent {
     super(props);
 
     const email = storage.getItem('login', 'email');
+    
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    if (!KakaoLib.isInitialized()) KakaoLib.init('863525fbdd02a15ac03536bbfcf0151d');
+    if (!KakaoLib.isInitialized()){
+    	if(isMobile)
+ 			KakaoLib.init('f246c09102a593f720992eae2d9dcba9');
+    	else
+ 			KakaoLib.init('863525fbdd02a15ac03536bbfcf0151d');
+ 	}
 
     this.state = {
       email: email || '',
