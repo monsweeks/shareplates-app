@@ -9,7 +9,7 @@ function socialLogin(vendor, noImplementSite) {
   switch (vendor) {
     case 'kakao':
       if (Kakao.isInitialized()) {
-        Kakao.Auth.login({
+        Kakao.Auth.authorize({
           redirectUri,
           scope: 'account_email',
         });
