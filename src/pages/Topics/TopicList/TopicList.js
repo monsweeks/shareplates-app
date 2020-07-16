@@ -112,7 +112,8 @@ class TopicList extends React.Component {
   };
 
   getTopics = (options) => {
-    request.get('/api/topics', { ...options }, (data) => {
+    const { grpId, ...last } = options;
+    request.get(`/api/groups/${grpId}/topics`, { ...last }, (data) => {
       this.setState({
         topics: data.topics || [],
         options: {

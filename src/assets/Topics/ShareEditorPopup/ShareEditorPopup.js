@@ -61,7 +61,7 @@ class ShareEditorPopup extends React.Component {
   componentDidMount() {
     const { topicId, shareId } = this.props;
     if (shareId) {
-      this.getShareInfo(shareId);
+      this.getShareInfo(topicId, shareId);
     } else {
       this.getTopicShareInfo(topicId);
     }
@@ -119,9 +119,9 @@ class ShareEditorPopup extends React.Component {
     });
   };
 
-  getShareInfo = (shareId) => {
+  getShareInfo = (topicId, shareId) => {
     request.get(
-      `/api/shares/${shareId}/info`,
+      `/api/topics/${topicId}/shares/${shareId}/info`,
       null,
       (data) => {
         this.setData(data);
@@ -133,7 +133,7 @@ class ShareEditorPopup extends React.Component {
 
   getTopicShareInfo = (topicId) => {
     request.get(
-      `/api/shares/topics/${topicId}`,
+      `/api/topics/${topicId}/shares/prepare`,
       null,
       (data) => {
         this.setData(data);
@@ -175,11 +175,11 @@ class ShareEditorPopup extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { setOpen, onChangeShare, history } = this.props;
-    const { share } = this.state;
+    const { share, topic } = this.state;
 
     if (share.id) {
       if (onChangeShare) {
-        request.put(`/api/shares/${share.id}/info`, share, (data) => {
+        request.put(`/api/shares/${share.id}`, share, (data) => {
           setOpen(false);
           onChangeShare(data);
         });
@@ -189,7 +189,7 @@ class ShareEditorPopup extends React.Component {
         });
       }
     } else {
-      request.post('/api/shares', share, () => {
+      request.post(`/api/topics/${topic.id}/shares`, share, () => {
         setOpen(false);
         history.push('/shares');
       });
@@ -200,6 +200,7 @@ class ShareEditorPopup extends React.Component {
     const { share, topic, chapters, pages } = this.state;
     const { t, user, setOpen, setStatusChange, shareId } = this.props;
     const lastBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0 ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1] : {};
+
 
     return (
       <div className="share-editor-popup-wrapper">
@@ -290,7 +291,7 @@ class ShareEditorPopup extends React.Component {
                 <TextArea
                   label={t('설명')}
                   placeholderMessage={t('message.topicDescDesc')}
-                  value={share.description}
+                  value={share.description ? share.description : ''}
                   onChange={(value) => {
                     this.onChange('description', value);
                   }}

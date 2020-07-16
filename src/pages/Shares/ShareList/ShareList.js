@@ -12,6 +12,7 @@ import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { ShareEditorPopup } from '@/assets';
 import './ShareList.scss';
 import { convertInfo, convertUser } from '@/pages/Users/util';
+import { UserPropTypes } from '@/proptypes';
 
 const viewTypes = [
   {
@@ -364,7 +365,7 @@ class ShareList extends React.Component {
                         <ShareCard
                           share={share}
                           onConfigClick={
-                            user && share.adminUserId === user.id
+                            user && (share.adminUserId === user.id || user.activeRoleCode === 'SUPER_MAN')
                               ? (topicId, shareId) => {
                                   this.onConfigClick(topicId, shareId);
                                 }
@@ -434,11 +435,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 ShareList.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-  }),
+  user : UserPropTypes,
   setUserInfo: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
