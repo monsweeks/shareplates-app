@@ -286,7 +286,7 @@ class TopicList extends React.Component {
                 return (
                   <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
                     <TopicCard
-                      isAdmin={user.roleCode === 'SUPER_MAN'}
+                      isAdmin={user.activeRoleCode === 'SUPER_MAN'}
                       topic={topic}
                       onInfoClick={(topicId) => {
                         history.push(`/topics/${topicId}`);
