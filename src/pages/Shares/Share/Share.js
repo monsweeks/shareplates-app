@@ -59,6 +59,7 @@ class Share extends React.Component {
         hideShareNavigator: false,
         fullScreen: false,
       },
+      isOpenCam: false,
     };
 
     this.onScrollDebounced = debounce(messageClient.sendScrollInfo, 300);
@@ -561,6 +562,17 @@ class Share extends React.Component {
       },
     );
   };
+  
+  setOpenCamPopup = (value) => {
+	this.setState(
+	  {
+		  isOpenCam: value
+	  },
+	  () => {
+        window.dispatchEvent(new Event('resize'));
+	  }
+	);  
+  };
 
   setOption = (key, value) => {
     const { screenType, shareId, options } = this.state;
@@ -599,6 +611,7 @@ class Share extends React.Component {
       init,
       accessCode,
       options,
+      isOpenCam,
     } = this.state;
 
     const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
@@ -685,12 +698,14 @@ class Share extends React.Component {
                   currentChapterId={currentChapterId}
                   currentPageId={currentPageId}
                   isOpenUserPopup={isOpenUserPopup}
+                  isOpenCam={isOpenCam}
                   setChapter={this.setChapter}
                   setPage={this.setPage}
                   stopShare={() => {
                     messageClient.stopShare(shareId);
                   }}
                   setOpenUserPopup={this.setOpenUserPopup}
+                  setOpenCamPopup={this.setOpenCamPopup}
                   options={options}
                   setOption={this.setOption}
                 />

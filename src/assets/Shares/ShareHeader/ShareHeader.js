@@ -73,10 +73,11 @@ class ShareHeader extends React.Component {
       currentPageId,
       isAdmin,
       isOpenUserPopup,
+      isOpenCam,
       options,
       setOption,
     } = this.props;
-    const { stopShare, setChapter, setPage, setOpenUserPopup } = this.props;
+    const { stopShare, setChapter, setPage, setOpenUserPopup, setOpenCamPopup } = this.props;
 
     return (
       <div className={`share-header-wrapper  g-no-select ${options.hideShareNavigator ? 'hide' : ''}`}>
@@ -125,7 +126,9 @@ class ShareHeader extends React.Component {
                 setOption('fullScreen', value);
               }}
               isOpenUserPopup={isOpenUserPopup}
+              isOpenCam={isOpenCam}
               setOpenUserPopup={setOpenUserPopup}
+              setOpenCamPopup={setOpenCamPopup}
             />
           </div>
         </div>
@@ -161,10 +164,12 @@ ShareHeader.propTypes = {
   currentChapterId: PropTypes.number,
   currentPageId: PropTypes.number,
   isOpenUserPopup: PropTypes.bool,
+  isOpenCam: PropTypes.bool,
   setChapter: PropTypes.func,
   setPage: PropTypes.func,
   stopShare: PropTypes.func,
   setOpenUserPopup: PropTypes.func,
+  setOpenCamPopup: PropTypes.func,
   options: PropTypes.shape({
     hideShareNavigator: PropTypes.bool,
     fullScreen: PropTypes.bool,
