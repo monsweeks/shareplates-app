@@ -36,6 +36,7 @@ class Page extends React.Component {
       showPageList: true,
       selectedPageList: false,
       showShortKeyGuide: false,
+      role: 'NONE',
     };
   }
 
@@ -133,6 +134,7 @@ class Page extends React.Component {
 
   getPages = (topicId, chapterId) => {
     request.get(`/api/topics/${topicId}/chapters/${chapterId}/pages`, {}, (data) => {
+
       const { topic, chapter } = data;
       if (topic && topic.content) {
         topic.content = JSON.parse(topic.content);
@@ -146,6 +148,7 @@ class Page extends React.Component {
         topic,
         chapter,
         pages: data.pages || [],
+        role: data.role
       });
     });
   };
@@ -403,9 +406,9 @@ class Page extends React.Component {
       showPageList,
       selectedPageList,
       showShortKeyGuide,
+      role,
     } = this.state;
-    const isWriter = true;
-
+    const isWriter = role === 'WRITE';
     const page = pages && pages.find((p) => p.id === selectedPageId);
 
     return (
@@ -433,7 +436,7 @@ class Page extends React.Component {
                   </div>
                 </Button>,
               ]}
-              rightButtons={[
+              rightButtons={isWriter ? [
                 <Button
                   data-tip={t('현재 페이지 저장')}
                   key="save"
@@ -463,7 +466,7 @@ class Page extends React.Component {
                     <i className="fal fa-plus" />
                   </div>
                 </Button>,
-              ]}
+              ] : []}
             />
             {pages.length < 1 && (
               <EmptyMessage
@@ -505,7 +508,7 @@ class Page extends React.Component {
                     deletePage={this.deletePage}
                     onPageClick={this.setSelectedPageId}
                     selectedId={selectedPageId}
-                    isWriter
+                    isWriter={isWriter}
                   />
                 </div>
               </div>
@@ -532,6 +535,7 @@ class Page extends React.Component {
             updatePage={this.updatePage}
             updateTopicContent={this.updateTopicContent}
             updateChapterContent={this.updateChapterContent}
+            isWriter={isWriter}
           />
         </div>
       </div>

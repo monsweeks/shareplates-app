@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { Card, CardBody } from '@/components';
 import './TopicCard.scss';
+import { TopicPropTypes } from '@/proptypes';
 
 class TopicCard extends React.PureComponent {
   render() {
     const { className, topic, newCard, t } = this.props;
-    const { onCardClick, onInfoClick, onContentClick, onShareClick } = this.props;
+    const { onCardClick, onInfoClick, onContentClick, onShareClick, isAdmin } = this.props;
 
     return (
       <Card
@@ -39,9 +40,11 @@ class TopicCard extends React.PureComponent {
                 </div>
                 <div className="topic-card-buttons">
                   <div
-                    className="button"
+                    className={`button ${(topic.isMember || isAdmin) ? 'enable' : 'disable'}`}
                     onClick={() => {
-                      onShareClick(topic ? topic.id : null);
+                      if ((topic.isMember || isAdmin)) {
+                        onShareClick(topic ? topic.id : null);
+                      }
                     }}
                   >
                     <div className="icon">
@@ -53,7 +56,7 @@ class TopicCard extends React.PureComponent {
                     <div />
                   </div>
                   <div
-                    className="button"
+                    className="enable button"
                     onClick={() => {
                       onContentClick(topic ? topic.id : null);
                     }}
@@ -67,7 +70,7 @@ class TopicCard extends React.PureComponent {
                     <div />
                   </div>
                   <div
-                    className="button"
+                    className="enable button"
                     onClick={() => {
                       onInfoClick(topic ? topic.id : null);
                     }}
@@ -92,18 +95,11 @@ export default withTranslation()(TopicCard);
 TopicCard.defaultProps = {
   className: '',
   newCard: false,
+  isAdmin: false,
 };
 
 TopicCard.propTypes = {
-  topic: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    iconIndex: PropTypes.number,
-    summary: PropTypes.string,
-    privateYn: PropTypes.bool,
-    chapterCount: PropTypes.number,
-    pageCount: PropTypes.number,
-  }),
+  topic: TopicPropTypes,
   t: PropTypes.func,
   className: PropTypes.string,
   onInfoClick: PropTypes.func,
@@ -111,4 +107,5 @@ TopicCard.propTypes = {
   onShareClick: PropTypes.func,
   onCardClick: PropTypes.func,
   newCard: PropTypes.bool,
+  isAdmin : PropTypes.bool,
 };

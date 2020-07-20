@@ -24,6 +24,9 @@ const TopicPropTypes = PropTypes.shape({
   summary: PropTypes.string,
   privateYn: PropTypes.bool,
   content: PropTypes.objectOf(PropTypes.any),
+  isMember : PropTypes.bool,
+  chapterCount: PropTypes.number,
+  pageCount: PropTypes.number,
 });
 
 const ContextPropTypes = PropTypes.shape({

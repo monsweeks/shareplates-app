@@ -98,7 +98,12 @@
             cursor: pointer;
             min-height: 75px;
 
-            &:hover {
+            &.disable {
+              opacity: 0.3;
+              cursor: auto;
+            }
+
+            &.enable:hover {
               @media (min-width: 768px) {
                 background-color: $yellow;
               }

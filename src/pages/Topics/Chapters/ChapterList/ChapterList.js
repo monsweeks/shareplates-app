@@ -224,9 +224,11 @@ class ChapterList extends React.PureComponent {
             <span className="page-count ml-2 mr-1">0</span>
             <span className="summary-label">PAGES</span>
           </div>
-          <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
-            <i className="fal fa-plus" /> 새로운 챕터
-          </Button>
+          {isWriter && (
+            <Button key="add" onClick={this.createChapter} className="add-button option" color="white" size="sm">
+              <i className="fal fa-plus" /> 새로운 챕터
+            </Button>
+          )}
         </div>
         {chapters !== false && (
           <FullLayout className="flex-grow-1">

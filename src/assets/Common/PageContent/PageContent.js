@@ -55,7 +55,7 @@ class PageContent extends React.PureComponent {
         }}
         style={{ ...pageProperties }}
       >
-        {!editable && (
+        {movePage && !editable && (
           <>
             <div className="prev-page">
               <div
