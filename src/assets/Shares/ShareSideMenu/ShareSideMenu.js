@@ -17,6 +17,7 @@ class ShareSideMenu extends React.PureComponent {
     const { hideShareNavigator, setHideShareNavigator } = this.props;
     const { fullScreen, setFullScreen } = this.props;
     const { isOpenUserPopup, setOpenUserPopup } = this.props;
+    const { isOpenCam, setOpenCamPopup} = this.props;
 
     return (
       <div className="share-side-menu-wrapper">
@@ -51,6 +52,15 @@ class ShareSideMenu extends React.PureComponent {
         >
           <span className="on-off" />
           <i className="fal fa-id-badge" />
+        </span>
+        <span
+          className={`on-off-button ${isOpenCam ? 'on' : 'off'}`}
+          onClick={() => {
+            setOpenCamPopup(!isOpenCam);
+          }}
+        >
+        <span className="on-off" />
+          <i className="fal fa-camera-home" />
         </span>
         {isAdmin && (
           <span>
@@ -96,6 +106,8 @@ ShareSideMenu.propTypes = {
   setFullScreen: PropTypes.func,
   isOpenUserPopup: PropTypes.bool,
   setOpenUserPopup: PropTypes.func,
+  isOpenCam: PropTypes.bool,
+  setOpenCamPopup: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(ShareSideMenu));

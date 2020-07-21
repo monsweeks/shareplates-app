@@ -17,7 +17,7 @@ class NewTopic extends React.PureComponent {
     const next = {...topic};
     next.users = serializeUsers(next.users);
 
-    request.post('/api/topics', next, (data) => {
+    request.post(`/api/groups//${next.grpId}/topics`, next, (data) => {
       history.push(`/topics/${data.id}`);
     });
   };

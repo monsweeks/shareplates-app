@@ -18,15 +18,15 @@
 .table thead th {
   border-top: none;
   border-bottom: none;
-  background-color: $primary;
+  background-color: #333;
   color: $white;
 
   &:first-child {
-    border-radius: 5px 0 0 5px;
+
   }
 
   &:last-child {
-    border-radius: 0 5px 5px 0;
+
   }
 
   @media (max-width: 1240px) {

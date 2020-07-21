@@ -60,7 +60,6 @@ class PageEditor extends React.Component {
   componentDidMount() {
     const { onRef } = this.props;
     onRef(this);
-
   }
 
   componentWillUnmount() {
@@ -603,7 +602,7 @@ class PageEditor extends React.Component {
   };
 
   render() {
-    const { className, updatePage, setPageContent, topicId, chapterId, pageId, ...last } = this.props;
+    const { className, isWriter, updatePage, setPageContent, topicId, chapterId, pageId, ...last } = this.props;
     const { topic, chapter } = this.props;
     const { content, selectedItemId, childSelectedList, itemOptions, editing } = this.state;
     const { dragging, draggingItemId, draggingItemIndex, lastMovedItemId } = this.state;
@@ -624,27 +623,29 @@ class PageEditor extends React.Component {
 
     return (
       <div className={`page-editor-wrapper g-no-select ${className}`}>
-        <PageController
-          topicId={topicId}
-          chapterId={chapterId}
-          pageId={pageId}
-          className="property-manager"
-          item={item}
-          addItem={this.addItem}
-          addChild={this.addChild}
-          {...last}
-          updateContent={this.updateContent}
-          itemOptions={childSelected ? childOptions : itemOptions}
-          topicProperties={topic.content ? topic.content.topicProperties : {}}
-          chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
-          pageProperties={content.pageProperties || {}}
-          onChangeOption={this.onChangeOption}
-          onChangeValue={this.onChangeValue}
-          selectedItemId={selectedItemId}
-          childSelectedList={childSelectedList}
-          setEditing={this.setEditing}
-          onChangeGlobalProperties={this.onChangeGlobalProperties}
-        />
+        {isWriter && (
+          <PageController
+            topicId={topicId}
+            chapterId={chapterId}
+            pageId={pageId}
+            className="property-manager"
+            item={item}
+            addItem={this.addItem}
+            addChild={this.addChild}
+            {...last}
+            updateContent={this.updateContent}
+            itemOptions={childSelected ? childOptions : itemOptions}
+            topicProperties={topic.content ? topic.content.topicProperties : {}}
+            chapterProperties={chapter.content ? chapter.content.chapterProperties : {}}
+            pageProperties={content.pageProperties || {}}
+            onChangeOption={this.onChangeOption}
+            onChangeValue={this.onChangeValue}
+            selectedItemId={selectedItemId}
+            childSelectedList={childSelectedList}
+            setEditing={this.setEditing}
+            onChangeGlobalProperties={this.onChangeGlobalProperties}
+          />
+        )}
         <div className="editor-content">
           <PageContent
             pageId={pageId}
@@ -659,7 +660,7 @@ class PageEditor extends React.Component {
             onChangeOption={this.onChangeOption}
             onChangeValue={this.onChangeValue}
             onChangeFile={this.onChangeFile}
-            editable
+            editable={isWriter}
             editing={editing}
             setEditing={this.setEditing}
             moveItem={this.moveItem}
@@ -706,6 +707,7 @@ PageEditor.propTypes = {
   onRef: PropTypes.func,
   updateTopicContent: PropTypes.func,
   updateChapterContent: PropTypes.func,
+  isWriter: PropTypes.bool,
 };
 
 export default withRouter(PageEditor);

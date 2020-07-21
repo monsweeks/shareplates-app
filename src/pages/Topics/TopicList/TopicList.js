@@ -12,6 +12,7 @@ import { DIRECTIONS, ORDERS } from '@/constants/constants';
 import { ShareEditorPopup, ShareHistoryListPopup, TopicCard } from '@/assets';
 import './TopicList.scss';
 import { convertUser } from '@/pages/Users/util';
+import { UserPropTypes } from '@/proptypes';
 
 class TopicList extends React.Component {
   constructor(props) {
@@ -112,7 +113,8 @@ class TopicList extends React.Component {
   };
 
   getTopics = (options) => {
-    request.get('/api/topics', { ...options }, (data) => {
+    const { grpId, ...last } = options;
+    request.get(`/api/groups/${grpId}/topics`, { ...last }, (data) => {
       this.setState({
         topics: data.topics || [],
         options: {
@@ -192,7 +194,7 @@ class TopicList extends React.Component {
   };
 
   render() {
-    const { grps, history, t, setGrp: setGrpAction } = this.props;
+    const { grps, history, t, setGrp: setGrpAction, user } = this.props;
 
     const {
       options,
@@ -284,6 +286,7 @@ class TopicList extends React.Component {
                 return (
                   <Col key={i} className="topic-col" xl={3} lg={4} md={6} sm={6}>
                     <TopicCard
+                      isAdmin={user.activeRoleCode === 'SUPER_MAN'}
                       topic={topic}
                       onInfoClick={(topicId) => {
                         history.push(`/topics/${topicId}`);
@@ -339,6 +342,7 @@ const mapStateToProps = (state) => {
   return {
     grps: state.user.grps,
     grpId: state.user.grpId,
+    user: state.user.user,
   };
 };
 
@@ -368,6 +372,7 @@ TopicList.propTypes = {
   }),
   setGrp: PropTypes.func,
   grpId: PropTypes.number,
+  user: UserPropTypes,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(TopicList)));

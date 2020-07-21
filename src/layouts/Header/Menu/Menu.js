@@ -11,6 +11,7 @@ const pageMainColors = {
   '/users/join': variables.primaryColor,
   '/': variables.seaBlueColor,
   '/topics': variables.seaBlueColor,
+  '/topics/[0-9]+': variables.seaBlueColor,
   '/topics/[0-9]+/chapters': variables.seaBlueColor,
   '/groups': variables.seaBlueColor,
   '/topics/[0-9]+/chapters/[0-9]+/pages': variables.white,

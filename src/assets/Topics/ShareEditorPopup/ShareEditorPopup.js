@@ -42,7 +42,7 @@ class ShareEditorPopup extends React.Component {
       share: {
         id: null,
         name: '',
-        description : '',
+        description: '',
         memo: '',
         privateYn: false,
         currentChapterId: null,
@@ -61,7 +61,7 @@ class ShareEditorPopup extends React.Component {
   componentDidMount() {
     const { topicId, shareId } = this.props;
     if (shareId) {
-      this.getShareInfo(shareId);
+      this.getShareInfo(topicId, shareId);
     } else {
       this.getTopicShareInfo(topicId);
     }
@@ -119,9 +119,9 @@ class ShareEditorPopup extends React.Component {
     });
   };
 
-  getShareInfo = (shareId) => {
+  getShareInfo = (topicId, shareId) => {
     request.get(
-      `/api/shares/${shareId}/info`,
+      `/api/topics/${topicId}/shares/${shareId}/info`,
       null,
       (data) => {
         this.setData(data);
@@ -133,7 +133,7 @@ class ShareEditorPopup extends React.Component {
 
   getTopicShareInfo = (topicId) => {
     request.get(
-      `/api/shares/topics/${topicId}`,
+      `/api/topics/${topicId}/shares/prepare`,
       null,
       (data) => {
         this.setData(data);
@@ -174,12 +174,21 @@ class ShareEditorPopup extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { setOpen, onChangeShare, history } = this.props;
-    const { share } = this.state;
+    const { setOpen, onChangeShare, history, t } = this.props;
+    const { share, topic } = this.state;
+
+    if (!share.currentChapterId || !share.currentPageId) {
+      dialog.setMessage(
+        MESSAGE_CATEGORY.WARNING,
+        t('공유를 시작할 수 없습니다.'),
+        t('토픽을 시작할 수 있는 챕터와 페이지가 지정되지 않았습니다.'),
+      );
+      return;
+    }
 
     if (share.id) {
       if (onChangeShare) {
-        request.put(`/api/shares/${share.id}/info`, share, (data) => {
+        request.put(`/api/shares/${share.id}`, share, (data) => {
           setOpen(false);
           onChangeShare(data);
         });
@@ -189,7 +198,7 @@ class ShareEditorPopup extends React.Component {
         });
       }
     } else {
-      request.post('/api/shares', share, () => {
+      request.post(`/api/topics/${topic.id}/shares`, share, () => {
         setOpen(false);
         history.push('/shares');
       });
@@ -199,12 +208,15 @@ class ShareEditorPopup extends React.Component {
   render() {
     const { share, topic, chapters, pages } = this.state;
     const { t, user, setOpen, setStatusChange, shareId } = this.props;
-    const lastBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0 ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1] : {};
+    const lastBucket =
+      share.shareTimeBuckets && share.shareTimeBuckets.length > 0
+        ? share.shareTimeBuckets[share.shareTimeBuckets.length - 1]
+        : {};
 
     return (
       <div className="share-editor-popup-wrapper">
         <Form onSubmit={this.onSubmit}>
-          <Row className="scrollbar">
+          <Row className="scrollbar share-editor-popup-content m-0">
             <Col lg={5} className="share-col p-3">
               <SubLabel bold size="sm">
                 {t('label.topic')}
@@ -290,7 +302,7 @@ class ShareEditorPopup extends React.Component {
                 <TextArea
                   label={t('설명')}
                   placeholderMessage={t('message.topicDescDesc')}
-                  value={share.description}
+                  value={share.description ? share.description : ''}
                   onChange={(value) => {
                     this.onChange('description', value);
                   }}
@@ -339,35 +351,42 @@ class ShareEditorPopup extends React.Component {
                 {t('토픽 시작 위치')}
               </SubLabel>
               <Description>{t('공유가 시작되는 챕터와 페이지를 선택해주세요,')}</Description>
-              <FormGroup>
-                <Selector
-                  outline
-                  className="mr-2"
-                  items={chapters.map((chapter) => {
-                    return {
-                      key: chapter.id,
-                      value: chapter.title,
-                    };
-                  })}
-                  value={share.currentChapterId}
-                  onChange={(value) => {
-                    this.onChange('currentChapterId', value);
-                  }}
-                />
-                <Selector
-                  outline
-                  items={pages.map((page) => {
-                    return {
-                      key: page.id,
-                      value: page.title,
-                    };
-                  })}
-                  value={share.currentPageId}
-                  onChange={(value) => {
-                    this.onChange('currentPageId', value);
-                  }}
-                />
-              </FormGroup>
+              {chapters.length > 0 && (
+                <FormGroup>
+                  <Selector
+                    outline
+                    className="mr-2"
+                    items={chapters.map((chapter) => {
+                      return {
+                        key: chapter.id,
+                        value: chapter.title,
+                      };
+                    })}
+                    value={share.currentChapterId}
+                    onChange={(value) => {
+                      this.onChange('currentChapterId', value);
+                    }}
+                  />
+                  <Selector
+                    outline
+                    items={pages.map((page) => {
+                      return {
+                        key: page.id,
+                        value: page.title,
+                      };
+                    })}
+                    value={share.currentPageId}
+                    onChange={(value) => {
+                      this.onChange('currentPageId', value);
+                    }}
+                  />
+                </FormGroup>
+              )}
+              {chapters.length < 1 && (
+                <FormGroup>
+                  <P className="text-danger mb-2 text-center bg-white">{t('추가된 챕터가 없습니다.')}</P>
+                </FormGroup>
+              )}
               {setStatusChange && (
                 <>
                   <hr className="g-dashed mb-3" />
@@ -392,7 +411,7 @@ class ShareEditorPopup extends React.Component {
               )}
             </Col>
           </Row>
-          <div className="popup-buttons">
+          <div className="popup-buttons bg-light">
             <Button
               className="px-4 mr-2"
               color="secondary"

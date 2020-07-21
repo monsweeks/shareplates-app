@@ -124,7 +124,7 @@ class ChapterCardLayoutList extends React.Component {
                 </div>
               );
             })}
-            <div>{this.getChapterItem(null, viewType, true)}</div>
+            {isWriter && <div>{this.getChapterItem(null, viewType, true)}</div>}
           </div>
         )}
       </div>

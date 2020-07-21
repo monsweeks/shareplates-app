@@ -35,7 +35,7 @@ import FormLevelProperties from '@/assets/Topics/FormLevelProperties/FormLevelPr
 import PageEditorShortKeyInfo from '@/assets/Topics/PageEditorShortKeyInfo/PageEditorShortKeyInfo';
 import TopicInfo from '@/assets/Topics/TopicInfo/TopicInfo';
 import ShareHistoryList from '@/assets/Topics/ShareHistoryList/ShareHistoryList';
-import ShareStatPopup from '@/assets/Topics/ShareStatPopup/ShareStatPopup';
+import ShareStat from '@/assets/Topics/ShareStat/ShareStat';
 import ShareProgressGraph from '@/assets/Topics/ShareProgressGraph/ShareProgressGraph';
 
 export {
@@ -75,6 +75,6 @@ export {
   PageEditorShortKeyInfo,
   TopicInfo,
   ShareHistoryList,
-  ShareStatPopup,
+  ShareStat,
   ShareProgressGraph,
 };
