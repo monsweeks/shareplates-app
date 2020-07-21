@@ -30,9 +30,14 @@
           width: 50px;
         }
 
+        .name {
+          white-space: nowrap;
+          overflow-x: hidden;
+        }
+
         .started-yn,
         .open-yn {
-          width: 80px;
+          width: 70px;
           text-align: center;
         }
 
@@ -67,7 +72,8 @@
         }
 
         .duration {
-          width: 140px;
+          width: 80px;
+          text-align: right;
         }
 
         .current-info {
@@ -76,6 +82,7 @@
           padding: 0 0.5rem;
           line-height: 100%;
           width: 100px;
+          white-space: nowrap;
 
           > div {
             line-height: 100%;

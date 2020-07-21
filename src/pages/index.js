@@ -19,6 +19,8 @@ import Page from './Topics/Chapters/Pages/Page/Page';
 import EditTopic from './Topics/EditTopic/EditTopic';
 import NewTopic from './Topics/NewTopic/NewTopic';
 import Topic from './Topics/Topic/Topic';
+import TopicShareHistoryList from './Topics/TopicShareHistoryList/TopicShareHistoryList';
+import TopicShareHistoryInfo from './Topics/TopicShareHistoryInfo/TopicShareHistoryInfo';
 import TopicList from './Topics/TopicList/TopicList';
 // Users
 import EditMyInfo from './Users/EditMyInfo/EditMyInfo';
@@ -54,6 +56,8 @@ export {
   EditTopic,
   NewTopic,
   Topic,
+  TopicShareHistoryList,
+  TopicShareHistoryInfo,
   TopicList,
   // Users
   EditMyInfo,

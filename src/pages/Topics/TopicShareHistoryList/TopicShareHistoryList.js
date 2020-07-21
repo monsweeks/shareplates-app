@@ -6,14 +6,10 @@ import PropTypes from 'prop-types';
 import request from '@/utils/request';
 import { DetailLayout } from '@/layouts';
 import { EmptyMessage } from '@/components';
-import { TopicInfo } from '@/assets';
-import { DEFAULT_TOPIC_CONTENT } from '@/assets/Topics/PageEditor/PageController/constants';
-import { convertUsers } from '@/pages/Users/util';
-import dialog from '@/utils/dialog';
-import { MESSAGE_CATEGORY } from '@/constants/constants';
-import './Topic.scss';
+import { ShareHistoryList } from '@/assets';
+import './TopicShareHistoryList.scss';
 
-class Topic extends Component {
+class TopicShareHistoryList extends Component {
   constructor(props) {
     super(props);
 
@@ -43,32 +39,9 @@ class Topic extends Component {
 
   componentDidMount() {
     const { topicId } = this.state;
-    this.getTopic(topicId);
+
     this.getShares(topicId);
   }
-
-  getTopic = (topicId) => {
-    request.get(
-      `/api/topics/${topicId}`,
-      null,
-      (topic) => {
-        const next = { ...topic };
-        if (next.content) {
-          next.content = { ...JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT)), ...JSON.parse(next.content) };
-        } else {
-          next.content = JSON.parse(JSON.stringify(DEFAULT_TOPIC_CONTENT));
-        }
-
-        next.users = convertUsers(next.users);
-
-        this.setState({
-          topic: next,
-        });
-      },
-      null,
-      true,
-    );
-  };
 
   getShares = (topicId) => {
     request.get(`/api/topics/${topicId}/shares`, null, (data) => {
@@ -78,58 +51,33 @@ class Topic extends Component {
     });
   };
 
-  deleteTopic = (topicId) => {
-    const { history } = this.props;
-    request.del(
-      `/api/topics/${topicId}`,
-      null,
-      () => {
-        history.push('/topics');
-      },
-      null,
-      true,
-    );
-  };
-
-  onDelete = () => {
-    const { topic } = this.state;
-    dialog.setConfirm(
-      MESSAGE_CATEGORY.WARNING,
-      '데이터가 삭제됩니다',
-      `${topic.name} 토픽을 정말 삭제하시겠습니까?`,
-      () => {
-        this.deleteTopic(topic.id);
-      },
-    );
-  };
-
   onList = () => {
     const { history } = this.props;
     history.push('/topics');
   };
 
-  onEdit = () => {
-    const { topicId } = this.state;
-    const { history } = this.props;
-
-    history.push(`/topics/${topicId}/edit`);
-  };
-
   render() {
     const { t } = this.props;
-    const { topic, isAdmin, shares } = this.state;
+    const { shares } = this.state;
 
     return (
       <div className="topic-wrapper">
         <div className="topic-menu">
-          <div className='menu-item selected'>
+          <div
+            className="menu-item"
+            onClick={() => {
+              const { history } = this.props;
+              const { topicId } = this.state;
+              history.push(`/topics/${topicId}`);
+            }}
+          >
             <div>토픽 정보</div>
           </div>
           <div className="separator">
             <div />
           </div>
           <div
-            className="menu-item"
+            className="menu-item selected"
             onClick={() => {
               const { history } = this.props;
               const { topicId } = this.state;
@@ -141,17 +89,20 @@ class Topic extends Component {
           <div className="separator">
             <div />
           </div>
-          <div className="menu-item" onClick={() => {
-            const { history } = this.props;
-            const { topicId } = this.state;
-            history.push(`/topics/${topicId}/chapters`);
-          }}>
+          <div
+            className="menu-item"
+            onClick={() => {
+              const { history } = this.props;
+              const { topicId } = this.state;
+              history.push(`/topics/${topicId}/chapters`);
+            }}
+          >
             <div>컨텐츠</div>
           </div>
         </div>
         <div className="topic-content">
           <DetailLayout className="m-0 h-100">
-            {!topic && topic === false && (
+            {!shares && shares === false && (
               <EmptyMessage
                 className="h5 bg-white"
                 message={
@@ -164,13 +115,15 @@ class Topic extends Component {
                 }
               />
             )}
-            {topic && (
-              <TopicInfo
-                topic={topic}
+            {shares && (
+              <ShareHistoryList
                 shares={shares}
                 onList={this.onList}
-                onDelete={isAdmin ? this.onDelete : null}
-                onEdit={isAdmin ? this.onEdit : null}
+                onClick={(id) => {
+                  const { history } = this.props;
+                  const { topicId } = this.state;
+                  history.push(`/topics/${topicId}/shares/${id}`);
+                }}
               />
             )}
           </DetailLayout>
@@ -186,13 +139,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(Topic)));
+export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(TopicShareHistoryList)));
 
-Topic.defaultProps = {
+TopicShareHistoryList.defaultProps = {
   t: null,
 };
 
-Topic.propTypes = {
+TopicShareHistoryList.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     email: PropTypes.string,

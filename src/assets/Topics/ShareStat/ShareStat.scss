@@ -1,0 +1,339 @@
+.share-state-wrapper {
+  text-align: left;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+
+  > .share-state-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .summary-info {
+      flex-grow: 0;
+      display: flex;
+
+      .general-info {
+        min-width: 500px;
+
+        .share-name {
+          font-size: 1.2rem;
+          text-align: center;
+          margin-top: 0.25rem;
+          font-weight: bold;
+          font-family: NanumGothic, sans-serif;
+        }
+
+        .share-duration {
+          text-align: center;
+          margin-bottom: 0.5rem;
+          > span {
+            font-size: 0.7rem;
+          }
+        }
+
+        .topic-name {
+          text-align: center;
+          margin-bottom: 0.5rem;
+          position: absolute;
+          top: 10px;
+          right: 5px;
+
+          > span {
+            font-size: 0.7rem;
+          }
+        }
+
+        .share-memo {
+          height: 60px;
+          background-color: $light;
+        }
+
+        .access-code {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          display: none;
+          > span {
+            font-size: 0.8rem;
+          }
+        }
+
+        .count-info {
+          display: flex;
+          flex-direction: row;
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+
+          > div {
+            flex: 1 1;
+            text-align: center;
+
+            &.separator {
+              max-width: 1px;
+              display: flex;
+              > div {
+                width: 1px;
+                height: 30px;
+                background-color: rgba(0, 0, 0, 0.2);
+                align-self: center;
+              }
+            }
+
+            .icon {
+              font-size: 1.2rem;
+              line-height: 100%;
+            }
+
+            .counter {
+              font-family: 'Baloo Bhai', cursive;
+              font-size: 2.4rem;
+              line-height: 100%;
+            }
+
+            .tag {
+              line-height: 0;
+              > span {
+                font-size: 0.7rem;
+                border-radius: 2px;
+              }
+            }
+          }
+        }
+      }
+
+      .stat-summary {
+        flex-grow: 1;
+        padding-left: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        .card {
+          flex-grow: 1;
+
+          .stat-summary-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+
+            .count-info {
+              display: flex;
+              flex-direction: row;
+              align-self: center;
+              width: 100%;
+
+              > div {
+                flex: 1 1;
+                text-align: center;
+
+                &.separator {
+                  max-width: 1px;
+                  display: flex;
+                  > div {
+                    width: 1px;
+                    height: 30px;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    align-self: center;
+                  }
+                }
+
+                .metric {
+                  font-size: 1.1rem;
+                  line-height: 100%;
+                  margin-bottom: 0.5rem;
+                }
+
+                .counter {
+                  font-family: 'Baloo Bhai', LGSmHaL, sans-serif;
+                  font-size: 2.4rem;
+                  line-height: 100%;
+                }
+
+                .text {
+                  font-size: 1.6rem;
+                  line-height: 100%;
+                }
+
+                .tag {
+                  line-height: 0;
+                  > span {
+                    font-size: 0.7rem;
+                    border-radius: 2px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    > div {
+      &.left {
+        flex-grow: 0;
+        min-width: 300px;
+        display: flex;
+
+        > div {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          height: 100%;
+
+          .share-time-table {
+            flex-grow: 1;
+            position: relative;
+
+            > div {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: $light;
+
+              table {
+                position: relative;
+                width: calc(100% + 1px);
+                table-layout: fixed;
+
+                td.open-date {
+                  width: 150px;
+                }
+
+                tr.selected {
+                  background-color: $white;
+                }
+              }
+            }
+          }
+        }
+      }
+      &.right {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid rgba(0, 0, 0, 0.3);
+        padding-left: 1.5rem;
+
+        .timeline-graph {
+          height: 100px;
+          margin-bottom: 1rem;
+
+          > div {
+            _background-color: $gray-300;
+            height: 100%;
+          }
+        }
+
+        .share-user-list {
+          flex-grow: 1;
+          position: relative;
+
+          > div {
+            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+          }
+
+          font-size: 0.8rem;
+
+          th,
+          td {
+            &.icon {
+              text-align: center;
+              width: 50px;
+              span.user-icon {
+                width: 30px;
+                height: 30px;
+                display: inline-block;
+              }
+            }
+
+            &.name {
+              width: 120px;
+            }
+
+            &.share-role-code {
+              text-align: center;
+              width: 85px;
+            }
+
+            &.ban-yn {
+              width: 80px;
+              text-align: center;
+            }
+          }
+
+          td {
+            white-space: nowrap;
+            vertical-align: middle;
+            &.icon {
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .share-info-table {
+    font-size: 0.8rem;
+    padding-right: 1rem;
+
+    th {
+      width: 100px;
+    }
+  }
+
+  form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 992px) {
+      display: block;
+      height: 100%;
+    }
+
+    .row {
+      flex: 1;
+
+      @media (max-width: 992px) {
+        height: calc(100% - 66px);
+        overflow-y: auto;
+        margin: 0;
+      }
+
+      .share-col {
+        @media (max-width: 992px) {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .popup-buttons {
+      flex-grow: 0;
+    }
+  }
+
+  .refresh-button {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: $yellow;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 12px;
+    vertical-align: top;
+    padding-top: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($yellow, 2%);
+    }
+  }
+}
