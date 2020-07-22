@@ -167,173 +167,169 @@
       }
     }
 
-    > div {
-      &.left {
-        flex-grow: 0;
-        min-width: 300px;
-        display: flex;
-
-        > div {
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-          height: 100%;
-
-          .share-time-table {
-            flex-grow: 1;
-            position: relative;
-
-            > div {
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              background-color: $light;
-
-              table {
-                position: relative;
-                width: calc(100% + 1px);
-                table-layout: fixed;
-
-                td.open-date {
-                  width: 150px;
-                }
-
-                tr.selected {
-                  background-color: $white;
-                }
-              }
-            }
-          }
-        }
-      }
-      &.right {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        border-left: 1px solid rgba(0, 0, 0, 0.3);
-        padding-left: 1.5rem;
-
-        .timeline-graph {
-          height: 100px;
-          margin-bottom: 1rem;
-
-          > div {
-            _background-color: $gray-300;
-            height: 100%;
-          }
-        }
-
-        .share-user-list {
-          flex-grow: 1;
-          position: relative;
-
-          > div {
-            padding: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-          }
-
-          font-size: 0.8rem;
-
-          th,
-          td {
-            &.icon {
-              text-align: center;
-              width: 50px;
-              span.user-icon {
-                width: 30px;
-                height: 30px;
-                display: inline-block;
-              }
-            }
-
-            &.name {
-              width: 120px;
-            }
-
-            &.share-role-code {
-              text-align: center;
-              width: 85px;
-            }
-
-            &.ban-yn {
-              width: 80px;
-              text-align: center;
-            }
-          }
-
-          td {
-            white-space: nowrap;
-            vertical-align: middle;
-            &.icon {
-              padding: 0;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .share-info-table {
-    font-size: 0.8rem;
-    padding-right: 1rem;
-
-    th {
-      width: 100px;
-    }
-  }
-
-  form {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 992px) {
-      display: block;
-      height: 100%;
-    }
-
-    .row {
-      flex: 1;
-
-      @media (max-width: 992px) {
-        height: calc(100% - 66px);
-        overflow-y: auto;
-        margin: 0;
-      }
-
-      .share-col {
-        @media (max-width: 992px) {
-          margin-bottom: 0;
-        }
-      }
-    }
-
-    .popup-buttons {
+    .share-state {
       flex-grow: 0;
-    }
-  }
+      display: flex;
+      flex-direction: column;
+      .share-log-title {
+        flex-grow: 0;
+      }
 
-  .refresh-button {
-    display: inline-block;
-    width: 21px;
-    height: 21px;
-    border-radius: 50%;
-    background-color: $yellow;
-    margin-left: 5px;
-    text-align: center;
-    font-size: 12px;
-    vertical-align: top;
-    padding-top: 3px;
-    cursor: pointer;
+      .share-log-content {
+        flex-grow: 1;
+        position: relative;
+        min-height: 240px;
+        .share-log-card {
+          display: flex;
+          flex-direction: row;
+          .list {
+            min-width: 300px;
+            flex-grow: 0;
+            background-color: $light;
+            border-right: 1px solid rgba(0, 0, 0, 0.4);
 
-    &:hover {
-      background-color: darken($yellow, 2%);
+            .table {
+              position: relative;
+              width: calc(100% + 1px);
+              tr {
+                td {
+                  border-top: none;
+
+                  &.open-date {
+                    > span {
+                      padding: 1px 0 0;
+                      display: inline-block;
+                    }
+                  }
+                }
+
+                &.selected {
+                  td {
+                    background-color: $white;
+                  }
+                }
+              }
+            }
+          }
+
+          .viewer {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+
+            .page-change-graph {
+              flex-grow: 0;
+              min-height: 60px;
+              padding: 0 25px 0 50px;
+              margin-top: 10px;
+              div {
+                width: 100%;
+                height: 25px;
+                _background-color: $light;
+                position: relative;
+
+                &.chapter-list {
+                  margin-bottom: 10px;
+                }
+
+                .change-item {
+                  position: absolute;
+                  top: 0;
+                  height: 100%;
+                  _background-color: $black;
+                  display: inline-block;
+                  white-space: nowrap;
+                  overflow-x: hidden;
+
+                  > div {
+                    position: absolute;
+                    display: inline-block;
+
+                    &.start-bar {
+                      position: absolute;
+                      width: 1px;
+                      height: 100%;
+                      background-color: #333;
+                    }
+
+                    &.start-bar {
+                      left: 0;
+                    }
+
+                    &.arrow {
+                      width: 12px;
+                      height: 12px;
+                      transform: rotate(45deg);
+                      border: 1px solid #333;
+                      border-left: none;
+                      border-bottom: none;
+                      position: absolute;
+                      right: 3px;
+                      top: 7px;
+                      display: inline-block;
+                      background-color: transparent;
+                    }
+
+                    &.line {
+                      position: absolute;
+                      width: 100%;
+                      height: 1px;
+                      top: 50%;
+                      left: 0;
+                      background-color: #333;
+                    }
+
+                    &.text-data {
+                      font-size: 0.7rem;
+                      width: 100%;
+                      left: 0;
+                      text-align: center;
+                      padding-top: 3px;
+                      > span {
+                        display: inline-block;
+                        background-color: $white;
+                        border: 1px solid #777;
+                        border-radius: 2px;
+                        padding: 0 4px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            .share-stat-graph {
+              flex-grow: 1;
+              display: flex;
+              flex-direction: row;
+
+              .axis-y {
+                min-width: 50px;
+                flex-grow: 0;
+              }
+
+              .graph {
+                flex-grow: 1;
+                _background-color: blue;
+              }
+            }
+
+            .time-axis {
+              flex-grow: 0;
+              min-height: 30px;
+              padding: 0 25px 0 50px;
+              > div {
+                width: 100%;
+                height: 100%;
+
+                svg {
+                  overflow: visible;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

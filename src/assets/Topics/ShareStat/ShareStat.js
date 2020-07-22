@@ -1,25 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as d3 from 'd3';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import {
-  BottomButton,
-  Card,
-  CardBody,
-  DateDuration,
-  DateTime,
-  EmptyMessage,
-  SubLabel,
-  Table,
-  UserIcon,
-} from '@/components';
+import { BottomButton, Card, CardBody, DateDuration, DateTime, SubLabel, Table } from '@/components';
 import request from '@/utils/request';
 import './ShareStat.scss';
 import { convertUsers } from '@/pages/Users/util';
-import { ShareProgressGraph } from '@/assets';
 
 class ShareStat extends React.Component {
+  timeAxis = React.createRef();
+
+  scaleY = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,9 +29,14 @@ class ShareStat extends React.Component {
       },
       accessCode: {},
       shareTimeBucketId: null,
-      shareGraphData: [],
-      totalUserCount: 0,
+
       chapterPageList: [],
+
+      shareAccessList: [],
+      sharePageChangeList: [],
+      scaleX: null,
+      startDate: null,
+      endDate: null,
     };
   }
 
@@ -105,37 +105,81 @@ class ShareStat extends React.Component {
     return list;
   };
 
-  getData = (shareId, startDate, endDate) => {
+  getShareTimeBucketData = (shareTimeBucketId) => {
+    const { share } = this.state;
+    const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
+
     request.get(
-      `/api/stats/shares/${shareId}`,
+      `/api/stats/shares/${share.id}`,
       {
-        startDate,
-        endDate,
+        startDate: openDate,
+        endDate: closeDate,
       },
       (data) => {
         console.log(data);
+        this.setState(
+          {
+            shareTimeBucketId,
+            shareAccessList: data.ShareAccessInfo,
+            sharePageChangeList: data.PageChangedInfo,
+          },
+          () => {
+            this.draw();
+          },
+        );
       },
     );
   };
 
-  getShareTimeBucketData = (shareTimeBucketId) => {
-    const { share } = this.state;
+  draw = () => {
+    const { share, shareTimeBucketId, shareAccessList } = this.state;
     const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
-    const maxPerson = Math.ceil(10 + Math.random() * 30);
+    console.log(shareAccessList);
+    this.drawTimeAxis(openDate, closeDate);
+  };
 
-    const condition = {
-      shareId: share.id,
-      startDate: openDate,
-      endDate: closeDate,
-    };
-    console.log(condition);
-    console.log(this.getData(share.id, openDate, closeDate));
+  drawTimeAxis = (startDate, endDate) => {
+    if (this.timeAxis && this.timeAxis.current) {
+      const { clientWidth: width, clientHeight: height } = this.timeAxis.current;
+      let svg = d3.select(this.timeAxis.current).select('svg');
+      let group = null;
+      if (svg.size() > 0) {
+        svg.attr('width', width).attr('height', height);
+        group = svg.select('g.time-axis-group');
+      } else {
+        svg = d3
+          .select(this.timeAxis.current)
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height);
+        group = svg.append('g').attr('class', 'time-axis-group');
+      }
 
-    this.setState({
-      shareTimeBucketId,
-      shareGraphData: this.getSampleData(openDate, closeDate, maxPerson),
-      totalUserCount: maxPerson,
-    });
+      const scaleX = d3
+        .scaleTime()
+        .range([0, width])
+        .domain([new Date(startDate), new Date(endDate)]);
+
+      const axisX = d3.axisBottom(scaleX);
+      axisX.tickFormat((d) => {
+        return moment(d).format('HH:mm');
+      });
+
+      const tickSize = 10;
+
+      // const xTicks = Math.floor(width / 100);
+      // axisX.tickSize(-10).ticks(xTicks < 2 ? 2 : xTicks);
+      axisX.tickSize(-tickSize);
+
+      group.call(axisX);
+      group.attr('transform', `translate(0, ${tickSize + 1})`);
+
+      this.setState({
+        scaleX,
+        startDate,
+        endDate,
+      });
+    }
   };
 
   getCurrentPageSequence = (chapterPageList, chapterId, pageId) => {
@@ -157,17 +201,30 @@ class ShareStat extends React.Component {
   };
 
   render() {
-    const { share, accessCode, shareTimeBucketId, shareGraphData, totalUserCount, topic, chapterPageList } = this.state;
-    const { t, user } = this.props;
+    const {
+      share,
+      accessCode,
+      shareTimeBucketId,
+
+      topic,
+      chapterPageList,
+      sharePageChangeList,
+
+      scaleX,
+      startDate,
+      endDate,
+    } = this.state;
+    const { t } = this.props;
 
     let totalShareMinutes = 0;
     if (share.shareTimeBuckets) {
       for (let i = 0; i < share.shareTimeBuckets.length; i += 1) {
+        const now = new Date();
+        const closeDate = share.shareTimeBuckets[i].closeDate || new Date(now.getTime());
+
         totalShareMinutes +=
           Math.round(
-            ((new Date(share.shareTimeBuckets[i].closeDate).getTime() -
-              new Date(share.shareTimeBuckets[i].openDate).getTime()) *
-              10) /
+            ((new Date(closeDate).getTime() - new Date(share.shareTimeBuckets[i].openDate).getTime()) * 10) /
               (60 * 1000),
           ) / 10;
       }
@@ -181,7 +238,34 @@ class ShareStat extends React.Component {
     }
 
     const currentSeq = this.getCurrentPageSequence(chapterPageList, share.currentChapterId, share.currentPageId);
-    console.log(share);
+    console.log(share, startDate, endDate);
+
+    console.log(chapterPageList);
+
+    const chapterChangeList = sharePageChangeList
+      .filter((info, i) => {
+        if (i < 1) {
+          return true;
+        }
+        return sharePageChangeList[i - 1].chapterId !== info.chapterId;
+      })
+      .map((info) => {
+        return {
+          time: info.time,
+          chapterId: info.chapterId,
+        };
+      });
+
+    const chapterNames = {};
+    const pageNames = {};
+    chapterPageList.forEach((chapter) => {
+      chapterNames[chapter.id] = chapter.title;
+      chapter.pages.forEach((page) => {
+        pageNames[page.id] = page.title;
+      });
+    });
+
+    console.log(chapterChangeList);
 
     return (
       <div className="share-state-wrapper">
@@ -232,7 +316,9 @@ class ShareStat extends React.Component {
                         <div className="icon">
                           <i className="fal fa-percentage" />
                         </div>
-                        <div className="counter">{currentSeq ? Math.round((currentSeq / topic.pageCount) * 1000) / 10 : ''}</div>
+                        <div className="counter">
+                          {currentSeq ? Math.round((currentSeq / topic.pageCount) * 1000) / 10 : ''}
+                        </div>
                         <div className="tag">
                           <span>CONTENTS</span>
                         </div>
@@ -282,154 +368,118 @@ class ShareStat extends React.Component {
                 </Card>
               </div>
             </div>
-            <div className="left d-none">
-              <div>
-                <SubLabel className="mb-3">{t('타임 리스트')}</SubLabel>
-                <div className="share-time-table">
-                  <div>
-                    {share.shareTimeBuckets && share.shareTimeBuckets.length > 0 && (
-                      <Table hover>
-                        <tbody>
-                          {share.shareTimeBuckets.map((bucket) => {
-                            return (
-                              <tr
-                                key={bucket.id}
-                                className={`${shareTimeBucketId === bucket.id ? 'selected' : ''}`}
-                                onClick={() => {
-                                  this.getShareTimeBucketData(bucket.id);
-                                }}
-                              >
-                                <td className="open-date">
-                                  <DateTime value={bucket.openDate} />
-                                </td>
-                                <td className="duration">
-                                  {bucket.closeDate && (
-                                    <DateDuration
-                                      className="bg-primary text-white g-tag"
-                                      icon={<i className="fal fa-clock" />}
-                                      startValue={bucket.openDate}
-                                      endValue={bucket.closeDate}
-                                    />
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="right d-none">
-              <SubLabel>{t('타임라인')}</SubLabel>
-              <div className="timeline-graph">
-                <div>
-                  <ShareProgressGraph list={shareGraphData} max={totalUserCount} />
-                </div>
-              </div>
-              <SubLabel>{t('공유 정보')}</SubLabel>
-              <div className="share-info-table">
-                <Table className="g-info-table">
-                  <tbody>
-                    <tr>
-                      <th>{t('공유 관리자')}</th>
-                      <td>
-                        <span>{user && user.name}</span>
-                        <span className="ml-2">{user && user.email}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>{t('액세스 코드')}</th>
-                      <td>{accessCode && accessCode.code}</td>
-                    </tr>
-                    <tr>
-                      <th>{t('label.name')}</th>
-                      <td>{share.name}</td>
-                    </tr>
-                    <tr>
-                      <th>{t('메모')}</th>
-                      <td>{share.memo}</td>
-                    </tr>
-                    <tr>
-                      <th>{t('상태')}</th>
-                      <td>
-                        {share.privateYn ? (
-                          <span className="g-tag text-uppercase bg-danger text-white">private</span>
-                        ) : (
-                          <span className="g-tag text-uppercase bg-success text-white">public</span>
-                        )}
-                        {share.openYn ? (
-                          <span className="g-tag text-uppercase bg-success text-white ml-2">OPENED</span>
-                        ) : (
-                          <span className="g-tag text-uppercase bg-gray text-white ml-2">CLOSED</span>
-                        )}
-                        {share.startedYn ? (
-                          <span className="g-tag text-uppercase bg-success text-white ml-2">STARTED</span>
-                        ) : (
-                          <span className="g-tag text-uppercase bg-gray text-white  ml-2">STOPPED</span>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-              <SubLabel>{t('참여자 정보')}</SubLabel>
-              <div className="share-user-list scrollbar">
-                <div>
-                  {share.shareUsers && share.shareUsers.length > 0 && (
-                    <Table className="g-sticky">
-                      <thead>
-                        <tr>
-                          <th className="icon">&nbsp;</th>
-                          <th className="email">{t('label.email')}</th>
-                          <th className="name">{t('label.name')}</th>
-                          <th className="share-role-code">{t('관리자')}</th>
-                          <th className="ban-yn">{t('추방')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {share.shareUsers &&
-                          share.shareUsers.map((u) => {
-                            return (
-                              <tr key={u.id}>
-                                <td className="icon">
-                                  <span className="user-icon">
-                                    <UserIcon info={u.info} />
-                                  </span>
-                                </td>
-                                <td className="email">{u.email}</td>
-                                <td className="name">{u.name}</td>
-                                <td className="share-role-code">
-                                  {u.shareRoleCode === 'ADMIN' ? <i className="fad fa-medal" /> : ''}
-                                </td>
-                                <td className="ban-yn">
-                                  {u.banYn ? (
-                                    <span className="g-tag text-uppercase bg-danger text-white">banned</span>
-                                  ) : (
-                                    ''
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </Table>
-                  )}
-                  {!(share.shareUsers && share.shareUsers.length > 0) && (
-                    <EmptyMessage
-                      className="h-100 h5 bg-white"
-                      message={
-                        <div>
-                          <div className="h1">
-                            <i className="fal fa-exclamation-circle" />
-                          </div>
-                          <div>{t('참여자 정보가 없습니다')}</div>
+            <div className="share-state mt-3">
+              <SubLabel className="share-log-title">{t('공유 로그')}</SubLabel>
+              <div className="share-log-content">
+                <div className="g-attach-parent">
+                  <Card className="share-log-card h-100">
+                    <div className="list">
+                      {share.shareTimeBuckets && share.shareTimeBuckets.length > 0 && (
+                        <Table hover size="sm">
+                          <tbody>
+                            {share.shareTimeBuckets.map((bucket) => {
+                              return (
+                                <tr
+                                  key={bucket.id}
+                                  className={`${shareTimeBucketId === bucket.id ? 'selected' : ''}`}
+                                  onClick={() => {
+                                    this.getShareTimeBucketData(bucket.id);
+                                  }}
+                                >
+                                  <td className="open-date">
+                                    <DateTime value={bucket.openDate} />
+                                  </td>
+                                  <td className="duration">
+                                    {bucket.closeDate && (
+                                      <DateDuration
+                                        className="bg-primary text-white g-tag"
+                                        icon={<i className="fal fa-clock" />}
+                                        startValue={bucket.openDate}
+                                        endValue={bucket.closeDate}
+                                      />
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </Table>
+                      )}
+                    </div>
+                    <div className="viewer">
+                      <div className="page-change-graph">
+                        <div className="chapter-list">
+                          {scaleX &&
+                            chapterChangeList.map((chapterInfo, i) => {
+                              let endTime;
+                              if (chapterChangeList[i + 1]) {
+                                endTime = chapterChangeList[i + 1].time;
+                              } else {
+                                endTime = endDate;
+                              }
+
+                              const left = scaleX(new Date(chapterInfo.time));
+                              const width = scaleX(new Date(endTime)) - scaleX(new Date(chapterInfo.time));
+
+                              return (
+                                <div
+                                  className="change-item chapter-info"
+                                  style={{
+                                    left,
+                                    width,
+                                  }}
+                                >
+                                  <div className="start-bar" />
+                                  <div className="line" />
+                                  {width > 50 && <div className="arrow" />}
+                                  <div className="text-data">
+                                    <span>{chapterNames[Number(chapterInfo.chapterId)]}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
                         </div>
-                      }
-                    />
-                  )}
+                        <div className="page-list">
+                          {scaleX &&
+                            sharePageChangeList.map((pageInfo, i) => {
+                              let endTime;
+                              if (sharePageChangeList[i + 1]) {
+                                endTime = sharePageChangeList[i + 1].time;
+                              } else {
+                                endTime = endDate;
+                              }
+
+                              const left = scaleX(new Date(pageInfo.time));
+                              const width = scaleX(new Date(endTime)) - scaleX(new Date(pageInfo.time));
+
+                              return (
+                                <div
+                                  className="change-item page-info"
+                                  style={{
+                                    left,
+                                    width,
+                                  }}
+                                >
+                                  <div className="start-bar" />
+                                  <div className="line" />
+                                  {width > 50 && <div className="arrow" />}
+                                  <div className="text-data">
+                                    <span>{pageNames[Number(pageInfo.pageId)]}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                      <div className="share-stat-graph">
+                        <div className="axis-y">세로축</div>
+                        <div className="graph">캔들 차트</div>
+                      </div>
+                      <div className="time-axis">
+                        <div ref={this.timeAxis} />
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
             </div>
