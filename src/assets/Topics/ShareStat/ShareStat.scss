@@ -178,12 +178,12 @@
       .share-log-content {
         flex-grow: 1;
         position: relative;
-        min-height: 240px;
+        min-height: 300px;
         .share-log-card {
           display: flex;
           flex-direction: row;
           .list {
-            min-width: 300px;
+            min-width: 220px;
             flex-grow: 0;
             background-color: $light;
             border-right: 1px solid rgba(0, 0, 0, 0.4);
@@ -216,12 +216,14 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+            overflow-x: hidden;
 
             .page-change-graph {
               flex-grow: 0;
               min-height: 60px;
               padding: 0 25px 0 50px;
               margin-top: 10px;
+              margin-bottom: 10px;
               div {
                 width: 100%;
                 height: 25px;
@@ -303,20 +305,138 @@
               display: flex;
               flex-direction: row;
 
-              .axis-y {
+              .counter-axis {
                 min-width: 50px;
+                max-width: 50px;
                 flex-grow: 0;
+
+                > div {
+                  width: 100%;
+                  height: 100%;
+
+                  svg {
+                    overflow: visible;
+                  }
+                }
               }
 
               .graph {
                 flex-grow: 1;
-                _background-color: blue;
+
+                position: relative;
+                > div {
+                  width: calc(100% - 25px);
+                  height: 100%;
+                  background-color: $light;
+                  background-color: $white;
+
+                  .graph-item {
+                    display: inline-block;
+                    position: absolute;
+                    bottom: 0;
+                    height: 100%;
+
+                    .marker {
+                      position: absolute;
+                      top: 0;
+                      left: -1px;
+                      bottom: 0;
+                      right: -1px;
+                      width: calc(100% + 2px);
+                    }
+
+                    &.min {
+                      .marker {
+                        background-image: linear-gradient(transparent 0%, $danger 40%);
+                      }
+                    }
+
+                    &.max {
+                      .marker {
+                        background-image: linear-gradient(transparent 0%, $success 40%);
+                      }
+                    }
+
+                    &.min,
+                    &.max {
+                      > div {
+                        &.focus-percentage {
+                          color: $white;
+                          > span {
+                            background-color: rgba(0, 0, 0, 0.5);
+                          }
+                        }
+                      }
+                    }
+
+                    > div {
+                      position: absolute;
+                      left: 0;
+                      bottom: 0;
+                      display: inline-block;
+                      width: 100%;
+
+                      &.focus-percentage {
+                        font-size: 0.6rem;
+                        text-align: center;
+                        line-height: 100%;
+                        white-space: nowrap;
+                      }
+
+                      &.sessionCnt {
+                      }
+
+                      &.user-cnt {
+                        background-color: $primary;
+                        _opacity: 0.7;
+                        border-top: 1px solid darken($primary, 30%);
+                        border-right: 1px solid darken($primary, 30%);
+                        border-left: 1px solid darken($primary, 30%);
+                        border-radius: 2px 2px 0 0;
+                      }
+
+                      &.focus-cnt {
+                        background-color: $yellow;
+                        _opacity: 0.7;
+                        border-top: 1px solid darken($yellow, 30%);
+                        border-right: 1px solid darken($yellow, 30%);
+                        border-left: 1px solid darken($yellow, 30%);
+                        border-radius: 2px 2px 0 0;
+                      }
+                    }
+                  }
+                }
+
+                .max-line {
+                  position: absolute;
+                  left: 0;
+                  height: 1px;
+                  right: 0;
+                  border-bottom: 1px dashed $primary;
+                  text-align: left;
+                  overflow: visible;
+                  font-size: 0.6rem;
+
+                  > div {
+                    position: relative;
+                    top: -7px;
+                    left: -22px;
+                    > span {
+                      background-color: $primary;
+                      color: $white;
+                      line-height: 100%;
+                      padding: 0.125rem 0.25rem;
+                      border-radius: 2px;
+                    }
+                  }
+                }
               }
             }
 
             .time-axis {
               flex-grow: 0;
               min-height: 30px;
+              max-height: 30px;
               padding: 0 25px 0 50px;
               > div {
                 width: 100%;
