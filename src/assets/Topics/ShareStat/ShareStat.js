@@ -6,7 +6,7 @@ import moment from 'moment';
 import { debounce } from 'lodash';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { BottomButton, Card, CardBody, DateDuration, DateTime, SubLabel, Table } from '@/components';
+import { BottomButton, Card, CardBody, DateDuration, DateTime, SubLabel, Table, UserIcon } from '@/components';
 import request from '@/utils/request';
 import './ShareStat.scss';
 import { convertUsers } from '@/pages/Users/util';
@@ -457,6 +457,31 @@ class ShareStat extends React.Component {
                   </CardBody>
                 </Card>
               </div>
+              <div className="share-user-info">
+                <SubLabel>{t('참여자')}</SubLabel>
+                <Card className='flex-grow-1'>
+                  <CardBody className='position-relative'>
+                    <div className="g-attach-parent scrollbar">
+                      <div className="share-user-list">
+                        {share.shareUsers &&
+                        share.shareUsers.map((user) => {
+                          return (
+                            <div>
+                              <div className="user-icon">
+                                <UserIcon info={user.info} />
+                              </div>
+                              <div className="user-text">
+                                <div className="name">{user.name}</div>
+                                <div className="email">{user.email}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
               <div className="stat-summary">
                 <SubLabel>{t('요약 정보')}</SubLabel>
                 <Card>
@@ -464,29 +489,30 @@ class ShareStat extends React.Component {
                     <div className="stat-summary-content">
                       <div className="count-info">
                         <div>
-                          <div className="metric">{t('평균 집중도')}</div>
-                          <div className="counter">25%</div>
-                        </div>
-                        <div className="separator">
-                          <div />
-                        </div>
-                        <div>
-                          <div className="metric">{t('최대 집중도')}</div>
-                          <div className="counter">75%</div>
-                        </div>
-                        <div className="separator">
-                          <div />
-                        </div>
-                        <div>
-                          <div className="metric">{t('최소 집중 페이지')}</div>
-                          <div className="text">페이지1</div>
-                        </div>
-                        <div className="separator">
-                          <div />
+                          <div>
+                            <div className="metric">{t('평균 집중도')}</div>
+                            <div className="counter">25%</div>
+                          </div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div>
+                            <div className="metric">{t('최대 집중도')}</div>
+                            <div className="counter">75%</div>
+                          </div>
                         </div>
                         <div>
-                          <div className="metric">{t('최대 집중 페이지')}</div>
-                          <div className="text">페이지3</div>
+                          <div>
+                            <div className="metric">{t('최소 집중 페이지')}</div>
+                            <div className="text">페이지1</div>
+                          </div>
+                          <div className="separator">
+                            <div />
+                          </div>
+                          <div>
+                            <div className="metric">{t('최대 집중 페이지')}</div>
+                            <div className="text">페이지3</div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -619,7 +645,7 @@ class ShareStat extends React.Component {
                                       left: `${scaleX(item.time)}px`,
                                     }}
                                   >
-                                    {(item.min || item.max) && <div className='marker' />}
+                                    {(item.min || item.max) && <div className="marker" />}
                                     {item.userCnt > 0 && (
                                       <div
                                         className="focus-percentage"
