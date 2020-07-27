@@ -2,14 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import { withRouter } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import moment from 'moment';
 import { debounce } from 'lodash';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { BottomButton, Card, CardBody, DateDuration, DateTime, SubLabel, Table, UserIcon } from '@/components';
+import {
+  BottomButton,
+  Card,
+  CardBody,
+  DateDuration,
+  DateTime,
+  EmptyMessage,
+  SubLabel,
+  Table,
+  UserIcon,
+} from '@/components';
 import request from '@/utils/request';
 import './ShareStat.scss';
 import { convertUsers } from '@/pages/Users/util';
+import { DATETIME_FORMATS, DATETIME_FORMATS_MAP } from '@/constants/constants';
+import { UserPropTypes } from '@/proptypes';
 
 const cols = ['sessionCnt', 'userCnt', 'focusCnt'];
 
@@ -51,6 +64,18 @@ class ShareStat extends React.Component {
       chapterNames: {},
       pageNames: {},
       max: 0,
+      avgFocusPercentage: 0,
+      maxFocusPercentage: 0,
+
+      maxFocusChapterId: null,
+      maxFocusPageId: null,
+      maxFocusTime: null,
+
+      minFocusChapterId: null,
+      minFocusPageId: null,
+      minFocusTime: null,
+      minFocusPageName: '',
+      maxFocusPageName: '',
     };
 
     this.onResizeDebounced = debounce(this.onResize, 400);
@@ -60,6 +85,11 @@ class ShareStat extends React.Component {
     window.addEventListener('resize', this.onResizeDebounced);
     const { shareId } = this.props;
     this.getShareInfo(shareId);
+    ReactTooltip.rebuild();
+  }
+
+  componentDidUpdate() {
+    ReactTooltip.rebuild();
   }
 
   componentWillUnmount() {
@@ -144,39 +174,19 @@ class ShareStat extends React.Component {
       };
 
       let total = 0;
+
       cols.forEach((col) => {
-        // TODO 테스트를 위해 마이너스 값 보정
-        sum[col] += Math.abs(Number(targetList[i][col]));
+        sum[col] += Number(targetList[i][col]);
+        if (sum[col] < 0) {
+          sum[col] = 0;
+        }
         item[col] = sum[col];
         total += item[col];
       });
 
-      // TODO 테스트를 위해 포커스 값을 사용자 값 보다 작게 설정
-      if (item.userCnt < item.focusCnt) {
-        item.focusCnt = item.userCnt * (Math.random() * 1);
-      }
-
       item.focusPercentage = item.userCnt > 0 ? Math.round((item.focusCnt / item.userCnt) * 100) : null;
       item.total = total;
       list.push(item);
-    }
-
-    const minFocusPercentage = d3.min(list, (d) => {
-      return d.focusPercentage ? d.focusPercentage : Infinity;
-    });
-
-    const min = list.find((d) => d.focusPercentage === minFocusPercentage);
-    if (min) {
-      min.min = true;
-    }
-
-    const maxFocusPercentage = d3.max(list, (d) => {
-      return d.focusPercentage;
-    });
-
-    const max = list.find((d) => d.focusPercentage === maxFocusPercentage);
-    if (max) {
-      max.max = true;
     }
 
     return list;
@@ -208,7 +218,7 @@ class ShareStat extends React.Component {
   };
 
   getShareTimeBucketData = (shareTimeBucketId) => {
-    const { share } = this.state;
+    const { share, pageNames } = this.state;
     const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
 
     const hasTimeBucket = share.shareTimeBuckets && share.shareTimeBuckets.length > 0;
@@ -222,14 +232,90 @@ class ShareStat extends React.Component {
         endDate: closeDate,
       },
       (data) => {
+        const pageChangedList = this.getPageChangedList(data.contentChangeList);
+        const chapterChangedList = this.getChangeChangedList(data.contentChangeList);
+        const shareFlowList = this.getShareFlowList(data.shareStateList);
+
+        const maxFocusPercentage = d3.max(shareFlowList, (d) => {
+          return d.focusPercentage;
+        });
+
+        const maxFocusList = shareFlowList
+          .filter((d) => d.focusPercentage === maxFocusPercentage)
+          .map((d) => {
+            return {
+              time: d.time,
+              focusCnt: d.focusCnt,
+            };
+          });
+
+        const maxFocusCnt = d3.max(maxFocusList, (d) => d.focusCnt);
+        const maxFocusPercentageItem = maxFocusList.find((d) => d.focusCnt === maxFocusCnt);
+        const maxFocusTime = maxFocusPercentageItem.time;
+        const bisector = d3.bisector(function(d) {
+          return d.time;
+        }).left;
+
+        const maxFocusChapterIndex = bisector(chapterChangedList, maxFocusTime);
+        const maxFocusChapterId =
+          chapterChangedList[
+            maxFocusChapterIndex >= chapterChangedList.length ? chapterChangedList.length - 1 : maxFocusChapterIndex
+          ].chapterId;
+        const maxFocusPageIndex = bisector(pageChangedList, maxFocusTime) - 1;
+        const maxFocusPageId =
+          pageChangedList[maxFocusPageIndex >= pageChangedList.length ? pageChangedList.length - 1 : maxFocusPageIndex]
+            .pageId;
+
+        const minFocusPercentage = d3.min(shareFlowList, (d) => {
+          return d.focusPercentage;
+        });
+
+        const minFocusList = shareFlowList
+          .filter((d) => d.focusPercentage === minFocusPercentage)
+          .map((d) => {
+            return {
+              time: d.time,
+              focusCnt: d.focusCnt,
+            };
+          });
+
+        const minFocusCnt = d3.min(minFocusList, (d) => d.focusCnt);
+        const minFocusPercentageItem = minFocusList.find((d) => d.focusCnt === minFocusCnt);
+        const minFocusTime = minFocusPercentageItem.time;
+
+        const minFocusChaterIndex = bisector(chapterChangedList, minFocusTime);
+        const minFocusChapterId =
+          chapterChangedList[
+            minFocusChaterIndex >= chapterChangedList.length ? chapterChangedList.length - 1 : minFocusChaterIndex
+          ].chapterId;
+        const minFocusPageIndex = bisector(pageChangedList, minFocusTime);
+        const minFocusPageId =
+          pageChangedList[minFocusPageIndex >= pageChangedList.length ? pageChangedList.length - 1 : minFocusPageIndex]
+            .pageId;
+
+        let totalPercentage = 0;
+        shareFlowList.forEach((d) => {
+          totalPercentage += d.focusPercentage;
+        });
+
         this.setState(
           {
             shareTimeBucketId,
-            shareFlowList: this.getShareFlowList(data.ShareAccessInfo),
-            pageChangedList: this.getPageChangedList(data.PageChangedInfo),
-            chapterChangedList: this.getChangeChangedList(data.PageChangedInfo),
+            shareFlowList,
+            pageChangedList,
+            chapterChangedList,
             shareOpenDate,
             shareCloseDate,
+            avgFocusPercentage: totalPercentage / shareFlowList.length,
+            maxFocusPercentage,
+            maxFocusChapterId,
+            maxFocusPageId,
+            maxFocusTime,
+            minFocusChapterId,
+            minFocusPageId,
+            minFocusTime,
+            minFocusPageName: pageNames[minFocusPageId],
+            maxFocusPageName: pageNames[maxFocusPageId],
           },
           () => {
             this.draw();
@@ -241,13 +327,16 @@ class ShareStat extends React.Component {
 
   draw = () => {
     const { share, shareTimeBucketId, shareFlowList } = this.state;
-    const { openDate, closeDate } = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
-    let timeInterval = 60 * 1000;
-    if (shareFlowList.length > 1) {
-      timeInterval = shareFlowList[1].time - shareFlowList[0].time;
+    const currentBucket = share.shareTimeBuckets.find((d) => d.id === shareTimeBucketId);
+    if (currentBucket) {
+      const { openDate, closeDate } = currentBucket;
+      let timeInterval = 60 * 1000;
+      if (shareFlowList.length > 1) {
+        timeInterval = shareFlowList[1].time - shareFlowList[0].time;
+      }
+      this.drawTimeAxis(openDate, closeDate, timeInterval);
+      this.drawCountAxis(shareFlowList);
     }
-    this.drawTimeAxis(openDate, closeDate, timeInterval);
-    this.drawCountAxis(shareFlowList);
   };
 
   drawCountAxis = (list) => {
@@ -274,7 +363,7 @@ class ShareStat extends React.Component {
 
       const scaleY = d3
         .scaleLinear()
-        .domain([0, max * 1.2])
+        .domain([0, max * 1.2 > 10 ? max * 1.2 : 10])
         .range([height, 0]);
 
       const tickSize = 10;
@@ -365,6 +454,20 @@ class ShareStat extends React.Component {
     return seq;
   };
 
+  getDateTimeFormat = (format, dateTimeFormat) => {
+    const { user } = this.props;
+
+    if (dateTimeFormat && DATETIME_FORMATS_MAP[dateTimeFormat]) {
+      return DATETIME_FORMATS_MAP[dateTimeFormat][format];
+    }
+
+    if (user && DATETIME_FORMATS_MAP[user.dateTimeFormat]) {
+      return DATETIME_FORMATS_MAP[user.dateTimeFormat][format];
+    }
+
+    return DATETIME_FORMATS.find((info) => info.default).dateTimeFormat[format];
+  };
+
   render() {
     const {
       share,
@@ -388,6 +491,18 @@ class ShareStat extends React.Component {
       pageNames,
       shareFlowList,
       max,
+      avgFocusPercentage,
+      maxFocusPercentage,
+
+      maxFocusChapterId,
+      maxFocusPageId,
+      maxFocusTime,
+
+      minFocusChapterId,
+      minFocusPageId,
+      minFocusTime,
+      minFocusPageName,
+      maxFocusPageName,
     } = this.state;
     const { t } = this.props;
 
@@ -459,25 +574,39 @@ class ShareStat extends React.Component {
               </div>
               <div className="share-user-info">
                 <SubLabel>{t('참여자')}</SubLabel>
-                <Card className='flex-grow-1'>
-                  <CardBody className='position-relative'>
+                <Card className="flex-grow-1">
+                  <CardBody className="position-relative">
                     <div className="g-attach-parent scrollbar">
-                      <div className="share-user-list">
-                        {share.shareUsers &&
-                        share.shareUsers.map((user) => {
-                          return (
+                      {share.shareUsers && share.shareUsers.length > 0 && (
+                        <div className="share-user-list">
+                          {share.shareUsers.map((u) => {
+                            return (
+                              <div>
+                                <div className="user-icon">
+                                  <UserIcon info={u.info} />
+                                </div>
+                                <div className="user-text">
+                                  <div className="name">{u.name}</div>
+                                  <div className="email">{u.email}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {!(share.shareUsers && share.shareUsers.length > 0) && (
+                        <EmptyMessage
+                          className="h5 h-100"
+                          message={
                             <div>
-                              <div className="user-icon">
-                                <UserIcon info={user.info} />
+                              <div className="h5">
+                                <i className="fal fa-exclamation-circle" />
                               </div>
-                              <div className="user-text">
-                                <div className="name">{user.name}</div>
-                                <div className="email">{user.email}</div>
-                              </div>
+                              <div className="h6">{t('참여자가 없습니다')}</div>
                             </div>
-                          );
-                        })}
-                      </div>
+                          }
+                        />
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -491,27 +620,27 @@ class ShareStat extends React.Component {
                         <div>
                           <div>
                             <div className="metric">{t('평균 집중도')}</div>
-                            <div className="counter">25%</div>
+                            <div className="counter">{avgFocusPercentage}%</div>
                           </div>
                           <div className="separator">
                             <div />
                           </div>
                           <div>
                             <div className="metric">{t('최대 집중도')}</div>
-                            <div className="counter">75%</div>
+                            <div className="counter">{maxFocusPercentage}%</div>
                           </div>
                         </div>
                         <div>
                           <div>
                             <div className="metric">{t('최소 집중 페이지')}</div>
-                            <div className="text">페이지1</div>
+                            <div className="text">{minFocusPageName}</div>
                           </div>
                           <div className="separator">
                             <div />
                           </div>
                           <div>
                             <div className="metric">{t('최대 집중 페이지')}</div>
-                            <div className="text">페이지3</div>
+                            <div className="text">{maxFocusPageName}</div>
                           </div>
                         </div>
                       </div>
@@ -557,74 +686,104 @@ class ShareStat extends React.Component {
                           </tbody>
                         </Table>
                       )}
+                      {!(share.shareTimeBuckets && share.shareTimeBuckets.length > 0) && (
+                        <EmptyMessage
+                          className="h5 h-100"
+                          message={
+                            <div>
+                              <div className="h5">
+                                <i className="fal fa-exclamation-circle" />
+                              </div>
+                              <div className="h6">{t('공유 로그가 없습니다')}</div>
+                            </div>
+                          }
+                        />
+                      )}
                     </div>
                     <div className="viewer">
-                      <div className="page-change-graph">
-                        <div className="chapter-list">
-                          {scaleX &&
-                            chapterChangedList.map((chapterInfo, i) => {
-                              let endTime;
-                              if (chapterChangedList[i + 1]) {
-                                endTime = chapterChangedList[i + 1].time;
-                              } else {
-                                endTime = domainEndDate;
-                              }
-
-                              const left = scaleX(new Date(chapterInfo.time));
-                              const width = scaleX(new Date(endTime)) - scaleX(new Date(chapterInfo.time));
-
-                              return (
-                                <div
-                                  key={i}
-                                  className="change-item chapter-info"
-                                  style={{
-                                    left,
-                                    width,
-                                  }}
-                                >
-                                  <div className="start-bar" />
-                                  <div className="line" />
-                                  {width > 50 && <div className="arrow" />}
-                                  <div className="text-data">
-                                    <span>{chapterNames[Number(chapterInfo.chapterId)]}</span>
-                                  </div>
-                                </div>
-                              );
-                            })}
+                      {!(chapterChangedList && chapterChangedList.length > 0) && (
+                        <div className="no-page-change">
+                          <div>{t('공유된 챕터 및 페이지 정보가 없습니다.')}</div>
                         </div>
-                        <div className="page-list">
-                          {scaleX &&
-                            pageChangedList.map((pageInfo, i) => {
-                              let endTime;
-                              if (pageChangedList[i + 1]) {
-                                endTime = pageChangedList[i + 1].time;
-                              } else {
-                                endTime = domainEndDate;
-                              }
+                      )}
+                      {chapterChangedList && chapterChangedList.length > 0 && (
+                        <div className="page-change-graph">
+                          <div className="chapter-list">
+                            {scaleX &&
+                              chapterChangedList.map((chapterInfo, i) => {
+                                let endTime;
+                                if (chapterChangedList[i + 1]) {
+                                  endTime = chapterChangedList[i + 1].time;
+                                } else {
+                                  endTime = domainEndDate;
+                                }
 
-                              const left = scaleX(new Date(pageInfo.time));
-                              const width = scaleX(new Date(endTime)) - scaleX(new Date(pageInfo.time));
+                                const left = scaleX(new Date(chapterInfo.time));
+                                const width = scaleX(new Date(endTime)) - scaleX(new Date(chapterInfo.time));
 
-                              return (
-                                <div
-                                  key={i}
-                                  className="change-item page-info"
-                                  style={{
-                                    left,
-                                    width,
-                                  }}
-                                >
-                                  <div className="start-bar" />
-                                  <div className="line" />
-                                  {width > 50 && <div className="arrow" />}
-                                  <div className="text-data">
-                                    <span>{pageNames[Number(pageInfo.pageId)]}</span>
+                                return (
+                                  <div
+                                    key={i}
+                                    data-tip={`${moment(chapterInfo.time).format('HH:mm')} ${
+                                      chapterNames[Number(chapterInfo.chapterId)]
+                                    }`}
+                                    className={`${maxFocusChapterId === chapterInfo.chapterId ? 'max' : ''} ${
+                                      minFocusChapterId === chapterInfo.chapterId ? 'min' : ''
+                                    } change-item chapter-info`}
+                                    style={{
+                                      left,
+                                      width,
+                                    }}
+                                  >
+                                    <div className="start-bar" />
+                                    <div className="line" />
+                                    {width > 50 && <div className="arrow" />}
+                                    <div className="text-data">
+                                      <span>{chapterNames[Number(chapterInfo.chapterId)]}</span>
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            })}
+                                );
+                              })}
+                          </div>
+                          <div className="page-list">
+                            {scaleX &&
+                              pageChangedList.map((pageInfo, i) => {
+                                let endTime;
+                                if (pageChangedList[i + 1]) {
+                                  endTime = pageChangedList[i + 1].time;
+                                } else {
+                                  endTime = domainEndDate;
+                                }
+
+                                const left = scaleX(new Date(pageInfo.time));
+                                const width = scaleX(new Date(endTime)) - scaleX(new Date(pageInfo.time));
+
+                                return (
+                                  <div
+                                    key={i}
+                                    data-tip={`${moment(pageInfo.time).format('HH:mm')} ${
+                                      pageNames[Number(pageInfo.pageId)]
+                                    }`}
+                                    className={`${maxFocusPageId === pageInfo.pageId ? 'max' : ''} ${
+                                      minFocusPageId === pageInfo.pageId ? 'min' : ''
+                                    } change-item page-info`}
+                                    style={{
+                                      left,
+                                      width,
+                                    }}
+                                  >
+                                    <div className="start-bar" />
+                                    <div className="line" />
+                                    {width > 50 && <div className="arrow" />}
+                                    <div className="text-data">
+                                      <span>{pageNames[Number(pageInfo.pageId)]}</span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                          </div>
                         </div>
-                      </div>
+                      )}
                       <div className="share-stat-graph">
                         <div className="counter-axis">
                           <div ref={this.countAxis} />
@@ -639,13 +798,18 @@ class ShareStat extends React.Component {
                                 return (
                                   <div
                                     key={item.time}
-                                    className={`graph-item ${item.min ? 'min' : ''} ${item.max ? 'max' : ''}`}
+                                    className={`graph-item ${item.time === minFocusTime ? 'min' : ''} ${
+                                      item.time === maxFocusTime ? 'max' : ''
+                                    }`}
                                     style={{
                                       width: `${itemWidth - 3}px`,
                                       left: `${scaleX(item.time)}px`,
                                     }}
+                                    data-tip={`${item.userCnt} USERS (${item.focusCnt} FOCUSED)`}
                                   >
-                                    {(item.min || item.max) && <div className="marker" />}
+                                    {(item.time === maxFocusTime || item.time === minFocusTime) && (
+                                      <div className="marker" />
+                                    )}
                                     {item.userCnt > 0 && (
                                       <div
                                         className="focus-percentage"
@@ -674,7 +838,7 @@ class ShareStat extends React.Component {
                                 );
                               })}
                           </div>
-                          {scaleY && (
+                          {scaleY && max > 0 && (
                             <div
                               className="max-line"
                               style={{
@@ -720,11 +884,7 @@ const mapStateToProps = (state) => {
 ShareStat.propTypes = {
   t: PropTypes.func,
   shareId: PropTypes.number,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    name: PropTypes.string,
-  }),
+  user: UserPropTypes,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
