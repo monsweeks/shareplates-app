@@ -469,17 +469,6 @@ class ShareStat extends React.Component {
     return str;
   };
 
-  getTooltipData = (lines) => {
-    console.log(lines);
-    let str = '';
-    str += '<div class="share-stat-tooltip">';
-    for (let i=0; i<lines.length; i+=1) {
-      str += `<div class="tooltip-content">${lines[i]}</div>`;
-    }
-    str += '</div>';
-    return str;
-  };
-
   render() {
     const {
       share,
