@@ -21,7 +21,7 @@ import {
 import request from '@/utils/request';
 import './ShareStat.scss';
 import { convertUsers } from '@/pages/Users/util';
-import { DATETIME_FORMATS, DATETIME_FORMATS_MAP } from '@/constants/constants';
+import { DATETIME_FORMATS_MAP } from '@/constants/constants';
 import { UserPropTypes } from '@/proptypes';
 
 const cols = ['sessionCnt', 'userCnt', 'focusCnt'];
@@ -454,18 +454,30 @@ class ShareStat extends React.Component {
     return seq;
   };
 
-  getDateTimeFormat = (format, dateTimeFormat) => {
+  getTimeTooltipData = (startTime, endTime, lines) => {
     const { user } = this.props;
-
-    if (dateTimeFormat && DATETIME_FORMATS_MAP[dateTimeFormat]) {
-      return DATETIME_FORMATS_MAP[dateTimeFormat][format];
+    const spendSeconds = Math.round((moment(endTime).valueOf() - moment(startTime).valueOf())/1000);
+    let str = `<div class="share-stat-tooltip"><div class="tooltip-time"><span class='start-time'>${moment(startTime).format(DATETIME_FORMATS_MAP[user.dateTimeFormat].F)}</span>`;
+    if (endTime) {
+      str += `~<span class="spend-time">${spendSeconds >= 60 ? Math.round(spendSeconds / 60) : spendSeconds}${spendSeconds > 60 ? '분' : '초'}</span>`;
     }
-
-    if (user && DATETIME_FORMATS_MAP[user.dateTimeFormat]) {
-      return DATETIME_FORMATS_MAP[user.dateTimeFormat][format];
+    str += '</div>';
+    for (let i=0; i<lines.length; i+=1) {
+      str += `<div class="tooltip-content">${lines[i]}</div>`;
     }
+    str += '</div>';
+    return str;
+  };
 
-    return DATETIME_FORMATS.find((info) => info.default).dateTimeFormat[format];
+  getTooltipData = (lines) => {
+    console.log(lines);
+    let str = '';
+    str += '<div class="share-stat-tooltip">';
+    for (let i=0; i<lines.length; i+=1) {
+      str += `<div class="tooltip-content">${lines[i]}</div>`;
+    }
+    str += '</div>';
+    return str;
   };
 
   render() {
@@ -504,7 +516,7 @@ class ShareStat extends React.Component {
       minFocusPageName,
       maxFocusPageName,
     } = this.state;
-    const { t } = this.props;
+    const { t} = this.props;
 
     const graphWidth = this.graph.current ? this.graph.current.clientWidth : null;
     const graphHeight = this.graph.current ? this.graph.current.clientHeight : null;
@@ -581,7 +593,7 @@ class ShareStat extends React.Component {
                         <div className="share-user-list">
                           {share.shareUsers.map((u) => {
                             return (
-                              <div>
+                              <div key={u.id}>
                                 <div className="user-icon">
                                   <UserIcon info={u.info} />
                                 </div>
@@ -650,6 +662,61 @@ class ShareStat extends React.Component {
               </div>
             </div>
             <div className="share-state mt-3">
+              <div className="graph-legend">
+                <div>
+                  <div className="shape">
+                    <div className="rect-item user-cnt" />
+                  </div>
+                  <div className="label">참여자 수</div>
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="rect-item focus-count" />
+                  </div>
+                  <div className="label">참여자 집중도 (%)</div>
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="arrow-item chapter-move">
+                      <div className="line" />
+                      <div className="arrow" />
+                    </div>
+                  </div>
+                  <div className="label">챕터 이동</div>
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="arrow-item page-move">
+                      <div className="line" />
+                      <div className="arrow" />
+                    </div>
+                  </div>
+                  <div className="label">페이지 이동</div>
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="line-item max-user-line">
+                      <div className="line" />
+                    </div>
+                  </div>
+                  <div className="label">최대 사용자 수</div>
+                </div>
+                <div className="separator">
+                  <div />
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="rect-item max-focus" />
+                  </div>
+                  <div className="label">최대 집중</div>
+                </div>
+                <div>
+                  <div className="shape">
+                    <div className="rect-item min-focus" />
+                  </div>
+                  <div className="label">최소 집중</div>
+                </div>
+              </div>
               <SubLabel className="share-log-title">{t('공유 로그')}</SubLabel>
               <div className="share-log-content">
                 <div className="g-attach-parent">
@@ -724,9 +791,12 @@ class ShareStat extends React.Component {
                                 return (
                                   <div
                                     key={i}
-                                    data-tip={`${moment(chapterInfo.time).format('HH:mm')} ${
-                                      chapterNames[Number(chapterInfo.chapterId)]
-                                    }`}
+                                    data-html
+                                    data-tip={this.getTimeTooltipData(
+                                      chapterInfo.time,
+                                      chapterChangedList.length - 1 > i ? chapterChangedList[i+1].time :  shareCloseDate,
+                                      [chapterNames[Number(chapterInfo.chapterId)]],
+                                    )}
                                     className={`${maxFocusChapterId === chapterInfo.chapterId ? 'max' : ''} ${
                                       minFocusChapterId === chapterInfo.chapterId ? 'min' : ''
                                     } change-item chapter-info`}
@@ -761,9 +831,12 @@ class ShareStat extends React.Component {
                                 return (
                                   <div
                                     key={i}
-                                    data-tip={`${moment(pageInfo.time).format('HH:mm')} ${
-                                      pageNames[Number(pageInfo.pageId)]
-                                    }`}
+                                    data-html
+                                    data-tip={this.getTimeTooltipData(
+                                      pageInfo.time,
+                                      pageChangedList.length - 1 > i ? pageChangedList[i+1].time :  shareCloseDate,
+                                      [pageNames[Number(pageInfo.pageId)]],
+                                    )}
                                     className={`${maxFocusPageId === pageInfo.pageId ? 'max' : ''} ${
                                       minFocusPageId === pageInfo.pageId ? 'min' : ''
                                     } change-item page-info`}
@@ -805,7 +878,8 @@ class ShareStat extends React.Component {
                                       width: `${itemWidth - 3}px`,
                                       left: `${scaleX(item.time)}px`,
                                     }}
-                                    data-tip={`${item.userCnt} USERS (${item.focusCnt} FOCUSED)`}
+                                    data-html
+                                    data-tip={this.getTimeTooltipData(item.time, null, [`${item.userCnt} USERS`,`${item.focusPercentage}% FOCUSED`])}
                                   >
                                     {(item.time === maxFocusTime || item.time === minFocusTime) && (
                                       <div className="marker" />
@@ -818,7 +892,7 @@ class ShareStat extends React.Component {
                                         }}
                                       >
                                         <span>
-                                          {item.userCnt ? `${Math.round((item.focusCnt / item.userCnt) * 100)}%` : ''}
+                                          {item.userCnt ? `${item.focusPercentage}%` : ''}
                                         </span>
                                       </div>
                                     )}

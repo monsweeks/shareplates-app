@@ -126,7 +126,7 @@ class Common extends React.Component {
             </div>
           </div>
         )}
-        <ReactTooltip effect="solid" />
+        <ReactTooltip effect="solid"  />
       </div>
     );
   }

@@ -1,3 +1,28 @@
+$user-color: $primary;
+$focus-color: $yellow;
+$chapter-color: $gray-600;
+$page-color: $secondary;
+$max-user-color: darken($primary, 10%);
+$min-color: $danger;
+$max-color: $success;
+
+.share-stat-tooltip {
+  .tooltip-time {
+    font-size: 0.6rem;
+    .start-time {
+      margin-right: 0.5rem;
+    }
+
+    .spend-time {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .tooltip-content {
+    font-size: 0.7rem;
+  }
+}
+
 .share-state-wrapper {
   text-align: left;
   display: flex;
@@ -294,6 +319,134 @@
       display: flex;
       min-height: 300px;
       flex-direction: column;
+      position: relative;
+      word-spacing: -2px;
+
+      .graph-legend {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 0.7rem;
+        line-height: 0;
+        vertical-align: top;
+
+        > div {
+          display: inline-flex;
+          line-height: 100%;
+          margin: 0 0.5rem;
+          vertical-align: top;
+
+          &.separator {
+            width: 1px;
+            height: 20px;
+            padding-top: 5px;
+            > div {
+              width: 100%;
+              height: 10px;
+              background-color: rgba(0, 0, 0, 0.4);
+            }
+          }
+
+          .shape {
+            flex-grow: 0;
+            line-height: 0;
+            height: 20px;
+            .rect-item {
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              border: 1px solid rgba(0, 0, 0, 0.4);
+              line-height: 0;
+
+              &.user-cnt {
+                background-color: $user-color;
+              }
+
+              &.focus-count {
+                background-color: $focus-color;
+              }
+
+              &.max-focus {
+                background-color: $max-color;
+                _background-image: linear-gradient(transparent 0%, $max-color 40%);
+              }
+
+              &.min-focus {
+                background-color: $min-color;
+                _background-image: linear-gradient(transparent 0%, $min-color 40%);
+              }
+            }
+
+            .arrow-item {
+              position: relative;
+              width: 20px;
+              height: 20px;
+
+              .line {
+                position: absolute;
+                left: 0;
+                top: 9px;
+                height: 1px;
+                width: 100%;
+                border-bottom: 2px solid #333;
+              }
+
+              .arrow {
+                width: 10px;
+                height: 10px;
+                transform: rotate(45deg);
+                border: 2px solid $secondary;
+                border-left: none;
+                border-bottom: none;
+                position: absolute;
+                right: 2px;
+                top: 5px;
+                display: inline-block;
+                background-color: transparent;
+              }
+
+              &.chapter-move {
+                .line,
+                .arrow {
+                  border-color: $chapter-color;
+                }
+              }
+
+              &.page-move {
+                .line,
+                .arrow {
+                  border-color: $page-color;
+                }
+
+                .line {
+                  border-bottom-style: dashed;
+                }
+              }
+            }
+
+            .line-item {
+              position: relative;
+              width: 20px;
+              height: 20px;
+
+              .line {
+                position: absolute;
+                left: 0;
+                top: 9px;
+                height: 1px;
+                width: 100%;
+                border-bottom: 2px dashed $max-user-color;
+              }
+            }
+          }
+
+          .label {
+            align-self: center;
+            margin-left: 0.25rem;
+          }
+        }
+      }
+
       .share-log-title {
         flex-grow: 0;
       }
@@ -388,13 +541,46 @@
 
                 &.chapter-list {
                   margin-bottom: 10px;
+
+                  .change-item {
+                    > div {
+                      &.text-data > span,
+                      &.line,
+                      &.arrow {
+                        border-color: $chapter-color;
+                      }
+
+                      &.start-bar {
+                        background-color: $chapter-color;
+                      }
+                    }
+                  }
+                }
+
+                &.page-list {
+                  .change-item {
+                    > div {
+                      &.text-data > span,
+                      &.line,
+                      &.arrow {
+                        border-color: $page-color;
+                      }
+
+                      &.line {
+                        border-style: dashed;
+                      }
+
+                      &.start-bar {
+                        background-color: $page-color;
+                      }
+                    }
+                  }
                 }
 
                 .change-item {
                   position: absolute;
                   top: 0;
                   height: 100%;
-                  _background-color: $black;
                   display: inline-block;
                   white-space: nowrap;
                   overflow-x: hidden;
@@ -405,9 +591,8 @@
 
                     &.start-bar {
                       position: absolute;
-                      width: 1px;
+                      width: 2px;
                       height: 100%;
-                      background-color: #333;
                     }
 
                     &.start-bar {
@@ -418,12 +603,12 @@
                       width: 12px;
                       height: 12px;
                       transform: rotate(45deg);
-                      border: 1px solid #333;
+                      border: 2px solid transparent;
                       border-left: none;
                       border-bottom: none;
                       position: absolute;
                       right: 3px;
-                      top: 7px;
+                      top: 8px;
                       display: inline-block;
                       background-color: transparent;
                     }
@@ -434,7 +619,8 @@
                       height: 1px;
                       top: 50%;
                       left: 0;
-                      background-color: #333;
+                      border-top: 1px solid transparent;
+                      border-bottom: 1px solid transparent;
                     }
 
                     &.text-data {
@@ -446,7 +632,7 @@
                       > span {
                         display: inline-block;
                         background-color: $white;
-                        border: 1px solid #777;
+                        border: 2px solid transparent;
                         border-radius: 2px;
                         padding: 0 4px;
                       }
@@ -457,7 +643,7 @@
                     > div {
                       &.text-data {
                         > span {
-                          background-color: $danger;
+                          background-color: $min-color;
                           color: $white;
                         }
                       }
@@ -468,7 +654,7 @@
                     > div {
                       &.text-data {
                         > span {
-                          background-color: $success;
+                          background-color: $max-color;
                           color: $white;
                         }
                       }
@@ -525,13 +711,15 @@
 
                     &.min {
                       .marker {
-                        background-image: linear-gradient(transparent 0%, $danger 40%);
+                        opacity: 0.7;
+                        background-image: linear-gradient(transparent 0%, $min-color 40%);
                       }
                     }
 
                     &.max {
                       .marker {
-                        background-image: linear-gradient(transparent 0%, $success 40%);
+                        opacity: 0.7;
+                        background-image: linear-gradient(transparent 0%, $max-color 40%);
                       }
                     }
 
@@ -561,24 +749,19 @@
                         white-space: nowrap;
                       }
 
-                      &.sessionCnt {
-                      }
-
                       &.user-cnt {
-                        background-color: $primary;
-                        _opacity: 0.7;
-                        border-top: 1px solid darken($primary, 30%);
-                        border-right: 1px solid darken($primary, 30%);
-                        border-left: 1px solid darken($primary, 30%);
+                        background-color: $user-color;
+                        border-top: 1px solid darken($user-color, 30%);
+                        border-right: 1px solid darken($user-color, 30%);
+                        border-left: 1px solid darken($user-color, 30%);
                         border-radius: 2px 2px 0 0;
                       }
 
                       &.focus-cnt {
-                        background-color: $yellow;
-                        _opacity: 0.7;
-                        border-top: 1px solid darken($yellow, 30%);
-                        border-right: 1px solid darken($yellow, 30%);
-                        border-left: 1px solid darken($yellow, 30%);
+                        background-color: $focus-color;
+                        border-top: 1px solid darken($focus-color, 30%);
+                        border-right: 1px solid darken($focus-color, 30%);
+                        border-left: 1px solid darken($focus-color, 30%);
                         border-radius: 2px 2px 0 0;
                       }
                     }
@@ -590,7 +773,8 @@
                   left: 0;
                   height: 1px;
                   right: 0;
-                  border-bottom: 1px dashed $primary;
+                  border-bottom: 2px dashed $max-user-color;
+                  _background-color: #333;
                   text-align: left;
                   overflow: visible;
                   font-size: 0.6rem;
@@ -600,7 +784,7 @@
                     top: -7px;
                     left: -22px;
                     > span {
-                      background-color: $primary;
+                      background-color: $max-user-color;
                       color: $white;
                       line-height: 100%;
                       padding: 0.125rem 0.25rem;
