@@ -37,7 +37,7 @@ class ShareCard extends React.PureComponent {
             </div>
           )}
           <div className="open-time">
-            <span className={`short-icon short-icon-icon ${totalUserCount > 0 ? 'has-joined-user' : ''}`}>
+            <span className='short-icon'>
               <i className="fal fa-clock" />
             </span>
             <ReactTimeAgo date={moment(lastBucket.openDate).valueOf()} />
@@ -62,7 +62,6 @@ class ShareCard extends React.PureComponent {
             >
               <i className="fas fa-street-view" />
             </span>
-            <span className="user-count">{totalUserCount}</span>
           </div>
           <div className="title">
             <div className="share-name">{share.name}</div>
