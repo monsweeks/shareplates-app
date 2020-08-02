@@ -562,16 +562,16 @@ class Share extends React.Component {
       },
     );
   };
-  
+
   setOpenCamPopup = (value) => {
-	this.setState(
-	  {
-		  isOpenCam: value
-	  },
-	  () => {
+    this.setState(
+      {
+        isOpenCam: value,
+      },
+      () => {
         window.dispatchEvent(new Event('resize'));
-	  }
-	);  
+      },
+    );
   };
 
   setOption = (key, value) => {
@@ -798,6 +798,9 @@ class Share extends React.Component {
                       this.onScroll();
                     },
                   );
+                }}
+                exitShare={() => {
+                  history.push('/shares');
                 }}
               />
             )}
