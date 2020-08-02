@@ -31,6 +31,7 @@ import ListControlBar from '@/components/ListControlBar/ListControlBar';
 import Logo from '@/components/Logo/Logo';
 import MessageDialog from '@/components/MessageDialog/MessageDialog';
 import Overlay from '@/components/Overlay/Overlay';
+import ExitButton from '@/components/ExitButton/ExitButton';
 
 import P from '@/components/P/P';
 import PageIntro from '@/components/PageIntro/PageIntro';
@@ -98,4 +99,5 @@ export {
   UserIcon,
   FlexOverflowSection,
   Pill,
+  ExitButton,
 };

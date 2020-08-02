@@ -1,96 +1,154 @@
-.screen-type-selector-popup {
-  @media (max-width: 576px) {
-    background-color: $white !important;
-  }
-}
 .screen-type-selector-wrapper {
-  width: 550px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
   background-color: $white;
-  padding: 2rem 2rem 4rem;
-  border-radius: 5px;
+  background-color: #333;
+  _background-color: $primary;
+  display: flex;
+  flex-direction: row;
+  color: $white;
 
-  @media (max-width: 576px) {
-    width: 100%;
-  }
-
-  .intro-msg {
-    font-size: 1.2rem;
-
-    @media (max-width: 576px) {
-      font-size: 1rem;
+  h1 {
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
     }
   }
 
-  .buttons {
-    height: 120px;
-    display: flex;
+  p {
+    @media (max-width: 768px) {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  > div {
+    align-self: center;
+    width: 100%;
     position: relative;
 
-    @media (max-width: 576px) {
-      display: block;
-      height: auto;
-    }
+    .buttons {
+      margin: 2rem 10% 0;
+      display: flex;
+      position: relative;
 
-    > div {
-      flex: 1 1 0;
-      margin: 0 5px;
-
-      @media (max-width: 576px) {
-        padding: 0 1rem;
+      @media (max-width: 992px) {
+        margin: 2rem 5% 0;
       }
 
-      > button {
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+      @media (max-width: 768px) {
+        flex-direction: column;
+        margin: 0 auto;
+      }
 
-        .icon {
-          font-size: 1.6rem;
+      > div {
+        flex: 1 1 0;
 
-          @media (max-width: 576px) {
-            font-size: 1.8rem;
+        @media (max-width: 768px) {
+          margin-bottom: 1.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
           }
         }
 
-        .text {
-          font-size: 1rem;
+        &.separator {
+          max-width: 20px;
+          display: flex;
+          > div {
+            margin: 0 auto;
+            width: 1px;
+            height: 20%;
+            align-self: center;
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+
+          @media (max-width: 768px) {
+            display: none;
+          }
         }
-      }
 
-      @media (max-width: 576px) {
-        flex: none;
-        height: 90px;
-        margin-bottom: 3rem;
-        position: relative;
-      }
-
-      .desc {
-        position: absolute;
-        white-space: nowrap;
-        left: 5px;
-        bottom: -40px;
-        background-color: $white;
-        width: calc(100% - 10px);
-        padding: 0.25rem 1rem;
-        opacity: 0;
-        transition: all 0.3s;
-
-        @media (max-width: 576px) {
-          left: 0;
-          opacity: 1;
-          bottom: auto;
-          top: 88px;
+        > button {
+          padding: 2rem 0;
           width: 100%;
-          background-color: transparent;
-          font-size: 0.75rem;
-          white-space: normal;
-        }
-      }
+          margin-bottom: 1rem;
+          border-radius: 0;
+          color: $yellow;
+          transition: all 0.1s;
 
-      @media (min-width: 576px) {
-        &:hover {
-          .desc {
-            opacity: 1;
-            transition: all 0.3s;
+          @media (max-width: 768px) {
+            margin-bottom: 0;
+            padding: 0;
+          }
+
+          .icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background-color: $yellow;
+            color: $black;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: row;
+            line-height: 0;
+            align-self: center;
+            border: 2px solid transparent;
+            transition: all 0.1s;
+
+            > span {
+              align-self: center;
+              width: 100%;
+              text-align: center;
+              font-size: 2rem;
+            }
+
+            @media (max-width: 768px) {
+              width: 40px;
+              height: 40px;
+              margin-bottom: 0.5rem;
+              > span {
+                font-size: 1.4rem;
+              }
+            }
+          }
+
+          .text {
+            font-size: 1.4rem;
+
+            @media (max-width: 768px) {
+              font-size: 1.1rem;
+            }
+          }
+
+          @media (min-width: 768px) {
+            &:hover {
+              background-color: $yellow;
+              color: $black;
+              transition: all 0.1s;
+
+              .icon {
+                border: 2px solid rgba(0, 0, 0, 0.7);
+                transition: all 0.1s;
+              }
+            }
+          }
+
+          @media (max-width: 768px) {
+            &:hover {
+              background-color: inherit;
+            }
+          }
+        }
+
+        .desc {
+          padding: 0 2rem;
+
+          @media (max-width: 768px) {
+            font-size: 0.75rem;
           }
         }
       }
