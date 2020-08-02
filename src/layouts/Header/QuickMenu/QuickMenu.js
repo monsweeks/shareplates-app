@@ -35,7 +35,7 @@ class QuickMenu extends React.Component {
                   <div className="email">{user && user.email}</div>
                 </div>
                 <div className="logout-button">
-                  <Button size="sm" className=" g-compact-button" color="primary" onClick={logout}>
+                  <Button size="sm" color="danger" onClick={logout}>
                     {t('로그아웃')}
                   </Button>
                 </div>

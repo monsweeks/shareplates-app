@@ -185,7 +185,7 @@ class Header extends React.Component {
           </div>
         </div>
         <MobileMenu
-          menus={menus}
+          menus={userMenus}
           openMenu={openMenu}
           setOpen={this.setOpen}
           ready={ready}
