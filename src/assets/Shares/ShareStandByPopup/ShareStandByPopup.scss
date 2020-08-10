@@ -32,7 +32,6 @@
       background-color: $primary;
       color: $white;
       font-size: 1.2rem;
-
     }
 
     .projector-info {
@@ -47,11 +46,9 @@
         max-width: 1200px;
         margin: 1rem auto;
         width: 100%;
-
-
         background-color: transparent;
-
         border-radius: 2px;
+        _align-self: center;
 
         .projector-menu {
           padding: 1rem 1rem 0;

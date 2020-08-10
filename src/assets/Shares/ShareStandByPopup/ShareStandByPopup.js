@@ -69,12 +69,12 @@ class ShareStandByPopup extends React.PureComponent {
                         this.setState({
                           tab : 'intro'
                         });
-                      }} className={tab === 'intro' ? 'selected' : ''}>참여 방법</div>}
+                      }} className={tab === 'intro' ? 'selected' : ''}>참여 방법{!share.privateYn ? '-1' : ''}</div>}
                       <div onClick={() => {
                         this.setState({
                           tab : 'accessCode'
                         });
-                      }} className={tab === 'accessCode' ? 'selected' : ''}>참여 방법</div>
+                      }} className={tab === 'accessCode' ? 'selected' : ''}>참여 방법{!share.privateYn ? '-2' : ''}</div>
                       <div onClick={() => {
                         this.setState({
                           tab : 'users'
