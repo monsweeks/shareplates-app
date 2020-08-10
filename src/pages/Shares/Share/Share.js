@@ -50,8 +50,8 @@ class Share extends React.Component {
       users: [],
       isOpenUserPopup: false,
       init: false,
-      screenType: SCREEN_TYPE.WEB,
-      // screenType: SCREEN_TYPE.CONTROLLER,
+      // screenType: SCREEN_TYPE.WEB,
+      screenType: SCREEN_TYPE.PROJECTOR,
       openScreenSelector: false,
       messages: [],
       projectorScrollInfo: {},
@@ -182,8 +182,8 @@ class Share extends React.Component {
           isAdmin,
           users: convertUsers(data.users),
           init: true,
-          openScreenSelector: isAdmin,
-          // openScreenSelector: false,
+          // openScreenSelector: isAdmin,
+          openScreenSelector: false,
           messages: data.messages,
         });
 

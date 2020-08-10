@@ -3,165 +3,351 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-
-  > div {
-    .name {
-      flex-grow: 0;
-      display: flex;
-      text-align: center;
-      padding: 1rem;
-      background-color: $primary;
-      border-radius: 10px 10px 0 0;
-
-      @media (max-width: 576px) {
-        border-radius: 0;
-      }
-
-      > div {
-        align-self: center;
-        width: 100%;
-        text-align: center;
-        color: $white;
-        position: relative;
-
-        > span.text {
-          display: inline-block;
-          padding: 0.25rem 1rem;
-          font-size: 1.4rem;
-          border-bottom: 1px solid $white;
-        }
-
-        > span.chat-icon {
-          position: absolute;
-          right: 0;
-
-          > button {
-            font-size: 1.4rem;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            border-radius: 50%;
-            padding: 2px 0 0;
-          }
-        }
-      }
-    }
-  }
+  text-align: center;
+  background-color: $white;
 
   .projector {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex-grow: 1;
 
-    > .name {
-      background-color: $sea-blue;
+    .header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0 50px;
+      height: 60px;
+      background-color: $secondary;
+      min-height: 60px;
+      color: $white;
+      flex: 0;
+      width: 100%;
+      overflow: hidden;
     }
 
-    .address {
+    .welcome-message {
+      padding: 2rem;
+      flex-grow: 0;
+      background-color: $primary;
+      color: $white;
+      font-size: 1.2rem;
+
+    }
+
+    .projector-info {
       flex-grow: 1;
       display: flex;
-      align-self: center;
-      width: 100%;
+      flex-direction: row;
       background-color: $primary;
+      _background: linear-gradient(180deg, rgba(9, 120, 174, 1) 0%, rgba(11, 154, 223, 1) 100%);
+      color: $white;
 
       > div {
-        align-self: center;
+        max-width: 1200px;
+        margin: 1rem auto;
         width: 100%;
-        > div {
-          margin-bottom: 0.5rem;
-        }
-      }
 
-      .message {
-        text-align: center;
-        width: 100%;
-        color: $white;
-        font-size: 1.1rem;
-        @media (max-width: 576px) {
-          font-size: 1rem;
-        }
 
-        &.or {
-          margin-top: 2rem;
-          margin-bottom: 2rem;
-        }
-      }
+        background-color: transparent;
 
-      .access-code-input {
-        align-self: center;
-        width: 100%;
-        margin: 0 auto;
-        line-height: 0;
-        border-radius: 0;
-        position: relative;
-        max-width: 300px;
+        border-radius: 2px;
 
-        > input {
-          border: none;
-          outline: none;
-          font-size: 1.4rem;
-          @media (max-width: 576px) {
-            font-size: 1.2rem;
+        .projector-menu {
+          padding: 1rem 1rem 0;
+          background-color: transparent;
+          flex-grow: 0;
+          border-radius: 2px 2px 0 0;
+
+          > div {
+            text-align: center;
+            > div {
+              display: inline-block;
+              padding: 0.25rem 0.5rem;
+              font-size: 1rem;
+              min-width: 110px;
+              border-radius: 2px;
+              cursor: pointer;
+              text-align: center;
+              color: $white;
+
+              &.selected {
+                background-color: $yellow;
+                color: $black;
+              }
+            }
           }
-          font-family: LGSmHaB, sans-serif;
-          padding: 0.5rem;
-          border-radius: 2px;
-          text-align: center;
-          width: 100%;
-          letter-spacing: 4px;
-        }
-      }
-
-      .address-url {
-        font-size: 1.4rem;
-
-        @media (max-width: 576px) {
-          font-size: 1.1rem;
         }
 
-        > span {
-          padding: 0.5rem;
-          font-family: LGSmHaB, sans-serif;
-          border-radius: 2px;
-          text-transform: uppercase;
+        .projector-content {
+          padding: 2rem;
           color: $white;
-          word-break: break-all;
+          display: flex;
+          flex-direction: row;
+          height: 320px;
+
+          .core-info {
+            padding: 1rem;
+            width: 400px;
+            min-width: 400px;
+
+            .access-code {
+              font-family: NixieOne, MalgunGothic, sans-serif;
+              font-size: 4rem;
+              align-self: center;
+              color: $white;
+              align-self: center;
+
+              > div {
+                align-self: center;
+              }
+            }
+
+            .access-code-tag {
+              color: $white;
+            }
+            > div {
+              margin: 0 auto;
+              color: #333;
+            }
+          }
+
+          .projector-desc {
+            padding: 1rem;
+            align-self: center;
+            > .title {
+              text-align: left;
+              display: flex;
+              flex-direction: row;
+              font-weight: bold;
+
+              > div {
+                display: inline-flex;
+
+                &.no {
+                  flex-grow: 0;
+                  font-family: NixieOne, sans-serif;
+                  font-size: 1.5rem;
+                  text-align: center;
+                  padding: 0;
+                  line-height: 100%;
+                  color: $white;
+
+                  > span {
+                    align-self: center;
+                    line-height: 0;
+                    text-align: center;
+                    width: 100%;
+                  }
+                }
+
+                &.text {
+                  flex-grow: 1;
+                  padding: 0 1rem;
+                  font-size: 1.1rem;
+
+                  > span {
+                    align-self: center;
+                  }
+                }
+              }
+            }
+
+            .message {
+              font-size: 1rem;
+              padding: 0.5rem;
+              text-align: left;
+
+              > span {
+                padding: 0.25rem;
+              }
+
+              .info {
+                font-size: 1rem;
+                font-weight: bold;
+                padding: 0.25rem 0.25rem;
+                font-family: MalgunGothic, sans-serif;
+                line-height: 100%;
+                display: inline-block;
+                &:before {
+                  content: '<';
+                  font-family: NixieOne, MalgunGothic, sans-serif;
+                }
+
+                &:after {
+                  content: '>';
+                  font-family: NixieOne, MalgunGothic, sans-serif;
+                }
+
+                &.url {
+                  _text-transform: uppercase;
+                  font-family: NixieOne, MalgunGothic, sans-serif;
+                  font-size: 1.1rem;
+                }
+              }
+              .site-name {
+                font-family: 'Righteous', cursive;
+                background-color: $primary;
+                color: $white;
+                padding: 0.25rem 0.5rem;
+                border-radius: 5px;
+                font-size: 0.8rem;
+              }
+            }
+          }
         }
       }
 
-      > div {
+      .address {
         align-self: center;
-        text-align: center;
+        font-family: NixieOne, sans-serif;
         width: 100%;
+        text-align: center;
+        color: #333;
+        font-weight: bold;
+        font-size: 4rem;
+      }
+    }
+
+    > .title {
+      flex-grow: 0;
+      display: flex;
+      flex-direction: row;
+      min-height: 60px;
+      background-color: #333;
+      background-color: $primary;
+      background-color: $secondary;
+      color: $white;
+      .share-name {
+        align-self: center;
+        font-size: 1.1rem;
+        padding: 0 1rem;
+        flex-grow: 0;
+      }
+
+      .topic-name {
+        align-self: center;
+        flex-grow: 1;
+        text-align: right;
+        padding: 0 1rem;
       }
     }
 
     .user-count {
-      flex-grow: 0;
-      display: flex;
-      align-self: center;
       padding: 0;
-      white-space: nowrap;
-      background-color: $primary;
-      width: 100%;
-      text-align: center;
+      font-family: 'Baloo Bhai', cursive;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
 
       > div {
+        align-self: center;
         width: 100%;
         text-align: center;
-        .number {
-          display: inline-block;
-          width: 40px;
-          height: 40px;
-          background-color: $yellow;
-          color: $black;
-          text-align: center;
-          font-family: 'Baloo Bhai', cursive;
-          font-size: 20px;
-          border-radius: 50%;
-          padding-top: 6px;
-          position: relative;
-          top: 20px;
+      }
+    }
+
+    .step-content {
+      display: flex;
+      flex-direction: column;
+      .step-row {
+        display: flex;
+        flex-direction: row;
+
+        > div {
+          &.step-info {
+            width: 20%;
+            height: 100%;
+            align-self: center;
+            display: flex;
+            flex-direction: row;
+            flex-grow: 0;
+            position: relative;
+
+            > div {
+              flex-grow: 1;
+              &.bar {
+                width: 10px;
+                height: 100%;
+                background-color: $primary;
+                flex-grow: 0;
+              }
+
+              &.step-no {
+                display: flex;
+                flex-direction: row;
+
+                > div {
+                  width: 100%;
+                  text-align: right;
+                  align-self: center;
+                  > span {
+                    width: 30px;
+                    height: 30px;
+                    background-color: $primary;
+                    display: inline-block;
+                    border-radius: 50%;
+                    color: $white;
+                    font-family: 'Baloo Bhai', sans-serif;
+                    padding-top: 5px;
+                    text-align: center;
+                    position: relative;
+                    left: 10px;
+                  }
+                }
+              }
+
+              &.step-info-content {
+                display: flex;
+                flex-direction: row;
+
+                > div {
+                  align-self: center;
+                  width: 100%;
+                  text-align: right;
+                  padding-right: 2rem;
+                  font-size: 1.2rem;
+                }
+              }
+            }
+          }
+
+          &.step-content {
+            flex-grow: 1;
+            padding: 2rem;
+            text-align: center;
+
+            > .msg {
+              font-size: 1.2rem;
+              margin-bottom: 1rem;
+
+              > span {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+                display: inline-block;
+                padding: 0.25rem;
+              }
+            }
+
+            > .access-code {
+              margin-bottom: 0.25rem;
+              > span {
+                font-size: 0.8rem;
+                border: 1px solid rgba(0, 0, 0, 0.4);
+                line-height: 0;
+                padding: 0.25rem;
+              }
+            }
+
+            > .code {
+              font-size: 2.6rem;
+              font-family: NixieOne;
+            }
+
+            .address {
+              font-size: 1.6rem;
+              text-transform: uppercase;
+            }
+          }
         }
       }
     }
@@ -169,8 +355,9 @@
     .user-info {
       flex-grow: 0;
       min-height: 120px;
-      background-color: $white;
+
       display: flex;
+      display: none;
       flex-direction: row;
       border-radius: 0 0 10px 10px;
       @media (max-width: 576px) {
