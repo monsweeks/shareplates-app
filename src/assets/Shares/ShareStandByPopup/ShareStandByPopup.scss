@@ -26,183 +26,176 @@
       overflow: hidden;
     }
 
-    .welcome-message {
-      padding: 2rem;
+    .projector-menu {
+      background-color: $sea-blue;
       flex-grow: 0;
-      background-color: $primary;
-      color: $white;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
+      text-align: left;
+      padding: 0 1rem;
+      > div {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        min-width: 110px;
+        cursor: pointer;
+        text-align: center;
+        color: $white;
+
+        &:hover {
+          background-color: darken($sea-blue, 10%);
+        }
+
+        &.selected {
+          background-color: $yellow;
+          background-color: $primary;
+          background-color: $white;
+          background-color: $light;
+          color: #333;
+        }
+      }
     }
 
     .projector-info {
       flex-grow: 1;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       background-color: $primary;
-      _background: linear-gradient(180deg, rgba(9, 120, 174, 1) 0%, rgba(11, 154, 223, 1) 100%);
+      background-color: $white;
+      background-color: $light;
       color: $white;
+      color: #333;
+      text-align: left;
+      padding: 1rem;
 
       > div {
-        max-width: 1200px;
-        margin: 1rem auto;
-        width: 100%;
-        background-color: transparent;
-        border-radius: 2px;
-        _align-self: center;
-
-        .projector-menu {
-          padding: 1rem 1rem 0;
-          background-color: transparent;
-          flex-grow: 0;
-          border-radius: 2px 2px 0 0;
-
-          > div {
-            text-align: center;
-            > div {
-              display: inline-block;
-              padding: 0.25rem 0.5rem;
-              font-size: 1rem;
-              min-width: 110px;
-              border-radius: 2px;
-              cursor: pointer;
-              text-align: center;
-              color: $white;
-
-              &.selected {
-                background-color: $yellow;
-                color: $black;
-              }
-            }
-          }
-        }
-
-        .projector-content {
-          padding: 2rem;
-          color: $white;
+        flex-grow: 1;
+        background-color: $white;
+        _border: 1px solid rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        div.info-row {
+          width: 100%;
           display: flex;
-          flex-direction: row;
-          height: 320px;
 
-          .core-info {
-            padding: 1rem;
-            width: 400px;
-            min-width: 400px;
+          &.title {
+            font-size: 1.3rem;
+            padding: 4rem 1rem;
 
-            .access-code {
-              font-family: NixieOne, MalgunGothic, sans-serif;
-              font-size: 4rem;
-              align-self: center;
-              color: $white;
-              align-self: center;
+            _background-color: #333;
+            _color: white;
 
-              > div {
-                align-self: center;
-              }
-            }
-
-            .access-code-tag {
-              color: $white;
-            }
             > div {
-              margin: 0 auto;
-              color: #333;
+              flex-grow: 1;
+              text-align: center;
             }
           }
 
-          .projector-desc {
-            padding: 1rem;
-            align-self: center;
-            > .title {
-              text-align: left;
-              display: flex;
-              flex-direction: row;
-              font-weight: bold;
+          .bullet {
+            flex-grow: 0;
+            min-width: 120px;
+            position: relative;
 
-              > div {
-                display: inline-flex;
-
-                &.no {
-                  flex-grow: 0;
-                  font-family: NixieOne, sans-serif;
-                  font-size: 1.5rem;
-                  text-align: center;
-                  padding: 0;
-                  line-height: 100%;
-                  color: $white;
-
-                  > span {
-                    align-self: center;
-                    line-height: 0;
-                    text-align: center;
-                    width: 100%;
-                  }
-                }
-
-                &.text {
-                  flex-grow: 1;
-                  padding: 0 1rem;
-                  font-size: 1.1rem;
-
-                  > span {
-                    align-self: center;
-                  }
-                }
-              }
+            .bar {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: calc(50% - 5px);
+              width: 10px;
+              background-color: $primary;
+              opacity: 1;
             }
 
-            .message {
+            .circle {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              border: 5px solid $primary;
+              left: calc(50% - 10px);
+              position: absolute;
+              top: calc(50% - 10px - 0.25rem);
+              background-color: $white;
+            }
+          }
+
+          .info-content {
+            flex-grow: 1;
+            padding: 0;
+            margin-right: 2rem;
+            position: relative;
+            _margin-bottom: 1.5rem;
+
+            > div {
+              _border: 1px solid rgba(0, 0, 0, 0.2);
+              _border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+              padding: 2.5rem 1rem;
+              _box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.05);
+            }
+
+            > div,
+            .arrow {
+              background-color: $light;
+              background-color: $white;
+            }
+
+            .text {
               font-size: 1rem;
-              padding: 0.5rem;
-              text-align: left;
-
-              > span {
-                padding: 0.25rem;
-              }
-
-              .info {
-                font-size: 1rem;
-                font-weight: bold;
-                padding: 0.25rem 0.25rem;
-                font-family: MalgunGothic, sans-serif;
-                line-height: 100%;
+              .address {
                 display: inline-block;
-                &:before {
-                  content: '<';
-                  font-family: NixieOne, MalgunGothic, sans-serif;
-                }
-
-                &:after {
-                  content: '>';
-                  font-family: NixieOne, MalgunGothic, sans-serif;
-                }
-
-                &.url {
-                  _text-transform: uppercase;
-                  font-family: NixieOne, MalgunGothic, sans-serif;
-                  font-size: 1.1rem;
-                }
+                padding: 0 1rem;
+                text-transform: uppercase;
+                border-bottom: 2px solid #333;
+                font-weight: bold;
               }
-              .site-name {
-                font-family: 'Righteous', cursive;
-                background-color: $primary;
-                color: $white;
-                padding: 0.25rem 0.5rem;
-                border-radius: 5px;
-                font-size: 0.8rem;
+            }
+          }
+
+          @media (max-width: 1240px) {
+            max-width: none;
+            margin: 1rem;
+          }
+
+          .display-header {
+            position: relative;
+
+            .circle-pointer {
+              top: 0;
+              left: 60px;
+              @media (max-width: 1000px) {
+                left: 10px;
+              }
+
+              @media (max-width: 768px) {
+                left: 5px;
+              }
+            }
+          }
+
+          .display-card {
+            > div {
+              width: 400px;
+              min-width: 400px;
+              _margin: 0 auto;
+              color: #333;
+              position: relative;
+
+              .share-card {
+                border: 1px solid rgba(0,0,0,0.3) !important;
+              }
+
+              .circle-pointer {
+                left: calc(50% - 30px);
+                bottom: 20px;
               }
             }
           }
         }
       }
 
-      .address {
-        align-self: center;
-        font-family: NixieOne, sans-serif;
-        width: 100%;
-        text-align: center;
-        color: #333;
-        font-weight: bold;
-        font-size: 4rem;
+      .circle-pointer {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        border: 3px solid $danger;
+        border-radius: 50%;
       }
     }
 

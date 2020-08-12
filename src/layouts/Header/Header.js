@@ -142,7 +142,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { i18n, user, location, grps, shareCount } = this.props;
+    const { i18n, user, location, grps, shareCount, forDisplay } = this.props;
     const { openMenu, openQuickMenu, activePropsKeys, menus } = this.state;
 
     const ready = user !== null;
@@ -163,25 +163,29 @@ class Header extends React.Component {
             />
           </div>
           <div className="logo-area">
-            <TopLogo weatherEffect />
+            <TopLogo weatherEffect={!forDisplay} />
           </div>
           <div className="right-menu-area text-right pl-md-0">
-            <div className="right-menu">
-              <Menu menus={userMenus.filter((menu) => menu.side === 'right')} pathname={location.pathname} />
-            </div>
-            <div className="shortcut-menu">
-              <ShortCutMenu
-                ready={ready}
-                loggedIn={loggedIn}
-                setOpenQuickMenu={this.setOpenQuickMenu}
-                language={i18n.language}
-                onChangeLanguage={(language) => {
-                  i18n.changeLanguage(language);
-                }}
-                grps={grps}
-                user={user}
-              />
-            </div>
+            {!forDisplay && (
+              <>
+                <div className="right-menu">
+                  <Menu menus={userMenus.filter((menu) => menu.side === 'right')} pathname={location.pathname} />
+                </div>
+                <div className="shortcut-menu">
+                  <ShortCutMenu
+                    ready={ready}
+                    loggedIn={loggedIn}
+                    setOpenQuickMenu={this.setOpenQuickMenu}
+                    language={i18n.language}
+                    onChangeLanguage={(language) => {
+                      i18n.changeLanguage(language);
+                    }}
+                    grps={grps}
+                    user={user}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
         <MobileMenu
@@ -233,6 +237,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+Header.defaultProps = {
+  forDisplay: false,
+};
+
 Header.propTypes = {
   i18n: PropTypes.objectOf(PropTypes.any),
   user: UserPropTypes,
@@ -251,6 +259,7 @@ Header.propTypes = {
     push: PropTypes.func,
   }),
   setUserInfo: PropTypes.func,
+  forDisplay: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));

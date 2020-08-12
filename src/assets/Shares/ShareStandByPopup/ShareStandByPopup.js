@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, FlexOverflowSection, Popup, ShareCard, TopLogo, UserIcon } from '@/components';
 import { ChatManager } from '@/assets';
 import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
-
+import { Header } from '@/layouts';
 import { SCREEN_TYPE } from '@/constants/constants';
 import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
@@ -60,29 +60,115 @@ class ShareStandByPopup extends React.PureComponent {
               <div className="header">
                 <TopLogo weatherEffect />
               </div>
-              <div className="welcome-message"><div>참여자를 기다리고 있습니다</div></div>
+              <div className="projector-menu g-no-select">
+                {!share.privateYn && (
+                  <div
+                    onClick={() => {
+                      this.setState({
+                        tab: 'intro',
+                      });
+                    }}
+                    className={tab === 'intro' ? 'selected' : ''}
+                  >
+                    참여 방법
+                  </div>
+                )}
+                <div
+                  onClick={() => {
+                    this.setState({
+                      tab: 'accessCode',
+                    });
+                  }}
+                  className={tab === 'accessCode' ? 'selected' : ''}
+                >
+                  엑세스 코드로 참여
+                </div>
+                <div
+                  onClick={() => {
+                    this.setState({
+                      tab: 'users',
+                    });
+                  }}
+                  className={tab === 'users' ? 'selected' : ''}
+                >
+                  참여자
+                </div>
+                <div
+                  onClick={() => {
+                    this.setState({
+                      tab: 'users',
+                    });
+                  }}
+                  className={tab === 'users' ? 'selected' : ''}
+                >
+                  채팅
+                </div>
+              </div>
+
               <div className="projector-info">
                 <div>
-                  <div className="projector-menu">
-                    <div>
-                      {!share.privateYn && <div onClick={() => {
-                        this.setState({
-                          tab : 'intro'
-                        });
-                      }} className={tab === 'intro' ? 'selected' : ''}>참여 방법{!share.privateYn ? '-1' : ''}</div>}
-                      <div onClick={() => {
-                        this.setState({
-                          tab : 'accessCode'
-                        });
-                      }} className={tab === 'accessCode' ? 'selected' : ''}>참여 방법{!share.privateYn ? '-2' : ''}</div>
-                      <div onClick={() => {
-                        this.setState({
-                          tab : 'users'
-                        });
-                      }} className={tab === 'users' ? 'selected' : ''}>참여자</div>
+                  <div className="info-row title">
+                    <div>아래와 같이 공유에 참여할 수 있습니다.</div>
+                  </div>
+                  <div className="info-row">
+                    <div className="bullet">
+                      <div className="bar" />
+                      <div className="circle" />
+                    </div>
+                    <div className="info-content">
+                      <div>
+                        <div className="text">
+                          웹 브라우저를 통해 <span className="address">{window.location.origin}</span>에 접속하여,
+                          가입된 사용자 계정 혹은 SNS 계정을 이용하여 로그인합니다.
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  {(!share.privateYn && tab === 'intro') && (
+                  <div className="info-row">
+                    <div className="bullet">
+                      <div className="bar" />
+                      <div className="circle" />
+                    </div>
+                    <div className="info-content">
+                      <div>
+                        <div className="text mb-3">
+                          웹 사이트 좌측 상단의 &apos;공유&lsquo; 메뉴를 클릭하여, 현재 공유 중인 목록을 확인합니다.
+                        </div>
+                        <div className="display-header">
+                          <Header forDisplay />
+                          <div className="circle-pointer" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="info-row">
+                    <div className="bullet">
+                      <div className="bar" />
+                      <div className="circle" />
+                    </div>
+                    <div className="info-content">
+                      <div>
+                        <div className="text mb-3">
+                          조회된 목록에서 아래 형태의 카드의 &apos;참여&lsquo; 버튼을 클릭하여, 참여할 수 있습니다.
+                        </div>
+                        <div className="display-card">
+                          <div>
+                            <ShareCard className="share-card" share={share} />
+                            <div className="circle-pointer" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="info-row flex-grow-1">
+                    <div className="bullet">
+                      <div className="bar" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-none">
+                  {!share.privateYn && tab === 'intro' && (
                     <div className="projector-content">
                       <div className="core-info">
                         <div>
@@ -126,7 +212,9 @@ class ShareStandByPopup extends React.PureComponent {
                   {tab === 'accessCode' && (
                     <div className="projector-content">
                       <div className="core-info">
-                        <div className="access-code"><div>{accessCode.code}</div></div>
+                        <div className="access-code">
+                          <div>{accessCode.code}</div>
+                        </div>
                         <div className="access-code-tag">
                           <span>엑세스 코드</span>
                         </div>
