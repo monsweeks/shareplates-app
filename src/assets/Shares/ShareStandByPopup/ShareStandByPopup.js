@@ -4,13 +4,26 @@ import { withRouter } from 'react-router-dom';
 import FlipNumbers from 'react-flip-numbers';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { Button, FlexOverflowSection, Popup, ShareCard, TopLogo, UserIcon } from '@/components';
+import { Button, FlexOverflowSection, Popup, RadioButton, ShareCard, TopLogo, UserIcon } from '@/components';
 import { ChatManager } from '@/assets';
 import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
 import { Header } from '@/layouts';
 import { SCREEN_TYPE } from '@/constants/constants';
 import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
+
+const viewTypes = [
+  {
+    key: 'accessCode',
+    value: '엑세스 코드로 참여',
+    icon: <i className="fal fa-code" />,
+  },
+  {
+    key: 'list',
+    value: '공개 토픽 리스트',
+    icon: <i className="fal fa-list" />,
+  },
+];
 
 class ShareStandByPopup extends React.PureComponent {
   constructor(props) {
@@ -25,7 +38,7 @@ class ShareStandByPopup extends React.PureComponent {
   static getDerivedStateFromProps(props, state) {
     if (!state.tab && props.share) {
       return {
-        tab: props.share.privateYn ? 'accessCode' : 'intro',
+        tab: 'intro',
       };
     }
 
@@ -58,10 +71,7 @@ class ShareStandByPopup extends React.PureComponent {
           {screenType === SCREEN_TYPE.PROJECTOR && (
             <div className="projector">
               <div className="header">
-                <TopLogo weatherEffect />
-              </div>
-              <div className="projector-menu g-no-select">
-                {!share.privateYn && (
+                <div className="projector-menu g-no-select">
                   <div
                     onClick={() => {
                       this.setState({
@@ -71,83 +81,78 @@ class ShareStandByPopup extends React.PureComponent {
                     className={tab === 'intro' ? 'selected' : ''}
                   >
                     참여 방법
-                  </div>
-                )}
-                <div
-                  onClick={() => {
-                    this.setState({
-                      tab: 'accessCode',
-                    });
-                  }}
-                  className={tab === 'accessCode' ? 'selected' : ''}
-                >
-                  엑세스 코드로 참여
-                </div>
-                <div
-                  onClick={() => {
-                    this.setState({
-                      tab: 'users',
-                    });
-                  }}
-                  className={tab === 'users' ? 'selected' : ''}
-                >
-                  참여자
-                </div>
-                <div
-                  onClick={() => {
-                    this.setState({
-                      tab: 'users',
-                    });
-                  }}
-                  className={tab === 'users' ? 'selected' : ''}
-                >
-                  채팅
-                </div>
-              </div>
-
-              <div className="projector-info">
-                <div>
-                  <div className="info-row title">
-                    <div>아래와 같이 공유에 참여할 수 있습니다.</div>
-                  </div>
-                  <div className="info-row">
-                    <div className="bullet">
-                      <div className="bar" />
-                      <div className="circle" />
+                    <div className="arrow">
+                      <div />
                     </div>
-                    <div className="info-content">
+                  </div>
+                  <div
+                    onClick={() => {
+                      this.setState({
+                        tab: 'users',
+                      });
+                    }}
+                    className={tab === 'users' ? 'selected' : ''}
+                  >
+                    참여자
+                    <div className="arrow">
+                      <div />
+                    </div>
+                  </div>
+                </div>
+                <TopLogo weatherEffect={false} />
+                <div className="projector-menu" />
+              </div>
+              {tab === 'intro' && (
+                <div className="projector-info">
+                  <div>
+                    <div className="info-row address-row">
+                      <div className="tag">
+                        <span className="">접속 URL</span>
+                      </div>
+                      <div className="text">웹 브라우저를 통해 아래 URL에 접속해주세요.</div>
                       <div>
-                        <div className="text">
-                          웹 브라우저를 통해 <span className="address">{window.location.origin}</span>에 접속하여,
-                          가입된 사용자 계정 혹은 SNS 계정을 이용하여 로그인합니다.
-                        </div>
+                        <span className="address">
+                          {window.location.origin === 'http://localhost:3000'
+                            ? 'http://www.shareplates.com'
+                            : window.location.origin}
+                        </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="info-row">
-                    <div className="bullet">
-                      <div className="bar" />
-                      <div className="circle" />
-                    </div>
-                    <div className="info-content">
-                      <div>
-                        <div className="text mb-3">
-                          웹 사이트 좌측 상단의 &apos;공유&lsquo; 메뉴를 클릭하여, 현재 공유 중인 목록을 확인합니다.
-                        </div>
-                        <div className="display-header">
-                          <Header forDisplay />
+                    <div className="info-row method-1">
+                      <div className="tag">
+                        <span className="">토픽 참여 방법 {!share.privateYn && '#1'}</span>
+                      </div>
+                      <div className="text mb-3">
+                        웹 사이트 좌측 상단의 &apos;공유&lsquo; 메뉴를 클릭하고, 엑세스 코드로 참여 버튼을 클릭합니다.
+                      </div>
+                      <div className="display-header mb-3">
+                        <Header forDisplay />
+                        <div className="view-type">
+                          <RadioButton items={viewTypes} value="accessCode" onClick={this.onChangeViewType} />
                           <div className="circle-pointer" />
                         </div>
                       </div>
+                      <div className="text">아래 엑세스 코드를 입력하여 참여할 수 있습니다.</div>
+                      <div className="access-code">{accessCode.code}</div>
                     </div>
-                  </div>
-                  <div className="info-row">
-                    <div className="bullet">
-                      <div className="bar" />
-                      <div className="circle" />
-                    </div>
-                    <div className="info-content">
-                      <div>
+                    {!share.privateYn && (
+                      <div className="or-row">
+                        <div className="line" />
+                        <div className="or">OR</div>
+                      </div>
+                    )}
+                    {!share.privateYn && (
+                      <div className="info-row method-2">
+                        <div className="tag">
+                          <span className="">토픽 참여 방법 #2</span>
+                        </div>
+                        <div className="text mb-3">
+                          웹 사이트 좌측 상단의 &apos;공유&lsquo; 메뉴를 클릭하여, 현재 공유 중인 목록을 확인합니다.
+                        </div>
+                        <div className="display-header mb-3">
+                          <Header forDisplay />
+                          <div className="circle-pointer" />
+                        </div>
                         <div className="text mb-3">
                           조회된 목록에서 아래 형태의 카드의 &apos;참여&lsquo; 버튼을 클릭하여, 참여할 수 있습니다.
                         </div>
@@ -158,179 +163,43 @@ class ShareStandByPopup extends React.PureComponent {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="info-row flex-grow-1">
-                    <div className="bullet">
-                      <div className="bar" />
-                    </div>
+                    )}
                   </div>
                 </div>
-
-                <div className="d-none">
-                  {!share.privateYn && tab === 'intro' && (
-                    <div className="projector-content">
-                      <div className="core-info">
-                        <div>
-                          <ShareCard className="share-card" share={share} />
-                        </div>
-                      </div>
-                      <div className="projector-desc">
-                        <div className="title">
-                          <div className="no">
-                            <span>1</span>
-                          </div>
-                          <div className="text">
-                            <span>SHAREPLATES 접속</span>
-                          </div>
-                        </div>
-                        <div className="message mb-4">
-                          <span>웹 브라우저를 통해 </span>
-                          <span className="info url">{window.location.origin}</span>
-                          <span>에 접속합니다.</span>
-                        </div>
-                        <div className="title">
-                          <div className="no">
-                            <span>2</span>
-                          </div>
-                          <div className="text">
-                            <span>참여 버튼 클릭</span>
-                          </div>
-                        </div>
-                        <div className="message">
-                          <span>상단의 </span>
-                          <span className="info">공유</span>
-                          <span> 메뉴를 선택한 후, 목록에서 </span>
-                          <span className="info">{share.name}</span>
-                          <span>카드의 </span>
-                          <span className="info">참여</span>
-                          <span>버튼을 클릭합니다.</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {tab === 'accessCode' && (
-                    <div className="projector-content">
-                      <div className="core-info">
-                        <div className="access-code">
-                          <div>{accessCode.code}</div>
-                        </div>
-                        <div className="access-code-tag">
-                          <span>엑세스 코드</span>
-                        </div>
-                      </div>
-                      <div className="projector-desc">
-                        <div className="title">
-                          <div className="no">
-                            <span>1</span>
-                          </div>
-                          <div className="text">
-                            <span>SHAREPLATES 접속</span>
-                          </div>
-                        </div>
-                        <div className="message mb-4">
-                          <span>웹 브라우저를 통해 </span>
-                          <span className="info url">{window.location.origin}</span>
-                          <span>에 접속합니다.</span>
-                        </div>
-                        <div className="title">
-                          <div className="no">
-                            <span>2</span>
-                          </div>
-                          <div className="text">
-                            <span>엑세스 코드 입력</span>
-                          </div>
-                        </div>
-                        <div className="message">
-                          <span>상단의 </span>
-                          <span className="info">공유</span>
-                          <span> 메뉴를 선택한 후, 좌측 상단의 </span>
-                          <span className="info">엑세스 코드로 참여</span>
-                          <span>버튼을 클릭하고, 좌측의 엑세스 코드를 입력합니다.</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="step-content  d-none">
-                <div className="step-row">
-                  <div className="step-info">
-                    <div />
-                    <div className="bar" />
-                    <div className="step-no g-attach-parent">
+              )}
+              {tab === 'users' && (
+                <div className="projector-info">
+                  <div>
+                    <div className="user-count">
                       <div>
-                        <span>1</span>
+                        <FlipNumbers height={65} width={200} play numbers={String(users.length)} />
+                        <div className="tag">
+                          <span className="">참여중</span>
+                        </div>
                       </div>
                     </div>
-                    <div className="step-info-content g-attach-parent">
-                      <div>참여방법 1</div>
-                    </div>
-                  </div>
-                  <div className="step-content">
-                    <div className="msg">
-                      <span>{t('공유 메뉴에서 엑세스 코드를 입력하여 참여할 수 있습니다.')}</span>
-                    </div>
-                    <div className="access-code">
-                      <span>ACCESS CODE</span>
-                    </div>
-                    <div className="code">{accessCode.code}</div>
-                  </div>
-                  <div className="step-info" />
-                </div>
-
-                <div className="step-row">
-                  <div className="step-info">
-                    <div />
-                    <div className="bar" />
-                    <div className="step-no g-attach-parent">
-                      <div>
-                        <span>2</span>
+                    <div className="user-info">
+                      <div className="user-list">
+                        <FlexOverflowSection overflowX>
+                          <div className="user-icon-list">
+                            <div>
+                              {users &&
+                                users.map((u) => {
+                                  return (
+                                    <div key={u.id}>
+                                      <div className="user-icon">{user && <UserIcon info={u.info} />}</div>
+                                      <div className="user-name">{u.name}</div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          </div>
+                        </FlexOverflowSection>
                       </div>
                     </div>
-                    <div className="step-info-content g-attach-parent">
-                      <div>참여방법 2</div>
-                    </div>
                   </div>
-
-                  <div className="step-content">
-                    <div className="msg">
-                      <span>
-                        {t(
-                          '브라우저에 아래 URL을 입력하여 참여할 수 있습니다. 실제 카드 정보 출력 버튼 클릭 | 엑세스 코드 | 주소 ',
-                        )}
-                      </span>
-                    </div>
-                    <div className="address">{window.location.href}</div>
-                  </div>
-                  <div className="step-info" />
                 </div>
-              </div>
-              <div className="user-count d-none">
-                <div>
-                  <FlipNumbers height={50} width={200} play numbers={String(users.length)} />
-                </div>
-              </div>
-              <div className="user-info  d-none">
-                <div className="user-list">
-                  <FlexOverflowSection overflowX>
-                    <div className="user-icon-list">
-                      <div>
-                        {users &&
-                          users.map((u) => {
-                            return (
-                              <div key={u.id}>
-                                <div className="user-icon">{user && <UserIcon info={u.info} />}</div>
-                                <div className="user-name">{u.name}</div>
-                              </div>
-                            );
-                          })}
-                      </div>
-                    </div>
-                  </FlexOverflowSection>
-                </div>
-              </div>
+              )}
             </div>
           )}
           {screenType === SCREEN_TYPE.WEB && (
