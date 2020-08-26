@@ -51,7 +51,7 @@ class Share extends React.Component {
       isOpenUserPopup: false,
       init: false,
       screenType: SCREEN_TYPE.WEB,
-      // screenType: SCREEN_TYPE.CONTROLLER,
+      // screenType: SCREEN_TYPE.PROJECTOR,
       openScreenSelector: false,
       messages: [],
       projectorScrollInfo: {},

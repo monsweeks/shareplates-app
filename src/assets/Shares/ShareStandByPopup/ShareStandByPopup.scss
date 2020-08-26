@@ -3,179 +3,291 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-
-  > div {
-    .name {
-      flex-grow: 0;
-      display: flex;
-      text-align: center;
-      padding: 1rem;
-      background-color: $primary;
-      border-radius: 10px 10px 0 0;
-
-      @media (max-width: 576px) {
-        border-radius: 0;
-      }
-
-      > div {
-        align-self: center;
-        width: 100%;
-        text-align: center;
-        color: $white;
-        position: relative;
-
-        > span.text {
-          display: inline-block;
-          padding: 0.25rem 1rem;
-          font-size: 1.4rem;
-          border-bottom: 1px solid $white;
-        }
-
-        > span.chat-icon {
-          position: absolute;
-          right: 0;
-
-          > button {
-            font-size: 1.4rem;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            border-radius: 50%;
-            padding: 2px 0 0;
-          }
-        }
-      }
-    }
-  }
+  text-align: center;
+  background-color: $white;
 
   .projector {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex-grow: 1;
 
-    > .name {
-      background-color: $sea-blue;
+    .header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0 50px;
+      height: 60px;
+      background-color: $secondary;
+      min-height: 60px;
+      color: $white;
+      flex: 0;
+      width: 100%;
+      overflow: hidden;
+
+      .projector-menu {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+
+        > div {
+          flex-grow: 1;
+
+          > div {
+            padding: 20px 1rem 0;
+            min-width: 90px;
+            text-align: center;
+            position: relative;
+            height: 100%;
+            cursor: pointer;
+            display: inline-block;
+
+            &:hover {
+              color: $yellow;
+            }
+
+            .arrow {
+              position: absolute;
+              bottom: -5px;
+              left: 0;
+              right: 0;
+              text-align: center;
+              line-height: 0;
+              display: none;
+
+              > div {
+                width: 10px;
+                height: 10px;
+                background-color: $primary;
+                display: inline-block;
+                transform: rotate(45deg);
+              }
+            }
+
+            &.selected {
+              .arrow {
+                display: block;
+              }
+            }
+          }
+        }
+      }
     }
 
-    .address {
+    .projector-info {
       flex-grow: 1;
       display: flex;
-      align-self: center;
-      width: 100%;
+      flex-direction: column;
       background-color: $primary;
+      color: #333;
+      text-align: left;
+      padding: 0.5rem;
 
-      > div {
-        align-self: center;
-        width: 100%;
-        > div {
-          margin-bottom: 0.5rem;
-        }
-      }
-
-      .message {
-        text-align: center;
-        width: 100%;
-        color: $white;
-        font-size: 1.1rem;
-        @media (max-width: 576px) {
-          font-size: 1rem;
-        }
-
-        &.or {
-          margin-top: 2rem;
-          margin-bottom: 2rem;
-        }
-      }
-
-      .access-code-input {
-        align-self: center;
-        width: 100%;
-        margin: 0 auto;
-        line-height: 0;
-        border-radius: 0;
-        position: relative;
-        max-width: 300px;
-
-        > input {
-          border: none;
-          outline: none;
-          font-size: 1.4rem;
-          @media (max-width: 576px) {
-            font-size: 1.2rem;
-          }
-          font-family: LGSmHaB, sans-serif;
-          padding: 0.5rem;
-          border-radius: 2px;
-          text-align: center;
-          width: 100%;
-          letter-spacing: 4px;
-        }
-      }
-
-      .address-url {
-        font-size: 1.4rem;
-
-        @media (max-width: 576px) {
-          font-size: 1.1rem;
-        }
-
+      .tag {
+        margin-bottom: 0.5rem;
         > span {
-          padding: 0.5rem;
-          font-family: LGSmHaB, sans-serif;
-          border-radius: 2px;
-          text-transform: uppercase;
+          display: inline-block;
+          background-color: $secondary;
           color: $white;
-          word-break: break-all;
+          padding: 6px 8px;
+          border-radius: 2px;
+          min-width: 120px;
+          font-size: 0.8rem;
+          line-height: 100%;
         }
       }
 
       > div {
-        align-self: center;
-        text-align: center;
-        width: 100%;
+        flex-grow: 1;
+        background-color: $white;
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        &.manage {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+
+          > div {
+            display: block;
+            align-self: center;
+            width: 100%;
+            text-align: center;
+
+            button {
+              font-size: 2.5rem;
+            }
+          }
+        }
+
+        div.or-row {
+          text-align: center;
+          margin-bottom: 0;
+          position: relative;
+
+          > div.or {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: $white;
+            background-color: $black;
+            text-align: center;
+            padding-top: 10px;
+          }
+
+          > div.line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+        }
+
+        div.info-row {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+
+          .circle-pointer {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 3px solid $danger;
+            border-radius: 50%;
+          }
+
+          &.address-row {
+            padding-top: 2rem;
+            padding-bottom: 1rem;
+            text-align: center;
+            flex-grow: 0;
+
+            .address {
+              display: inline-block;
+              padding: 0 1rem;
+              font-size: 30px;
+              text-transform: uppercase;
+            }
+          }
+
+          &.method-1,
+          &.method-2 {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            text-align: center;
+          }
+
+          &.method-1 {
+            padding-bottom: 0;
+          }
+
+          &.method-2 {
+            padding-bottom: 2rem;
+          }
+
+          .display-header {
+            position: relative;
+
+            .circle-pointer {
+              top: 0;
+              left: 60px;
+              position: absolute;
+              width: 60px;
+              height: 60px;
+              border: 3px solid $danger;
+              border-radius: 50%;
+              @media (max-width: 1000px) {
+                left: 10px;
+              }
+
+              @media (max-width: 768px) {
+                left: 5px;
+              }
+            }
+
+            .view-type {
+              padding: 0.5rem;
+              text-align: left;
+              background-color: $sea-blue;
+              position: relative;
+
+              .circle-pointer {
+                top: -7px;
+                left: 30px;
+              }
+            }
+          }
+
+          .access-code {
+            font-size: 4rem;
+            font-family: NixieOne, sans-serif;
+          }
+
+          .display-card {
+            > div {
+              width: 400px;
+              min-width: 400px;
+              margin: 0 auto;
+              color: #333;
+              position: relative;
+
+              .share-card {
+                border: 1px solid rgba(0, 0, 0, 0.3) !important;
+              }
+
+              .circle-pointer {
+                left: calc(50% - 30px);
+                bottom: 20px;
+              }
+            }
+          }
+        }
       }
     }
 
     .user-count {
-      flex-grow: 0;
-      display: flex;
-      align-self: center;
       padding: 0;
-      white-space: nowrap;
-      background-color: $primary;
-      width: 100%;
-      text-align: center;
+      font-family: NixieOne, sans-serif;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
 
       > div {
+        align-self: center;
         width: 100%;
         text-align: center;
-        .number {
-          display: inline-block;
-          width: 40px;
-          height: 40px;
-          background-color: $yellow;
+      }
+
+      .tag {
+        margin-top: 0.5rem;
+        font-family: LGSmHaL, sans-serif;
+
+        > span {
+          min-width: auto;
+          background-color: transparent;
           color: $black;
-          text-align: center;
-          font-family: 'Baloo Bhai', cursive;
-          font-size: 20px;
-          border-radius: 50%;
-          padding-top: 6px;
-          position: relative;
-          top: 20px;
         }
       }
     }
 
     .user-info {
-      flex-grow: 0;
-      min-height: 120px;
-      background-color: $white;
+      height: 120px;
       display: flex;
       flex-direction: row;
-      border-radius: 0 0 10px 10px;
-      @media (max-width: 576px) {
-        border-radius: 0;
-      }
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
 
       > .user-list {
         flex-grow: 1;
@@ -191,9 +303,22 @@
 
           > div {
             align-self: center;
+            text-align: center;
+            width: 100%;
 
             > div {
               display: inline-block;
+              padding: 0.5rem 1.5rem;
+              margin: 0 0.5rem;
+              background-color: $white;
+
+              &:first-child {
+                margin-left: 1rem;
+              }
+
+              &:last-child {
+                margin-right: 1rem;
+              }
             }
           }
 
@@ -203,11 +328,12 @@
             height: 50px;
             margin: 0 1rem;
             border-radius: 50%;
-            box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
           }
 
           div.user-name {
             font-size: 0.7rem;
+            width: 100%;
+            text-align: center;
           }
         }
       }

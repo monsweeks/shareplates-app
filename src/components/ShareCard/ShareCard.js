@@ -92,7 +92,7 @@ class ShareCard extends React.PureComponent {
           <div className="bottom-buttons">
             <Button
               onClick={() => {
-                onCardClick(share.id);
+                if (onCardClick) onCardClick(share.id);
               }}
               size="sm"
               color="white"
