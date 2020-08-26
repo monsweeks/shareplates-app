@@ -6,24 +6,11 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { Button, FlexOverflowSection, Popup, RadioButton, ShareCard, TopLogo, UserIcon } from '@/components';
 import { ChatManager } from '@/assets';
-import ShareStandByUserList from './ShareStandByUserList/ShareStandByUserList';
 import { Header } from '@/layouts';
 import { SCREEN_TYPE } from '@/constants/constants';
 import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
-
-const viewTypes = [
-  {
-    key: 'accessCode',
-    value: '엑세스 코드로 참여',
-    icon: <i className="fal fa-code" />,
-  },
-  {
-    key: 'list',
-    value: '공개 토픽 리스트',
-    icon: <i className="fal fa-list" />,
-  },
-];
+import { VIEW_TYPES } from '../../../constants/constants';
 
 class ShareStandByPopup extends React.PureComponent {
   constructor(props) {
@@ -67,10 +54,10 @@ class ShareStandByPopup extends React.PureComponent {
       <Popup open full>
         <div className="share-stand-by-popup-wrapper">
           {screenType === SCREEN_TYPE.PROJECTOR && (
-            <div className="projector">
+            <div className="share-stand-content">
               <div className="header">
-                <div className="projector-menu g-no-select">
-                  <div className="text-left">
+                <div className="stand-menu g-no-select left-menu">
+                  <div>
                     <div
                       onClick={() => {
                         this.setState({
@@ -100,7 +87,7 @@ class ShareStandByPopup extends React.PureComponent {
                   </div>
                 </div>
                 <TopLogo weatherEffect={false} />
-                <div className="projector-menu g-no-select">
+                <div className="stand-menu g-no-select">
                   <div className="text-right">
                     <div
                       onClick={() => {
@@ -119,12 +106,9 @@ class ShareStandByPopup extends React.PureComponent {
                 </div>
               </div>
               {tab === 'intro' && (
-                <div className="projector-info">
+                <div className="standby-content">
                   <div>
                     <div className="info-row address-row">
-                      <div className="tag">
-                        <span className="">접속 URL</span>
-                      </div>
                       <div className="text">웹 브라우저를 통해 아래 URL에 접속해주세요.</div>
                       <div>
                         <span className="address">
@@ -144,7 +128,7 @@ class ShareStandByPopup extends React.PureComponent {
                       <div className="display-header mb-3">
                         <Header forDisplay />
                         <div className="view-type">
-                          <RadioButton items={viewTypes} value="accessCode" onClick={this.onChangeViewType} />
+                          <RadioButton items={VIEW_TYPES} value="accessCode" onClick={this.onChangeViewType} />
                           <div className="circle-pointer" />
                         </div>
                       </div>
@@ -184,7 +168,7 @@ class ShareStandByPopup extends React.PureComponent {
                 </div>
               )}
               {tab === 'users' && (
-                <div className="projector-info">
+                <div className="standby-content">
                   <div>
                     <div className="user-count">
                       <div>
@@ -216,8 +200,8 @@ class ShareStandByPopup extends React.PureComponent {
                   </div>
                 </div>
               )}
-              {tab === 'manage' && (
-                <div className="projector-info">
+              {tab === 'manage' && isAdmin && (
+                <div className="standby-content">
                   <div className="manage">
                     <div>
                       <Button color="white" onClick={startShare}>
@@ -225,16 +209,23 @@ class ShareStandByPopup extends React.PureComponent {
                       </Button>
                     </div>
                   </div>
+                  <div className="share-close-button">
+                    <span>
+                      <Button color="white" onClick={closeShare}>
+                        종료하기
+                      </Button>
+                    </span>
+                  </div>
                 </div>
               )}
             </div>
           )}
           {screenType === SCREEN_TYPE.WEB && (
-            <div className="projector">
+            <div className="share-stand-content">
               <div className="header">
-                <div className="projector-menu g-no-select" />
+                <div className="stand-menu g-no-select" />
                 <TopLogo weatherEffect={false} />
-                <div className="projector-menu g-no-select">
+                <div className="stand-menu g-no-select">
                   <div className="text-right">
                     <div onClick={exitShare}>
                       나가기
@@ -245,7 +236,7 @@ class ShareStandByPopup extends React.PureComponent {
                   </div>
                 </div>
               </div>
-              <div className="projector-info">
+              <div className="standby-content">
                 <div>
                   <div
                     className="web-user-counter"
@@ -292,71 +283,6 @@ class ShareStandByPopup extends React.PureComponent {
               </div>
             </div>
           )}
-
-          <div className="web d-none">
-            <div className="name">
-              <div>
-                <span className="text">{share.name}</span>
-                <span className="chat-icon">
-                  <Button
-                    color="white"
-                    onClick={() => {
-                      this.setState({
-                        isOpenChatMessage: !isOpenChatMessage,
-                      });
-                    }}
-                  >
-                    <i className="fal fa-comment-dots" />
-                  </Button>
-                </span>
-              </div>
-            </div>
-            <div className="share-ready-content">
-              <div className="p-4 h5 mb-0">
-                {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
-              </div>
-              <div className="user-count">
-                <span>{users.length}</span>
-              </div>
-              <div className="user-info-list">
-                <FlexOverflowSection>
-                  <ShareStandByUserList hideMessage users={users} user={user} />
-                </FlexOverflowSection>
-              </div>
-              <div className="admin-control">
-                <div>
-                  <div>
-                    <Button color="primary" onClick={exitShare}>
-                      <i className="fal fa-sign-out-alt" />
-                    </Button>
-                    <div>
-                      <span>나가기</span>
-                    </div>
-                  </div>
-                  {isAdmin && (
-                    <>
-                      <div>
-                        <Button color="danger" className="stop" onClick={closeShare}>
-                          <i className="fas fa-stop" />
-                        </Button>
-                        <div>
-                          <span>종료</span>
-                        </div>
-                      </div>
-                      <div>
-                        <Button color="primary" className="start" onClick={startShare}>
-                          <i className="fas fa-play" />
-                        </Button>
-                        <div>
-                          <span>시작</span>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </Popup>
     );

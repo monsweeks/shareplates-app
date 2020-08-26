@@ -38,8 +38,9 @@ class TopLogo extends React.Component {
 
   render() {
     const { snows } = this.state;
+    const { className } = this.props;
     return (
-      <div className="top-logo-wrapper">
+      <div className={`${className} top-logo-wrapper`}>
         <div className="snows">
           {snows.map((snow, inx) => {
             return (
@@ -73,10 +74,12 @@ class TopLogo extends React.Component {
 
 TopLogo.defaultProps = {
   weatherEffect: false,
+  className: '',
 };
 
 TopLogo.propTypes = {
   weatherEffect: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default TopLogo;
