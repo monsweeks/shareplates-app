@@ -253,6 +253,47 @@
           }
         }
       }
+
+      .web-info {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: row;
+
+        .ready-message {
+          display: flex;
+          flex-grow: 1;
+        }
+
+        .separator {
+          min-width: 1px;
+          display: flex;
+          > div {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+          }
+        }
+
+        .chat-list {
+          flex-grow: 0;
+          min-width: 500px;
+          display: flex;
+          flex-direction: column;
+
+          > div {
+            height: 100%;
+            display: flex;
+            @media (max-width: 576px) {
+              padding: 0;
+            }
+            > div {
+              @media (max-width: 576px) {
+                border: none;
+              }
+            }
+          }
+        }
+      }
     }
 
     .user-count {
@@ -340,6 +381,54 @@
     }
   }
 
+  .web-user-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $yellow;
+    }
+
+    .counter-icon {
+      font-size: 1.4rem;
+      display: inline-block;
+      line-height: 0;
+
+      &.arrow-icon {
+        font-size: 0.9rem;
+        position: relative;
+        top: 3px;
+      }
+    }
+
+    .counter {
+      font-family: NixieOne, sans-serif;
+      font-weight: bold;
+    }
+
+    > div {
+      align-self: center;
+      width: 100%;
+      text-align: center;
+    }
+
+    .tag {
+      margin-top: 0.5rem;
+      font-family: LGSmHaL, sans-serif;
+
+      > span {
+        min-width: auto !important;
+        background-color: transparent;
+        color: $black;
+      }
+    }
+  }
+
   .web {
     display: flex;
     flex-direction: column;
@@ -419,43 +508,6 @@
               text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
             }
           }
-        }
-      }
-    }
-  }
-
-  > .chat-list {
-    position: absolute;
-    right: 0;
-    top: 73px;
-    width: 400px;
-    height: calc(100% - 73px);
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 992px) {
-      width: 500px;
-      right: auto;
-      margin: 0 calc((100% - 500px) / 2);
-    }
-
-    @media (max-width: 576px) {
-      width: 100%;
-      left: 0;
-      margin: 0;
-    }
-
-    > div {
-      padding: 1rem;
-      height: 100%;
-      display: flex;
-      @media (max-width: 576px) {
-        padding: 0;
-      }
-      > div {
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        @media (max-width: 576px) {
-          border: none;
         }
       }
     }
