@@ -259,7 +259,7 @@ Header.propTypes = {
     push: PropTypes.func,
   }),
   setUserInfo: PropTypes.func,
-  forDisplay: PropTypes.func,
+  forDisplay: PropTypes.bool,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, mapDispatchToProps)(Header)));

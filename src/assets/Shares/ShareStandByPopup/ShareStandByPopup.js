@@ -63,8 +63,6 @@ class ShareStandByPopup extends React.PureComponent {
 
     const { isOpenChatMessage, tab } = this.state;
 
-    console.log(share);
-
     return (
       <Popup open full>
         <div className="share-stand-by-popup-wrapper">
@@ -72,35 +70,53 @@ class ShareStandByPopup extends React.PureComponent {
             <div className="projector">
               <div className="header">
                 <div className="projector-menu g-no-select">
-                  <div
-                    onClick={() => {
-                      this.setState({
-                        tab: 'intro',
-                      });
-                    }}
-                    className={tab === 'intro' ? 'selected' : ''}
-                  >
-                    참여 방법
-                    <div className="arrow">
-                      <div />
+                  <div className="text-left">
+                    <div
+                      onClick={() => {
+                        this.setState({
+                          tab: 'intro',
+                        });
+                      }}
+                      className={tab === 'intro' ? 'selected' : ''}
+                    >
+                      참여 방법
+                      <div className="arrow">
+                        <div />
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      this.setState({
-                        tab: 'users',
-                      });
-                    }}
-                    className={tab === 'users' ? 'selected' : ''}
-                  >
-                    참여자
-                    <div className="arrow">
-                      <div />
+                    <div
+                      onClick={() => {
+                        this.setState({
+                          tab: 'users',
+                        });
+                      }}
+                      className={tab === 'users' ? 'selected' : ''}
+                    >
+                      참여자
+                      <div className="arrow">
+                        <div />
+                      </div>
                     </div>
                   </div>
                 </div>
                 <TopLogo weatherEffect={false} />
-                <div className="projector-menu" />
+                <div className="projector-menu g-no-select">
+                  <div className="text-right">
+                    <div
+                      onClick={() => {
+                        this.setState({
+                          tab: 'manage',
+                        });
+                      }}
+                      className={tab === 'manage' ? 'selected' : ''}
+                    >
+                      관리
+                      <div className="arrow">
+                        <div />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               {tab === 'intro' && (
                 <div className="projector-info">
@@ -196,6 +212,17 @@ class ShareStandByPopup extends React.PureComponent {
                           </div>
                         </FlexOverflowSection>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {tab === 'manage' && (
+                <div className="projector-info">
+                  <div className="manage">
+                    <div>
+                      <Button color='white' onClick={startShare}>
+                        시작하기
+                      </Button>
                     </div>
                   </div>
                 </div>
