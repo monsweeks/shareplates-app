@@ -220,7 +220,7 @@ class ShareStandByPopup extends React.PureComponent {
                 <div className="projector-info">
                   <div className="manage">
                     <div>
-                      <Button color='white' onClick={startShare}>
+                      <Button color="white" onClick={startShare}>
                         시작하기
                       </Button>
                     </div>
@@ -230,78 +230,133 @@ class ShareStandByPopup extends React.PureComponent {
             </div>
           )}
           {screenType === SCREEN_TYPE.WEB && (
-            <div className="web">
-              <div className="name">
-                <div>
-                  <span className="text">{share.name}</span>
-                  <span className="chat-icon">
-                    <Button
-                      color="white"
-                      onClick={() => {
-                        this.setState({
-                          isOpenChatMessage: !isOpenChatMessage,
-                        });
-                      }}
-                    >
-                      <i className="fal fa-comment-dots" />
-                    </Button>
-                  </span>
-                </div>
-              </div>
-              <div className="share-ready-content">
-                <div className="p-4 h5 mb-0">
-                  {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
-                </div>
-                <div className="user-count">
-                  <span>{users.length}</span>
-                </div>
-                <div className="user-info-list">
-                  <FlexOverflowSection>
-                    <ShareStandByUserList hideMessage users={users} user={user} />
-                  </FlexOverflowSection>
-                </div>
-                <div className="admin-control">
-                  <div>
-                    <div>
-                      <Button color="primary" onClick={exitShare}>
-                        <i className="fal fa-sign-out-alt" />
-                      </Button>
-                      <div>
-                        <span>나가기</span>
+            <div className="projector">
+              <div className="header">
+                <div className="projector-menu g-no-select" />
+                <TopLogo weatherEffect={false} />
+                <div className="projector-menu g-no-select">
+                  <div className="text-right">
+                    <div onClick={exitShare}>
+                      나가기
+                      <div className="arrow">
+                        <div />
                       </div>
                     </div>
-                    {isAdmin && (
-                      <>
-                        <div>
-                          <Button color="danger" className="stop" onClick={closeShare}>
-                            <i className="fas fa-stop" />
-                          </Button>
-                          <div>
-                            <span>종료</span>
-                          </div>
+                  </div>
+                </div>
+              </div>
+              <div className="projector-info">
+                <div>
+                  <div
+                    className="web-user-counter"
+                    onClick={() => {
+                      this.setState({
+                        isOpenChatMessage: !isOpenChatMessage,
+                      });
+                    }}
+                  >
+                    <span className="counter-icon">
+                      <i className="fal fa-user-astronaut" />
+                    </span>
+                    <span className="counter">
+                      <FlipNumbers height={20} width={40} play numbers={String(users.length)} />
+                    </span>
+                    <span className="counter-icon arrow-icon">
+                      {isOpenChatMessage && <i className="fal fa-chevron-up" />}
+                      {!isOpenChatMessage && <i className="fal fa-chevron-down" />}
+                    </span>
+                  </div>
+                  <div className="web-info">
+                    <div className="ready-message">
+                      <div className="align-self-center w-100">
+                        <div className="text text-center h2 pt-5">{share.name}</div>
+                        <div className="text text-center h5">
+                          {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
                         </div>
+                      </div>
+                    </div>
+                    {isOpenChatMessage && screenType === SCREEN_TYPE.WEB && (
+                      <div className="separator">
+                        <div />
+                      </div>
+                    )}
+                    {isOpenChatMessage && screenType === SCREEN_TYPE.WEB && (
+                      <div className="chat-list">
                         <div>
-                          <Button color="primary" className="start" onClick={startShare}>
-                            <i className="fas fa-play" />
-                          </Button>
-                          <div>
-                            <span>시작</span>
-                          </div>
+                          <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
             </div>
           )}
-          {isOpenChatMessage && screenType === SCREEN_TYPE.WEB && (
-            <div className="chat-list">
+
+          <div className="web d-none">
+            <div className="name">
               <div>
-                <ChatManager messages={messages} user={user} sendReadyChat={sendReadyChat} />
+                <span className="text">{share.name}</span>
+                <span className="chat-icon">
+                  <Button
+                    color="white"
+                    onClick={() => {
+                      this.setState({
+                        isOpenChatMessage: !isOpenChatMessage,
+                      });
+                    }}
+                  >
+                    <i className="fal fa-comment-dots" />
+                  </Button>
+                </span>
               </div>
             </div>
-          )}
+            <div className="share-ready-content">
+              <div className="p-4 h5 mb-0">
+                {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
+              </div>
+              <div className="user-count">
+                <span>{users.length}</span>
+              </div>
+              <div className="user-info-list">
+                <FlexOverflowSection>
+                  <ShareStandByUserList hideMessage users={users} user={user} />
+                </FlexOverflowSection>
+              </div>
+              <div className="admin-control">
+                <div>
+                  <div>
+                    <Button color="primary" onClick={exitShare}>
+                      <i className="fal fa-sign-out-alt" />
+                    </Button>
+                    <div>
+                      <span>나가기</span>
+                    </div>
+                  </div>
+                  {isAdmin && (
+                    <>
+                      <div>
+                        <Button color="danger" className="stop" onClick={closeShare}>
+                          <i className="fas fa-stop" />
+                        </Button>
+                        <div>
+                          <span>종료</span>
+                        </div>
+                      </div>
+                      <div>
+                        <Button color="primary" className="start" onClick={startShare}>
+                          <i className="fas fa-play" />
+                        </Button>
+                        <div>
+                          <span>시작</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Popup>
     );
