@@ -6,16 +6,16 @@
   text-align: center;
   background-color: $white;
 
-  .projector {
+  .share-stand-content {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 
-    .header {
+    > .header {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
+      _justify-content: center;
       padding: 0 50px;
       height: 60px;
       background-color: $secondary;
@@ -25,11 +25,30 @@
       width: 100%;
       overflow: hidden;
 
-      .projector-menu {
+      @media (max-width: 768px) {
+        padding: 0;
+      }
+
+      .stand-menu {
         flex: 1 1 0;
         display: flex;
         flex-direction: row;
         height: 100%;
+        white-space: nowrap;
+
+        &.left-menu {
+          text-align: left;
+        }
+
+        @media (max-width: 768px) {
+          order: 2;
+          flex-grow: 0;
+
+          &.left-menu {
+            flex-grow: 1;
+            text-align: right;
+          }
+        }
 
         > div {
           flex-grow: 1;
@@ -42,6 +61,10 @@
             height: 100%;
             cursor: pointer;
             display: inline-block;
+
+            @media (max-width: 768px) {
+              min-width: auto;
+            }
 
             &:hover {
               color: $yellow;
@@ -75,7 +98,7 @@
       }
     }
 
-    .projector-info {
+    .standby-content {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
@@ -124,10 +147,31 @@
           }
         }
 
+        &.share-close-button {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+          box-shadow: none;
+
+          button {
+            font-size: 1.4rem;
+          }
+
+          @media (max-width: 768px) {
+            right: 0.5rem;
+            left: 0.5rem;
+            text-align: center;
+          }
+        }
+
         div.or-row {
           text-align: center;
           margin-bottom: 0;
           position: relative;
+
+          @media (max-width: 768px) {
+            margin: 2rem 0;
+          }
 
           > div.or {
             display: inline-block;
@@ -155,6 +199,10 @@
           display: flex;
           flex-direction: column;
 
+          @media (max-width: 1240px) {
+            padding: 0 1rem;
+          }
+
           .circle-pointer {
             position: absolute;
             width: 60px;
@@ -172,8 +220,14 @@
             .address {
               display: inline-block;
               padding: 0 1rem;
-              font-size: 30px;
+              font-size: 2rem;
               text-transform: uppercase;
+              word-break: break-all;
+
+              @media (max-width: 576px) {
+                padding: 0;
+                font-size: 1.3rem;
+              }
             }
           }
 
@@ -193,6 +247,10 @@
 
           &.method-2 {
             padding-bottom: 2rem;
+
+            @media (max-width: 576px) {
+              padding-bottom: 1rem;
+            }
           }
 
           .display-header {
@@ -241,6 +299,11 @@
               color: #333;
               position: relative;
 
+              @media (max-width: 576px) {
+                width: 100%;
+                min-width: auto;
+              }
+
               .share-card {
                 border: 1px solid rgba(0, 0, 0, 0.3) !important;
               }
@@ -283,14 +346,6 @@
           > div {
             height: 100%;
             display: flex;
-            @media (max-width: 576px) {
-              padding: 0;
-            }
-            > div {
-              @media (max-width: 576px) {
-                border: none;
-              }
-            }
           }
         }
       }
@@ -329,6 +384,10 @@
       bottom: 0;
       left: 0;
       right: 0;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
 
       > .user-list {
         flex-grow: 1;
@@ -425,90 +484,6 @@
         min-width: auto !important;
         background-color: transparent;
         color: $black;
-      }
-    }
-  }
-
-  .web {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    .share-ready-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      _background-color: $light;
-      background-color: $white;
-      border-radius: 0 0 10px 10px;
-      @media (max-width: 576px) {
-        border-radius: 0;
-      }
-
-      > .user-count {
-        > span {
-          position: relative;
-          display: inline-block;
-          font-family: 'Baloo Bhai', cursive;
-          font-size: 2rem;
-          line-height: 100%;
-          width: 50px;
-          height: 50px;
-          background-color: $yellow;
-          text-align: center;
-          padding-top: 10px;
-          border-radius: 50%;
-          box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.2);
-        }
-      }
-
-      > .user-info-list {
-        flex-grow: 1;
-        display: flex;
-      }
-
-      .admin-control {
-        flex-grow: 0;
-        align-self: center;
-        padding: 0 1rem 1rem;
-        width: 100%;
-
-        > div {
-          _border-top: 1px dashed rgba(0, 0, 0, 0.3);
-          background-color: $white;
-          padding: 1rem 1rem 0.5rem;
-          border-radius: 10px;
-
-          width: 100%;
-          > div {
-            display: inline-block;
-            padding: 0 1rem;
-
-            button {
-              display: inline-block;
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              font-size: 16px;
-              text-align: center;
-              padding: 0;
-              box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.2);
-
-              &.start {
-                > i {
-                  position: relative;
-                  left: 2px;
-                }
-              }
-            }
-
-            > div {
-              font-size: 0.7rem;
-              margin-top: 0.25rem;
-              text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-            }
-          }
-        }
       }
     }
   }

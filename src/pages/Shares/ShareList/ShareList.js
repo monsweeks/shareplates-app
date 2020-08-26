@@ -8,24 +8,11 @@ import { DetailLayout, FullLayout } from '@/layouts';
 import { Button, Col, EmptyMessage, Popup, RadioButton, Row, SearchBar, ShareCard } from '@/components';
 import request from '@/utils/request';
 import common from '@/utils/common';
-import { DIRECTIONS, ORDERS } from '@/constants/constants';
+import { DIRECTIONS, ORDERS, VIEW_TYPES } from '@/constants/constants';
 import { ShareEditorPopup } from '@/assets';
 import './ShareList.scss';
 import { convertInfo, convertUser } from '@/pages/Users/util';
 import { UserPropTypes } from '@/proptypes';
-
-const viewTypes = [
-  {
-    key: 'accessCode',
-    value: '엑세스 코드로 참여',
-    icon : <i className="fal fa-code" />
-  },
-  {
-    key: 'list',
-    value: '공개 토픽 리스트',
-    icon : <i className="fal fa-list"/>
-  },
-];
 
 class ShareList extends React.Component {
   init = false;
@@ -252,7 +239,7 @@ class ShareList extends React.Component {
     return (
       <div className="open-share-list-wrapper">
         <SearchBar
-          viewTypes={viewTypes}
+          viewTypes={VIEW_TYPES}
           viewType={viewType}
           onChangeViewType={this.onChangeViewType}
           className="search-bar"
@@ -310,7 +297,7 @@ class ShareList extends React.Component {
           }}
         />
         <div className="view-type">
-          <RadioButton items={viewTypes} value={viewType} onClick={this.onChangeViewType} />
+          <RadioButton items={VIEW_TYPES} value={viewType} onClick={this.onChangeViewType} />
         </div>
         {viewType === 'accessCode' && (
           <DetailLayout className="access-code m-0 p-0 bg-transparent">
@@ -435,7 +422,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 ShareList.propTypes = {
-  user : UserPropTypes,
+  user: UserPropTypes,
   setUserInfo: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,

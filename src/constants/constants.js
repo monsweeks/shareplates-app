@@ -127,6 +127,19 @@ const SCREEN_TYPE = {
   CONTROLLER: 'CONTROLLER',
 };
 
+const VIEW_TYPES = [
+  {
+    key: 'accessCode',
+    value: '엑세스 코드로 참여',
+    icon: <i className="fal fa-code" />,
+  },
+  {
+    key: 'list',
+    value: '공개 토픽 리스트',
+    icon: <i className="fal fa-list" />,
+  },
+];
+
 export {
   MESSAGE_CATEGORY,
   DEFAULT_INPUT_VALIDATION_MESSAGE,
@@ -137,4 +150,5 @@ export {
   DIRECTIONS,
   ROLE_CODES,
   SCREEN_TYPE,
+  VIEW_TYPES,
 };
