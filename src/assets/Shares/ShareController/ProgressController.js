@@ -75,7 +75,6 @@ class ProgressController extends React.PureComponent {
       topic,
       share,
       users,
-      isAdmin,
       chapterPageList,
       currentChapterId,
       currentPageId,
@@ -96,8 +95,6 @@ class ProgressController extends React.PureComponent {
     const onlineUserCount = noBannedUsers.filter((u) => u.status === 'ONLINE').length;
     const totalUserCount = noBannedUsers.length;
     const focusUserCount = noBannedUsers.filter((u) => u.focusYn).length;
-
-    console.log(share);
 
     return (
       <div className={`progress-controller-wrapper ${className}`}>
@@ -149,9 +146,12 @@ class ProgressController extends React.PureComponent {
         {share.startedYn && (
           <>
             <div className="flex-grow-1 position-relative">
-              <div className="g-attach-parent process-layout bg-gray-400 d-flex flex-column">
-                <Card className="border-0 flex-grow-0 mb-1">
-                  <CardBody className="p-2">
+              <div className="g-attach-parent process-layout d-flex flex-column">
+                <Card className="border-0 flex-grow-0 mt-4 mx-4 mb-0">
+                  <CardBody className="p-0">
+                    <div className="message mb-2">
+                      <i className="fal fa-exclamation-circle" /> 공유 진행 상태
+                    </div>
                     <div className="focus-percentage">
                       <div className="process-bg">
                         <div className="left">
@@ -213,35 +213,41 @@ class ProgressController extends React.PureComponent {
                     </div>
                   </CardBody>
                 </Card>
-                <Card className="border-0 flex-grow-0 mb-1">
-                  <CardBody className="pb-2">
-                    <div className="current-info mb-2">
-                      <div>{currentChapter.title} </div>
-                      <div> / {currentPage.title}</div>
-                    </div>
-                    <div className="current-map mb-2">
-                      <div className="chapter-list">
-                        {chapterPageList.map((chapter) => {
-                          return (
-                            <div key={chapter.id} className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />
-                          );
-                        })}
+                <Card className="border-0 flex-grow-0 mx-4 mb-0">
+                  <CardBody className="p-0">
+                    <div className="current-info-content">
+                      <div className="current-info mb-2">
+                        <div>
+                          <span className="char">C</span>
+                          <span>{currentChapter.title}</span>
+                        </div>
+                        <div>
+                          <span className="char p">P</span>
+                          <span>{currentPage.title}</span>
+                        </div>
                       </div>
-                      <div className="page-list">
-                        {currentChapter &&
-                          currentChapter.pages.map((page) => {
-                            return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
+                      <div className="current-map mb-2">
+                        <div className="chapter-list">
+                          {chapterPageList.map((chapter) => {
+                            return (
+                              <div
+                                key={chapter.id}
+                                className={`${currentChapterId === chapter.id ? 'selected' : ''}`}
+                              />
+                            );
                           })}
+                        </div>
+                        <div className="page-list">
+                          {currentChapter &&
+                            currentChapter.pages.map((page) => {
+                              return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
+                            })}
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-center">
-                      <Button color="primary" className="g-circle-icon-button">
-                        <i className="fal fa-directions" />
-                      </Button>
                     </div>
                   </CardBody>
                 </Card>
-                <Card className="border-0 flex-grow-1">
+                <Card className="border-0 flex-grow-1 mb-3">
                   <CardBody className="h-100 d-flex flex-column p-0">
                     <Swipeable
                       className="move-swipeable"
@@ -255,7 +261,7 @@ class ProgressController extends React.PureComponent {
                           movePage(false);
                         }}
                       >
-                        <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-left`} />
+                        <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-arrow-left`} />
                       </Button>
                       <div className="scroll-controller">
                         <Button
@@ -265,34 +271,37 @@ class ProgressController extends React.PureComponent {
                             sendMoveScroll('up');
                           }}
                         >
-                          <i className={`${swipingDir === 'Up' ? 'swiping' : ''} fal fa-chevron-up`} />
+                          <i className={`${swipingDir === 'Up' ? 'swiping' : ''} fal fa-arrow-from-bottom`} />
                         </Button>
                         <div>
                           <div>
                             <div className="rounded">
-                              {projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight && (
-                                <div
-                                  className="window"
-                                  style={{
-                                    height: `${(projectorScrollInfo.windowHeight /
-                                      projectorScrollInfo.contentViewerHeight) *
-                                      100}%`,
-                                    top: `${(projectorScrollInfo.scrollTop / projectorScrollInfo.contentViewerHeight) *
-                                      100}%`,
-                                  }}
-                                >
-                                  <div>
-                                    <span className="g-tag bg-primary text-white">스크린</span>
+                              <div>
+                                {projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight && (
+                                  <div
+                                    className="window"
+                                    style={{
+                                      height: `${(projectorScrollInfo.windowHeight /
+                                        projectorScrollInfo.contentViewerHeight) *
+                                        100}%`,
+                                      top: `${(projectorScrollInfo.scrollTop /
+                                        projectorScrollInfo.contentViewerHeight) *
+                                        100}%`,
+                                    }}
+                                  >
+                                    <div>
+                                      <span className="g-tag">스크린</span>
+                                    </div>
                                   </div>
-                                </div>
-                              )}
-                              {!(projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight) && (
-                                <div className="h-100 w-100 d-flex">
-                                  <div className="align-self-center w-100 text-center ">
-                                    {t('연결된 프로젝터 타입이 없습니다')}
+                                )}
+                                {!(projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight) && (
+                                  <div className="h-100 w-100 d-flex">
+                                    <div className="align-self-center w-100 text-center ">
+                                      {t('연결된 프로젝터 타입이 없습니다')}
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -303,7 +312,7 @@ class ProgressController extends React.PureComponent {
                             sendMoveScroll('down');
                           }}
                         >
-                          <i className={`${swipingDir === 'Down' ? 'swiping' : ''} fal fa-chevron-down`} />
+                          <i className={`${swipingDir === 'Down' ? 'swiping' : ''} fal fa-arrow-from-top`} />
                         </Button>
                       </div>
                       <Button
@@ -312,42 +321,12 @@ class ProgressController extends React.PureComponent {
                           movePage(true);
                         }}
                       >
-                        <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-right`} />
+                        <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-arrow-right`} />
                       </Button>
                     </Swipeable>
                   </CardBody>
                 </Card>
               </div>
-            </div>
-            <div className="bottom-fixed-menu flex-grow-0 d-flex flex-row bg-black">
-              {isAdmin && (
-                <>
-                  <Button
-                    className="g-no-focus flex-fill text-white p-3"
-                    color="transparent"
-                    onClick={() => {
-                      movePage(false);
-                    }}
-                  >
-                    <i className="fal fa-chevron-left" />
-                    <div>
-                      <span>이전 페이지</span>
-                    </div>
-                  </Button>
-                  <Button
-                    className="g-no-focus flex-fill text-white p-3"
-                    color="transparent"
-                    onClick={() => {
-                      movePage(true);
-                    }}
-                  >
-                    <i className="fal fa-chevron-right" />
-                    <div>
-                      <span>다음 페이지</span>
-                    </div>
-                  </Button>
-                </>
-              )}
             </div>
           </>
         )}
@@ -365,7 +344,6 @@ ProgressController.propTypes = {
   topic: TopicPropTypes,
   share: SharePropTypes,
   users: PropTypes.arrayOf(UserPropTypes),
-  isAdmin: PropTypes.bool,
   t: PropTypes.func,
   chapterPageList: PropTypes.arrayOf(PropTypes.any),
   currentChapterId: PropTypes.number,

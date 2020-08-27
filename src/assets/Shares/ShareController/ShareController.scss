@@ -76,6 +76,7 @@
     display: flex;
     position: relative;
     background-color: $white;
+    overflow: hidden;
 
     .message {
       text-align: left;
