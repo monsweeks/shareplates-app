@@ -140,6 +140,17 @@ const VIEW_TYPES = [
   },
 ];
 
+const PROJECTOR_TABS = [
+  {
+    key: 'intro',
+    value: '참여 방법',
+  },
+  {
+    key: 'users',
+    value: '참여자',
+  },
+];
+
 export {
   MESSAGE_CATEGORY,
   DEFAULT_INPUT_VALIDATION_MESSAGE,
@@ -151,4 +162,5 @@ export {
   ROLE_CODES,
   SCREEN_TYPE,
   VIEW_TYPES,
+  PROJECTOR_TABS,
 };

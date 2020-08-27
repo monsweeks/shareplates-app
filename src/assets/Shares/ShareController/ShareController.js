@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Swipeable } from 'react-swipeable';
 import { withTranslation } from 'react-i18next';
-import { Tabs } from '@/components';
+import { Tabs, TopLogo } from '@/components';
 import { SharePropTypes, TopicPropTypes, UserPropTypes } from '@/proptypes';
 import StatusController from '@/assets/Shares/ShareController/StatusController';
 import ProgressController from '@/assets/Shares/ShareController/ProgressController';
@@ -102,6 +102,7 @@ class ShareController extends React.PureComponent {
       movePage,
       sendMoveScroll,
       setOption,
+      options,
     } = this.props;
 
     const { tab, tabs } = this.state;
@@ -109,11 +110,16 @@ class ShareController extends React.PureComponent {
 
     return (
       <div className={`share-controller-wrapper ${className}`}>
+        <div className="header">
+          <div className="space" />
+          <TopLogo weatherEffect={false} />
+          <div className="space" />
+        </div>
         <div className="share-controller-top pl-2">
           <div className="marker">
             <div
               style={{
-                left: `calc(((100% - 1.5rem) / 4) * ${index} + (0.5rem * ${index})`,
+                left: `calc((100% / 4) * ${index}`,
               }}
             />
           </div>
@@ -156,6 +162,7 @@ class ShareController extends React.PureComponent {
                 allowUser={allowUser}
               />
               <ProgressController
+                share={share}
                 className="share-controller-item"
                 topic={topic}
                 isAdmin={isAdmin}
@@ -167,6 +174,12 @@ class ShareController extends React.PureComponent {
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={sendMoveScroll}
                 setOmitEvent={this.setOmitEvent}
+                setOption={setOption}
+                startShare={startShare}
+                closeShare={closeShare}
+                stopShare={stopShare}
+                exitShare={exitShare}
+                options={options}
               />
               <PointerController className="share-controller-item" />
               <FunctionController className="share-controller-item" setOption={setOption} />
@@ -214,6 +227,7 @@ ShareController.propTypes = {
   }),
   sendMoveScroll: PropTypes.func,
   setOption: PropTypes.func,
+  options : PropTypes.objectOf(PropTypes.any)
 };
 
 export default withTranslation()(ShareController);

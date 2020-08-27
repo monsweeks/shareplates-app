@@ -5,7 +5,8 @@ import numeral from 'numeral';
 import { withTranslation } from 'react-i18next';
 import { Button, Card, CardBody } from '@/components';
 import './ProgressController.scss';
-import { TopicPropTypes, UserPropTypes } from '@/proptypes';
+import { SharePropTypes, TopicPropTypes, UserPropTypes } from '@/proptypes';
+import { PROJECTOR_TABS } from '@/constants/constants';
 
 class ProgressController extends React.PureComponent {
   constructor(props) {
@@ -70,9 +71,18 @@ class ProgressController extends React.PureComponent {
 
   render() {
     const { className, t } = this.props;
-    const { topic, users, isAdmin, chapterPageList, currentChapterId, currentPageId, projectorScrollInfo } = this.props;
+    const {
+      topic,
+      share,
+      users,
+      isAdmin,
+      chapterPageList,
+      currentChapterId,
+      currentPageId,
+      projectorScrollInfo,
+    } = this.props;
 
-    const { movePage, sendMoveScroll } = this.props;
+    const { movePage, sendMoveScroll, setOption, startShare, closeShare, options } = this.props;
 
     const { swipingDir } = this.state;
 
@@ -87,209 +97,260 @@ class ProgressController extends React.PureComponent {
     const totalUserCount = noBannedUsers.length;
     const focusUserCount = noBannedUsers.filter((u) => u.focusYn).length;
 
+    console.log(share);
+
     return (
       <div className={`progress-controller-wrapper ${className}`}>
-        <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent process-layout bg-gray-400 d-flex flex-column">
-            <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody className="p-2">
-                <div className="focus-percentage">
-                  <div className="process-bg">
-                    <div className="left">
-                      <div className="label">
-                        <i className="fas fa-map-marker-alt" />
-                      </div>
-                      <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
-                      <div className="percentage-data">
-                        ({currentSeq}/{totalPageCount})
-                      </div>
-                    </div>
-                    <div className="right">
+        {!share.startedYn && (
+          <div className="flex-grow-1 position-relative d-flex flex-column stand-by-content">
+            <Card className="border-0 flex-grow-0 m-4">
+              <CardBody className="p-0">
+                <div className="message mb-3">
+                  <i className="fal fa-exclamation-circle" /> 대기 화면 탭 변경
+                </div>
+                <div className="tab-buttons">
+                  {PROJECTOR_TABS.map((info) => {
+                    return (
                       <div
-                        className="bar"
-                        style={{
-                          height: `${(currentSeq / totalPageCount) * 100}%`,
+                        key={info.key}
+                        className={`${options.projectorStandByTab === info.key ? 'selected' : ''}`}
+                        onClick={() => {
+                          setOption('projectorStandByTab', info.key);
                         }}
-                      />
-                    </div>
-                  </div>
-                  <div className="process-bg">
-                    <div className="left">
-                      <div className="label">
-                        <i className="fal fa-wifi" />
+                      >
+                        {info.value}
                       </div>
-                      <div className="percentage">{numeral(onlineUserCount / totalUserCount).format('0.00%')}</div>
-                      <div className="percentage-data">
-                        ({onlineUserCount}/{totalUserCount})
-                      </div>
-                    </div>
-                    <div className="right">
-                      <div
-                        className="bar"
-                        style={{
-                          height: `${(onlineUserCount / totalUserCount) * 100}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="process-bg">
-                    <div className="left">
-                      <div className="label">
-                        <i className="fas fa-eye" />
-                      </div>
-                      <div className="percentage">{numeral(focusUserCount / totalUserCount).format('0.00%')}</div>
-                      <div className="percentage-data">
-                        ({focusUserCount}/{totalUserCount})
-                      </div>
-                    </div>
-                    <div className="right">
-                      <div
-                        className="bar"
-                        style={{
-                          height: `${(focusUserCount / totalUserCount) * 100}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody className='pb-2'>
-                <div className="current-info mb-2">
-                  <div>{currentChapter.title} </div>
-                  <div> / {currentPage.title}</div>
+            <Card className="border-0 flex-grow-1 mx-3 mb-3">
+              <CardBody className="p-2 d-flex flex-column">
+                <div className="message flex-grow-0">
+                  <i className="fal fa-exclamation-circle" /> 공유 상태 관리
                 </div>
-                <div className="current-map mb-2">
-                  <div className="chapter-list">
-                    {chapterPageList.map((chapter) => {
-                      return (
-                        <div key={chapter.id} className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />
-                      );
-                    })}
-                  </div>
-                  <div className="page-list">
-                    {currentChapter &&
-                      currentChapter.pages.map((page) => {
-                        return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
-                      })}
+                <div className="flex-grow-1 d-flex">
+                  <div className="align-self-center text-center w-100">
+                    <Button className="start-button" color="yellow" outline onClick={startShare}>
+                      공유 시작
+                    </Button>
                   </div>
                 </div>
-                <div className="text-center">
-                  <Button color="primary" className="g-circle-icon-button">
-                    <i className="fal fa-directions" />
+                <div className="flex-grow-0">
+                  <Button color="danger" size="sm" onClick={closeShare}>
+                    공유 종료
                   </Button>
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 flex-grow-1">
-              <CardBody className="h-100 d-flex flex-column p-0">
-                <Swipeable
-                  className="move-swipeable"
-                  onSwiped={this.onMoveSwiped}
-                  onSwiping={this.onMoveSwiping}
-                  delta={50}
-                >
+          </div>
+        )}
+        {share.startedYn && (
+          <>
+            <div className="flex-grow-1 position-relative">
+              <div className="g-attach-parent process-layout bg-gray-400 d-flex flex-column">
+                <Card className="border-0 flex-grow-0 mb-1">
+                  <CardBody className="p-2">
+                    <div className="focus-percentage">
+                      <div className="process-bg">
+                        <div className="left">
+                          <div className="label">
+                            <i className="fas fa-map-marker-alt" />
+                          </div>
+                          <div className="percentage">{numeral(currentSeq / totalPageCount).format('0.00%')}</div>
+                          <div className="percentage-data">
+                            ({currentSeq}/{totalPageCount})
+                          </div>
+                        </div>
+                        <div className="right">
+                          <div
+                            className="bar"
+                            style={{
+                              height: `${(currentSeq / totalPageCount) * 100}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="process-bg">
+                        <div className="left">
+                          <div className="label">
+                            <i className="fal fa-wifi" />
+                          </div>
+                          <div className="percentage">{numeral(onlineUserCount / totalUserCount).format('0.00%')}</div>
+                          <div className="percentage-data">
+                            ({onlineUserCount}/{totalUserCount})
+                          </div>
+                        </div>
+                        <div className="right">
+                          <div
+                            className="bar"
+                            style={{
+                              height: `${(onlineUserCount / totalUserCount) * 100}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="process-bg">
+                        <div className="left">
+                          <div className="label">
+                            <i className="fas fa-eye" />
+                          </div>
+                          <div className="percentage">{numeral(focusUserCount / totalUserCount).format('0.00%')}</div>
+                          <div className="percentage-data">
+                            ({focusUserCount}/{totalUserCount})
+                          </div>
+                        </div>
+                        <div className="right">
+                          <div
+                            className="bar"
+                            style={{
+                              height: `${(focusUserCount / totalUserCount) * 100}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card className="border-0 flex-grow-0 mb-1">
+                  <CardBody className="pb-2">
+                    <div className="current-info mb-2">
+                      <div>{currentChapter.title} </div>
+                      <div> / {currentPage.title}</div>
+                    </div>
+                    <div className="current-map mb-2">
+                      <div className="chapter-list">
+                        {chapterPageList.map((chapter) => {
+                          return (
+                            <div key={chapter.id} className={`${currentChapterId === chapter.id ? 'selected' : ''}`} />
+                          );
+                        })}
+                      </div>
+                      <div className="page-list">
+                        {currentChapter &&
+                          currentChapter.pages.map((page) => {
+                            return <div key={page.id} className={`${currentPageId === page.id ? 'selected' : ''}`} />;
+                          })}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <Button color="primary" className="g-circle-icon-button">
+                        <i className="fal fa-directions" />
+                      </Button>
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card className="border-0 flex-grow-1">
+                  <CardBody className="h-100 d-flex flex-column p-0">
+                    <Swipeable
+                      className="move-swipeable"
+                      onSwiped={this.onMoveSwiped}
+                      onSwiping={this.onMoveSwiping}
+                      delta={50}
+                    >
+                      <Button
+                        color="transparent g-no-focus"
+                        onClick={() => {
+                          movePage(false);
+                        }}
+                      >
+                        <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-left`} />
+                      </Button>
+                      <div className="scroll-controller">
+                        <Button
+                          className="flex-grow-0 g-no-focus"
+                          color="transparent"
+                          onClick={() => {
+                            sendMoveScroll('up');
+                          }}
+                        >
+                          <i className={`${swipingDir === 'Up' ? 'swiping' : ''} fal fa-chevron-up`} />
+                        </Button>
+                        <div>
+                          <div>
+                            <div className="rounded">
+                              {projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight && (
+                                <div
+                                  className="window"
+                                  style={{
+                                    height: `${(projectorScrollInfo.windowHeight /
+                                      projectorScrollInfo.contentViewerHeight) *
+                                      100}%`,
+                                    top: `${(projectorScrollInfo.scrollTop / projectorScrollInfo.contentViewerHeight) *
+                                      100}%`,
+                                  }}
+                                >
+                                  <div>
+                                    <span className="g-tag bg-primary text-white">스크린</span>
+                                  </div>
+                                </div>
+                              )}
+                              {!(projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight) && (
+                                <div className="h-100 w-100 d-flex">
+                                  <div className="align-self-center w-100 text-center ">
+                                    {t('연결된 프로젝터 타입이 없습니다')}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          className="flex-grow-0 g-no-focus"
+                          color="transparent"
+                          onClick={() => {
+                            sendMoveScroll('down');
+                          }}
+                        >
+                          <i className={`${swipingDir === 'Down' ? 'swiping' : ''} fal fa-chevron-down`} />
+                        </Button>
+                      </div>
+                      <Button
+                        color="transparent g-no-focus"
+                        onClick={() => {
+                          movePage(true);
+                        }}
+                      >
+                        <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-right`} />
+                      </Button>
+                    </Swipeable>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="bottom-fixed-menu flex-grow-0 d-flex flex-row bg-black">
+              {isAdmin && (
+                <>
                   <Button
-                    color="transparent g-no-focus"
+                    className="g-no-focus flex-fill text-white p-3"
+                    color="transparent"
                     onClick={() => {
                       movePage(false);
                     }}
                   >
-                    <i className={`${swipingDir === 'Left' ? 'swiping' : ''} fal fa-chevron-left`} />
-                  </Button>
-                  <div className="scroll-controller">
-                    <Button
-                      className="flex-grow-0 g-no-focus"
-                      color="transparent"
-                      onClick={() => {
-                        sendMoveScroll('up');
-                      }}
-                    >
-                      <i className={`${swipingDir === 'Up' ? 'swiping' : ''} fal fa-chevron-up`} />
-                    </Button>
+                    <i className="fal fa-chevron-left" />
                     <div>
-                      <div>
-                        <div className="rounded">
-                          {projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight && (
-                            <div
-                              className="window"
-                              style={{
-                                height: `${(projectorScrollInfo.windowHeight /
-                                  projectorScrollInfo.contentViewerHeight) *
-                                  100}%`,
-                                top: `${(projectorScrollInfo.scrollTop / projectorScrollInfo.contentViewerHeight) *
-                                  100}%`,
-                              }}
-                            >
-                              <div>
-                                <span className="g-tag bg-primary text-white">스크린</span>
-                              </div>
-                            </div>
-                          )}
-                          {!(projectorScrollInfo.windowHeight && projectorScrollInfo.contentViewerHeight) && (
-                            <div className="h-100 w-100 d-flex">
-                              <div className="align-self-center w-100 text-center ">
-                                {t('연결된 프로젝터 타입이 없습니다')}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      <span>이전 페이지</span>
                     </div>
-                    <Button
-                      className="flex-grow-0 g-no-focus"
-                      color="transparent"
-                      onClick={() => {
-                        sendMoveScroll('down');
-                      }}
-                    >
-                      <i className={`${swipingDir === 'Down' ? 'swiping' : ''} fal fa-chevron-down`} />
-                    </Button>
-                  </div>
+                  </Button>
                   <Button
-                    color="transparent g-no-focus"
+                    className="g-no-focus flex-fill text-white p-3"
+                    color="transparent"
                     onClick={() => {
                       movePage(true);
                     }}
                   >
-                    <i className={`${swipingDir === 'Right' ? 'swiping' : ''} fal fa-chevron-right`} />
+                    <i className="fal fa-chevron-right" />
+                    <div>
+                      <span>다음 페이지</span>
+                    </div>
                   </Button>
-                </Swipeable>
-              </CardBody>
-            </Card>
-          </div>
-        </div>
-        <div className="bottom-fixed-menu flex-grow-0 d-flex flex-row bg-black">
-          {isAdmin && (
-            <>
-              <Button
-                className="g-no-focus flex-fill text-white p-3"
-                color="transparent"
-                onClick={() => {
-                  movePage(false);
-                }}
-              >
-                <i className="fal fa-chevron-left" />
-                <div>
-                  <span>이전 페이지</span>
-                </div>
-              </Button>
-              <Button
-                className="g-no-focus flex-fill text-white p-3"
-                color="transparent"
-                onClick={() => {
-                  movePage(true);
-                }}
-              >
-                <i className="fal fa-chevron-right" />
-                <div>
-                  <span>다음 페이지</span>
-                </div>
-              </Button>
-            </>
-          )}
-        </div>
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -302,6 +363,7 @@ ProgressController.defaultProps = {
 ProgressController.propTypes = {
   className: PropTypes.string,
   topic: TopicPropTypes,
+  share: SharePropTypes,
   users: PropTypes.arrayOf(UserPropTypes),
   isAdmin: PropTypes.bool,
   t: PropTypes.func,
@@ -316,6 +378,11 @@ ProgressController.propTypes = {
   }),
   sendMoveScroll: PropTypes.func,
   setOmitEvent: PropTypes.func,
+  setOption: PropTypes.func,
+  startShare: PropTypes.func,
+  closeShare: PropTypes.func,
+
+  options: PropTypes.objectOf(PropTypes.any),
 };
 
 export default withTranslation()(ProgressController);
