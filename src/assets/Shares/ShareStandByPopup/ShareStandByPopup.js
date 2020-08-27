@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, FlexOverflowSection, Popup, RadioButton, ShareCard, TopLogo, UserIcon } from '@/components';
 import { ChatManager } from '@/assets';
 import { Header } from '@/layouts';
-import { SCREEN_TYPE } from '@/constants/constants';
+import { PROJECTOR_TABS, SCREEN_TYPE } from '@/constants/constants';
 import { SharePropTypes } from '@/proptypes';
 import './ShareStandByPopup.scss';
 import { VIEW_TYPES } from '../../../constants/constants';
@@ -23,9 +23,9 @@ class ShareStandByPopup extends React.PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.tab && props.share) {
+    if (props.options && state.tab !== props.options.projectorStandByTab) {
       return {
-        tab: 'intro',
+        tab: props.options.projectorStandByTab,
       };
     }
 
@@ -46,6 +46,7 @@ class ShareStandByPopup extends React.PureComponent {
       accessCode,
       t,
       messages,
+      setOption,
     } = this.props;
 
     const { isOpenChatMessage, tab } = this.state;
@@ -58,32 +59,22 @@ class ShareStandByPopup extends React.PureComponent {
               <div className="header">
                 <div className="stand-menu g-no-select left-menu">
                   <div>
-                    <div
-                      onClick={() => {
-                        this.setState({
-                          tab: 'intro',
-                        });
-                      }}
-                      className={tab === 'intro' ? 'selected' : ''}
-                    >
-                      참여 방법
-                      <div className="arrow">
-                        <div />
-                      </div>
-                    </div>
-                    <div
-                      onClick={() => {
-                        this.setState({
-                          tab: 'users',
-                        });
-                      }}
-                      className={tab === 'users' ? 'selected' : ''}
-                    >
-                      참여자
-                      <div className="arrow">
-                        <div />
-                      </div>
-                    </div>
+                    {PROJECTOR_TABS.map((info) => {
+                      return (
+                        <div
+                          key={info.key}
+                          onClick={() => {
+                            setOption('projectorStandByTab', info.key);
+                          }}
+                          className={tab === info.key ? 'selected' : ''}
+                        >
+                          {info.value}
+                          <div className="arrow">
+                            <div />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
                 <TopLogo weatherEffect={false} />
@@ -321,6 +312,8 @@ ShareStandByPopup.propTypes = {
     code: PropTypes.string,
   }),
   messages: PropTypes.arrayOf(PropTypes.any),
+  options: PropTypes.objectOf(PropTypes.any),
+  setOption: PropTypes.func,
 };
 
 export default withRouter(withTranslation()(connect(mapStateToProps, undefined)(ShareStandByPopup)));

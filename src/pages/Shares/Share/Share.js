@@ -58,6 +58,7 @@ class Share extends React.Component {
       options: {
         hideShareNavigator: false,
         fullScreen: false,
+        projectorStandByTab : 'intro',
       },
       isOpenCam: false,
     };
@@ -138,6 +139,14 @@ class Share extends React.Component {
 
     if (isAdmin) {
       messageClient.sendMoveScroll(shareId, dir);
+    }
+  };
+
+  sendChangeProjectorStandByTabChange = (tab) => {
+    const { shareId, isAdmin } = this.state;
+
+    if (isAdmin) {
+      messageClient.sendChangeProjectorStandByTabChange(shareId, tab);
     }
   };
 
@@ -373,6 +382,7 @@ class Share extends React.Component {
             options: {
               hideShareNavigator: true,
               fullScreen: false,
+              projectorStandByTab: 'intro',
             },
           });
           this.onScroll();
@@ -535,14 +545,17 @@ class Share extends React.Component {
         const next = { ...options };
         next[data.optionKey] = data.optionValue;
 
-        console.log(next);
-
         if (screenType === SCREEN_TYPE.PROJECTOR) {
           this.setState({
             options: next,
           });
         }
 
+        break;
+      }
+
+      case 'PROJECT_TAB_CHANGE': {
+        console.log(data.tab);
         break;
       }
 
@@ -685,7 +698,9 @@ class Share extends React.Component {
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
+                sendChangeProjectorStandByTabChange={this.sendChangeProjectorStandByTabChange}
                 setOption={this.setOption}
+                options={options}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -783,6 +798,7 @@ class Share extends React.Component {
                 exitShare={() => {
                   history.push('/shares');
                 }}
+                options={options}
               />
             )}
             {isAdmin && openScreenSelector && (
