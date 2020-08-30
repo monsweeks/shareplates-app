@@ -132,7 +132,7 @@ class List extends React.PureComponent {
               listStyle,
               paddingLeft: `${indentLevel * 2}rem`,
             }}
-            className={`${String(pointer.itemId) === String(item.id) && pointer.index === null? `g-pointed g-${pointer.style} g-${pointer.color}` : ''}`}
+            className={`${String(pointer.itemId) === String(item.id) && pointer.index1 === null? `g-pointed g-${pointer.style} g-${pointer.color}` : ''}`}
           >
             {rows &&
               rows.map((row, inx) => {
@@ -170,7 +170,7 @@ class List extends React.PureComponent {
                         : ''
                     }
                     ${
-                      String(pointer.itemId) === String(item.id) && pointer.index === inx
+                      String(pointer.itemId) === String(item.id) && pointer.index1 === inx
                         ? `g-pointed g-${pointer.style} g-${pointer.color}`
                         : ''
                     }
@@ -191,7 +191,7 @@ class List extends React.PureComponent {
                       e.stopPropagation();
 
                       if (onPointer) {
-                        onPointer(item.id, inx);
+                        onPointer(item.id, inx, null);
                       }
 
                       if (editable && !edit) {

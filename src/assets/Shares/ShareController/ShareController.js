@@ -184,7 +184,7 @@ class ShareController extends React.PureComponent {
                 exitShare={exitShare}
                 options={options}
               />
-              <PointerController className="share-controller-item" topic={topic} share={share} currentPage={currentPage} setPointer={setPointer} pointer={pointer} />
+              <PointerController className="share-controller-item" share={share} currentPage={currentPage} setPointer={setPointer} pointer={pointer} />
               <FunctionController className="share-controller-item" setOption={setOption} />
             </div>
           </div>

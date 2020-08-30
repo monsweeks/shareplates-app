@@ -35,7 +35,8 @@ const ContextPropTypes = PropTypes.shape({
 
 const PointerPropTypes = PropTypes.shape({
   itemId: PropTypes.number,
-  index: PropTypes.number,
+  index1: PropTypes.number,
+  index2: PropTypes.number,
   style: PropTypes.string,
   color: PropTypes.string,
 });

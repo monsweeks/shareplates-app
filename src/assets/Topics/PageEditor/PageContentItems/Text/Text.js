@@ -69,7 +69,7 @@ class Text extends React.Component {
       <div
         ref={this.control}
         className={`text-wrapper ${className} ${editable ? 'editable' : ''} ${
-          String(pointer.itemId) === String(item.id) && pointer.index === null
+          String(pointer.itemId) === String(item.id) && pointer.index1 === null
             ? `g-pointed g-${pointer.style} g-${pointer.color}`
             : ''
         }`}
@@ -107,7 +107,7 @@ class Text extends React.Component {
             onClick={(e) => {
 
               if (onPointer) {
-                onPointer(item.id, null);
+                onPointer(item.id, null, null);
               }
 
               if (editable && !edit) {

@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Table.scss';
 import { getBlockMarginByAlign, getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
+import { PointerPropTypes } from '@/proptypes';
 
 class Table extends React.PureComponent {
   control = React.createRef();
@@ -96,6 +97,8 @@ class Table extends React.PureComponent {
       setChildSelectedInfo,
       selected,
       clearTextSelection,
+      pointer,
+      onPointer,
     } = this.props;
     const { rows, edit } = this.state;
     const { alignSelf, textAlign, width, widthUnit, ...last } = style;
@@ -156,7 +159,15 @@ class Table extends React.PureComponent {
                               ) > -1
                                 ? 'selected'
                                 : ''
-                            }`}
+                            }
+                            
+                            ${
+                              String(pointer.itemId) === String(item.id) && pointer.index1 === inx && pointer.index2 === jnx
+                                ? `g-pointed g-${pointer.style} g-${pointer.color}`
+                                : ''
+                            }
+                            
+                            `}
                             key={jnx}
                             style={{
                               width: getSize(cellWidth, cellWidthUnit),
@@ -168,6 +179,10 @@ class Table extends React.PureComponent {
                             disabled={!edit}
                             onClick={(e) => {
                               e.stopPropagation();
+
+                              if (onPointer) {
+                                onPointer(item.id, inx, jnx);
+                              }
 
                               if (editable && !edit) {
                                 this.setState({
@@ -238,6 +253,8 @@ Table.propTypes = {
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
   clearTextSelection: PropTypes.func,
+  pointer: PointerPropTypes,
+  onPointer: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅

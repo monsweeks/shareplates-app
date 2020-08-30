@@ -60,12 +60,13 @@ function sendScrollInfo(shareId, windowHeight, contentViewerHeight, scrollTop) {
   );
 }
 
-function sendPointerInfo(shareId, itemId, index, style, color) {
+function sendPointerInfo(shareId, itemId, index1, index2, style, color) {
   request.put(
     `/api/shares/${shareId}/contents/pointer`,
     {
       itemId,
-      index,
+      index1,
+      index2,
       style,
       color,
     },

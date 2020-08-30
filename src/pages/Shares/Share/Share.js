@@ -63,9 +63,10 @@ class Share extends React.Component {
       isOpenCam: false,
       pointer: {
         itemId: null,
-        index: null,
-        style : null,
-        color : null,
+        index1: null,
+        index2: null,
+        style: null,
+        color: null,
       },
     };
 
@@ -569,10 +570,11 @@ class Share extends React.Component {
         this.setState({
           pointer: {
             itemId: data.itemId,
-            index: data.index,
-            style : data.style,
-            color : data.color,
-          }
+            index1: data.index1,
+            index2: data.index2,
+            style: data.style,
+            color: data.color,
+          },
         });
         break;
       }
@@ -721,8 +723,8 @@ class Share extends React.Component {
                 sendChangeProjectorStandByTabChange={this.sendChangeProjectorStandByTabChange}
                 setOption={this.setOption}
                 options={options}
-                setPointer={(itemId, index, style, color) => {
-                  messageClient.sendPointerInfo(shareId, itemId, index, style, color);
+                setPointer={(itemId, index1, index2, style, color) => {
+                  messageClient.sendPointerInfo(shareId, itemId, index1, index2, style, color);
                 }}
                 pointer={pointer}
               />

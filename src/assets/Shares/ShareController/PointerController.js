@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import './PointerController.scss';
 import { PageContent } from '@/assets';
-import { PointerPropTypes, SharePropTypes, TopicPropTypes } from '@/proptypes';
+import { PointerPropTypes, SharePropTypes } from '@/proptypes';
 import { Button } from '@/components';
 
 const colors = [
@@ -30,19 +30,16 @@ class PointerController extends React.PureComponent {
     };
   }
 
-  setPointer = (itemId, index) => {
+  setPointer = (itemId, index1, index2) => {
     const { style, color } = this.state;
     const { setPointer } = this.props;
-    setPointer(itemId, index, style, color);
+
+    setPointer(itemId, index1, index2, style, color);
   };
 
   render() {
-    const { className, topic, share, currentPage, pointer } = this.props;
+    const { className, share, currentPage, pointer } = this.props;
     const { style, color } = this.state;
-    console.log(topic);
-    console.log(share);
-    console.log(currentPage);
-    console.log(pointer);
 
     return (
       <div className={`${className} pointer-controller-wrapper`}>
@@ -149,7 +146,6 @@ PointerController.defaultProps = {
 
 PointerController.propTypes = {
   className: PropTypes.string,
-  topic: TopicPropTypes,
   share: SharePropTypes,
   currentPage: PropTypes.objectOf(PropTypes.any),
   pointer: PointerPropTypes,

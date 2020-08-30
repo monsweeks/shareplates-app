@@ -176,11 +176,6 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
-    onPointer = (id) => {
-      const { onPointer } = this.props;
-      onPointer(id);
-    };
-
     render() {
       const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, childSelectedList, setChildSelectedInfo, showLayout } = this.props;
@@ -201,10 +196,6 @@ const withPageItem = () => (WrappedComponent) => {
           }}
           onClick={(e) => {
             e.stopPropagation();
-
-            if (onPointer) {
-              onPointer(item.id, null);
-            }
 
             if (editable && !selected) {
               setSelectedItem(item.id, item.options);
