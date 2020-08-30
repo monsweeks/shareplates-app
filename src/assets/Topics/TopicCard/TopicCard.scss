@@ -56,6 +56,10 @@
         font-size: 1.1rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
+        white-space: nowrap;
+        overflow-x: hidden;
+        min-height: 34px;
+        text-overflow: ellipsis;
       }
 
       .topic-summary {
@@ -130,8 +134,6 @@
           }
         }
       }
-
-
     }
   }
 }

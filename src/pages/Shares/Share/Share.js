@@ -58,9 +58,16 @@ class Share extends React.Component {
       options: {
         hideShareNavigator: false,
         fullScreen: false,
-        projectorStandByTab : 'intro',
+        projectorStandByTab: 'intro',
       },
       isOpenCam: false,
+      pointer: {
+        itemId: null,
+        index1: null,
+        index2: null,
+        style: null,
+        color: null,
+      },
     };
 
     this.onScrollDebounced = debounce(messageClient.sendScrollInfo, 300);
@@ -559,6 +566,19 @@ class Share extends React.Component {
         break;
       }
 
+      case 'POINTER_CHANGE': {
+        this.setState({
+          pointer: {
+            itemId: data.itemId,
+            index1: data.index1,
+            index2: data.index2,
+            style: data.style,
+            color: data.color,
+          },
+        });
+        break;
+      }
+
       default: {
         break;
       }
@@ -625,6 +645,7 @@ class Share extends React.Component {
       accessCode,
       options,
       isOpenCam,
+      pointer,
     } = this.state;
 
     const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
@@ -695,12 +716,17 @@ class Share extends React.Component {
                 chapterPageList={chapterPageList}
                 currentChapterId={currentChapterId}
                 currentPageId={currentPageId}
+                currentPage={currentPage}
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
                 sendChangeProjectorStandByTabChange={this.sendChangeProjectorStandByTabChange}
                 setOption={this.setOption}
                 options={options}
+                setPointer={(itemId, index1, index2, style, color) => {
+                  messageClient.sendPointerInfo(shareId, itemId, index1, index2, style, color);
+                }}
+                pointer={pointer}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -734,6 +760,7 @@ class Share extends React.Component {
                       onChangeValue={this.onChangeValue}
                       setEditing={this.setEditing}
                       movePage={this.movePage}
+                      pointer={pointer}
                     />
                   )}
                   {share.startedYn && !currentPage && (
@@ -799,6 +826,7 @@ class Share extends React.Component {
                   history.push('/shares');
                 }}
                 options={options}
+                setOption={this.setOption}
               />
             )}
             {isAdmin && openScreenSelector && (

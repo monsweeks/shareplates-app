@@ -11,10 +11,13 @@ class FunctionController extends React.PureComponent {
     return (
       <div className={`${className} function-controller-wrapper`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent bg-gray-400 d-flex flex-column">
-            <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody>
-                <div className="line py-0 mb-3">
+          <div className="g-attach-parent d-flex flex-column">
+            <Card className="border-0 flex-grow-0 m-4">
+              <CardBody className="p-0">
+                <div className="message mb-3">
+                  <i className="fal fa-exclamation-circle" /> 프로젝터 옵션 관리
+                </div>
+                <div className="line px-3 py-0 mb-2">
                   <div className="label">{t('상단 메뉴')}</div>
                   <div className="separator">
                     <div />
@@ -41,7 +44,7 @@ class FunctionController extends React.PureComponent {
                     </Button>
                   </div>
                 </div>
-                <div className="line py-0">
+                <div className="line px-3 mb-2">
                   <div className="label">{t('풀스크린')}</div>
                   <div className="separator">
                     <div />

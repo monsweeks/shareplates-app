@@ -82,9 +82,7 @@ class ShareStandByPopup extends React.PureComponent {
                   <div className="text-right">
                     <div
                       onClick={() => {
-                        this.setState({
-                          tab: 'manage',
-                        });
+                        setOption('projectorStandByTab', 'manage');
                       }}
                       className={tab === 'manage' ? 'selected' : ''}
                     >
@@ -252,7 +250,7 @@ class ShareStandByPopup extends React.PureComponent {
                     <div className="ready-message">
                       <div className="align-self-center w-100">
                         <div className="text text-center h2 pt-5">{share.name}</div>
-                        <div className="text text-center h5">
+                        <div className="text text-center h5 px-4">
                           {t('아직 토픽이 시작되지 않았습니다. 토픽 매니저가 공유를 시작할때까지 잠시 기다려주세요.')}
                         </div>
                       </div>

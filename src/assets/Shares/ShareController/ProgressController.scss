@@ -22,7 +22,6 @@
       margin: 0 0.25rem;
     }
 
-
     .start-button {
       font-size: 1rem;
       width: 120px;
@@ -34,6 +33,9 @@
   .focus-percentage {
     display: flex;
     flex-direction: row;
+    _border: 1px solid rgba(0, 0, 0, 0.3);
+    _background-color: $light;
+    padding: 0.5rem 1rem;
 
     > div {
       flex: 1 1 0;
@@ -59,10 +61,11 @@
       .label {
         position: relative;
         z-index: 1;
-        margin-top: 0.5rem;
+        margin-top: 0;
         margin-bottom: 0.25rem;
-        font-size: 1.2rem;
+        font-size: 1rem;
         line-height: 100%;
+        margin-right: 0 !important;
       }
 
       .percentage {
@@ -76,7 +79,6 @@
       .percentage-data {
         position: relative;
         z-index: 1;
-        margin-bottom: 0.5rem;
         font-size: 0.8rem;
         line-height: 100%;
       }
@@ -94,13 +96,35 @@
     }
   }
 
+  .current-info-content {
+    _background-color: $light;
+    padding: 0.5rem 0;
+  }
+
   .current-info {
-    text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     > div {
       display: inline-block;
       max-width: 50%;
       white-space: nowrap;
+      line-height: 0;
+
+      > span {
+        display: inline-block;
+        line-height: 100%;
+
+        &.char {
+          color: $gray-700;
+          font-family: Righteous;
+          margin-right: 0.5rem;
+          color: $primary;
+
+          &.p {
+            margin-left: 1rem;
+            color: $yellow;
+          }
+        }
+      }
     }
   }
 
@@ -111,27 +135,26 @@
       display: flex;
       flex-direction: row;
       > div {
-        background-color: $gray-300;
+        background-color: $light;
         flex: 1 1 0;
-        border-left: 1px solid rgba(0, 0, 0, 0.4);
-        border-top: 1px solid rgba(0, 0, 0, 0.4);
-
-        &:last-child {
-          border-right: 1px solid rgba(0, 0, 0, 0.4);
-        }
+        _border: 1px solid rgba(0, 0, 0, 0.1);
+        margin: 2px;
+        border-radius: 5px;
 
         &.selected {
           background-color: $yellow;
           background-color: $green;
+          background-color: $primary;
         }
       }
     }
 
     .page-list {
       > div {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         &.selected {
           background-color: $orange;
+          background-color: $primary;
+          background-color: $yellow;
         }
       }
     }
@@ -172,11 +195,10 @@
     flex-direction: row;
 
     button {
-      font-size: 3rem;
+      font-size: 2.4rem;
       flex-grow: 0;
       padding: 0 1rem;
       line-height: 100%;
-      color: $gray-600;
     }
 
     .scroll-controller {
@@ -196,27 +218,34 @@
           right: 0;
           bottom: 0;
           padding: 1rem;
+
           > div {
             width: 100%;
             height: 100%;
-            background-color: $gray-300;
-            position: relative;
+            background-color: $light;
+            padding: 0.25rem;
 
-            .window {
-              position: absolute;
-              left: 0.25rem;
-              right: 0.25rem;
-              background-color: $white;
-              border: 1px solid rgba(0, 0, 0, 0.2);
-              display: flex;
+            > div {
+              position: relative;
+              width: 100%;
+              height: 100%;
 
-              > div {
-                align-self: center;
-                text-align: center;
-                width: 100%;
+              .window {
+                position: absolute;
+                left: 0;
+                right: 0;
+                background-color: $white;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                display: flex;
 
-                > span {
-                  font-size: 0.9rem;
+                > div {
+                  align-self: center;
+                  text-align: center;
+                  width: 100%;
+
+                  > span {
+                    font-size: 0.9rem;
+                  }
                 }
               }
             }

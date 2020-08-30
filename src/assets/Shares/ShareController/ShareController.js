@@ -19,7 +19,7 @@ class ShareController extends React.PureComponent {
     const { t } = props;
 
     this.state = {
-      tab: 'process',
+      tab: 'pointer',
       tabs: [
         {
           value: 'status',
@@ -90,6 +90,7 @@ class ShareController extends React.PureComponent {
       chapterPageList,
       currentChapterId,
       currentPageId,
+      currentPage,
       projectorScrollInfo,
       startShare,
       closeShare,
@@ -103,6 +104,8 @@ class ShareController extends React.PureComponent {
       sendMoveScroll,
       setOption,
       options,
+      pointer,
+      setPointer,
     } = this.props;
 
     const { tab, tabs } = this.state;
@@ -181,7 +184,7 @@ class ShareController extends React.PureComponent {
                 exitShare={exitShare}
                 options={options}
               />
-              <PointerController className="share-controller-item" />
+              <PointerController className="share-controller-item" share={share} currentPage={currentPage} setPointer={setPointer} pointer={pointer} />
               <FunctionController className="share-controller-item" setOption={setOption} />
             </div>
           </div>
@@ -219,6 +222,7 @@ ShareController.propTypes = {
   chapterPageList: PropTypes.arrayOf(PropTypes.any),
   currentChapterId: PropTypes.number,
   currentPageId: PropTypes.number,
+  currentPage : PropTypes.objectOf(PropTypes.any),
   movePage: PropTypes.func,
   projectorScrollInfo: PropTypes.shape({
     windowHeight: PropTypes.number,
@@ -227,7 +231,14 @@ ShareController.propTypes = {
   }),
   sendMoveScroll: PropTypes.func,
   setOption: PropTypes.func,
-  options : PropTypes.objectOf(PropTypes.any)
+  options : PropTypes.objectOf(PropTypes.any),
+  setPointer : PropTypes.func,
+  pointer : PropTypes.shape({
+    itemId : PropTypes.number,
+    index : PropTypes.number,
+    style : PropTypes.string,
+    color : PropTypes.string,
+  })
 };
 
 export default withTranslation()(ShareController);

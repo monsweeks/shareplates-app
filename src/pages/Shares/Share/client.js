@@ -60,6 +60,22 @@ function sendScrollInfo(shareId, windowHeight, contentViewerHeight, scrollTop) {
   );
 }
 
+function sendPointerInfo(shareId, itemId, index1, index2, style, color) {
+  request.put(
+    `/api/shares/${shareId}/contents/pointer`,
+    {
+      itemId,
+      index1,
+      index2,
+      style,
+      color,
+    },
+    null,
+    null,
+    true,
+  );
+}
+
 function sendOption(shareId, optionKey, optionValue) {
   request.put(
     `/api/shares/${shareId}/contents/option`,
@@ -91,6 +107,7 @@ const messageClient = {
   sendScrollInfo,
   sendMoveScroll,
   sendOption,
+  sendPointerInfo,
 };
 
 export default messageClient;

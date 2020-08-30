@@ -4,6 +4,7 @@ import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageIt
 import { Button } from '@/components';
 import request from '@/utils/request';
 import './Image.scss';
+import { PointerPropTypes } from '@/proptypes';
 
 class Image extends React.PureComponent {
   control = React.createRef();
@@ -403,7 +404,7 @@ class Image extends React.PureComponent {
   };
 
   render() {
-    const { className, item, style, editable, setEditing, onChangeFile } = this.props;
+    const { className, item, style, editable, setEditing, onChangeFile, pointer, onPointer } = this.props;
     const { id, uuid, edit, dragging, cursor } = this.state;
     const {
       alignSelf,
@@ -421,10 +422,18 @@ class Image extends React.PureComponent {
     return (
       <div
         ref={this.control}
-        className={`image-wrapper ${className} ${editable ? 'editable' : ''}`}
+        className={`image-wrapper ${className} ${editable ? 'editable' : ''} ${
+          String(pointer.itemId) === String(item.id) && pointer.index1 === null
+            ? `g-pointed g-${pointer.style} g-${pointer.color}`
+            : ''
+        }`}
         {...item}
         style={last}
         onClick={() => {
+          if (onPointer) {
+            onPointer(item.id, null, null);
+          }
+
           if (editable && edit) {
             this.setState({
               edit: false,
@@ -519,6 +528,8 @@ Image.propTypes = {
   setSelectedItem: PropTypes.func,
   onChangeOption: PropTypes.func,
   selected: PropTypes.bool,
+  pointer: PointerPropTypes,
+  onPointer: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅

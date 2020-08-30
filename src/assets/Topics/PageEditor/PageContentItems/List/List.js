@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './List.scss';
 import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
+import { PointerPropTypes } from '@/proptypes';
 
 class List extends React.PureComponent {
   control = React.createRef();
@@ -95,6 +96,8 @@ class List extends React.PureComponent {
       setSelectedItem,
       setChildSelectedInfo,
       selected,
+      pointer,
+      onPointer,
     } = this.props;
     const { rows, edit } = this.state;
     const { alignSelf, textAlign, width, widthUnit, listStyle, indentLevel, ...last } = style;
@@ -129,6 +132,7 @@ class List extends React.PureComponent {
               listStyle,
               paddingLeft: `${indentLevel * 2}rem`,
             }}
+            className={`${String(pointer.itemId) === String(item.id) && pointer.index1 === null? `g-pointed g-${pointer.style} g-${pointer.color}` : ''}`}
           >
             {rows &&
               rows.map((row, inx) => {
@@ -164,7 +168,14 @@ class List extends React.PureComponent {
                       childSelectedList.findIndex((info) => JSON.stringify(info) === JSON.stringify([inx])) > -1
                         ? 'selected'
                         : ''
-                    }`}
+                    }
+                    ${
+                      String(pointer.itemId) === String(item.id) && pointer.index1 === inx
+                        ? `g-pointed g-${pointer.style} g-${pointer.color}`
+                        : ''
+                    }
+                    
+                    `}
                     value={listValues[itemIndentLevel]}
                     style={{
                       width: getSize(cellWidth, cellWidthUnit),
@@ -178,6 +189,10 @@ class List extends React.PureComponent {
                     disabled={!edit}
                     onClick={(e) => {
                       e.stopPropagation();
+
+                      if (onPointer) {
+                        onPointer(item.id, inx, null);
+                      }
 
                       if (editable && !edit) {
                         this.setState({
@@ -241,6 +256,8 @@ List.propTypes = {
   setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
+  pointer: PointerPropTypes,
+  onPointer: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅

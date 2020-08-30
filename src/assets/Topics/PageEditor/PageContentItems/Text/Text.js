@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './Text.scss';
 import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
+import { PointerPropTypes } from '@/proptypes';
 
 class Text extends React.Component {
   control = React.createRef();
@@ -60,20 +61,25 @@ class Text extends React.Component {
   }
 
   render() {
-    const { className, item, style, editable, setEditing, clearTextSelection } = this.props;
+    const { className, item, style, editable, setEditing, clearTextSelection, pointer, onPointer } = this.props;
     const { text, edit } = this.state;
     const { alignSelf, width, widthUnit, ...last } = style;
 
     return (
       <div
         ref={this.control}
-        className={`text-wrapper ${className} ${editable ? 'editable' : ''}`}
+        className={`text-wrapper ${className} ${editable ? 'editable' : ''} ${
+          String(pointer.itemId) === String(item.id) && pointer.index1 === null
+            ? `g-pointed g-${pointer.style} g-${pointer.color}`
+            : ''
+        }`}
         {...item}
         style={{
           width: getSize(width, widthUnit),
           ...last,
         }}
         onClick={() => {
+
           if (clearTextSelection) {
             clearTextSelection();
           }
@@ -99,6 +105,11 @@ class Text extends React.Component {
             html={text}
             disabled={!edit}
             onClick={(e) => {
+
+              if (onPointer) {
+                onPointer(item.id, null, null);
+              }
+
               if (editable && !edit) {
                 this.setState({
                   edit: true,
@@ -136,7 +147,9 @@ Text.propTypes = {
   editable: PropTypes.bool,
   onChangeValue: PropTypes.func,
   setEditing: PropTypes.func,
-  clearTextSelection : PropTypes.func,
+  clearTextSelection: PropTypes.func,
+  pointer: PointerPropTypes,
+  onPointer: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅
