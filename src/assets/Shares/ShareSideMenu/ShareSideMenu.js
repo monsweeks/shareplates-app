@@ -54,7 +54,7 @@ class ShareSideMenu extends React.PureComponent {
           <i className="fal fa-id-badge" />
         </span>
         <span
-          className={`on-off-button ${isOpenCam ? 'on' : 'off'}`}
+          className={`on-off-button d-none ${isOpenCam ? 'on' : 'off'}`}
           onClick={() => {
             setOpenCamPopup(!isOpenCam);
           }}
