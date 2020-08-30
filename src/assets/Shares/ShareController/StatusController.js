@@ -81,12 +81,10 @@ class StatusController extends React.PureComponent {
                       <div className="user-icon">
                         <i className="fal fa-user-astronaut" />
                       </div>
-                      <div className="total-count">
-                        <span>{onlineUserCount + offlineUserCount}</span>
-                      </div>
                       <div>
-                        <span className="online-user-count">{onlineUserCount}</span> /
-                        <span className="offline-user-count">{offlineUserCount}</span>
+                        <div className="total-count">
+                          <span>{onlineUserCount + offlineUserCount}</span> <span className="online-user-count">{onlineUserCount}</span><span className="offline-user-count">{offlineUserCount}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

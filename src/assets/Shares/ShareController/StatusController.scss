@@ -26,10 +26,11 @@
       height: 30px;
       background-color: $gray-300;
       display: inline-block;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       border-radius: 50%;
-      padding-top: 2px;
+      padding-top: 4px;
       margin-bottom: 0.5rem;
+
 
       &.started {
         background-color: $yellow;
@@ -49,23 +50,46 @@
     .user-count-status {
       font-size: 0.7rem;
       font-weight: bold;
+      display: flex;
+      flex-direction: row;
+      align-self: center;
 
       .user-icon {
         font-size: 1rem;
         line-height: 100%;
+        align-self: center;
+        padding: 0 0.75rem;
       }
 
       .total-count {
         font-size: 1rem;
         font-family: NixieOne, sans-serif;
+        display: inline-block;
+        vertical-align: middle;
+
+        > span {
+          display: inline-block;
+        }
       }
 
       .online-user-count {
-        color: $success;
+        color: $white;
+        background-color: $success;
+        margin-right: 0.25rem;
       }
 
       .offline-user-count {
-        color: $danger;
+        color: $white;
+        background-color: $danger;
+      }
+
+      .online-user-count,
+      .offline-user-count {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        border-radius: 50%;
+        font-size: 0.8rem;
       }
     }
   }
