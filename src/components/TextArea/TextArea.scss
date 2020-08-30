@@ -20,6 +20,7 @@
     padding: 7px;
     border-radius: 2px;
     background-color: $white;
+    -webkit-appearance: none;
 
     &:focus {
       box-shadow: none;

@@ -41,6 +41,9 @@
       font-weight: bold;
       margin: 0;
       line-height: 100%;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
 
     .config-button {

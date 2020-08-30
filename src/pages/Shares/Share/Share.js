@@ -799,6 +799,7 @@ class Share extends React.Component {
                   history.push('/shares');
                 }}
                 options={options}
+                setOption={this.setOption}
               />
             )}
             {isAdmin && openScreenSelector && (

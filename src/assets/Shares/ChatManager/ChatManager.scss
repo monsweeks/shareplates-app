@@ -29,8 +29,6 @@
     flex-grow: 1;
     display: flex;
     background-color: $light;
-    _border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 0 1rem;
 
     .chat-item {
       &:first-child {
@@ -111,7 +109,7 @@
 
     &.chat-control {
       background-color: transparent;
-      margin: 1rem;
+      margin: 1rem 0;
     }
 
     .input-control {

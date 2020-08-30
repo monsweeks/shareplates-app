@@ -1,8 +1,44 @@
-$icon-size: 40px;
+$icon-size: 36px;
 
 .share-user-card-wrapper {
   border: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
+
+  .user-connection-status,
+  .user-focus-status {
+    flex-grow: 0;
+    align-self: center;
+    margin-left: 0.25rem;
+    &:first-child {
+      margin-left: 0;
+    }
+    > div {
+      align-self: center;
+      display: inline-block;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+    }
+
+    &.ONLINE,
+    &.focus {
+      > div {
+        background-color: $success;
+      }
+    }
+
+    &.OFFLINE {
+      > div {
+        background-color: $gray-400;
+      }
+    }
+
+    &.ONLINE.out-focus {
+      > div {
+        background-color: $danger;
+      }
+    }
+  }
 
   &.has-border {
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
@@ -42,25 +78,6 @@ $icon-size: 40px;
     }
   }
 
-  .user-tag-info {
-    position: absolute;
-    top: 3px;
-    left: 55px;
-    color: $black;
-    text-align: left;
-    display: inline-block;
-    line-height: 100%;
-
-    > span {
-      font-size: 10px;
-      font-family: LGSmHaB;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      line-height: 100%;
-      padding: 0 4px;
-      border-radius: 2px;
-    }
-  }
-
   .user-icon {
     flex-grow: 0;
     padding: 0 0.5rem;
@@ -97,6 +114,17 @@ $icon-size: 40px;
       line-height: 100%;
       position: relative;
       font-size: 12px;
+
+      &.me-tag {
+        font-family: 'Baloo Bhai', sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 100%;
+        padding: 0.125rem 0.25rem;
+        margin-left: 0.25rem;
+        border: 1px solid rgba(0,0,0,0.4);
+        border-radius: 2px;
+      }
     }
   }
 
@@ -106,40 +134,10 @@ $icon-size: 40px;
     line-height: 100%;
 
     > button {
-      width: 19px;
-      height: 19px;
-      border-radius: 50%;
       font-size: 12px;
-      padding: 1px 0 0;
-      margin-left: 3px;
-    }
-  }
-
-  .status-tags {
-    flex-grow: 0;
-    align-self: center;
-    padding: 0 0.5rem;
-    line-height: 100%;
-
-    > div {
-      > span {
-        display: inline-block;
-        font-size: 10px;
-        width: 65px;
-        text-align: center;
-        background-color: $primary;
-        color: $white;
-        border-radius: 2px;
-        text-transform: uppercase;
-      }
-
-      &.out-focus,
-      &.OFFLINE {
-        > span {
-          background-color: $danger;
-          color: $white;
-        }
-      }
+      padding: 0.33rem;
+      margin-left: 0.33rem;
+      line-height: 100%;
     }
   }
 

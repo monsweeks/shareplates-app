@@ -1,4 +1,88 @@
 .status-controller-wrapper {
+  .progress-status {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+
+    .left,
+    .right {
+      flex: 1 1 0;
+      display: flex;
+      align-self: center;
+
+      > div {
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    .center {
+      flex-grow: 0;
+      position: relative;
+      padding-top: 0.5rem;
+    }
+    .icon {
+      width: 30px;
+      height: 30px;
+      background-color: $gray-300;
+      display: inline-block;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      padding-top: 2px;
+      margin-bottom: 0.5rem;
+
+      &.started {
+        background-color: $yellow;
+      }
+    }
+
+    .status-text {
+      font-size: 0.7rem;
+      position: absolute;
+      top: -0.5rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .user-count-status {
+      font-size: 0.7rem;
+      font-weight: bold;
+
+      .user-icon {
+        font-size: 1rem;
+        line-height: 100%;
+      }
+
+      .total-count {
+        font-size: 1rem;
+        font-family: NixieOne, sans-serif;
+      }
+
+      .online-user-count {
+        color: $success;
+      }
+
+      .offline-user-count {
+        color: $danger;
+      }
+    }
+  }
+
+  .tabs {
+    font-size: 0.7rem !important;
+    background-color: $light;
+    padding-bottom: 0 !important;
+    margin-bottom: 1rem !important;
+
+    .tab-item {
+
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+  }
+
   .chat-manager {
     position: absolute;
     top: 0;
@@ -13,17 +97,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: $light;
-
-    .user-card:first-child {
-      border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-      box-shadow: none;
-    }
 
     .user-card {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-      border-left: 1px solid rgba(0, 0, 0, 0.1) !important;
-      border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+      border-bottom: none !important;
     }
   }
 }

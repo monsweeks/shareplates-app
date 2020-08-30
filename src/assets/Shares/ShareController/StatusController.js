@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
-import { Button, Card, CardBody, Pill, RadioButton, Tabs } from '@/components';
+import { Button, Card, CardBody, Tabs } from '@/components';
 import { SharePropTypes, UserPropTypes } from '@/proptypes';
 import dialog from '@/utils/dialog';
 import { MESSAGE_CATEGORY } from '@/constants/constants';
@@ -44,54 +44,71 @@ class StatusController extends React.PureComponent {
     return (
       <div className={`${className} status-controller-wrapper`}>
         <div className="flex-grow-1 position-relative">
-          <div className="g-attach-parent status-layout bg-gray-400 d-flex flex-column">
-            <Card className="border-0 flex-grow-0 mb-1">
-              <CardBody>
-                <div className="line py-0">
-                  <div className="label">{t('공유 상태')}</div>
-                  <div className="separator">
-                    <div />
+          <div className="g-attach-parent status-layout d-flex flex-column">
+            <Card className="border-0 flex-grow-0 mt-4 mx-0 mb-2">
+              <CardBody className="p-0">
+                <div className="progress-status">
+                  <div className="left">
+                    <div>
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={() => {
+                          dialog.setConfirm(
+                            MESSAGE_CATEGORY.WARNING,
+                            t('공유 종료 확인'),
+                            '공유가 종료되고, 참여 중인 모든 사용자가 메인화면으로 이동합니다.',
+                            () => {
+                              closeShare();
+                            },
+                          );
+                        }}
+                      >
+                        공유 종료
+                      </Button>
+                    </div>
                   </div>
-                  <div className="value text-right">
-                    <RadioButton
-                      size="sm"
-                      items={[
-                        {
-                          key: false,
-                          value: '정지',
-                        },
-                        {
-                          key: true,
-                          value: '시작됨',
-                        },
-                      ]}
-                      value={share.startedYn}
-                      onClick={(value) => {
-                        if (value !== share.startedYn) {
-                          if (value) {
-                            startShare();
-                          } else {
-                            stopShare();
-                          }
-                        }
-                      }}
-                    />
+                  <div className="center">
+                    <div className={`${share.startedYn ? 'started' : ''} icon`}>
+                      {share.startedYn && <i className="fas fa-wifi" />}
+                      {!share.startedYn && <i className="fas fa-wifi-2" />}
+                    </div>
+                    <div className="status-text">
+                      {share.startedYn && <span>진행중</span>}
+                      {!share.startedYn && <span>대기중</span>}
+                    </div>
+                    <div className="user-count-status">
+                      <div className="user-icon">
+                        <i className="fal fa-user-astronaut" />
+                      </div>
+                      <div className="total-count">
+                        <span>{onlineUserCount + offlineUserCount}</span>
+                      </div>
+                      <div>
+                        <span className="online-user-count">{onlineUserCount}</span> /
+                        <span className="offline-user-count">{offlineUserCount}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="line pb-0">
-                  <div className="label">현재 참여인원</div>
-                  <div className="separator">
-                    <div />
-                  </div>
-                  <div className="value text-right">
-                    <Pill className="mr-2" label="ONLINE" value={onlineUserCount} />
-                    <Pill label="OFFLINE" labelClassName="bg-danger" value={offlineUserCount} />
+                  <div className="right">
+                    <div>
+                      {share.startedYn && (
+                        <Button color="yellow" size="sm" onClick={stopShare}>
+                          일시 정지
+                        </Button>
+                      )}
+                      {!share.startedYn && (
+                        <Button color="yellow" size="sm" onClick={startShare}>
+                          공유 시작
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardBody>
             </Card>
-            <Card className="border-0 flex-grow-1">
-              <CardBody className="h-100 d-flex flex-column p-2">
+            <Card className="border-0 flex-grow-1 mx-4">
+              <CardBody className="h-100 d-flex flex-column p-0">
                 <Tabs
                   className="tabs border-0 pt-0  flex-grow-0"
                   left
@@ -112,7 +129,7 @@ class StatusController extends React.PureComponent {
                           <ShareUserCard
                             key={u.id}
                             userControl={isAdmin}
-                            className="user-card m-0"
+                            className="user-card"
                             currentUser={user}
                             user={u}
                             banUser={banUser}
@@ -140,7 +157,7 @@ class StatusController extends React.PureComponent {
             </Card>
           </div>
         </div>
-        <div className="flex-grow-0 d-flex flex-row bg-black">
+        <div className="flex-grow-0 flex-row bg-black d-none">
           <Button className="g-no-focus flex-fill p-3 text-warning" color="transparent" onClick={exitShare}>
             <i className="fal fa-sign-out-alt" />
             <div>

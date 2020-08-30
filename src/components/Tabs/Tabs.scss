@@ -59,9 +59,10 @@
       border: none;
       border-radius: 2px;
       background-color: $light;
+      background-color: $gray-300;
 
       &:hover {
-        background-color: darken($light, 5%);
+        background-color: $gray-400;
       }
 
       &.selected {

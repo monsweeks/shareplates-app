@@ -17,6 +17,12 @@ class ShareUserCard extends React.PureComponent {
       <Card key={user.id} className={`share-user-card-wrapper ${className} ${border ? 'has-border' : ''}`}>
         <CardBody className="p-0">
           <div className={`user-card-content ${user.status !== 'ONLINE' ? 'OFFLINE' : ''}`}>
+            <div className={`user-connection-status ${user.status}`}>
+              <div />
+            </div>
+            <div className={`user-focus-status ${user.status} ${user.focusYn ? 'focus' : 'out-focus'}`}>
+              <div />
+            </div>
             {adminCard && (
               <div className="crown-icon">
                 <span>
@@ -24,36 +30,34 @@ class ShareUserCard extends React.PureComponent {
                 </span>
               </div>
             )}
-            {isMe && (
-              <div className="user-tag-info">
-                <span>ME</span>
-              </div>
-            )}
             <div className="user-icon">
               <div>{user && <UserIcon info={user.info} />}</div>
             </div>
             <div className="user-name">
               <span>{user.name}</span>
+              {isMe && <span className='me-tag'>ME</span>}
             </div>
             {userControl && (
               <div className="user-control-buttons">
                 {!user.banYn && (
                   <>
                     <Button
-                      color="danger"
+                      color="warning"
+                      size='sm'
                       onClick={() => {
                         kickOutUser(user.id);
                       }}
                     >
-                      <i className="fal fa-sign-out" />
+                      내보내기
                     </Button>
                     <Button
                       color="danger"
+                      size='sm'
                       onClick={() => {
                         banUser(user.id);
                       }}
                     >
-                      <i className="fal fa-times" />
+                      추방
                     </Button>
                   </>
                 )}
@@ -71,15 +75,6 @@ class ShareUserCard extends React.PureComponent {
                 )}
               </div>
             )}
-
-            <div className='status-tags'>
-              <div className={`user-status ${user.status}`}>
-                <span>{user.status}</span>
-              </div>
-              <div className={`user-focus ${user.focusYn ? 'focus' : 'out-focus'}`}>
-                <span>{user.focusYn ? 'focus' : 'out-focus'}</span>
-              </div>
-            </div>
           </div>
         </CardBody>
       </Card>
