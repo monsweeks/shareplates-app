@@ -33,6 +33,13 @@ const ContextPropTypes = PropTypes.shape({
   projectId: PropTypes.number,
 });
 
+const PointerPropTypes = PropTypes.shape({
+  itemId: PropTypes.number,
+  index: PropTypes.number,
+  style: PropTypes.string,
+  color: PropTypes.string,
+});
+
 const SharePropTypes = PropTypes.shape({
   id: PropTypes.number,
   name: PropTypes.string,
@@ -58,4 +65,4 @@ const SharePropTypes = PropTypes.shape({
   topicName: PropTypes.string,
 });
 
-export { UserPropTypes, TopicPropTypes, ContextPropTypes, SharePropTypes };
+export { UserPropTypes, TopicPropTypes, ContextPropTypes, SharePropTypes, PointerPropTypes };

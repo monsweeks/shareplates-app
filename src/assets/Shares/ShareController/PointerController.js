@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import './PointerController.scss';
 import { PageContent } from '@/assets';
-import { SharePropTypes, TopicPropTypes } from '@/proptypes';
+import { PointerPropTypes, SharePropTypes, TopicPropTypes } from '@/proptypes';
 import { Button } from '@/components';
 
 const colors = [
@@ -152,12 +152,7 @@ PointerController.propTypes = {
   topic: TopicPropTypes,
   share: SharePropTypes,
   currentPage: PropTypes.objectOf(PropTypes.any),
-  pointer: PropTypes.shape({
-    itemId: PropTypes.number,
-    index: PropTypes.number,
-    style: PropTypes.string,
-    color: PropTypes.string,
-  }),
+  pointer: PointerPropTypes,
   setPointer: PropTypes.func,
 };
 

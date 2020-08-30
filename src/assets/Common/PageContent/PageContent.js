@@ -6,6 +6,7 @@ import { getItem } from '@/assets/Topics/PageEditor/PageContentItems';
 import { EmptyMessage } from '@/components';
 import contentUtil from '@/utils/contentUtil';
 import './PageContent.scss';
+import { PointerPropTypes } from '@/proptypes';
 
 class PageContent extends React.PureComponent {
   render() {
@@ -158,12 +159,7 @@ PageContent.propTypes = {
   lastMovedItemId: PropTypes.string,
   checkDirty: PropTypes.func,
   onPointer: PropTypes.func,
-  pointer: PropTypes.shape({
-    itemId: PropTypes.number,
-    index: PropTypes.number,
-    style: PropTypes.string,
-    color: PropTypes.string,
-  }),
+  pointer: PointerPropTypes,
 };
 
 export default withRouter(withTranslation()(PageContent));

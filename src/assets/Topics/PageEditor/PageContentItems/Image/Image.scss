@@ -4,6 +4,15 @@
   height: 100%;
   position: relative;
 
+  &.g-pointed {
+    position: relative;
+
+    &:after,
+    &:before {
+      z-index: 2;
+    }
+  }
+
   > div {
     flex-grow: 1;
     vertical-align: middle;

@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import withPageItem from '@/assets/Topics/PageEditor/PageContentItems/withPageItem';
 import './List.scss';
 import { getSize } from '@/assets/Topics/PageEditor/PageContentItems/util';
+import { PointerPropTypes } from '@/proptypes';
 
 class List extends React.PureComponent {
   control = React.createRef();
@@ -255,12 +256,7 @@ List.propTypes = {
   setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
-  pointer: PropTypes.shape({
-    itemId: PropTypes.number,
-    index: PropTypes.number,
-    style: PropTypes.string,
-    color: PropTypes.string,
-  }),
+  pointer: PointerPropTypes,
   onPointer: PropTypes.func,
 };
 
