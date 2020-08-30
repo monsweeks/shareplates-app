@@ -21,6 +21,8 @@
 
       .list-item {
         list-style-position: inside !important;
+        z-index: 1;
+        position: relative;
       }
 
       :focus,

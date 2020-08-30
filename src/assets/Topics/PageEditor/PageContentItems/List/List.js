@@ -95,6 +95,8 @@ class List extends React.PureComponent {
       setSelectedItem,
       setChildSelectedInfo,
       selected,
+      pointer,
+      onPointer,
     } = this.props;
     const { rows, edit } = this.state;
     const { alignSelf, textAlign, width, widthUnit, listStyle, indentLevel, ...last } = style;
@@ -129,6 +131,7 @@ class List extends React.PureComponent {
               listStyle,
               paddingLeft: `${indentLevel * 2}rem`,
             }}
+            className={`${String(pointer.itemId) === String(item.id) && pointer.index === null? `g-pointed g-${pointer.style} g-${pointer.color}` : ''}`}
           >
             {rows &&
               rows.map((row, inx) => {
@@ -164,7 +167,14 @@ class List extends React.PureComponent {
                       childSelectedList.findIndex((info) => JSON.stringify(info) === JSON.stringify([inx])) > -1
                         ? 'selected'
                         : ''
-                    }`}
+                    }
+                    ${
+                      String(pointer.itemId) === String(item.id) && pointer.index === inx
+                        ? `g-pointed g-${pointer.style} g-${pointer.color}`
+                        : ''
+                    }
+                    
+                    `}
                     value={listValues[itemIndentLevel]}
                     style={{
                       width: getSize(cellWidth, cellWidthUnit),
@@ -178,6 +188,10 @@ class List extends React.PureComponent {
                     disabled={!edit}
                     onClick={(e) => {
                       e.stopPropagation();
+
+                      if (onPointer) {
+                        onPointer(item.id, inx);
+                      }
 
                       if (editable && !edit) {
                         this.setState({
@@ -241,6 +255,13 @@ List.propTypes = {
   setSelectedItem: PropTypes.func,
   setChildSelectedInfo: PropTypes.func,
   selected: PropTypes.bool,
+  pointer: PropTypes.shape({
+    itemId: PropTypes.number,
+    index: PropTypes.number,
+    style: PropTypes.string,
+    color: PropTypes.string,
+  }),
+  onPointer: PropTypes.func,
 };
 
 // 편집 가능한 옵션과 그 옵션들의 기본값 세팅

@@ -209,3 +209,101 @@
   right: 0;
   bottom: 0;
 }
+
+.g-pointed {
+  position: relative;
+
+  &.g-underline {
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 10px;
+    }
+
+    &.g-black {
+      &:after {
+        background-color: #333;
+      }
+    }
+
+    &.g-red {
+      &:after {
+        background-color: #ff3030;
+      }
+    }
+
+    &.g-blue {
+      &:after {
+        background-color: $cyan;
+      }
+    }
+  }
+
+  &.g-fill {
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 100%;
+      opacity: 0.2;
+    }
+
+    &.g-black {
+      &:before {
+        background-color: #333;
+      }
+    }
+
+    &.g-red {
+      &:before {
+        background-color: #ff3030;
+      }
+    }
+
+    &.g-blue {
+      &:before {
+        background-color: $cyan;
+      }
+    }
+  }
+
+  &.g-rect {
+    &:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 100%;
+    }
+
+    &.g-black {
+      &:before {
+        border: 2px solid #333;
+      }
+    }
+
+    &.g-red {
+      &:before {
+        border: 2px solid #ff3030;
+      }
+    }
+
+    &.g-blue {
+      &:before {
+        border: 2px solid $cyan;
+      }
+    }
+  }
+}

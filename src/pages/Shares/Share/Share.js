@@ -58,9 +58,15 @@ class Share extends React.Component {
       options: {
         hideShareNavigator: false,
         fullScreen: false,
-        projectorStandByTab : 'intro',
+        projectorStandByTab: 'intro',
       },
       isOpenCam: false,
+      pointer: {
+        itemId: null,
+        index: null,
+        style : null,
+        color : null,
+      },
     };
 
     this.onScrollDebounced = debounce(messageClient.sendScrollInfo, 300);
@@ -559,6 +565,18 @@ class Share extends React.Component {
         break;
       }
 
+      case 'POINTER_CHANGE': {
+        this.setState({
+          pointer: {
+            itemId: data.itemId,
+            index: data.index,
+            style : data.style,
+            color : data.color,
+          }
+        });
+        break;
+      }
+
       default: {
         break;
       }
@@ -625,6 +643,7 @@ class Share extends React.Component {
       accessCode,
       options,
       isOpenCam,
+      pointer,
     } = this.state;
 
     const { screenType, openScreenSelector, messages, projectorScrollInfo } = this.state;
@@ -695,12 +714,17 @@ class Share extends React.Component {
                 chapterPageList={chapterPageList}
                 currentChapterId={currentChapterId}
                 currentPageId={currentPageId}
+                currentPage={currentPage}
                 movePage={this.movePage}
                 projectorScrollInfo={projectorScrollInfo}
                 sendMoveScroll={this.sendMoveScroll}
                 sendChangeProjectorStandByTabChange={this.sendChangeProjectorStandByTabChange}
                 setOption={this.setOption}
                 options={options}
+                setPointer={(itemId, index, style, color) => {
+                  messageClient.sendPointerInfo(shareId, itemId, index, style, color);
+                }}
+                pointer={pointer}
               />
             )}
             {!(isAdmin && screenType === SCREEN_TYPE.CONTROLLER) && (
@@ -734,6 +758,7 @@ class Share extends React.Component {
                       onChangeValue={this.onChangeValue}
                       setEditing={this.setEditing}
                       movePage={this.movePage}
+                      pointer={pointer}
                     />
                   )}
                   {share.startedYn && !currentPage && (

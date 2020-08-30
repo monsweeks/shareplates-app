@@ -176,11 +176,17 @@ const withPageItem = () => (WrappedComponent) => {
       }
     };
 
+    onPointer = (id) => {
+      const { onPointer } = this.props;
+      onPointer(id);
+    };
+
     render() {
       const { editable, draggable } = this.state;
       const { item, selected, setSelectedItem, childSelectedList, setChildSelectedInfo, showLayout } = this.props;
       const { draggingItemId, removeItem } = this.props;
       const { wrapperWidth, wrapperHeight, wrapperWidthUnit, wrapperHeightUnit } = item.options;
+      const { pointer, onPointer } = this.props;
 
       return (
         <div
@@ -195,6 +201,11 @@ const withPageItem = () => (WrappedComponent) => {
           }}
           onClick={(e) => {
             e.stopPropagation();
+
+            if (onPointer) {
+              onPointer(item.id, null);
+            }
+
             if (editable && !selected) {
               setSelectedItem(item.id, item.options);
             }
@@ -245,6 +256,8 @@ const withPageItem = () => (WrappedComponent) => {
               childSelectedList={childSelectedList}
               setChildSelectedInfo={setChildSelectedInfo}
               clearTextSelection={this.clearTextSelection}
+              onPointer={onPointer}
+              pointer={pointer}
             />
           </div>
         </div>

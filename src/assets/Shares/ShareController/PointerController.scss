@@ -1,3 +1,60 @@
 .pointer-controller-wrapper {
+  .pointer-controller {
+    vertical-align: top;
+    line-height: 0;
+    background-color: $light;
+    text-align: right;
+    display: flex;
+    flex-direction: row;
 
+    .colors {
+      flex-grow: 0;
+
+      button {
+        text-align: center;
+        padding-top: 3px !important;
+      }
+
+      .color {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        border-radius: 50%;
+      }
+    }
+
+    .styles {
+      flex-grow: 0;
+
+      button {
+        padding-top: 0 !important;
+        i {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .others {
+      flex-grow: 1;
+    }
+
+    .separator {
+      flex-grow: 0;
+      align-self: center;
+      margin: 0 0.25rem 0 0.5rem;
+
+      > div {
+        align-self: center;
+        height: 10px;
+        display: inline-block;
+        width: 2px;
+        background-color: rgba(0, 0, 0, 0.2);
+
+      }
+    }
+  }
+
+  .pointer-content {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
 }

@@ -37,6 +37,8 @@ class PageContent extends React.PureComponent {
       moveItem,
       pageId,
       checkDirty,
+      onPointer,
+      pointer,
     } = this.props;
 
     const items = content ? content.items : [];
@@ -114,6 +116,8 @@ class PageContent extends React.PureComponent {
                   moveItem,
                   removeItem,
                   checkDirty,
+                  onPointer,
+                  pointer,
                 })}
               </React.Fragment>
             );
@@ -153,6 +157,13 @@ PageContent.propTypes = {
   removeItem: PropTypes.func,
   lastMovedItemId: PropTypes.string,
   checkDirty: PropTypes.func,
+  onPointer: PropTypes.func,
+  pointer: PropTypes.shape({
+    itemId: PropTypes.number,
+    index: PropTypes.number,
+    style: PropTypes.string,
+    color: PropTypes.string,
+  }),
 };
 
 export default withRouter(withTranslation()(PageContent));

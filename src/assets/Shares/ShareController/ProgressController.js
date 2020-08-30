@@ -219,11 +219,11 @@ class ProgressController extends React.PureComponent {
                       <div className="current-info mb-2">
                         <div>
                           <span className="char">C</span>
-                          <span>{currentChapter.title}</span>
+                          <span>{currentChapter && currentChapter.title}</span>
                         </div>
                         <div>
                           <span className="char p">P</span>
-                          <span>{currentPage.title}</span>
+                          <span>{currentPage && currentPage.title}</span>
                         </div>
                       </div>
                       <div className="current-map mb-2">
