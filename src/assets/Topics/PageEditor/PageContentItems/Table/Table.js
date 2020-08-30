@@ -162,7 +162,7 @@ class Table extends React.PureComponent {
                             }
                             
                             ${
-                              String(pointer.itemId) === String(item.id) && pointer.index1 === inx && pointer.index2 === jnx
+                              pointer && String(pointer.itemId) === String(item.id) && pointer.index1 === inx && pointer.index2 === jnx
                                 ? `g-pointed g-${pointer.style} g-${pointer.color}`
                                 : ''
                             }

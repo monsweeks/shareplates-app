@@ -423,7 +423,7 @@ class Image extends React.PureComponent {
       <div
         ref={this.control}
         className={`image-wrapper ${className} ${editable ? 'editable' : ''} ${
-          String(pointer.itemId) === String(item.id) && pointer.index1 === null
+          pointer && String(pointer.itemId) === String(item.id) && pointer.index1 === null
             ? `g-pointed g-${pointer.style} g-${pointer.color}`
             : ''
         }`}

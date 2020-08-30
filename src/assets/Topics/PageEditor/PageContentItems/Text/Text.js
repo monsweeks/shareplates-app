@@ -69,7 +69,7 @@ class Text extends React.Component {
       <div
         ref={this.control}
         className={`text-wrapper ${className} ${editable ? 'editable' : ''} ${
-          String(pointer.itemId) === String(item.id) && pointer.index1 === null
+          pointer && String(pointer.itemId) === String(item.id) && pointer.index1 === null
             ? `g-pointed g-${pointer.style} g-${pointer.color}`
             : ''
         }`}
