@@ -497,7 +497,7 @@ class Image extends React.PureComponent {
                 height: height === 'auto' ? height : height + heightUnit,
                 borderRadius: borderRadius + borderRadiusUnit,
               }}
-              src={`${request.getBase()}/files/${id}?uuid=${uuid}`}
+              src={`${request.getBase()}/api/files/${id}?uuid=${uuid}`}
               alt=""
               onLoad={() => {
                 this.setImgSize();
